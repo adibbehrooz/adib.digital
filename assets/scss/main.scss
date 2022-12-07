@@ -1,0 +1,351 @@
+/*
+	Theme Name: AdibOnline Theme
+	Theme URI: http://www.adibbehrooz.com/
+	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
+	Author: Mohammad Bagher Adib Behrooz
+	Version: 1.0
+*/
+
+/****************************************** SETTINGS ******************************************
+/**********************************************************************************************/
+
+	/*____________________________________________________________________________*/
+	/*
+	/* 									Imports
+	/*____________________________________________________________________________*/
+
+	//_______________________________
+	//
+	// 		Framework: Bootstrap
+	//_______________________________
+
+	//_______________________________
+	//
+	// 		Framework: Tailwind
+	//_______________________________
+
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
+	@tailwind screens;
+	@tailwind variants;
+
+
+/******************************************* TOOLS *****************************************
+/*******************************************************************************************/
+
+
+	/*____________________________________________________________________________*/
+	/*
+	/* 								Global Mixins
+	/*____________________________________________________________________________*/
+
+
+	//______________________ Mixin: BEM ______________________
+	//________________________________________________________
+
+	// Block Element
+	@mixin element($elements...) {
+		@each $element in $elements {
+			&__#{$element} {
+				@content;
+			}
+		}
+	}
+
+	// Block Modifier
+	@mixin modifier($modifier) {
+		&.--#{$modifier} {
+			@content;
+		}
+	}
+	
+	//______________________ Mixin: ITCSS ______________________
+	//__________________________________________________________
+
+	// Component
+	@mixin component($element) {
+		.c-#{$element} {
+			@content;
+		}	
+	}
+
+	// Object
+	@mixin object($element) {
+		.o-#{$element} {
+			@content;
+		}	
+	}
+
+	// Utility
+	@mixin utility($name) {
+		.u-#{$element} {
+			@content;
+		}
+	}
+	
+	//______________________ Mixin: LTR ______________________
+	//________________________________________________________
+
+	@mixin ltr() {
+		text-align: left;
+		direction: ltr;
+	}
+
+
+	//______________________ Mixin: RTL ______________________
+	//________________________________________________________
+
+	@mixin rtl() {
+		text-align: right;
+		direction: rtl;
+	}
+
+
+	//______________________ Mixin: Direction ______________________
+	//______________________________________________________________
+
+	// ⟵ ⟶
+	@mixin direction($direction) {
+		@if $direction == 'RTL' {
+			
+			[dir = "rtl"] & {
+				@content;
+			}
+		}
+		
+		@if $direction == 'LTR' {
+			
+			[dir = "rtl"] & {
+				@content;
+			}
+		}
+	}
+
+	.direction-sample {
+		@include direction('RTL'){
+			text-align: center;
+		}
+	}
+
+	/*____________________________________________________________________________*/
+	/*
+	/*						Mixin: Typography
+	/*____________________________________________________________________________*/
+
+
+	//______________________ 1. Google Fonts ______________________
+	//_____________________________________________________________
+
+	// Transfer to HTML Header for Webpack Compatibility
+
+	//______________________ 2. Custom Fonts ______________________
+	//_____________________________________________________________
+
+	// LTR Fonts
+	$Montserrat: 'Montserrat', serif;
+	$JetBrains: 'JetBrains Mono', sans-serif;
+
+	// font: font-style font-variant font-weight font-size/line-height font-family;
+	@mixin font($size, $font-name) {
+		font: normal normal normal #{$size} $font-name; 
+	}
+
+	/*____________________________________________________________________________*/
+	/*
+	/*								Functions
+	/*____________________________________________________________________________*/
+
+
+	@function decimalRound ($number, $digits: 0, $mode: round) {
+		$n: 1;
+		// $number must be a number
+		@if type-of($number) != number {
+			@warn '#{ $number } is not a number.';
+			@return $number;
+		}
+		// $digits must be a unitless number
+		@if type-of($digits) != number {
+			@warn '#{ $digits } is not a number.';
+			@return $number;
+		} @else if not unitless($digits) {
+			@warn '#{ $digits } has a unit.';
+			@return $number;
+		}
+		@if $digits > 0 {
+			@for $i from 1 through $digits {
+				$n: $n * 10;
+			}
+		}
+		@if $mode == round {
+			@return round($number * $n) / $n;
+		} @else if $mode == ceil {
+			@return ceil($number * $n) / $n;
+		} @else if $mode == floor {
+			@return floor($number * $n) / $n;
+		} @else {
+			@warn '#{ $mode } is undefined keyword.';
+			@return $number;
+		}
+	}
+	
+	@function randomNumber($min, $max) {
+		$rand: random();
+		$randomNum: $min + $rand * (($max - $min) + 1);
+		@return $randomNum;
+	}
+
+	// Casts a string into a number
+	@function to-number($value) {
+		@if type-of($value) == 'number' {
+			@return $value;
+		} @else if type-of($value) != 'string' {
+			$_: log('Value for `to-number` should be a number or a string.');
+		}
+		
+		$result: 0;
+		$digits: 0;
+		$minus: str-slice($value, 1, 1) == '-';
+		$numbers: ('0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9);
+		
+		@for $i from if($minus, 2, 1) through str-length($value) {
+			$character: str-slice($value, $i, $i);
+			
+			@if not (index(map-keys($numbers), $character) or $character == '.') {
+				@return to-length(if($minus, -$result, $result), str-slice($value, $i))
+			}
+			
+			@if $character == '.' {
+				$digits: 1; 
+			} @else if $digits == 0 {
+				$result: $result * 10 + map-get($numbers, $character);	
+			} @else {
+				$digits: $digits * 10;
+				$result: $result + map-get($numbers, $character) / $digits;
+			}
+		}
+		
+		@return if($minus, -$result, $result);;
+	}	
+
+	// Add '$unit' to '$value'
+	@function to-length($value, $unit) {
+		$units: ('px': 1px, 'cm': 1cm, 'mm': 1mm, '%': 1%, 'ch': 1ch, 'pc': 1pc, 'in': 1in, 'em': 1em, 'rem': 1rem, 'pt': 1pt, 'ex': 1ex, 'vw': 1vw, 'vh': 1vh, 'vmin': 1vmin, 'vmax': 1vmax);
+		
+		@if not index(map-keys($units), $unit) {
+			$_: log('Invalid unit `#{$unit}`.');
+		}
+		
+		@return $value * map-get($units, $unit);
+	}
+	
+	// Removes unit from a value
+	@function strip-unit($value) {
+		@return $value / ($value * 0 + 1);
+	}
+
+	// Splits a string on a separator
+	@function split-str($string, $separator) {
+		$index : str-index($string,	$separator);
+
+		$str-1 : str-slice($string, 1, $index - 1);
+		$str-2 : str-slice($string, $index + 1);
+
+		@return $str-1 $str-2;
+	}
+
+
+/****************************************** BOOTSTRAP || TAILWIND ******************************************
+/***********************************************************************************************************/
+
+	
+
+/****************************************** ELEMENTS ******************************************
+/************************************** Unstyled Elements**************************************/
+
+	//______________________ Body ______________________
+	//__________________________________________________
+	
+	body {
+		// background: linear-gradient(#16161d,#1f1f3a,#3b2f4a);
+		// background: linear-gradient(#C04848 10%, #480048 90%);
+		background:rgba(0, 0, 0, .90);
+		// cursor: none;
+	}
+
+
+	//______________________ Links ______________________
+	//___________________________________________________
+
+
+	//______________________ Tables ______________________
+	//____________________________________________________
+
+	table tfoot td, table tfoot th, table thead td, table thead th { font-weight: normal; }
+
+
+	//______________________ Headings, Golden Ratio ______________________
+	//____________________________________________________________________
+
+	$modularscale: (
+		base: 1em,
+		ratio: 1.5
+	);
+	$start: 3;
+
+	@each $h in h1, h2, h3, h4, h5, h6 {
+    	#{$h}, #{$h} p, p #{$h} { 
+      		font-size: ms($start);
+      		font-family: $Montserrat;
+      		line-height: ms($start);
+		}
+		$start: $start - 1;
+	}
+	
+	//______________________ Video ______________________
+	//___________________________________________________
+
+	video {
+		width: 100%;
+		height: auto;
+	}
+
+
+/****************************************** OBJECTS ****************************************
+/*******************************************************************************************/
+	
+	//______________________ Sample ______________________
+	//____________________________________________________
+
+	/*
+	 @include object('objectSample') {
+		@include element('elementSample') {
+			@include modifier('modifierSample') {
+			}
+		}
+	}
+	*/
+
+
+/****************************************** COMPONENTS *************************************
+/*******************************************************************************************/
+	
+	//______________________ Sample ______________________
+	//____________________________________________________
+	
+	/*
+	 @include component('componentSample') {
+		@include element('elementSample') {
+			@include modifier('modifierSample') {
+			}
+		}
+	}
+	*/
+	
+/****************************************** PLUGINS *************************************
+/****************************************************************************************/
+
+
+
+/****************************************** MISC ****************************************
+/****************************************************************************************/

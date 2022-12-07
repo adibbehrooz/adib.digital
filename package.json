@@ -1,0 +1,46 @@
+{
+  "name": "adibonline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.2",
+    "css-minimizer-webpack-plugin": "^4.2.2",
+    "csv-loader": "^3.0.5",
+    "file-loader": "^6.2.0",
+    "gsap": "^3.11.3",
+    "html-webpack-plugin": "^5.5.0",
+    "imagesloaded": "^5.0.0",
+    "jquery": "^3.6.1",
+    "jquery-mousewheel": "^3.1.13",
+    "mini-css-extract-plugin": "^2.7.1",
+    "parcel": "^2.8.0",
+    "postcss": "^8.4.19",
+    "postcss-loader": "^7.0.2",
+    "postcss-preset-env": "^7.8.3",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.56.1",
+    "sass-loader": "^13.2.0",
+    "slick-carousel": "^1.8.1",
+    "splitting": "^1.0.6",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.2.4",
+    "ts-loader": "^9.4.2",
+    "url-loader": "^4.1.1",
+    "typescript": "^4.9.3",
+    "webpack-cli": "^5.0.0",
+    "xml-loader": "^1.2.1",
+    "webpack": "^5.75.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.13"
+  },
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
