@@ -3,10 +3,6 @@
  * @package AdibOnline
  * @subpackage adibonline_theme
  * @since AdibOnline Theme 1.0
+ * Template Name: Template-Sample 
  */
 ?>
-	<?php get_header(); ?>
-		
-        <?php echo "HI"; ?>
-        
-    <?php get_footer(); ?>

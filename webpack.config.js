@@ -1,5 +1,5 @@
 /*
-	Theme Name: prsolutions Theme
+	Theme Name: AdibOnline Theme
 	Theme URI: http://www.adibbehrooz.com/
 	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
 	Author: Mohammad Bagher Adib Behrooz
@@ -14,14 +14,17 @@
 	const path 			= require('path');
 
 
-	//______________________
+	//________________________
 	//
 	// 		II. Constants
-	//______________________
+	//________________________
 
+	// 1. Plugins
 	const MiniCssExtractPlugin 		= require('mini-css-extract-plugin');
 	const CssMinimizerPlugin 		= require('css-minimizer-webpack-plugin');
 	const TerserPlugin 				= require("terser-webpack-plugin");
+
+	// 2. Misc
 
 	//______________________
 	//
@@ -37,8 +40,8 @@
 	module.exports = {
 		watch: true,
 		target: 'web',
+		cache: false,	
 		
-
 		// 1. Entry
 		entry: {
 			vendor: 	'./assets/js/src/vendor.js',
@@ -51,10 +54,10 @@
 		// 3. Output
 		output: {
 			path: path.resolve(__dirname, './assets/js/dist'),
+			publicPath: "./assets/js/public/",
 			filename: '[name].min.js',
 			chunkFilename: '[name].[chunkhash].chunk.js',
-			clean: true,
-			publicPath:'/public',
+			clean: false,
 		},
 
 		// 4. Plugins
@@ -67,7 +70,6 @@
 				$: 'jquery',
 				jQuery: 'jquery',
 			}),
-            
 		],
 
 		// 5. Development Tools
@@ -107,13 +109,12 @@
 						options: { 
 							sourceMap: true, 
 							sassOptions: {
-								outputStyle: "expanded",  // COMPRESSED AFTER FINAL VERSION !IMPORTANT
+								outputStyle: "compressed",  // "compressed" After Final Version, Default is "expanded" !IMPORTANT
 							},
 						} 
 					},
 				],
 			},{
-
 				// 6.2. FONTS
 				test: /\.(woff|woff2|eot|ttf|otf)$/i,
 				type: 'asset/resource',
@@ -121,7 +122,6 @@
 					// filename: '[path][name].[ext]',
 				// },				
 			},{
-
 				// 6.3. IMAGES
 				test: /\.(png|svg|jpg|jpeg|gif)$/i,
 				type: 'asset/resource',
@@ -135,7 +135,7 @@
 		// 7. Optimization
 		optimization: {
 			chunkIds: 'named',
-			minimize: false, // TRUE AFTER FINAL VERSION !IMPORTANT
+			minimize: true, // "True" After Final Version, Default is "false" !IMPORTANT
 			minimizer: [
 				new TerserPlugin({
 					test: /\.js(\?.*)?$/i,
@@ -165,13 +165,13 @@
 			alias: {
 
 				// 1. SCSS & CSS For Wordpress Core
-				main: path.resolve(__dirname,'./assets/scss/main.scss'), // Import
-				slick: path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
+				main: 		path.resolve(__dirname,'./assets/scss/main.scss'), // Import
+				slick: 		path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
 				slickTheme: path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
 
 				// 2. JS
 				
 			},
-			extensions: ['.js', '.css', '.scss']
+			extensions: ['.js', '.jsx', '.css', '.scss']
 		},
 	};

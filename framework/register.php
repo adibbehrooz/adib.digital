@@ -60,7 +60,7 @@
 		//_________ I. Not Admin _________  
 
 		if (!is_admin()):
-			wp_enqueue_script('pan');
+			wp_enqueue_script('vendor');
 			if( is_page(17)  && is_page('sample') ): wp_enqueue_script('sample'); endif;  //!is_sample
 		endif; //!is_admin
 		

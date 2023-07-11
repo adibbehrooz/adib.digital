@@ -5,5 +5,3 @@
 	Author: Mohammad Bagher Adib Behrooz
 	Version: 1.0
 */
-
-/* Silence is Golden */
