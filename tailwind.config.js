@@ -6,15 +6,13 @@
 	Version: 1.0
 */
 
-/** @type {import('tailwindcss').Config} */
-
 module.exports = {
 	content: {
 		enabled: true,
 		content: [
 			'./*.php',
-			'./assets/**/*.{php, css, js, png, svg, jpg}',
-			'./dist/*.js',
+			'./assets/**/*.{php, css, js, png, svg, jpg, scss, map, ico}',
+			'./dist/*.{js, map}',
 			'./framework/*.php',
 			'./inc/*.php',
 			'./misc/*.*',
@@ -24,8 +22,9 @@ module.exports = {
 	darkMode: false, // or 'media' or 'class'
 	theme: {
 		screens: {
-			'usm': {'max': '639px'},
-			// => @media (max-width: 639px) { ... }
+
+			'xs': '475px',
+			// => @media (min-width: 475px) { ... }
 
 			'sm': '640px',
 			// => @media (min-width: 640px) { ... }
@@ -136,20 +135,24 @@ module.exports = {
 		theme: {
 			screens: {
 
-			  'small': '640px', // sm
-			  // => @media (min-width: 640px) { ... }
-		
-			  'medium': '768px', // md
-			  // => @media (min-width: 768px) { ... }
-		
-			  'large': '1024px', // lg
-			  // => @media (min-width: 1024px) { ... }
-		
-			  'x-large': '1280px', // xl
-			  // => @media (min-width: 1280px) { ... }
-		
-			  '2x-large': '1536px', // 2xl
-			  // => @media (min-width: 1536px) { ... }
+				'xsmall': {'min': '475px', 'max': '639px'},
+				// => @media (min-width: 475px and max-width: 639px) { ... }
+
+				'small': {'min': '640px', 'max': '767px'},
+				// => @media (min-width: 640px and max-width: 767px) { ... }
+		  
+				'medium': {'min': '768px', 'max': '1023px'},
+				// => @media (min-width: 768px and max-width: 1023px) { ... }
+		  
+				'large': {'min': '1024px', 'max': '1279px'},
+				// => @media (min-width: 1024px and max-width: 1279px) { ... }
+		  
+				'xlarge': {'min': '1280px', 'max': '1535px'},
+				// => @media (min-width: 1280px and max-width: 1535px) { ... }
+		  
+				'2xlarge': {'min': '1536px', 'max': '2300px'},
+				// => @media (min-width: 1536px) { ... }
+
 			},
 
 			spacing: {
