@@ -76,7 +76,7 @@
 
 	
 	landscapeSvg = document.getElementsByClassName('firstClass');
-	console.log("Dev Server Adib");
+	console.log("Dev Server Adib 5");
 
 
 	// 					JQUERY

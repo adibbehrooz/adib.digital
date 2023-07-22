@@ -40,12 +40,11 @@
 	module.exports = {
 		watch: true,
 		target: 'web',
-		cache: false,	
+		// cache: false,	
 		
 		// 1. Entry
 		entry: {
-			vendor: 	'./assets/js/src/vendor.js',
-			sample: 	'./assets/js/src/sample.js',
+			index: 	'./assets/js/src/index.js',
 		},
 
 		// 2. Mode
@@ -54,7 +53,7 @@
 		// 3. Output
 		output: {
 			path: path.resolve(__dirname, './assets/js/dist'),
-			filename: '[name].min.js',
+			filename: 'index.js',
 			chunkFilename: '[name].[chunkhash].chunk.js',
 			clean: false,
 		},
@@ -73,6 +72,13 @@
 
 		// 5. Development Tools
 		devtool:'source-map',
+		devServer: {
+			host: 'adib.server.com',
+			hot: true,
+			// compress: true,
+			// watchFiles: ['assets/js/src/**/*.js', 'assets/js/src/*.js', 'assets/css/*.css'],
+			port: 8256,
+		},
 
 		// 6. Modules
 		module: {
@@ -175,7 +181,7 @@
 			alias: {
 
 				// 1. SCSS & CSS For Wordpress Core
-				main: 		path.resolve(__dirname,'./assets/scss/main.scss'), // Import
+				index: 		path.resolve(__dirname,'./assets/scss/index.scss'), // Import
 				slick: 		path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
 				slickTheme: path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
 

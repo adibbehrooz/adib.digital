@@ -26,7 +26,7 @@
 		const element = document.createElement('div');
 
 		// Lodash, currently included via a script, is required for this line to work
-		element.innerHTML = _.join(['Hello', 'webpack Reload'], ' ');
+		element.innerHTML = _.join(['Hello', 'webpack Reload On PHP 2'], ' ');
 		return element;
 	}
 
@@ -59,5 +59,5 @@
 	//		II. CORE
 	//_________________________
 
-	import 'main';
+	import 'index';
 	
