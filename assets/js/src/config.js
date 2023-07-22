@@ -9,9 +9,12 @@
 
 /******************************** Library Configuration ********************************
 /***************************************************************************************/
-	
-	// I. Tailwind Screens In JS
-	//_______________________________________
+
+
+	//__________________________________________________________________________
+	//
+	//	   					1) Tailwind Screens In JS
+	//__________________________________________________________________________
 
 		const customScreens = require('../../../tailwind.config.js').variants.theme.screens;
 		const sreensKeys = Object.keys(customScreens);
@@ -31,14 +34,14 @@
 					if( window.matchMedia(mediaQuery).matches ) {
 						window.addEventListener('load', function () {
 							addBreakpointElement(breakpoint);
-							console.log(breakpoint);
+							// console.log(breakpoint);
 						});
 					}
 					
 					function windowResize() {
 						if( window.matchMedia(mediaQuery).matches ) {
 							addBreakpointElement(breakpoint);
-							console.log(breakpoint);
+							// console.log(breakpoint);
 						}
 					}
 					window.addEventListener('resize', windowResize);
@@ -49,7 +52,6 @@
 		i++;
 		}
 		
-
 		function addBreakpointElement(breakpointName) {
 
 			// create a new div element
@@ -66,6 +68,16 @@
 			// add the text node to the newly created div
 			breakpointDiv.appendChild(breakpointNameDiv);
 		}
+	
+	//__________________________________________________________________________
+	//
+	//	   					2) SVG Dynamic Viewport
+	//__________________________________________________________________________
+
+	
+	landscapeSvg = document.getElementsByClassName('firstClass');
+	console.log("Dev Server Adib");
+
 
 	// 					JQUERY
 	//__________________________________________

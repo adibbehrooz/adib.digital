@@ -10,8 +10,8 @@
 	// 		I. Require
 	//______________________
 
-	const webpack 		= require('webpack');
-	const path 			= require('path');
+	const webpack 			= require('webpack');
+	const path 				= require('path');
 
 
 	//________________________
@@ -54,7 +54,6 @@
 		// 3. Output
 		output: {
 			path: path.resolve(__dirname, './assets/js/dist'),
-			publicPath: "./assets/js/public/",
 			filename: '[name].min.js',
 			chunkFilename: '[name].[chunkhash].chunk.js',
 			clean: false,
@@ -78,7 +77,6 @@
 		// 6. Modules
 		module: {
 			rules: [{
-
 				// 6.1. SCSS
 				test: /\.(sa|sc|c)ss$/,
 				use: [
@@ -128,7 +126,19 @@
 				// generator: {
 					// filename: './assets/images/[name][contenthash][ext]',
 				// },
-			},
+			}, {
+				// 6.4. Babel
+				test: /\.(?:js|mjs|cjs)$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: [
+							['@babel/preset-env', { targets: "defaults" }]
+						],
+					},
+				}
+			}
 			],
 		}, // [END] 6. Modules
 
