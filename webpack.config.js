@@ -77,7 +77,11 @@
 			hot: true,
 			// compress: true,
 			// watchFiles: ['assets/js/src/**/*.js', 'assets/js/src/*.js', 'assets/css/*.css'],
-			port: 8256,
+			port: 1000,
+			client: {
+				logging: 'info',
+				overlay: true,
+			}
 		},
 
 		// 6. Modules
