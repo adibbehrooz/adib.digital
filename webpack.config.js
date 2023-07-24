@@ -80,10 +80,8 @@
 			host: 'adib.server.com',
 			allowedHosts: [
 				'adib.server.com',
-				'local.server.com',
 			],
 			hot: true,
-			liveReload: true,
 			watchFiles: ['./*.php','./framework/*.php', 'assets/js/**/*.js', 'assets/scss/*.scss'],
 			client: {
 				logging: 'info',
@@ -91,14 +89,10 @@
 			},
 			proxy: {
 				'/': {
-					target: {
-						host: "adib.server.com",
-						port: 8000,
-						protocol: "http",
-						changeOrigin: true,
-					}
+					target: 'http://adib.server.com:8000/',
+					changeOrigin: true,
 				}
-			},
+			}
 		},
 
 		// 7. Modules
