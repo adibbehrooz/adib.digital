@@ -38,9 +38,11 @@
 	//______________________
 
 	module.exports = {
+		
+		// 0. Basic
 		watch: true,
 		target: 'web',
-		// cache: false,	
+		cache: true,	
 		
 		// 1. Entry
 		entry: {
@@ -72,19 +74,34 @@
 
 		// 5. Development Tools
 		devtool:'source-map',
+
+		// 6. Development Server
 		devServer: {
 			host: 'adib.server.com',
+			allowedHosts: [
+				'adib.server.com',
+				'local.server.com',
+			],
 			hot: true,
-			// compress: true,
-			// watchFiles: ['assets/js/src/**/*.js', 'assets/js/src/*.js', 'assets/css/*.css'],
-			port: 1000,
+			liveReload: true,
+			watchFiles: ['./*.php','./framework/*.php', 'assets/js/**/*.js', 'assets/scss/*.scss'],
 			client: {
 				logging: 'info',
 				overlay: true,
-			}
+			},
+			proxy: {
+				'/': {
+					target: {
+						host: "adib.server.com",
+						port: 8000,
+						protocol: "http",
+						changeOrigin: true,
+					}
+				}
+			},
 		},
 
-		// 6. Modules
+		// 7. Modules
 		module: {
 			rules: [{
 				// 6.1. SCSS
@@ -102,6 +119,8 @@
 						loader: "css-loader", 
 						options: { 
 							import: true, 
+							url: true,
+							modules: true,
 							sourceMap: true 
 						} 
 					},	
@@ -152,7 +171,7 @@
 			],
 		}, // [END] 6. Modules
 
-		// 7. Optimization
+		// 8. Optimization
 		optimization: {
 			chunkIds: 'named',
 			minimize: true, // "True" After Final Version, Default is "false" !IMPORTANT
@@ -180,7 +199,7 @@
 			],
 		}, // [END] 7. Optimization
 
-		// 8. Resolve
+		// 9. Resolve
 		resolve: {
 			alias: {
 
