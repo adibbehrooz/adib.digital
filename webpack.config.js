@@ -23,6 +23,8 @@
 	const MiniCssExtractPlugin 		= require('mini-css-extract-plugin');
 	const CssMinimizerPlugin 		= require('css-minimizer-webpack-plugin');
 	const TerserPlugin 				= require("terser-webpack-plugin");
+	const HtmlWebpackPlugin			= require('html-webpack-plugin');
+
 
 	// 2. Misc
 
@@ -55,9 +57,10 @@
 		// 3. Output
 		output: {
 			path: path.resolve(__dirname, './assets/js/dist'),
+			publicPath: '/',
 			filename: 'index.js',
 			chunkFilename: '[name].[chunkhash].chunk.js',
-			clean: false,
+			clean: true, // Clean the output directory before emit.
 		},
 
 		// 4. Plugins
@@ -70,6 +73,11 @@
 				$: 'jquery',
 				jQuery: 'jquery',
 			}),
+			new HtmlWebpackPlugin({
+				template: path.resolve(__dirname, 'assets/js/src/index.php'),
+				chunks: ['index'],
+				filename: 'index.php',
+			}),
 		],
 
 		// 5. Development Tools
@@ -77,22 +85,28 @@
 
 		// 6. Development Server
 		devServer: {
+            static: false,
 			host: 'adib.server.com',
 			allowedHosts: [
 				'adib.server.com',
 			],
-			hot: true,
+			hot: false,
 			watchFiles: ['./*.php','./framework/*.php', 'assets/js/**/*.js', 'assets/scss/*.scss'],
 			client: {
 				logging: 'info',
 				overlay: true,
 			},
+			devMiddleware: {
+				publicPath: path.resolve(__dirname, 'dist'),
+				writeToDisk: true,
+			},
+			port: 8149,
 			proxy: {
-				'/': {
-					target: 'http://adib.server.com:8000/',
-					changeOrigin: true,
-				}
-			}
+				'*': {
+				  target: `http://adib.server.com/website/`,
+				  changeOrigin: true
+				},
+			},
 		},
 
 		// 7. Modules

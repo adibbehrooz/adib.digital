@@ -37,7 +37,7 @@
 
 		wp_register_script(
 			'vendor', //handle
-			THEME_DIR_JS_DIST.'/vendor.min.js', //source
+			THEME_DIR_JS_DIST.'/index.min.js', //source
 			null,
 			'1.0', //version
 			false //run in footer
@@ -98,7 +98,7 @@
 
 		wp_register_style(
 			'vendor', //handle
-			THEME_DIR_CSS.'/vendor.min.css', //source
+			THEME_DIR_CSS.'/index.min.css', //source
 			null, //dependencies
 			'1.0' //version
 		);		
