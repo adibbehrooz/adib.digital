@@ -102,10 +102,15 @@
 			},
 			port: 8149,
 			proxy: {
-				'*': {
-				  target: `http://adib.server.com/website/`,
-				  changeOrigin: true
-				},
+				'/': {
+					target: {
+						host: "adib.server.com",
+						port: 8000,
+						protocol: "http",
+						changeOrigin: true,
+						pathRewrite: {'^/' : ''}
+					}
+				}
 			},
 		},
 
