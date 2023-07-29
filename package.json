@@ -4,6 +4,7 @@
   "description": "",
   "main": "webpack.config.js",
   "dependencies": {
+    "browser-sync": "^2.29.3",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.2",
     "csv-loader": "^3.0.5",
