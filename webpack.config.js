@@ -10,8 +10,9 @@
 	// 		I. Require
 	//______________________
 
-	const webpack 			= require('webpack');
-	const path 				= require('path');
+	const webpack 					= require('webpack');
+	const path 						= require('path');
+	const BrowserSyncPlugin 		= require('browser-sync-webpack-plugin');
 
 
 	//________________________
@@ -23,10 +24,6 @@
 	const MiniCssExtractPlugin 		= require('mini-css-extract-plugin');
 	const CssMinimizerPlugin 		= require('css-minimizer-webpack-plugin');
 	const TerserPlugin 				= require("terser-webpack-plugin");
-	const HtmlWebpackPlugin			= require('html-webpack-plugin');
-
-
-	// 2. Misc
 
 	//______________________
 	//
@@ -43,6 +40,9 @@
 		
 		// 0. Basic
 		watch: true,
+		watchOptions: {
+			ignored: /node_modules/,
+		},
 		target: 'web',
 		cache: true,	
 		
@@ -73,51 +73,29 @@
 				$: 'jquery',
 				jQuery: 'jquery',
 			}),
-			new HtmlWebpackPlugin({
-				template: path.resolve(__dirname, 'assets/js/src/index.php'),
-				chunks: ['index'],
-				filename: 'index.php',
-			}),
+			new BrowserSyncPlugin({
+				host: 'localhost',
+				port: 3000,
+				files: [
+					'../../../*.php', // Wordpress Root
+					'../../../woocommerce/*.php', // Wordpress WooCommerce
+					'../../../framework/*.php', // Wordpress Framework
+					'!../../../node_modules',
+					'*.php' ,
+					'../../css/*.*', 
+					'../../scss/*.*', 
+				],
+				proxy: 'http://localhost:8888',
+			})
 		],
 
 		// 5. Development Tools
 		devtool:'source-map',
-
-		// 6. Development Server
-		devServer: {
-            static: false,
-			host: 'adib.server.com',
-			allowedHosts: [
-				'adib.server.com',
-			],
-			hot: false,
-			watchFiles: ['./*.php','./framework/*.php', 'assets/js/**/*.js', 'assets/scss/*.scss'],
-			client: {
-				logging: 'info',
-				overlay: true,
-			},
-			devMiddleware: {
-				publicPath: path.resolve(__dirname, 'dist'),
-				writeToDisk: true,
-			},
-			port: 8149,
-			proxy: {
-				'/': {
-					target: {
-						host: "adib.server.com",
-						port: 8000,
-						protocol: "http",
-						changeOrigin: true,
-						pathRewrite: {'^/' : ''}
-					}
-				}
-			},
-		},
-
-		// 7. Modules
+		
+		// 8. Modules
 		module: {
 			rules: [{
-				// 6.1. SCSS
+				// 8.1. SCSS
 				test: /\.(sa|sc|c)ss$/,
 				use: [
 					{
@@ -127,7 +105,7 @@
 						},
 					},
 
-					// 6.1.1. css Loader
+					// 8.1.1. css Loader
 					{ 	
 						loader: "css-loader", 
 						options: { 
@@ -138,12 +116,12 @@
 						} 
 					},	
 
-					// 6.1.2. PostCss Loader
+					// 8.1.2. PostCss Loader
 					{
 						loader: "postcss-loader", 
 					},
 
-					// 6.1.3. sass Loader
+					// 8.1.3. sass Loader
 					{ 	
 						loader: "sass-loader", 
 						options: { 
@@ -155,21 +133,21 @@
 					},
 				],
 			},{
-				// 6.2. FONTS
+				// 8.2. FONTS
 				test: /\.(woff|woff2|eot|ttf|otf)$/i,
 				type: 'asset/resource',
 				// generator: {
 					// filename: '[path][name].[ext]',
 				// },				
 			},{
-				// 6.3. IMAGES
+				// 8.3. IMAGES
 				test: /\.(png|svg|jpg|jpeg|gif)$/i,
 				type: 'asset/resource',
 				// generator: {
 					// filename: './assets/images/[name][contenthash][ext]',
 				// },
 			}, {
-				// 6.4. Babel
+				// 8.4. Babel
 				test: /\.(?:js|mjs|cjs)$/,
 				exclude: /node_modules/,
 				use: {
@@ -182,9 +160,9 @@
 				}
 			}
 			],
-		}, // [END] 6. Modules
+		}, // [END] 8. Modules
 
-		// 8. Optimization
+		// 9. Optimization
 		optimization: {
 			chunkIds: 'named',
 			minimize: true, // "True" After Final Version, Default is "false" !IMPORTANT
@@ -212,7 +190,7 @@
 			],
 		}, // [END] 7. Optimization
 
-		// 9. Resolve
+		// 10. Resolve
 		resolve: {
 			alias: {
 

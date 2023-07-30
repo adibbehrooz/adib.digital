@@ -40,7 +40,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200&display=swap" rel="stylesheet">
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-	
+
 	<?php wp_head(); ?>
 	
 	<?php //___________ Google Analytics ___________ ?>
