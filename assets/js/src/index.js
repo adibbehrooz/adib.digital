@@ -21,7 +21,6 @@
 	//_________________________
 
 	import _ from 'lodash';
-	console.log("Relod No 06");
 
 
 	//		II. CONFIG
@@ -33,7 +32,7 @@
 	//		III. AJAX
 	//_________________________
 
-	// import './ajax';
+	import './ajax';
 
 
 	/*____________________________________________________________________________*/
@@ -50,5 +49,5 @@
 	//		II. CORE
 	//_________________________
 
-	import 'index'; // Import index.scss
+	import 'main'; // Import index.scss
 	

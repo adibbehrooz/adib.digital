@@ -19,11 +19,11 @@
 	// 		Framework: Tailwind
 	//_______________________________
 
-	// @tailwind base;
-	// @tailwind components;
-	// @tailwind utilities;
-	// @tailwind screens;
-	// @tailwind variants;
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
+	@tailwind screens;
+	@tailwind variants;
 
 
 /******************************************* TOOLS *****************************************
@@ -164,11 +164,11 @@
 	//__________________________________________________
 
 	body {
-		background: linear-gradient(#16161d,#1f1f3a,#3b2f4a);
+		// background: linear-gradient(#16161d,#1f1f3a,#3b2f4a);
 		// background: linear-gradient(#C04848 10%, #480048 90%);
 		// background:rgba(0, 0, 0, .90);
 		// cursor: none;
-		background-color: green;
+		background-color: rgb(185, 174, 174);
 	}
 
 

@@ -7,11 +7,12 @@
 ?>
 
 	<!DOCTYPE html>
+	
+	<?php // global $language; $language = language(); // [Language Setting] ?>
+	<?php // global $redux_demo; // [Theme Options] ?>
 
-	<?php global $language; $language = language(); // [Language Setting] ?>
-	<?php global $redux_demo; // [Theme Options] ?>
-
-	<html class="no-js" dir="<?php echo $language['languageWritingSystem'] ?>" lang="<?php echo $language['languageCodeReference'] ?>" >
+	<?php /* <html class="no-js" dir="<?php echo $language['languageWritingSystem'] ?>" lang="<?php echo $language['languageCodeReference'] ?>" > */ ?>
+	<html class="no-js" dir="ltr" lang="en" >
 
 	<head>
 
@@ -27,7 +28,7 @@
 	<meta name="MobileOptimized" content="320">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title><?php wp_title(''); ?></title>
+	<title><?php // wp_title(''); ?></title>
 
 	<?php //___________ Favicon ___________ ?>
 	<?php //_______________________________ ?>
@@ -48,18 +49,18 @@
 
 	</head>
 
-	<body <?php body_class(); ?> >
+	<body <?php // body_class(); ?> >
     <?php 
-		/*____________________________________________________________________________*/
-		/*
-		/*						              Header
-		/*____________________________________________________________________________*/
+		//____________________________________________________________________________//
+		//
+		//						              Header
+		//____________________________________________________________________________//
 	?>
 
 
 	<?php 
-		/*____________________________________________________________________________*/
-		/*
-		/*						          Edges [Sidebar]
-		/*____________________________________________________________________________*/
+		//____________________________________________________________________________//
+		//
+		//						          Edges [Sidebar]
+		//____________________________________________________________________________//
 	?>

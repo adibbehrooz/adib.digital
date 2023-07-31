@@ -14,31 +14,23 @@
 	const path 						= require('path');
 	const BrowserSyncPlugin 		= require('browser-sync-webpack-plugin');
 
-
 	//________________________
 	//
 	// 		II. Constants
 	//________________________
 
-	// 1. Plugins
 	const MiniCssExtractPlugin 		= require('mini-css-extract-plugin');
 	const CssMinimizerPlugin 		= require('css-minimizer-webpack-plugin');
 	const TerserPlugin 				= require("terser-webpack-plugin");
 
 	//______________________
 	//
-	// 		III. Variables
-	//______________________
-
-
-	//______________________
-	//
-	// 		IV. Exports
+	// 		III. Exports
 	//______________________
 
 	module.exports = {
 		
-		// 0. Basic
+		// I. BASIC 
 		watch: true,
 		watchOptions: {
 			ignored: /node_modules/,
@@ -46,56 +38,79 @@
 		target: 'web',
 		cache: true,	
 		
-		// 1. Entry
+		// II. ENTERY
 		entry: {
 			index: 	'./assets/js/src/index.js',
 		},
 
-		// 2. Mode
+		// III. MODE
 		mode: 'development',
 
-		// 3. Output
+		// IV. OUTPUT
 		output: {
 			path: path.resolve(__dirname, './assets/js/dist'),
 			publicPath: '/',
-			filename: 'index.js',
+			filename: 'build.js',
 			chunkFilename: '[name].[chunkhash].chunk.js',
 			clean: true, // Clean the output directory before emit.
 		},
 
-		// 4. Plugins
+		// V. Plugins
 		plugins: [
+
+			// 1. MiniCssExtractPlugin
 			new MiniCssExtractPlugin({
-				filename: '../../css/[name].min.css',
+				filename: '../../css/main.min.css',
 				chunkFilename: '[id].css',
 			}),
+
+			// 2. JQuery
 			new webpack.ProvidePlugin({
 				$: 'jquery',
 				jQuery: 'jquery',
 			}),
+
+			// 3. Browser Sync
 			new BrowserSyncPlugin({
+				ghostMode: {
+					scroll: true,
+					links: true,
+					forms: true
+				},
+				watchOptions: {
+					reloadDelay: 1000,
+					debounceDelay: 1000
+				},
 				host: 'localhost',
 				port: 3000,
+				watchEvents : [ 'change', 'add', 'unlink', 'addDir', 'unlinkDir' ],
 				files: [
-					'../../../*.php', // Wordpress Root
-					'../../../woocommerce/*.php', // Wordpress WooCommerce
-					'../../../framework/*.php', // Wordpress Framework
-					'!../../../node_modules',
-					'*.php' ,
-					'../../css/*.*', 
-					'../../scss/*.*', 
-				],
-				proxy: 'http://localhost:8888',
-			})
+					{
+					match: [
+						'../../../../../../wp-config.php', '../../../../../wp-config.php', '../../../wp-config.php', // Wordpress Root
+						 // Wordpress Theme Root
+						'../../../*.php', '*.php' , // Wordpress Theme Root
+						'../../../woocommerce/*.php', './woocommerce/*.php', // Wordpress WooCommerce
+						'../../../framework/*.php', './framework/*.php', // Wordpress Framework
+						'!../../../node_modules',
+						'../../css/*.*', 
+						'../../scss/*.*', 
+					],
+					fn: function (event, file) {
+						this.reload()				
+					},
+				}],
+				proxy: 'http://adib.server.com:8000/website',
+			}),
 		],
 
-		// 5. Development Tools
+		// VI. DEVELOPMENT TOOLS
 		devtool:'source-map',
-		
-		// 8. Modules
+
+		// VII. MODULES
 		module: {
 			rules: [{
-				// 8.1. SCSS
+				// 1. SCSS
 				test: /\.(sa|sc|c)ss$/,
 				use: [
 					{
@@ -105,7 +120,7 @@
 						},
 					},
 
-					// 8.1.1. css Loader
+					// 1.1. css Loader
 					{ 	
 						loader: "css-loader", 
 						options: { 
@@ -116,12 +131,12 @@
 						} 
 					},	
 
-					// 8.1.2. PostCss Loader
+					// 1.2. PostCss Loader
 					{
 						loader: "postcss-loader", 
 					},
 
-					// 8.1.3. sass Loader
+					// 1.3. sass Loader
 					{ 	
 						loader: "sass-loader", 
 						options: { 
@@ -133,21 +148,21 @@
 					},
 				],
 			},{
-				// 8.2. FONTS
+				// 2. FONTS
 				test: /\.(woff|woff2|eot|ttf|otf)$/i,
 				type: 'asset/resource',
 				// generator: {
 					// filename: '[path][name].[ext]',
 				// },				
 			},{
-				// 8.3. IMAGES
+				// 3. IMAGES
 				test: /\.(png|svg|jpg|jpeg|gif)$/i,
 				type: 'asset/resource',
 				// generator: {
 					// filename: './assets/images/[name][contenthash][ext]',
 				// },
 			}, {
-				// 8.4. Babel
+				// 4. Babel
 				test: /\.(?:js|mjs|cjs)$/,
 				exclude: /node_modules/,
 				use: {
@@ -160,9 +175,9 @@
 				}
 			}
 			],
-		}, // [END] 8. Modules
+		}, // [END]  MODULES
 
-		// 9. Optimization
+		// VIII. OPTIMIZATION
 		optimization: {
 			chunkIds: 'named',
 			minimize: true, // "True" After Final Version, Default is "false" !IMPORTANT
@@ -188,18 +203,19 @@
 					},
 				}),
 			],
-		}, // [END] 7. Optimization
+		}, // [END] OPTIMIZATION
 
-		// 10. Resolve
+		// IX. RESOLVE
 		resolve: {
 			alias: {
 
 				// 1. SCSS & CSS For Wordpress Core
-				index: 		path.resolve(__dirname,'./assets/scss/index.scss'), // Import
+				main: 		path.resolve(__dirname,'./assets/scss/main.scss'), // Import
 				slick: 		path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
 				slickTheme: path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
 
 				// 2. JS
+				// No Import Yet!
 				
 			},
 			extensions: ['.js', '.jsx', '.css', '.scss']

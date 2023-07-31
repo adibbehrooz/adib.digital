@@ -36,8 +36,8 @@
 		//_________ Vendor _________
 
 		wp_register_script(
-			'vendor', //handle
-			THEME_DIR_JS_DIST.'/index.min.js', //source
+			'build', //handle
+			THEME_DIR_JS_DIST.'/build.js', //source
 			null,
 			'1.0', //version
 			false //run in footer
@@ -60,8 +60,8 @@
 		//_________ I. Not Admin _________  
 
 		if (!is_admin()):
-			wp_enqueue_script('vendor');
-			if( is_page(17)  && is_page('sample') ): wp_enqueue_script('sample'); endif;  //!is_sample
+			wp_enqueue_script('build');
+			if( is_page(17)  && is_page('sample') ): wp_enqueue_script('sample'); endif;  //is_sample
 		endif; //!is_admin
 		
 		//_________ II. Ajax _________  
@@ -94,16 +94,7 @@
 	add_action('init', 'theme_register_styles');
 	function theme_register_styles(){
 
-		//_________ I. Vendor [Tailwind] ____________
-
-		wp_register_style(
-			'vendor', //handle
-			THEME_DIR_CSS.'/index.min.css', //source
-			null, //dependencies
-			'1.0' //version
-		);		
-		
-		//_________ II. Main ____________
+		//_________ I. Main ____________
 
 		wp_register_style(
 			'main', //handle
@@ -112,7 +103,7 @@
 			'1.0' //version
 		);
 
-		//_________ III. Sample ____________
+		//_________ II. Sample ____________
 
 		wp_register_style(
 			'sample', //handle
@@ -121,7 +112,7 @@
 			'1.0' //version
 		);
 
-		//_________ IV. Dashboard [Admin] _________
+		//_________ III. Dashboard [Admin] _________
 
 		wp_register_style(
 			'dashboard', //handle
@@ -131,13 +122,12 @@
 		);
 	}
 
-
 	add_action('wp_print_styles', 'theme_enqueue_styles');
 	function theme_enqueue_styles() {
 	
 		if (!is_admin()):
 			// wp_enqueue_style('dynamic-css', admin_url('admin-ajax.php').'?action=dynamic_css', $deps, $ver, $media);
-			wp_enqueue_style('vendor');
+			wp_enqueue_style('main');
 			if( is_page(17) && is_page('sample') ): wp_enqueue_style('sample'); endif;
 		else:
 			wp_enqueue_style('dashboard');
