@@ -78,8 +78,8 @@
 					forms: true
 				},
 				watchOptions: {
-					reloadDelay: 1000,
-					debounceDelay: 1000
+					reloadDelay: 100,
+					debounceDelay: 100
 				},
 				host: 'localhost',
 				port: 3000,
@@ -87,12 +87,18 @@
 				files: [
 					{
 					match: [
+						// I. PHP
 						'../../../../../../wp-config.php', '../../../../../wp-config.php', '../../../wp-config.php', // Wordpress Root
-						 // Wordpress Theme Root
 						'../../../*.php', '*.php' , // Wordpress Theme Root
 						'../../../woocommerce/*.php', './woocommerce/*.php', // Wordpress WooCommerce
 						'../../../framework/*.php', './framework/*.php', // Wordpress Framework
 						'!../../../node_modules',
+						
+						// II. JS
+						'../src/*.js', 
+						'../*.js', 
+
+						// II. SCSS & CSS
 						'../../css/*.*', 
 						'../../scss/*.*', 
 					],
@@ -126,8 +132,8 @@
 						options: { 
 							import: true, 
 							url: true,
-							modules: true,
-							sourceMap: true 
+							modules: false,
+							sourceMap: false 
 						} 
 					},	
 
@@ -180,7 +186,7 @@
 		// VIII. OPTIMIZATION
 		optimization: {
 			chunkIds: 'named',
-			minimize: true, // "True" After Final Version, Default is "false" !IMPORTANT
+			minimize: false, // "True" After Final Version, Default is "false" !IMPORTANT
 			minimizer: [
 				new TerserPlugin({
 					test: /\.js(\?.*)?$/i,

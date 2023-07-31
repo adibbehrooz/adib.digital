@@ -120,7 +120,11 @@ module.exports = {
 				lineHeight: '4.5rem',
 			}],			
 		},
+
 		extend: {
+			gridTemplateColumns: {
+				'16': 'repeat(16, minmax(0, 1fr))', // 16 Columns
+			},
 			// Font Family
 			fontFamily: {
 				'montserrat': ['Montserrat'],
@@ -154,7 +158,6 @@ module.exports = {
 				// => @media (min-width: 1536px) { ... }
 
 			},
-
 			spacing: {
 				"quarter": "0.375rem",
 				"half": "0.75rem",
@@ -168,13 +171,6 @@ module.exports = {
 				"twelve": "18rem",
 				"sixteen": "24rem"
 			},
-		},
-
-		gridTemplateColumns: {
-			'16': 'repeat(16, minmax(0, 1fr))', // 16 Columns
-		},
-
-		gridTemplateRows: {
 		},
 
 		container: {

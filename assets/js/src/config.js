@@ -57,7 +57,17 @@
 			// create a new div element
 			const breakpointDiv = document.createElement("div");
 			breakpointDiv.className = "breakpointClass";
-			breakpointDiv.style.cssText = 'position:fixed;bottom:5px;left:5px;padding:5px;width:100px;height:35px;text-align:center;border-radius:5px;background:black;color:white;border:1px solid #ddd;box-shadow: 0px 0px 8px  #fff;';
+			breakpointDiv.style.cssText = 
+			'position: fixed;' +
+			'bottom: 5px;' +
+			'left: 5px;' +
+			'padding: 5px;' +
+			'width: 100px;' +
+			'height: 35px;' +
+			'text-align: center;' +
+			'border-radius: 5px;' +
+			'background: black;' +
+			'color: white;';
 			
 			// add the newly created element and its content into the DOM
 			document.body.appendChild(breakpointDiv);

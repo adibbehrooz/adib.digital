@@ -24,5 +24,4 @@
 			postSlug 		: 	ajax_custom.postSlug,
 			postTitle 		: 	ajax_custom.postTitle,
 		};
-
 	});
