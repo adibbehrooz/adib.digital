@@ -107,6 +107,9 @@
 					fn: function (event, file) {
 						this.reload()
 					},
+					options: {
+						ignored: '*.txt'
+					}
 				}],
 				proxy: 'http://adib.server.com:8000/website',
 			}),

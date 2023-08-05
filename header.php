@@ -26,6 +26,7 @@
 	<meta name="HandheldFriendly" content="True">
 	<meta name="MobileOptimized" content="320">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>
 
 	<title><?php wp_title(''); ?></title>
 

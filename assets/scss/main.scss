@@ -163,6 +163,12 @@
 	//______________________ Body ______________________
 	//__________________________________________________
 
+	body {
+		background: linear-gradient(#16161d,#1f1f3a,#3b2f4a);
+		background-repeat: no-repeat;
+		min-height: 100vh;
+		overflow: hidden;
+	}
 
 	//______________________ Links ______________________
 	//___________________________________________________
@@ -212,6 +218,60 @@
 		}
 	}
 	*/
+
+	@include component('landscape') {
+
+		// Path Group
+		//___________
+
+		@include element('pathGroup') {
+			fill: transparent;
+			stroke: rgba(255, 255, 255, 0.5);
+			
+			@include modifier('fill') {
+				fill: rgba(255, 255, 255, 1);
+			}
+
+			@include modifier('cover') {
+				fill: transparent;
+				stroke-width: 0;
+			}
+
+			@include modifier('stable') {
+
+				@include modifier('mountain') { stroke-width: 2px; stroke-opacity: 0.6; }
+			}
+
+			@include modifier('change') {
+				fill: transparent;
+				stroke-width: 3%;
+				stroke-opacity: 0;
+				transition: all .4s ease-in-out;
+
+				@include modifier('fill') {
+					fill: rgba(255, 255, 255, 0.9);
+					stroke-width: 2px;
+					stroke-opacity: 1;
+				}
+			}
+
+			@include modifier('transparent') {
+				fill: transparent;
+
+				@include modifier('fill') {
+					fill: black;
+				}
+			}
+		}
+
+		// Wave
+		@include element('wave') {
+			fill: transparent;
+			stroke: white;
+			stroke-opacity: 0.5;
+			stroke-width: 0.5px;
+		}
+	}
 	
 /****************************************** PLUGINS *************************************
 /****************************************************************************************/

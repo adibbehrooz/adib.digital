@@ -86,6 +86,14 @@
 		//__________________________________________________________________________
 
 
+		let zoomLandscape = document.querySelector('.c-landscapeFrame')
+		panzoom(zoomLandscape, {
+			zoomSpeed: 0.065,
+			maxZoom: 1,
+			minZoom: 1,
+			initialX: 300,
+			initialY: 500,
+		  });
 
 	}); // [END] Document Ready
 
