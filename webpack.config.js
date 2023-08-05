@@ -189,7 +189,7 @@
 		optimization: {
 			chunkIds: 'named',
 			emitOnErrors: true,
-			minimize: false, // "True" After Final Version, Default is "false" !IMPORTANT
+			minimize: true, // "True" After Final Version, Default is "false" !IMPORTANT
 			minimizer: [
 				new TerserPlugin({
 					test: /\.js(\?.*)?$/i,

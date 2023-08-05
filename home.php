@@ -7,19 +7,27 @@
 ?>
 	<?php get_header(); ?>
 
-	<div class="[ TW: h-full w-full flex flex-row ]">
-		
-		<?php // Left Static Panel ?>
-		<div class="[ TW: min-h-screen w-16 border-r-2 border-b-gray-200 sticky ]">
-			<div class="[ TW: mt-4 font-sans from-neutral-300  ]">
-				Logo
-			</div>
-		</div>
 
-		<?php // Right Static Panel ?>
-		<div class="[ TW: h-96 w-11/12 ]">
-			THE CONTENT
-		</div>
-	</div>
+	<?php 
+	//____________________________________________________________________________
+	//
+	//									Middle
+	//____________________________________________________________________________
+	?> 
+
+	<section id="middle" class="[ Framework: usm:hidden sm:hidden md:hidden lg:inline xl:inline 2xl:inline ]" data-renderType='svg'>
+
+	<?php 
+		//____________________________________________________________________________
+		//
+		//								II. Custom Design
+		//____________________________________________________________________________
+	?>
+
+	<svg class="[ c-landscape ]" id="landscape" data-idgsap="landscapeGsap" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="border:1px solid black">
+	
+	</svg>
+
+	</section>
 
 	<?php get_footer(); ?>
