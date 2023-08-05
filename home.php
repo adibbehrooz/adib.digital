@@ -7,27 +7,26 @@
 ?>
 	<?php get_header(); ?>
 
-
-	<?php 
+	<?php
 	//____________________________________________________________________________
 	//
 	//									Middle
 	//____________________________________________________________________________
-	?> 
+	?>
 
 	<section id="middle" class="[ c-landscapeFrame ]" data-renderType='svg'>
 
-	<?php 
+	<?php
 		//____________________________________________________________________________
 		//
 		//								II. Custom Design
 		//____________________________________________________________________________
 	?>
 
-		<svg class="[ c-landscape ]" id="landscape" viewBox="-500 0 2200 610" data-idgsap="landscapeGsap" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-			
+		<svg class="[ c-landscape ]" id="landscape" viewBox="-800 -400 2900 1510" data-idgsap="landscapeGsap" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+
 			<g id="svgPanzoomViewport" class="svgPanzoomViewport">
-				
+
 				<g id="viewport">
 
 				<?php // Object: Mountains ?>
@@ -41,11 +40,11 @@
 							<path class="[ c-landscape__slope ]" id="f" d="m750.68 449.77 35.64-62.968"  stroke-dasharray="3.00000006, 0.50000001" />
 							<path class="[ c-landscape__slope ]" id="g" d="m823.69 458.82c2.7281-13.742 8.1218-43.011 13.766-72.472"  stroke-dasharray="3.00000006, 0.50000001" />
 							<path class="[ c-landscape__slope ]" id="ad" d="m793.35 339.32-32.14 47.589"  stroke-dasharray="3.00000006, 0.50000001" stroke-width=".5"/>
-							<path class="[ c-landscape__slope ]" id="ae" d="m291.24 292.49 10.299 93.68"  stroke-dasharray="3.00000006, 0.50000001" stroke-width=".5"/>				
+							<path class="[ c-landscape__slope ]" id="ae" d="m291.24 292.49 10.299 93.68"  stroke-dasharray="3.00000006, 0.50000001" stroke-width=".5"/>
 							<path class="[ c-landscape__slope ]" id="l" d="m225.71 386.65 52.205 76.818 40.608 62.624 89.451 36.323 48.569-103.02 9.3392-27.525-9.2985-18.712 11.418 3.6936 13.754-30.008" />
 							<path class="[ c-landscape__slope ]" id="m" d="m225.78 386.74 65.3-94.129 54.888 94.096" />
 							<path class="[ c-landscape__slope ]" id="n" d="m301.41 386.67 41.719-67.359 39.734 67.049" />
-							<path class="[ c-landscape__slope ]" id="o" d="m319.45 386.72 59.284-86.294 60.339 86.119" />		
+							<path class="[ c-landscape__slope ]" id="o" d="m319.45 386.72 59.284-86.294 60.339 86.119" />
 							<path class="[ c-landscape__slope ]" id="p" d="m378.68 300.49 4.2348 85.972"  stroke-dasharray="3, 0.4" stroke-width=".4"/>
 							<path class="[ c-landscape__slope ]" id="q" d="m378.38 301.28c0.0555 0.76165-32.585 85.48-32.585 85.48"  stroke-dasharray="3.00000006, 0.50000001" stroke-width=".4"/>
 							<path class="[ c-landscape__slope ]" id="r" d="m481.69 386.81-24.015-38.402-29.459 38.432 0.52266-0.0333" />
@@ -63,18 +62,18 @@
 							<path class="[ c-landscape__slope ]" id="h" d="m843.64 430.59 43.274-43.377-7.6989 28.393" />
 						</g>
 					</g>
-					
+
 					<?php // Underwater Lines ?>
 					<g>
 						<g stroke-width=".15" filter="url(#turb)">
 							<?php $min = -400; $max = 300; $minR = 1; $maxR = 3; ?>
 							<?php for ($i = 0, $mx = 386.89; $i <= 70; $i++, $mx+=20): ?>
-								
+
 							<path id="feel-the-wave-<?php echo $i; ?>" class="[ c-landscape__wave c-landscape__wave-<?php echo $i; ?> ]" d="m-2500 <?php echo $mx; ?> 5500.1-0.03632"/>
 							<?php endfor; ?>
 						</g>
 
-						<defs> 
+						<defs>
 							<filter id="turb">
 								<feTurbulence id="turbwave" type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="turbulence_3" data-filterId="3" />
 								<feDisplacementMap xChannelSelector="R" yChannelSelector="G" in="SourceGraphic" in2="turbulence_3" scale="15" />
