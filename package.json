@@ -44,8 +44,7 @@
   },
   "scripts": {
     "build": "webpack --progress --colors",
-    "start": "webpack --open --progress --colors",
-    "serve": "webpack serve --progress --colors"
+    "start": "webpack --open --progress --colors --profile --json=compilation-stats.json"
   },
   "keywords": [],
   "author": "",

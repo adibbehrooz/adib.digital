@@ -10,18 +10,18 @@
 	// 		I. Require
 	//______________________
 
-	const webpack 					= require('webpack');
-	const path 						= require('path');
-	const BrowserSyncPlugin 		= require('browser-sync-webpack-plugin');
+	const webpack				= require('webpack');
+	const path					= require('path');
+	const BrowserSyncPlugin 	= require('browser-sync-webpack-plugin');
 
 	//________________________
 	//
 	// 		II. Constants
 	//________________________
 
-	const MiniCssExtractPlugin 		= require('mini-css-extract-plugin');
-	const CssMinimizerPlugin 		= require('css-minimizer-webpack-plugin');
-	const TerserPlugin 				= require("terser-webpack-plugin");
+	const MiniCssExtractPlugin	= require('mini-css-extract-plugin');
+	const CssMinimizerPlugin 	= require('css-minimizer-webpack-plugin');
+	const TerserPlugin			= require("terser-webpack-plugin");
 
 	//______________________
 	//
@@ -29,15 +29,15 @@
 	//______________________
 
 	module.exports = {
-		
-		// I. BASIC 
+
+		// I. BASIC
 		watch: true,
 		watchOptions: {
 			ignored: /node_modules/,
 		},
 		target: 'web',
-		cache: true,	
-		
+		cache: true,
+
 		// II. ENTERY
 		entry: {
 			index: 	'./assets/js/src/index.js',
@@ -81,7 +81,9 @@
 					reloadDelay: 100,
 					debounceDelay: 100
 				},
-				host: 'localhost',
+				host: 'dropsync',
+				open: 'internal',
+				watchTask: true,
 				port: 3000,
 				watchEvents : [ 'change', 'add', 'unlink', 'addDir', 'unlinkDir' ],
 				files: [
@@ -93,17 +95,17 @@
 						'../../../woocommerce/*.php', './woocommerce/*.php', // Wordpress WooCommerce
 						'../../../framework/*.php', './framework/*.php', // Wordpress Framework
 						'!../../../node_modules',
-						
+
 						// II. JS
-						'../src/*.js', 
-						'../*.js', 
+						'../src/*.js',
+						'../*.js',
 
 						// II. SCSS & CSS
-						'../../css/*.*', 
-						'../../scss/*.*', 
+						'../../css/*.*',
+						'../../scss/*.*',
 					],
 					fn: function (event, file) {
-						this.reload()				
+						this.reload()
 					},
 				}],
 				proxy: 'http://adib.server.com:8000/website',
@@ -127,30 +129,30 @@
 					},
 
 					// 1.1. css Loader
-					{ 	
-						loader: "css-loader", 
-						options: { 
-							import: true, 
+					{
+						loader: "css-loader",
+						options: {
+							import: true,
 							url: true,
 							modules: false,
-							sourceMap: false 
-						} 
-					},	
+							sourceMap: false
+						}
+					},
 
 					// 1.2. PostCss Loader
 					{
-						loader: "postcss-loader", 
+						loader: "postcss-loader",
 					},
 
 					// 1.3. sass Loader
-					{ 	
-						loader: "sass-loader", 
-						options: { 
-							sourceMap: true, 
+					{
+						loader: "sass-loader",
+						options: {
+							sourceMap: true,
 							sassOptions: {
 								outputStyle: "compressed",  // "compressed" After Final Version, Default is "expanded" !IMPORTANT
 							},
-						} 
+						}
 					},
 				],
 			},{
@@ -159,7 +161,7 @@
 				type: 'asset/resource',
 				// generator: {
 					// filename: '[path][name].[ext]',
-				// },				
+				// },
 			},{
 				// 3. IMAGES
 				test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -186,6 +188,7 @@
 		// VIII. OPTIMIZATION
 		optimization: {
 			chunkIds: 'named',
+			emitOnErrors: true,
 			minimize: false, // "True" After Final Version, Default is "false" !IMPORTANT
 			minimizer: [
 				new TerserPlugin({
@@ -201,7 +204,7 @@
 				new CssMinimizerPlugin({
 					minimizerOptions: {
 						preset: [
-							"default",
+							"advanced",
 							{
 								discardComments: { removeAll: true },
 							},
@@ -222,7 +225,7 @@
 
 				// 2. JS
 				// No Import Yet!
-				
+
 			},
 			extensions: ['.js', '.jsx', '.css', '.scss']
 		},
