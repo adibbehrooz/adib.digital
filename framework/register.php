@@ -33,13 +33,53 @@
 	add_action('init', 'theme_register_scripts'); 
 	function theme_register_scripts() {
 
-		//_________ Vendor _________
+		//_________ Build _________
 
 		wp_register_script(
 			'build', //handle
 			THEME_DIR_JS_DIST.'/build.js', //source
 			null,
 			'1.0', //version
+			false //run in footer
+		);
+
+		//_________ GSAP _________
+
+		wp_register_script(
+			'gsap', //handle
+			'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js', //source
+			null,
+			'3.12.2', //version
+			false //run in footer
+		);
+
+		//_________ GSAP ScrollTrigger _________
+
+		wp_register_script(
+			'ScrollTrigger', //handle
+			'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js', //source
+			array('gsap'),
+			'3.12.2', //version
+			false //run in footer
+		);
+
+		//_________ GSAP ScrollToPlugin _________
+
+		wp_register_script(
+			'ScrollToPlugin', //handle
+			'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js', //source
+			array('gsap'),
+			'3.12.2', //version
+			false //run in footer
+		);
+
+		//_________ PanZoom _________
+
+		wp_register_script(
+			'panZoom', //handle
+			'https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js', //source
+			null,
+			'9.4.0', //version
 			false //run in footer
 		);
 
@@ -60,7 +100,17 @@
 		//_________ I. Not Admin _________  
 
 		if (!is_admin()):
+			
+			// 1. GSAP
+			wp_enqueue_script('ScrollTrigger');
+			wp_enqueue_script('ScrollToPlugin');
+
+			// 2. PanZoom
+			wp_enqueue_script('panZoom');
+
+			// 3. Build
 			wp_enqueue_script('build');
+
 			if( is_page(17)  && is_page('sample') ): wp_enqueue_script('sample'); endif;  //is_sample
 		endif; //!is_admin
 		

@@ -226,8 +226,7 @@
 				slick: 		path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
 				slickTheme: path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
 
-				// 2. JS
-				// No Import Yet!
+				// 2. JS / JSX
 
 			},
 			extensions: ['.js', '.jsx', '.css', '.scss']
