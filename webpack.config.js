@@ -78,11 +78,10 @@
 					forms: true
 				},
 				watchOptions: {
-					reloadDelay: 100,
-					debounceDelay: 100
+					reloadDelay: 600,
+					debounceDelay: 600
 				},
-				host: 'dropsync',
-				open: 'internal',
+				host: 'localhost',
 				watchTask: true,
 				port: 3000,
 				watchEvents : [ 'change', 'add', 'unlink', 'addDir', 'unlinkDir' ],

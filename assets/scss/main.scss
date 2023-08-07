@@ -264,12 +264,104 @@
 			}
 		}
 
-		// Wave
+
+		// Water Wave
+		//________________
+
 		@include element('wave') {
 			fill: transparent;
 			stroke: white;
 			stroke-opacity: 0.5;
 			stroke-width: 0.5px;
+		}
+
+		@include element('standaloneLogo') {
+
+			@include element('fill') {
+				fill: white;
+				stroke: white;
+				stroke-opacity: 0.5;
+				stroke-width: 0.5px;
+
+				@include modifier('unfill') {
+					fill: transparent;
+					stroke: none;
+					stroke-opacity: 0;
+					stroke-width: 0;
+				}
+			}			
+		}
+
+		// Night Sky Stars
+		//________________
+
+		// 1. Stars Group
+		$twinkle-duration: 4s;	
+		$twinkleNumber: -0.33;
+
+		@include element('stars') {
+			
+			@include modifier('off') {
+				fill: none;
+				stroke: transparent;
+				stroke-opacity: 0;
+				stroke-width: 0;
+			}			
+
+			@include modifier('one') {
+				animation : animateStars 800s ease infinite;
+			}
+
+			@include modifier('two') {
+				animation : animateStars 1200s ease infinite;
+			}
+
+			@include modifier('three') {
+				animation : animateStars 1500s ease infinite;
+			}
+
+			animation: twinkle $twinkle-duration ease infinite;
+			
+			@for $i from 1 through 5 {
+				$result: $twinkleNumber * $i;
+				&:nth-child(#{$i+1}) {
+					animation-delay: calc(#{$twinkle-duration} * #{$result});
+				}
+			}
+		}
+
+		// 2. Single Star
+		@include element('star') {
+			fill: white;
+			&:nth-child(3n) { opacity: .8; }
+			&:nth-child(7n) { opacity: .6; }
+			&:nth-child(13n) { opacity: .4; }
+			&:nth-child(19n) { opacity: .2; }
+			
+			@include modifier('blur') { 
+				stroke-width: 9px;
+				stroke: #ffc2b8; 
+				filter: blur(5px); 
+				
+				@include modifier('off') { 
+					opacity: 0;
+					stroke: none; 
+				}					
+			}
+		}
+
+		// 3. Star Animations
+		@keyframes twinkle {
+			25% { opacity: 0 }
+		}
+
+		// 4. Night Sky 3D
+		@keyframes animateStars {
+			0%	 { transform: rotate3d(1, 1, 0, -30deg); }
+			25%	{ transform: rotate3d(1, 1, 0, 60deg); 	}
+			50%	{ transform: rotate3d(1, 1, 0, -30deg);	}
+			75%	{ transform: rotate3d(1, 1, 0, -120deg); }
+			100% { transform: rotate3d(1, 1, 0, -30deg); }
 		}
 	}
 
