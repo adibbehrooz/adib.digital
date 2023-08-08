@@ -14,7 +14,7 @@
 
 	//__________________________________________________________________________
 	//
-	//	   					1) Tailwind Screens In JS
+	//	 						TAILWIND SCREEN IN JS
 	//__________________________________________________________________________
 
 		const customScreens = require("../../../tailwind.config.js").variants.theme.screens;
@@ -26,7 +26,7 @@
 			const breakpoint = sreensKeys[i];
 			module.exports = { breakpoint };
 			let j = 0;
-			for(  keys in screensValues ) {
+			for( keys in screensValues ) {
 				if (i == j) {
 					size = screensValues[keys];
 					const mediaQuery = `( (min-width: ${size["min"]}) and (max-width: ${size["max"]}) )`;
@@ -82,138 +82,78 @@
 
 		//__________________________________________________________________________
 		//
-		//	   					2) SVG Pan Zoom
+		//	 							PANZOOM
 		//__________________________________________________________________________
-
+		/*
 		let zoomLandscape = document.querySelector('.c-landscapeFrame');
 		panzoom(zoomLandscape, {
 			bounds: true,
-			boundsPadding: 0.06,
-			transformOrigin: {x: 1, y: 1},
+			boundsPadding: 0.08,
+			transformOrigin: {x: 0, y: 1},
 			zoomSpeed: 0.075,
 			maxZoom: 1,
 			minZoom: 1,
 			initialX: 100,
 			initialY: 100,
 		});
-
+		*/
 		//__________________________________________________________________________
 		//
-		//	   					2) Canvas
+		//	 							CANVAS
 		//__________________________________________________________________________
 
-
-		// Canvas Global Data
+		
+		// 			Canvas Global Data
 		//_______________________________________
 
 		const canvas = document.getElementById("canvas");
 		const ctx = canvas.getContext("2d");
-		canvas.width = canvasWidth = Math.round(( window.innerWidth )); 
-		canvas.height = canvasHeight = Math.round(( window.innerHeight )); 
+		canvas.width = canvasWidth = window.innerWidth; 
+		canvas.height = canvasHeight = window.innerHeight; 
 
 
-		// Canvas Responsive Dimension
+		// 			Canvas Dimension
 		//_______________________________________
 
 		function canvasDimension() {
-			let width = Math.round(( window.innerWidth )); 
-			let height = Math.round(( window.innerHeight )); 
+			let width = window.innerWidth; 
+			let height = window.innerHeight; 
 			canvas.width = width;
 			canvas.height = height;
 		}
 
-		// Canvas Draw Lines
+
+		// 			Canvas Draw Lines
 		//_______________________________________
 
 		drawWaves(canvasWidth, canvasHeight);
-		lines = [];
 		function drawWaves(width, height) {
-			for(var i = 0; i < 25; i++) {  
+			for(var i = 0; i < 50; i++) {
 				ctx.beginPath();
-				ctx.moveTo( 0, ( (height / 2) + (i * 20) ) );
-				ctx.lineTo( width, ((height / 2) + (i * 20) ) );
-				ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
-				ctx.className = "whiteWave-"+i;
+				ctx.moveTo( 0, ( (height / 2) + (i * 15) ) );
+				ctx.lineTo( width, ((height / 2) + (i * 15) ) );
+				ctx.strokeStyle = "rgba(255, 255, 255, 1)";
+				ctx.className = "whiteWave_"+i;
 				ctx.stroke(); 
-				
 			}
-			/*
-			console.log("Canvas Width :" + width);
-			console.log("Canvas Height :" + height);
-			ctx.beginPath();
-			ctx.moveTo( 0, height / 2 );
-			ctx.lineTo(  width, height / 2 );
-			ctx.strokeStyle = "white";
-			ctx.className = "whiteLine";
-			ctx.stroke(); 
-			gsap.to("whiteLine", 15, { 
-				attr: {"baseFrequency":0.1}, 
-				repeat: -1, 
-				yoyo: false 
-			});	
-			*/
 		}
 
-		//_______________________________________
-		//
-		// 					Resize
+		// 				Resize
 		//_______________________________________
 
 		window.addEventListener('resize', function() {
 			canvasDimension();
 			drawWaves(canvasWidth, canvasHeight);
 		});
-		
+
 
 		//_______________________________________________________________
 		//
-		//						3) GSAP SVG Wave Water
+		//								GSAP
 		//_______________________________________________________________
-		/*
-		ctx.lineWidth = "1";
-		ctx.strokeStyle = "white";
-		
-		let iW = window.innerWidth;
-		let iH = window.innerHeight;
-		let start = iW / 2 - 400;
-		
-		const point = {x:start, y:0};
-		const rect = {
-		  x: start,
-		  y: 0,
-		  width: 0,
-		  height: 0
-		};
-		
-		gsap.timeline({delay: 1, onUpdate: drawWaves })
-			.to(rect, {
-			duration: 1,
-			width: 800,
-			height: 800
-		})
-		  .to(rect, {
-			duration: 1,
-			width: 400,
-			height: 400
-		  });
-		  // .to(point, 1, {x: start + 800, onUpdate: animateLine})
-		
-		animateLine();
-		
-		//draw line onUpdate of tween to new x and y values of point
-		function animateLine() {
-		  ctx.clearRect(0, 0, iW, iH);
-		  ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
-		}
-		
 
-		
-		gsap.to("whiteWave-0", 15, { 
-			attr: {"baseFrequency":0.1}, 
-			repeat: -1, 
-			yoyo: false 
-		});	
-		*/
+
+
 		
 
 	}); // [END] Javascript Document Ready

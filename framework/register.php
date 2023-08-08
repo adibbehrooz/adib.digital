@@ -29,8 +29,8 @@
 
 	//__________________________ Register Javascript __________________________
 	//_________________________________________________________________________
-	
-	add_action('init', 'theme_register_scripts'); 
+
+	add_action('init', 'theme_register_scripts');
 	function theme_register_scripts() {
 
 		//_________ Build _________
@@ -92,19 +92,18 @@
 			'1.0', //version
 			false //run in footer
 		);
-	} 
+	}
 
 	add_action('wp_print_scripts', 'theme_enqueue_scripts');
 	function theme_enqueue_scripts() {
-		
-		//_________ I. Not Admin _________  
+
+		//_________ I. Not Admin _________
 
 		if (!is_admin()):
-			
-			// 1. GSAP
-			wp_enqueue_script('ScrollTrigger');
-			wp_enqueue_script('ScrollToPlugin');
 
+			// 1. GSAP
+			wp_enqueue_script('gsap');
+	
 			// 2. PanZoom
 			wp_enqueue_script('panZoom');
 
@@ -113,12 +112,12 @@
 
 			if( is_page(17)  && is_page('sample') ): wp_enqueue_script('sample'); endif;  //is_sample
 		endif; //!is_admin
-		
-		//_________ II. Ajax _________  
+
+		//_________ II. Ajax _________
 
 		global $post;
 		global $wp_query;
-		
+
 		$postID 	= 	$post->ID;
 		$postType 	= 	$post->post_type;
 		$postSlug	=	$post->post_name;
@@ -174,7 +173,7 @@
 
 	add_action('wp_print_styles', 'theme_enqueue_styles');
 	function theme_enqueue_styles() {
-	
+
 		if (!is_admin()):
 			// wp_enqueue_style('dynamic-css', admin_url('admin-ajax.php').'?action=dynamic_css', $deps, $ver, $media);
 			wp_enqueue_style('main');
