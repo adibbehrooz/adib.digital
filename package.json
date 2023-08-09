@@ -23,6 +23,7 @@
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.56.1",
     "sass-loader": "^13.2.0",
+    "sine-waves": "^0.3.0",
     "slick-carousel": "^1.8.1",
     "splitting": "^1.0.6",
     "style-loader": "^3.3.1",

@@ -70,6 +70,10 @@
 				jQuery: 'jquery',
 			}),
 
+			new webpack.ProvidePlugin({
+				'SineWaves': 'sine-waves'
+			}),
+
 			// 3. Browser Sync
 			new BrowserSyncPlugin({
 				ghostMode: {
@@ -225,9 +229,11 @@
 				slick: 		path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
 				slickTheme: path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
 
-				// 2. JS / JSX
-
-			},
-			extensions: ['.js', '.jsx', '.css', '.scss']
+			},			
+			extensions: ['.js', '.jsx', '.css', '.scss'],
+			extensionAlias: {
+				'.js': ['.ts', '.js'],
+				'.mjs': ['.mts', '.mjs'],
+			  },
 		},
 	};

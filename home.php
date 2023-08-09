@@ -22,8 +22,32 @@
 			//								II. Custom Design
 			//____________________________________________________________________________
 		?>
-
+		
 		<canvas id="canvas"></canvas>
+		<div class="absolute top-0">
+			<canvas id="firstwaves"></canvas>
+		</div>
+			
+		<?php
+		/*
+		<div class="absolute top-0">
+			<canvas id="firstwaves"></canvas>
+		</div>
+	
+		<div class="absolute top-8">
+			<canvas id="secondWaves"></canvas>
+		</div>
+
+		<div class="absolute top-16">
+			<canvas id="thirdWaves"></canvas>
+		</div>
+
+		<div class="absolute top-24">
+			<canvas id="fourthWaves"></canvas>
+		</div>
+		*/
+		?>
+
 
 	</section>
 

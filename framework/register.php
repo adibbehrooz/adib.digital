@@ -87,7 +87,7 @@
 
 		wp_register_script(
 			'sample', //handle
-			THEME_DIR_JS_DIST.'/sample.min.js', //source
+			THEME_DIR_JS_SRC.'/sample.js', //source
 			null, //dependencies
 			'1.0', //version
 			false //run in footer
@@ -109,6 +109,8 @@
 
 			// 3. Build
 			wp_enqueue_script('build');
+
+			wp_enqueue_script('sample');
 
 			if( is_page(17)  && is_page('sample') ): wp_enqueue_script('sample'); endif;  //is_sample
 		endif; //!is_admin
