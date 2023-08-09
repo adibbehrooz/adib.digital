@@ -80,42 +80,28 @@
 			breakpointDiv.appendChild(breakpointNameDiv);
 		}
 
-		//__________________________________________________________________________
-		//
-		//	 							PANZOOM
-		//__________________________________________________________________________
-		/*
-		let zoomLandscape = document.querySelector('#canvas');
-		panzoom(zoomLandscape, {
-			bounds: true,
-			boundsPadding: 0.1,
-			transformOrigin: {x: 0, y: 1},
-			zoomSpeed: 0.075,
-			maxZoom: 1,
-			minZoom: 1,
-			initialX: 0,
-			initialY: 0,
-		});
-		*/
+
 
 		//__________________________________________________________________________
 		//
 		//	 							CANVAS
 		//__________________________________________________________________________
 		
-		
-		// 			Canvas Global Data
-		//_______________________________________
-
+		//____________________________
+		//
+		// 			Global Data
+		//____________________________		
+			
 		const canvas = document.getElementById("canvas");
 		const ctx = canvas.getContext("2d");
 		canvas.width = canvasWidth = window.innerWidth; 
 		canvas.height = canvasHeight = window.innerHeight; 
-		ctx.strokeWidth = 30;
-		ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
 
-		// 			Canvas Dimension
-		//_______________________________________
+
+		//____________________________
+		//
+		// 			Dimension
+		//____________________________
 
 		function canvasDimension() {
 			let width = window.innerWidth; 
@@ -123,31 +109,19 @@
 			canvas.width = width;
 			canvas.height = height;
 		}
-
-
-		// 			Canvas Draw Lines
-		//_______________________________________
-
-		// drawWaves(canvasWidth, canvasHeight);
-		function drawWaves(width, height) {
-			for(var i = 0; i < 50; i++) {
-				ctx.beginPath();
-				ctx.moveTo( 0, ( (height / 2) + (i * 15) ) );
-				ctx.lineTo( width, ((height / 2) + (i * 15)) );
-				ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-				ctx.className = "whiteWave_"+i;
-				ctx.stroke(); 
-			}
-		}
+		
+		//____________________________
+		//
+		// 			Draw Stars
+		//____________________________
 
 		function random(min, max) {
 			return min + Math.random() * (max + 1 - min);
 		}
-
-		stars();
+		
 		function stars() {
 			//Add stars to a small fraction of the canvas
-			const canvasSize = canvas.width * canvas.height * 3;
+			const canvasSize = canvas.width * canvas.height;
 			const starsFraction = canvasSize / 2000;
 			
 			for(let i = 0; i < starsFraction; i++) {
@@ -163,553 +137,184 @@
 				ctx.fillRect(xPos, yPos, size, size);
 			}
 		}
+		stars(); // RUN DUDE, RUN!
 
-		// 				Resize
-		//_______________________________________
-
-		window.addEventListener('resize', function() {
-			canvasDimension();
-			// drawWaves(canvasWidth, canvasHeight);
-			stars()
-		});
 		
-		/*
-		//_______________________________________________________________
+		//____________________________
 		//
-		//								GSAP
-		//_______________________________________________________________
-		
-		// 			Canvas Global Data
-		//_______________________________________
+		// 		Draw Multi Waves
+		//____________________________
 
-		const canvas = document.getElementById("canvas");
-		const ctx = canvas.getContext("2d");
-		canvas.width = canvasWidth = window.innerWidth; 
-		canvas.height = canvasHeight = window.innerHeight; 
-		ctx.strokeWidth = 30;
-		ctx.strokeStyle = "rgba(255, 255, 255, 1)";
-		
-		let wave = {
-			amplitude: 5,
-			wavelength: 0.33,
-			frequency: 0.05,
-			increment: 0.05,
-		};
-		
+		function drawMultiWaves(width, height) {
+			for(let m = 0; m < 75; m++) {
+				let wave = { amplitude: 10, // Math.random() * (10 - 1) + 1, wavelength: 0.02, // Math.random() * (0.04 - 0.01) + 0.01,
+					frequency: Math.random() * (0.05 - 0.01) + 0.01,
+					increment: Math.random() * (0.05 - 0.01) + 0.01,
+				};
 
-		// 			Canvas Dimension
-		//_______________________________________
+				gsap.to(wave, { amplitude: 1,
+					duration: 1,
+					yoyo: true,
+					repeat: -1,
+				});
 
-		function canvasDimension() {
-			let width = window.innerWidth; 
-			let height = window.innerHeight; 
-			canvas.width = width;
-			canvas.height = height;
+				ctx.beginPath();
+				ctx.moveTo( 0, ( (height / 2) + (i * 15) ) );
+
+				// 1. Draw Straight line
+				// ctx.lineTo( width, ((height / 2) + (i * 15)) );
+				
+				// 2. Draw Wave
+				for (let i = -55; i < width * 9; i++) {		
+					ctx.lineTo( i, ((height / 2) + (m * 15)) + Math.sin(i * wave.wavelength + wave.increment) * wave.amplitude );
+				}
+	
+				let gradient = ctx.createLinearGradient(0, 0, width, 0);
+				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
+				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
+				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
+				ctx.strokeStyle = gradient;
+	
+				ctx.stroke();
+				ctx.className = "whiteWave_"+i;
+				wave.increment += wave.frequency;
+			};
 		}
-		
-		gsap.to(wave, {
-			amplitude: 1,
-			duration: 1,
-			yoyo: true,
-			repeat: -1,
-		});
-		
-		const animate = () => {
-			
-			drawWaves(canvasWidth, canvasHeight);
-			function drawWaves(width, height) {
+		// drawMultiWaves(canvasWidth, canvasHeight);  // RUN DUDE, RUN!
+
+		//____________________________
+		//
+		// 		Draw Single Waves
+		//____________________________
+
+		function drawSingleWaves(width, height) {
+			let m = 0;
+			let wave = {
+				amplitude: 10, // Math.random() * (10 - 1) + 1,
+				wavelength: 0.02, // Math.random() * (0.04 - 0.01) + 0.01,
+				frequency: Math.random() * (0.05 - 0.01) + 0.01,
+				increment: Math.random() * (0.05 - 0.01) + 0.01,
+			};
+
+			gsap.to(wave, {
+				amplitude: 1,
+				duration: 1,
+				yoyo: true,
+				repeat: -1,
+			});
+
+			const animate = () => {
 				requestAnimationFrame(animate);
 				ctx.clearRect(0, 0, width, height);
 				ctx.beginPath();
-			
-				// Move from top left to middle left
-				ctx.moveTo(0, ( (height / 2) + (0 * 15) ) );
-			
-				for (let m = 0; m < width * 9; m++) {
-				ctx.lineTo(
-					m,
-					((height / 2) + (0 * 15) ) +
-					Math.sin(m * wave.wavelength + wave.increment) * wave.amplitude
-				);
+				ctx.moveTo( 0, ( (height / 2) + (i * 15) ) );
+				for (let i = 0; i < width * 9; i++) {		
+					ctx.lineTo( i, ((height / 2) + (m * 15)) + Math.sin(i * wave.wavelength + wave.increment) * wave.amplitude );
 				}
+	
+				let gradient = ctx.createLinearGradient(0, 0, width, 0);
+				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
+				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
+				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
+				ctx.strokeStyle = gradient;
+	
 				ctx.stroke();
+				ctx.className = "whiteWave_"+i;
 				wave.increment += wave.frequency;
-			}
-		};
-		
-		animate();
+			};
 
-		// 				Resize
-		//_______________________________________
+			animate()
+		}
+		// drawSingleWaves(canvasWidth, canvasHeight);  // RUN DUDE, RUN!
+		
+
+		//____________________________
+		//
+		// 		Draw SineWaves
+		//____________________________
+
+		function drawSineWaves() {
+
+			new SineWaves({
+				el: document.getElementById('firstwaves'),
+				speed: 4,
+				width: function() {
+					return $(window).width(); },
+				height: function() {
+					return $(window).height(); },
+				ease: 'SineInOut',
+				wavesWidth: '150%',
+				waves: [
+					{ timeModifier: 4, lineWidth: 1, amplitude: -5, wavelength: 5 },
+					{ timeModifier: 2, lineWidth: 2, amplitude: -10, wavelength: 10 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 25 },
+					{ timeModifier: 0.5, lineWidth: 1, amplitude: -20, wavelength: 45 },
+					{ timeModifier: 0.25, lineWidth: 2,amplitude: -15, wavelength: 55 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -21, wavelength: 35 },
+					{ timeModifier: 2, lineWidth: 2, amplitude: -20, wavelength: 45 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 45 },
+					{ timeModifier: 0.5, lineWidth: 1, amplitude: -40, wavelength: 55 },
+					{ timeModifier: 0.25, lineWidth: 2, amplitude: -15, wavelength: 35 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 45 },
+					{ timeModifier: 0.5, lineWidth: 1, amplitude: -25, wavelength: 55 },
+					{ timeModifier: 0.25, lineWidth: 2, amplitude: -10, wavelength: 35},
+					{ timeModifier: 1, lineWidth: 1, amplitude: -15, wavelength: 25 },
+					{ timeModifier: 0.5, lineWidth: 1, amplitude: -25, wavelength: 45 },
+					{ timeModifier: 0.25, lineWidth: 2, amplitude: -19, wavelength: 55 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 35 },
+					{ timeModifier: 4, lineWidth: 1, amplitude: -5, wavelength: 5 },
+					{ timeModifier: 2, lineWidth: 2, amplitude: -10, wavelength: 10 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -15, wavelength: 25 },
+					{ timeModifier: 0.5, lineWidth: 1, amplitude: -22, wavelength: 45 },
+					{ timeModifier: 0.25, lineWidth: 2, amplitude: -20, wavelength: 55 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 35 },
+					{ timeModifier: 2, lineWidth: 2, amplitude: -15, wavelength: 45 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 45 },
+					{ timeModifier: 0.5, lineWidth: 1, amplitude: -20, wavelength: 55 },
+					{ timeModifier: 0.25, lineWidth: 2, amplitude: -20, wavelength: 55 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 35 },
+					{ timeModifier: 0.25, lineWidth: 2, amplitude: -15, wavelength: 35 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 45 },
+					{ timeModifier: 0.5, lineWidth: 1, amplitude: -15, wavelength: 55 },
+					{ timeModifier: 0.25, lineWidth: 2, amplitude: -20, wavelength: 35 },
+					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 25 },
+					{ timeModifier: 0.5, lineWidth: 1, amplitude: -20, wavelength: 45 },
+				],
+
+				// Called on window resize
+				resizeEvent: function() {
+					var gradient = this.ctx.createLinearGradient(0, 0, this.width, 0);
+					gradient.addColorStop(0,"rgba(23, 210, 168, 0.1)");
+					gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.1)");
+					gradient.addColorStop(1,"rgba(23, 210, 168, 0.1)");
+									
+					var index = -1;
+					var length = this.waves.length;
+					while(++index < length){
+						this.waves[index].strokeStyle = gradient;
+					}
+					
+					// Clean Up
+					index = void 0;
+					length = void 0;
+					gradient = void 0; },
+			});
+		}
+		drawSineWaves();
+
+		//____________________________
+		//
+		// 			Resize
+		//____________________________
 
 		window.addEventListener('resize', function() {
 			canvasDimension();
-			animate();
-		});	
-		*/
-
-		
-		var waves = new SineWaves({
-			
-			el: document.getElementById('firstwaves'),
-			
-			speed: 4,
-			
-			width: function() {
-				return $(window).width();
-			},
-			
-			height: function() {
-				return $(window).height();
-			},
-			
-			ease: 'SineInOut',
-			
-			wavesWidth: '100%',
-			
-			waves: [
-				{
-				timeModifier: 4,
-				lineWidth: 1,
-				amplitude: -5,
-				wavelength: 5
-			},
-			{
-				timeModifier: 2,
-				lineWidth: 2,
-				amplitude: -10,
-				wavelength: 10
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 25
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -20,
-				wavelength: 45
-			},
-			{
-				timeModifier: 0.25,
-				lineWidth: 2,
-				amplitude: -15,
-				wavelength: 55
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -21,
-				wavelength: 35
-			},
-			{
-				timeModifier: 2,
-				lineWidth: 2,
-				amplitude: -20,
-				wavelength: 45
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 45
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -40,
-				wavelength: 55
-			},
-			{
-				timeModifier: 0.25,
-				lineWidth: 2,
-				amplitude: -15,
-				wavelength: 35
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 45
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 55
-			},
-			{
-				timeModifier: 0.25,
-				lineWidth: 2,
-				amplitude: -10,
-				wavelength: 35
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -15,
-				wavelength: 25
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 45
-			},
-			{
-				timeModifier: 0.25,
-				lineWidth: 2,
-				amplitude: -19,
-				wavelength: 55
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 35
-			},
-			{
-				timeModifier: 4,
-				lineWidth: 1,
-				amplitude: -5,
-				wavelength: 5
-			},
-			{
-				timeModifier: 2,
-				lineWidth: 2,
-				amplitude: -10,
-				wavelength: 10
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -15,
-				wavelength: 25
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -22,
-				wavelength: 45
-			},
-			{
-				timeModifier: 0.25,
-				lineWidth: 2,
-				amplitude: -20,
-				wavelength: 55
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 35
-			},
-			{
-				timeModifier: 2,
-				lineWidth: 2,
-				amplitude: -15,
-				wavelength: 45
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 45
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -20,
-				wavelength: 55
-			},
-			{
-				timeModifier: 0.25,
-				lineWidth: 2,
-				amplitude: -20,
-				wavelength: 55
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 35
-			},
-			{
-				timeModifier: 0.25,
-				lineWidth: 2,
-				amplitude: -15,
-				wavelength: 35
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 45
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -15,
-				wavelength: 55
-			},
-			{
-				timeModifier: 0.25,
-				lineWidth: 2,
-				amplitude: -20,
-				wavelength: 35
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 1,
-				amplitude: -25,
-				wavelength: 25
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -20,
-				wavelength: 45
-			},
-			],
-
-			// Called on window resize
-			resizeEvent: function() {
-				var gradient = this.ctx.createLinearGradient(0, 0, this.width, 0);
-				gradient.addColorStop(0,"rgba(23, 210, 168, 0.1)");
-				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.1)");
-				gradient.addColorStop(1,"rgba(23, 210, 168, 0.1)");
-								
-				var index = -1;
-				var length = this.waves.length;
-				while(++index < length){
-					this.waves[index].strokeStyle = gradient;
-				}
-				
-				// Clean Up
-				index = void 0;
-				length = void 0;
-				gradient = void 0;
-			},
+			stars();
+			drawWaves(canvasWidth, canvasHeight);
 		});
 
-		/*
-		var waves = new SineWaves({
-			
-			el: document.getElementById('secondWaves'),
-			
-			speed: 4,
-			
-			width: function() {
-				return $(window).width();
-			},
-			
-			height: function() {
-				return $(window).height();
-			},
-			
-			ease: 'SineInOut',
-			
-			wavesWidth: '100%',
-			
-			waves: [
-				{
-				timeModifier: 3,
-				lineWidth: 1,
-				amplitude: -5,
-				wavelength: 5
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 2,
-				amplitude: -20,
-				wavelength: 20
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -30,
-				wavelength: 30
-			},
-			{
-				timeModifier: 0.15,
-				lineWidth: 1,
-				amplitude: -40,
-				wavelength: 40
-			},
-			{
-				timeModifier: 0.75,
-				lineWidth: 2,
-				amplitude: -30,
-				wavelength: 30
-			}],
-
-			// Called on window resize
-			resizeEvent: function() {
-				var gradient = this.ctx.createLinearGradient(0, 0, this.width, 0);
-				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-								
-				var index = -1;
-				var length = this.waves.length;
-				while(++index < length){
-					this.waves[index].strokeStyle = gradient;
-				}
-				
-				// Clean Up
-				index = void 0;
-				length = void 0;
-				gradient = void 0;
-			},
-		});
-
-
-		var waves = new SineWaves({
-			
-			el: document.getElementById('thirdWaves'),
-			
-			speed: 4,
-			
-			width: function() {
-				return $(window).width();
-			},
-			
-			height: function() {
-				return $(window).height();
-			},
-			
-			ease: 'SineInOut',
-			
-			wavesWidth: '100%',
-			
-			waves: [
-				{
-				timeModifier: 4,
-				lineWidth: 1,
-				amplitude: -15,
-				wavelength: 15
-			},
-			{
-				timeModifier: 2,
-				lineWidth: 2,
-				amplitude: -15,
-				wavelength: 15
-			},
-			{
-				timeModifier: 5,
-				lineWidth: 1,
-				amplitude: -20,
-				wavelength: 20
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -30,
-				wavelength: 60
-			},
-			{
-				timeModifier: 0.25,
-				lineWidth: 2,
-				amplitude: -40,
-				wavelength: 60
-			}],
-
-			// Called on window resize
-			resizeEvent: function() {
-				var gradient = this.ctx.createLinearGradient(0, 0, this.width, 0);
-				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-								
-				var index = -1;
-				var length = this.waves.length;
-				while(++index < length){
-					this.waves[index].strokeStyle = gradient;
-				}
-				
-				// Clean Up
-				index = void 0;
-				length = void 0;
-				gradient = void 0;
-			},
-		});
-
-
-		var waves = new SineWaves({
-			
-			el: document.getElementById('fourthWaves'),
-			
-			speed: 4,
-			
-			width: function() {
-				return $(window).width();
-			},
-			
-			height: function() {
-				return $(window).height();
-			},
-			
-			ease: 'SineInOut',
-			
-			wavesWidth: '100%',
-				
-			waves: [
-				{
-				timeModifier: 3,
-				lineWidth: 1,
-				amplitude: -5,
-				wavelength: 5
-			},
-			{
-				timeModifier: 1,
-				lineWidth: 2,
-				amplitude: -20,
-				wavelength: 20
-			},
-			{
-				timeModifier: 0.5,
-				lineWidth: 1,
-				amplitude: -30,
-				wavelength: 30
-			},
-			{
-				timeModifier: 0.15,
-				lineWidth: 1,
-				amplitude: -40,
-				wavelength: 40
-			},
-			{
-				timeModifier: 0.75,
-				lineWidth: 2,
-				amplitude: -30,
-				wavelength: 30
-			}],
-
-			// Called on window resize
-			resizeEvent: function() {
-				var gradient = this.ctx.createLinearGradient(0, 0, this.width, 0);
-				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-								
-				var index = -1;
-				var length = this.waves.length;
-				while(++index < length){
-					this.waves[index].strokeStyle = gradient;
-				}
-				
-				// Clean Up
-				index = void 0;
-				length = void 0;
-				gradient = void 0;
-			},
-		});
-		*/
 
 	}); // [END] Javascript Document Ready
-
 
 
 	// 					JQUERY
