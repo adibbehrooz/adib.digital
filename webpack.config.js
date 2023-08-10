@@ -40,7 +40,8 @@
 
 		// II. ENTERY
 		entry: {
-			index: 	'./assets/js/src/index.js',
+			build: 	'./assets/js/src/index.js',
+			sample: './assets/js/src/sample.js',
 		},
 
 		// III. MODE
@@ -50,7 +51,7 @@
 		output: {
 			path: path.resolve(__dirname, './assets/js/dist'),
 			publicPath: '/',
-			filename: 'build.js',
+			filename: '[name].js',
 			chunkFilename: '[name].[chunkhash].chunk.js',
 			clean: true, // Clean the output directory before emit.
 		},
@@ -82,8 +83,8 @@
 					forms: true
 				},
 				watchOptions: {
-					reloadDelay: 600,
-					debounceDelay: 600
+					reloadDelay: 800,
+					debounceDelay: 800
 				},
 				host: 'localhost',
 				watchTask: true,
@@ -156,7 +157,7 @@
 						options: {
 							sourceMap: true,
 							sassOptions: {
-								outputStyle: "compressed",  // "compressed" After Final Version, Default is "expanded" !IMPORTANT
+								outputStyle: "expanded",  // "compressed" After Final Version, Default is "expanded" !IMPORTANT
 							},
 						}
 					},
@@ -195,7 +196,7 @@
 		optimization: {
 			chunkIds: 'named',
 			emitOnErrors: true,
-			minimize: true, // "True" After Final Version, Default is "false" !IMPORTANT
+			minimize: false, // "True" After Final Version, Default is "false" !IMPORTANT
 			minimizer: [
 				new TerserPlugin({
 					test: /\.js(\?.*)?$/i,
@@ -231,12 +232,7 @@
 				slickTheme: 	path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
 				
 				// 2. JS
-				gsap: 			path.resolve(__dirname,'./node_modules/gsap/dist/gsap.min.js'),
-				ScrollTrigger: 	path.resolve(__dirname,'./node_modules/gsap/dist/ScrollTrigger.min.js'),
-				ScrollToPlugin: path.resolve(__dirname,'./node_modules/gsap/dist/ScrollToPlugin.min.js'),
-				panZooming:		path.resolve(__dirname,'./node_modules/panzoom/dist/panzoom.js'),
 				SineWaves:		path.resolve(__dirname,'./node_modules/sine-waves/sine-waves.js'),
-				custom:			path.resolve(__dirname,'./node_modules/custom/index.js'),
 
 
 			},			

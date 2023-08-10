@@ -15,21 +15,8 @@
 	/* 							I. Bundle Javascript
 	/*____________________________________________________________________________*/
 
-	import _ from 'lodash'; // I. LODASH
-
 	import './config'; // II. CONFIG
-
 	import './ajax'; // III. AJAX
-
-	import 'gsap'; // IV. GSAP
-	import 'ScrollTrigger'; // IV. GSAP
-	import 'ScrollToPlugin'; // IV. GSAP
-
-	import 'SineWaves'; // V. SINEWAVES
-
-	import 'panZooming'; // VI. PANZOOM
-
-	import 'custom'; // TEST
 
 
 	/*____________________________________________________________________________*/

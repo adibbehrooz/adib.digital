@@ -353,7 +353,7 @@
 				wave.increment += wave.frequency;
 			};
 		}
-		drawMultiWaves(canvasWidth, canvasHeight);	// RUN DUDE, RUN!
+		// drawMultiWaves(canvasWidth, canvasHeight);	// RUN DUDE, RUN!
 
 
 		//____________________________
@@ -493,7 +493,7 @@
 		window.addEventListener('resize', function() {
 			canvasDimension();
 			stars();
-			drawMultiWaves(canvasWidth, canvasHeight);
+			// drawMultiWaves(canvasWidth, canvasHeight);
 			// drawSingleWaves(canvasWidth, canvasHeight);
 			drawSineWaves();
 		});
