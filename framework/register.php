@@ -105,12 +105,10 @@
 			wp_enqueue_script('gsap');
 	
 			// 2. PanZoom
-			wp_enqueue_script('panZoom');
+			// wp_enqueue_script('panZoom');
 
 			// 3. Build
 			wp_enqueue_script('build');
-
-			wp_enqueue_script('sample');
 
 			if( is_page(17)  && is_page('sample') ): wp_enqueue_script('sample'); endif;  //is_sample
 		endif; //!is_admin

@@ -222,12 +222,22 @@
 
 		// IX. RESOLVE
 		resolve: {
+			roots: [path.resolve('./assets/js/src')],
 			alias: {
 
 				// 1. SCSS & CSS For Wordpress Core
-				main: 		path.resolve(__dirname,'./assets/scss/main.scss'), // Import
-				slick: 		path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
-				slickTheme: path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
+				main: 			path.resolve(__dirname,'./assets/scss/main.scss'), // Import
+				slick: 			path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
+				slickTheme: 	path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
+				
+				// 2. JS
+				gsap: 			path.resolve(__dirname,'./node_modules/gsap/dist/gsap.min.js'),
+				ScrollTrigger: 	path.resolve(__dirname,'./node_modules/gsap/dist/ScrollTrigger.min.js'),
+				ScrollToPlugin: path.resolve(__dirname,'./node_modules/gsap/dist/ScrollToPlugin.min.js'),
+				panZooming:		path.resolve(__dirname,'./node_modules/panzoom/dist/panzoom.js'),
+				SineWaves:		path.resolve(__dirname,'./node_modules/sine-waves/sine-waves.js'),
+				custom:			path.resolve(__dirname,'./node_modules/custom/index.js'),
+
 
 			},			
 			extensions: ['.js', '.jsx', '.css', '.scss'],

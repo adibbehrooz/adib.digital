@@ -32,7 +32,8 @@
     "typescript": "^4.9.3",
     "url-loader": "^4.1.1",
     "webpack-cli": "^5.0.0",
-    "xml-loader": "^1.2.1"
+    "xml-loader": "^1.2.1",
+    "custom": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",

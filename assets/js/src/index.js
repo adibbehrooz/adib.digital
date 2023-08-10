@@ -15,25 +15,22 @@
 	/* 							I. Bundle Javascript
 	/*____________________________________________________________________________*/
 
+	import _ from 'lodash'; // I. LODASH
 
-	//		I. LODASH
-	//_________________________
+	import './config'; // II. CONFIG
 
-	import _ from 'lodash';
+	import './ajax'; // III. AJAX
 
+	import 'gsap'; // IV. GSAP
+	import 'ScrollTrigger'; // IV. GSAP
+	import 'ScrollToPlugin'; // IV. GSAP
 
-	//		II. CONFIG
-	//_________________________
+	import 'SineWaves'; // V. SINEWAVES
 
-	import './config';
+	import 'panZooming'; // VI. PANZOOM
 
+	import 'custom'; // TEST
 
-	//		III. AJAX
-	//_________________________
-
-	import './ajax';
-
-	import 'sine-waves';
 
 	/*____________________________________________________________________________*/
 	/*
@@ -48,4 +45,4 @@
 	//		II. SCSS CORE
 	//_________________________
 
-	import 'main'; // Import index.scss
+	import 'main'; // Import

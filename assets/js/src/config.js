@@ -80,8 +80,6 @@
 			breakpointDiv.appendChild(breakpointNameDiv);
 		}
 
-
-
 		//__________________________________________________________________________
 		//
 		//	 							CANVAS
@@ -122,8 +120,8 @@
 		function stars() {
 			//Add stars to a small fraction of the canvas
 			const canvasSize = canvas.width * canvas.height;
-			const starsFraction = canvasSize / 2000;
-			
+			const starsFraction = canvasSize / 1000;
+
 			for(let i = 0; i < starsFraction; i++) {
 				//Set up random elements
 				let xPos = random(2, canvas.width - 2);
@@ -139,7 +137,181 @@
 		}
 		stars(); // RUN DUDE, RUN!
 
+
+		//____________________________
+		//
+		// 		Draw Stars With Move
+		//____________________________
+
+		/**
+		 * Generates random particles using canvas
+		 * 
+		 * @class Particles
+		 * @constructor
+		 */
+		function Particles(){
+			//particle colors
+			this.colors = [
+				'255, 255, 255',
+			];
+			//particle radius min/max
+			this.minRadius = 0.2; 
+			this.maxRadius = 1.8;
+			//particle opacity min/max
+			this.minOpacity = 0;
+			this.maxOpacity = 1;
+			//particle speed min/max
+			this.minSpeed = .005;
+			this.maxSpeed = .1;
+			//frames per second 
+			this.fps = 60;
+			//number of particles
+			this.numParticles = 2500;
+			//required canvas variables
+			this.canvas = document.getElementById('canvas');
+			this.ctx = this.canvas.getContext('2d');
+		}
+			
+		/**
+		* Initializes everything
+		* @method init
+		*/
+		Particles.prototype.init = function(){
+			this.render();
+			this.createCircle();
+		}
+			
+		/**
+		* generates random number between min and max values
+		* @param	{number} min value
+		* @param	{number} max malue
+		* @return {number} random number between min and max
+		* @method _rand
+		*/
+		Particles.prototype._rand = function(min, max){
+			return Math.random() * (max - min) + min;
+		}
+			
+		/**
+		* Sets canvas size and updates values on resize
+		* @method render
+		*/
+		Particles.prototype.render = function(){ 
+			var self = this,
+				wHeight = window.innerHeight,
+				wWidth = window.innerWidth;
+			
+				self.canvas.width = wWidth;
+				self.canvas.height = wHeight;
+				
+			//window.on('resize', self.render);
+		}
+			
+		/**
+		* Randomly creates particle attributes
+		* @method createCircle
+		*/
+		Particles.prototype.createCircle = function(){
+			var particle = [];
+			
+			for (var i = 0; i < this.numParticles; i++) {
+				var self = this,
+				color = self.colors[~~(self._rand(0, self.colors.length))];
+				particle[i] = {
+					radius		: self._rand(self.minRadius, self.maxRadius),
+					xPos		: self._rand(0, canvas.width),
+					yPos		: self._rand(0, canvas.height/this.numParticles * i),
+					xVelocity : self._rand(self.minSpeed, self.maxSpeed),
+					yVelocity : self._rand(self.minSpeed, self.maxSpeed),
+					color		 : 'rgba(' + color + ',' + self._rand(self.minOpacity, self.maxOpacity) + ')'
+				}
+				
+				//once values are determined, draw particle on canvas
+				self.draw(particle, i);
+			}
+			//...and once drawn, animate the particle
+			self.animate(particle);
+		}
+			
+		/**
+		* Draws particles on canvas
+		* @param	{array} Particle array from createCircle method
+		* @param	{number} i value from createCircle method
+		* @method draw
+		*/
+		Particles.prototype.draw = function(particle, i){
+			var self = this,
+				ctx = self.ctx;
+			
+			ctx.fillStyle = particle[i].color;
+			
+			ctx.beginPath();
+			ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 2 * Math.PI, false);
+			ctx.fill();
+		}
+			
+		/**
+		* Animates particles 
+		* @param	{array} particle value from createCircle & draw methods
+		* @method animate
+		*/
+		Particles.prototype.animate = function(particle){
+			var self = this,
+				ctx = self.ctx;
+			
+			setInterval(function(){
+				//clears canvas
+				self.clearCanvas();
+				//then redraws particles in new positions based on velocity
+				for (var i = 0; i < self.numParticles; i++) {
+					particle[i].xPos += particle[i].xVelocity;
+					particle[i].yPos -= particle[i].yVelocity;
+				
+					//if particle goes off screen call reset method to place it offscreen to the left/bottom
+					if (particle[i].xPos > self.canvas.width + particle[i].radius || particle[i].yPos > self.canvas.height + particle[i].radius) {
+						self.resetParticle(particle, i);
+					} else {
+						self.draw(particle, i);
+					}
+				}	
+			}, 200/self.fps); 
+		}
+			
+		/**
+		* Resets position of particle when it goes off screen
+		* @param	{array} particle value from createCircle & draw methods
+		* @param	{number} i value from createCircle method
+		* @method resetParticle
+		*/
+		Particles.prototype.resetParticle = function(particle, i){
+			var self = this;
+			
+			var random = self._rand(0, 1);
+			
+			if (random > .5) { 
+				// 50% chance particle comes from left side of window...
+				particle[i].xPos = -particle[i].radius;
+				particle[i].yPos = self._rand(0, canvas.height);
+			} else {
+				//... or bottom of window
+				particle[i].xPos = self._rand(0, canvas.width);
+				particle[i].yPos = canvas.height + particle[i].radius;	 
+			}
+			//redraw particle with new values
+			self.draw(particle, i);
+		}
+			
+		/**
+		* Clears canvas between animation frames
+		* @method clearCanvas
+		*/
+		Particles.prototype.clearCanvas = function(){
+			this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+		}
+			
+		// new Particles().init(); // RUN DUDE, RUN!
 		
+
 		//____________________________
 		//
 		// 		Draw Multi Waves
@@ -147,9 +319,10 @@
 
 		function drawMultiWaves(width, height) {
 			for(let m = 0; m < 75; m++) {
-				let wave = { amplitude: 10, // Math.random() * (10 - 1) + 1, wavelength: 0.02, // Math.random() * (0.04 - 0.01) + 0.01,
-					frequency: Math.random() * (0.05 - 0.01) + 0.01,
-					increment: Math.random() * (0.05 - 0.01) + 0.01,
+				let wave = { amplitude: 10, // Math.random() * (10 - 1) + 1, 
+				wavelength: 0.02, // Math.random() * (0.04 - 0.01) + 0.01,
+				frequency: Math.random() * (0.05 - 0.01) + 0.01,
+				increment: Math.random() * (0.05 - 0.01) + 0.01,
 				};
 
 				gsap.to(wave, { amplitude: 1,
@@ -159,14 +332,14 @@
 				});
 
 				ctx.beginPath();
-				ctx.moveTo( 0, ( (height / 2) + (i * 15) ) );
+				ctx.moveTo( 0, ( (height / 1.3) + (i * 15) ) );
 
 				// 1. Draw Straight line
 				// ctx.lineTo( width, ((height / 2) + (i * 15)) );
 				
 				// 2. Draw Wave
 				for (let i = -55; i < width * 9; i++) {		
-					ctx.lineTo( i, ((height / 2) + (m * 15)) + Math.sin(i * wave.wavelength + wave.increment) * wave.amplitude );
+					ctx.lineTo( i, ((height / 1.3) + (m * 15)) + Math.sin(i * wave.wavelength + wave.increment) * wave.amplitude );
 				}
 	
 				let gradient = ctx.createLinearGradient(0, 0, width, 0);
@@ -180,7 +353,8 @@
 				wave.increment += wave.frequency;
 			};
 		}
-		// drawMultiWaves(canvasWidth, canvasHeight);  // RUN DUDE, RUN!
+		drawMultiWaves(canvasWidth, canvasHeight);	// RUN DUDE, RUN!
+
 
 		//____________________________
 		//
@@ -190,8 +364,8 @@
 		function drawSingleWaves(width, height) {
 			let m = 0;
 			let wave = {
-				amplitude: 10, // Math.random() * (10 - 1) + 1,
-				wavelength: 0.02, // Math.random() * (0.04 - 0.01) + 0.01,
+				amplitude: 10, // Math.random() * (10 - 1) + 1
+				wavelength: 0.02, // Math.random() * (0.04 - 0.01) + 0.01
 				frequency: Math.random() * (0.05 - 0.01) + 0.01,
 				increment: Math.random() * (0.05 - 0.01) + 0.01,
 			};
@@ -225,7 +399,7 @@
 
 			animate()
 		}
-		// drawSingleWaves(canvasWidth, canvasHeight);  // RUN DUDE, RUN!
+		// drawSingleWaves(canvasWidth, canvasHeight);	// RUN DUDE, RUN!
 		
 
 		//____________________________
@@ -237,13 +411,13 @@
 
 			new SineWaves({
 				el: document.getElementById('firstwaves'),
-				speed: 4,
+				speed: 4, // 4
 				width: function() {
 					return $(window).width(); },
 				height: function() {
 					return $(window).height(); },
 				ease: 'SineInOut',
-				wavesWidth: '150%',
+				wavesWidth: '200%',
 				waves: [
 					{ timeModifier: 4, lineWidth: 1, amplitude: -5, wavelength: 5 },
 					{ timeModifier: 2, lineWidth: 2, amplitude: -10, wavelength: 10 },
@@ -302,6 +476,15 @@
 		}
 		drawSineWaves();
 
+
+		//==================================
+
+
+
+		//==================================
+
+
+
 		//____________________________
 		//
 		// 			Resize
@@ -310,15 +493,19 @@
 		window.addEventListener('resize', function() {
 			canvasDimension();
 			stars();
-			drawWaves(canvasWidth, canvasHeight);
+			drawMultiWaves(canvasWidth, canvasHeight);
+			// drawSingleWaves(canvasWidth, canvasHeight);
+			drawSineWaves();
 		});
-
 
 	}); // [END] Javascript Document Ready
 
 
-	// 					JQUERY
-	//__________________________________________
+
+	//__________________________________________________________________________
+	//
+	//	 							JQUERY
+	//__________________________________________________________________________
 
 	jQuery(function () {
 
