@@ -17,7 +17,9 @@
 
 	import './config'; // I. CONFIG
 	import './ajax'; // II. AJAX
-	import 'tailwind-breakpoint'; // III. CUSTOM
+	import 'Gsap'; // III. GSAP
+	import 'tailwind-breakpoint'; // III. Tailwind breakpoint
+
 
 	/*____________________________________________________________________________*/
 	/*

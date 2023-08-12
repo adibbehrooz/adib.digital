@@ -33,8 +33,10 @@
 		// I. BASIC
 		watch: true,
 		watchOptions: {
-			ignored: /node_modules/
-		},
+			ignored: [
+			  /node_modules([\\]+|\/)+(?!tailwind-breakpoint)/, /tailwind-breakpoint([\\]+|\/)node_modules/
+			]
+		},	  
 		target: 'web',
 		cache: true,
 
@@ -72,7 +74,11 @@
 			}),
 
 			new webpack.ProvidePlugin({
-				'SineWaves': 'sine-waves'
+				'SineWaves':
+				 'sine-waves'
+			}),
+			new webpack.ProvidePlugin({
+				'gsap': 'gsap'
 			}),
 
 			// 3. Browser Sync
@@ -100,6 +106,7 @@
 						'../../../framework/*.php', './framework/*.php', // Wordpress Framework
 						'!../../../node_modules',
 						'../../../node_modules/tailwind-breakpoint',
+						'./node_modules/tailwind-breakpoint',
 
 						// II. JS
 						'../src/*.js',
@@ -234,8 +241,7 @@
 				
 				// 2. JS
 				SineWaves:		path.resolve(__dirname,'./node_modules/sine-waves/sine-waves.js'),
-
-
+				Gsap:			path.resolve(__dirname,'./node_modules/gsap'),
 			},			
 			extensions: ['.js', '.jsx', '.css', '.scss'],
 			extensionAlias: {
