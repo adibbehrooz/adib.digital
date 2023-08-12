@@ -3,8 +3,8 @@
 ~*
 
 # ignore node dependency directories
-node_modules/
-!node_modules/tailwind-breakpoint/
+/node_modules/
+!/node_modules/tailwind-breakpoint/
 notes/
 
 # ignore OS generated files
