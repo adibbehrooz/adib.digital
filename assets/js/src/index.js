@@ -15,9 +15,9 @@
 	/* 							I. Bundle Javascript
 	/*____________________________________________________________________________*/
 
-	import './config'; // II. CONFIG
-	import './ajax'; // III. AJAX
-
+	import './config'; // I. CONFIG
+	import './ajax'; // II. AJAX
+	import 'tailwind-breakpoint'; // III. CUSTOM
 
 	/*____________________________________________________________________________*/
 	/*

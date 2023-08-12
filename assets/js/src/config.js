@@ -474,7 +474,7 @@
 					gradient = void 0; },
 			});
 		}
-		drawSineWaves();
+		// drawSineWaves();
 
 
 		//==================================
@@ -495,7 +495,7 @@
 			stars();
 			// drawMultiWaves(canvasWidth, canvasHeight);
 			// drawSingleWaves(canvasWidth, canvasHeight);
-			drawSineWaves();
+			// drawSineWaves();
 		});
 
 	}); // [END] Javascript Document Ready

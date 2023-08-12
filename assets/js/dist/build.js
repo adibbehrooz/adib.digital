@@ -611,7 +611,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-  drawSineWaves();
+  // drawSineWaves();
 
   //==================================
 
@@ -627,7 +627,7 @@ document.addEventListener("DOMContentLoaded", function () {
     stars();
     // drawMultiWaves(canvasWidth, canvasHeight);
     // drawSingleWaves(canvasWidth, canvasHeight);
-    drawSineWaves();
+    // drawSineWaves();
   });
 }); // [END] Javascript Document Ready
 
@@ -12281,6 +12281,18 @@ SineWaves.prototype.Ease = Ease;
   return SineWaves;
 });
 
+/***/ }),
+
+/***/ "./node_modules/tailwind-breakpoint/tailwind-breakpoint.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/tailwind-breakpoint/tailwind-breakpoint.js ***!
+  \*****************************************************************/
+/***/ (() => {
+
+var __dirname = "/";
+console.log("First Package From NodeJS With Webpack Watch 1");
+console.log(__dirname);
+
 /***/ })
 
 /******/ 	});
@@ -12363,7 +12375,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_config__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ajax */ "./assets/js/src/ajax.js");
 /* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_ajax__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var main__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! main */ "./assets/scss/main.scss");
+/* harmony import */ var tailwind_breakpoint__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tailwind-breakpoint */ "./node_modules/tailwind-breakpoint/tailwind-breakpoint.js");
+/* harmony import */ var tailwind_breakpoint__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(tailwind_breakpoint__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var main__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! main */ "./assets/scss/main.scss");
 /*
 	Theme Name: AdibOnline Theme
 	Theme URI: http://www.adibbehrooz.com/
@@ -12380,8 +12394,9 @@ __webpack_require__.r(__webpack_exports__);
 /* 							I. Bundle Javascript
 /*____________________________________________________________________________*/
 
- // II. CONFIG
- // III. AJAX
+ // I. CONFIG
+ // II. AJAX
+ // III. CUSTOM
 
 /*____________________________________________________________________________*/
 /*

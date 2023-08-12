@@ -33,7 +33,7 @@
 		// I. BASIC
 		watch: true,
 		watchOptions: {
-			ignored: /node_modules/,
+			ignored: /node_modules/
 		},
 		target: 'web',
 		cache: true,
@@ -99,6 +99,7 @@
 						'../../../woocommerce/*.php', './woocommerce/*.php', // Wordpress WooCommerce
 						'../../../framework/*.php', './framework/*.php', // Wordpress Framework
 						'!../../../node_modules',
+						'../../../node_modules/tailwind-breakpoint',
 
 						// II. JS
 						'../src/*.js',
