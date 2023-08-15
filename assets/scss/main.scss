@@ -168,6 +168,7 @@
 		background-repeat: no-repeat;
 		min-height: 100vh;
 		overflow: hidden;
+		cursor: none;
 	}
 
 	//______________________ Links ______________________
@@ -203,6 +204,46 @@
 	}
 	*/
 
+	//______________________ Cursor ______________________
+	//____________________________________________________
+
+	@include object('centerCircle') {
+		position: fixed;
+		background-color: transparent;
+		width: 7px;
+		height: 7px;
+		left: -10px;
+		top: -10px;
+		border-radius: 100%;
+		z-index: 6;
+		transform: scale(1);
+		&.active {
+			opacity: 1;
+			transform: scale(0);
+			box-shadow: 0 0 26px rgba(255, 255, 255, 0.6);
+		}
+	}
+
+	@include object('followCircle') {
+		position: fixed;
+		border: 1px solid #fff;
+		width: 30px;
+		height: 30px;
+		left: -21px;
+		top: -21px;
+		border-radius: 100%;
+		user-select: none;
+		pointer-events: none;
+		z-index: 6;
+		transform: scale(1);
+		transform: translate(2px, 2px);
+		box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+		&.active {
+			transform: scale(3);
+			background: black;
+		}
+	}
+
 
 /****************************************** COMPONENTS *************************************
 /*******************************************************************************************/
@@ -218,6 +259,7 @@
 		}
 	}
 	*/
+	
 
 	@include component('landscape') {
 

@@ -52,16 +52,6 @@
 			'3.12.2', //version
 			false //run in footer
 		);
-
-		//_________ GSAP Draggable _________
-
-		wp_register_script(
-			'Draggable', //handle
-			'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js', //source
-			array('gsap'),
-			'3.12.2', //version
-			false //run in footer
-		);
 	}
 
 	add_action('wp_print_scripts', 'theme_enqueue_scripts');
@@ -72,7 +62,7 @@
 		if (!is_admin()):
 
 			// 1. GSAP
-			wp_enqueue_script('Draggable');
+			wp_enqueue_script('gsap');
 
 			// 2. Build
 			wp_enqueue_script('build');

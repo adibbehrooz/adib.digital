@@ -12,10 +12,11 @@
 
 	document.addEventListener("DOMContentLoaded", function() {
 
-	//__________________________________________________________________________
-	//
-	//	 						TAILWIND SCREEN IN JS
-	//__________________________________________________________________________
+
+		//__________________________________________________________________________
+		//
+		//	 						TAILWIND SCREEN IN JS
+		//__________________________________________________________________________
 
 		const customScreens = require("../../../tailwind.config.js").variants.theme.screens;
 		const sreensKeys = Object.keys(customScreens);
@@ -80,20 +81,22 @@
 			breakpointDiv.appendChild(breakpointNameDiv);
 		}
 
+
 		//__________________________________________________________________________
 		//
 		//	 							CANVAS
 		//__________________________________________________________________________
-		
+
+
 		//____________________________
 		//
 		// 			Global Data
-		//____________________________		
-			
+		//____________________________
+
 		const canvas = document.getElementById("canvas");
 		const ctx = canvas.getContext("2d");
-		canvas.width = canvasWidth = window.innerWidth; 
-		canvas.height = canvasHeight = window.innerHeight; 
+		canvas.width = canvasWidth = window.innerWidth;
+		canvas.height = canvasHeight = window.innerHeight;
 
 
 		//____________________________
@@ -102,12 +105,13 @@
 		//____________________________
 
 		function canvasDimension() {
-			let width = window.innerWidth; 
-			let height = window.innerHeight; 
+			let width = window.innerWidth;
+			let height = window.innerHeight;
 			canvas.width = width;
 			canvas.height = height;
 		}
-		
+
+
 		//____________________________
 		//
 		// 			Draw Stars
@@ -116,7 +120,7 @@
 		function random(min, max) {
 			return min + Math.random() * (max + 1 - min);
 		}
-		
+
 		function stars() {
 			//Add stars to a small fraction of the canvas
 			const canvasSize = canvas.width * canvas.height;
@@ -128,189 +132,15 @@
 				let yPos = random(2, canvas.height - 2);
 				let alpha = random(0.5, 1);
 				let size = random(1, 2);
-			
+
 				//Add stars
 				ctx.fillStyle = '#ffffff';
 				ctx.globalAlpha = alpha;
 				ctx.fillRect(xPos, yPos, size, size);
 			}
 		}
-		stars(); // RUN DUDE, RUN!
+		// stars(); // RUN DUDE, RUN!
 
-
-		//____________________________
-		//
-		// 		Draw Stars With Move
-		//____________________________
-
-		/**
-		 * Generates random particles using canvas
-		 * 
-		 * @class Particles
-		 * @constructor
-		 */
-		function Particles(){
-			//particle colors
-			this.colors = [
-				'255, 255, 255',
-			];
-			//particle radius min/max
-			this.minRadius = 0.2; 
-			this.maxRadius = 1.8;
-			//particle opacity min/max
-			this.minOpacity = 0;
-			this.maxOpacity = 1;
-			//particle speed min/max
-			this.minSpeed = .005;
-			this.maxSpeed = .1;
-			//frames per second 
-			this.fps = 60;
-			//number of particles
-			this.numParticles = 2500;
-			//required canvas variables
-			this.canvas = document.getElementById('canvas');
-			this.ctx = this.canvas.getContext('2d');
-		}
-			
-		/**
-		* Initializes everything
-		* @method init
-		*/
-		Particles.prototype.init = function(){
-			this.render();
-			this.createCircle();
-		}
-			
-		/**
-		* generates random number between min and max values
-		* @param	{number} min value
-		* @param	{number} max malue
-		* @return {number} random number between min and max
-		* @method _rand
-		*/
-		Particles.prototype._rand = function(min, max){
-			return Math.random() * (max - min) + min;
-		}
-			
-		/**
-		* Sets canvas size and updates values on resize
-		* @method render
-		*/
-		Particles.prototype.render = function(){ 
-			var self = this,
-				wHeight = window.innerHeight,
-				wWidth = window.innerWidth;
-			
-				self.canvas.width = wWidth;
-				self.canvas.height = wHeight;
-				
-			//window.on('resize', self.render);
-		}
-			
-		/**
-		* Randomly creates particle attributes
-		* @method createCircle
-		*/
-		Particles.prototype.createCircle = function(){
-			var particle = [];
-			
-			for (var i = 0; i < this.numParticles; i++) {
-				var self = this,
-				color = self.colors[~~(self._rand(0, self.colors.length))];
-				particle[i] = {
-					radius		: self._rand(self.minRadius, self.maxRadius),
-					xPos		: self._rand(0, canvas.width),
-					yPos		: self._rand(0, canvas.height/this.numParticles * i),
-					xVelocity : self._rand(self.minSpeed, self.maxSpeed),
-					yVelocity : self._rand(self.minSpeed, self.maxSpeed),
-					color		 : 'rgba(' + color + ',' + self._rand(self.minOpacity, self.maxOpacity) + ')'
-				}
-				
-				//once values are determined, draw particle on canvas
-				self.draw(particle, i);
-			}
-			//...and once drawn, animate the particle
-			self.animate(particle);
-		}
-			
-		/**
-		* Draws particles on canvas
-		* @param	{array} Particle array from createCircle method
-		* @param	{number} i value from createCircle method
-		* @method draw
-		*/
-		Particles.prototype.draw = function(particle, i){
-			var self = this,
-				ctx = self.ctx;
-			
-			ctx.fillStyle = particle[i].color;
-			
-			ctx.beginPath();
-			ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 2 * Math.PI, false);
-			ctx.fill();
-		}
-			
-		/**
-		* Animates particles 
-		* @param	{array} particle value from createCircle & draw methods
-		* @method animate
-		*/
-		Particles.prototype.animate = function(particle){
-			var self = this,
-				ctx = self.ctx;
-			
-			setInterval(function(){
-				//clears canvas
-				self.clearCanvas();
-				//then redraws particles in new positions based on velocity
-				for (var i = 0; i < self.numParticles; i++) {
-					particle[i].xPos += particle[i].xVelocity;
-					particle[i].yPos -= particle[i].yVelocity;
-				
-					//if particle goes off screen call reset method to place it offscreen to the left/bottom
-					if (particle[i].xPos > self.canvas.width + particle[i].radius || particle[i].yPos > self.canvas.height + particle[i].radius) {
-						self.resetParticle(particle, i);
-					} else {
-						self.draw(particle, i);
-					}
-				}	
-			}, 200/self.fps); 
-		}
-			
-		/**
-		* Resets position of particle when it goes off screen
-		* @param	{array} particle value from createCircle & draw methods
-		* @param	{number} i value from createCircle method
-		* @method resetParticle
-		*/
-		Particles.prototype.resetParticle = function(particle, i){
-			var self = this;
-			
-			var random = self._rand(0, 1);
-			
-			if (random > .5) { 
-				// 50% chance particle comes from left side of window...
-				particle[i].xPos = -particle[i].radius;
-				particle[i].yPos = self._rand(0, canvas.height);
-			} else {
-				//... or bottom of window
-				particle[i].xPos = self._rand(0, canvas.width);
-				particle[i].yPos = canvas.height + particle[i].radius;	 
-			}
-			//redraw particle with new values
-			self.draw(particle, i);
-		}
-			
-		/**
-		* Clears canvas between animation frames
-		* @method clearCanvas
-		*/
-		Particles.prototype.clearCanvas = function(){
-			this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-		}
-			
-		// new Particles().init(); // RUN DUDE, RUN!
-		
 
 		//____________________________
 		//
@@ -319,7 +149,7 @@
 
 		function drawMultiWaves(width, height) {
 			for(let m = 0; m < 75; m++) {
-				let wave = { amplitude: 10, // Math.random() * (10 - 1) + 1, 
+				let wave = { amplitude: 10, // Math.random() * (10 - 1) + 1,
 				wavelength: 0.02, // Math.random() * (0.04 - 0.01) + 0.01,
 				frequency: Math.random() * (0.05 - 0.01) + 0.01,
 				increment: Math.random() * (0.05 - 0.01) + 0.01,
@@ -336,18 +166,18 @@
 
 				// 1. Draw Straight line
 				// ctx.lineTo( width, ((height / 2) + (i * 15)) );
-				
+
 				// 2. Draw Wave
-				for (let i = -55; i < width * 9; i++) {		
+				for (let i = -55; i < width * 9; i++) {
 					ctx.lineTo( i, ((height / 1.3) + (m * 15)) + Math.sin(i * wave.wavelength + wave.increment) * wave.amplitude );
 				}
-	
+
 				let gradient = ctx.createLinearGradient(0, 0, width, 0);
 				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
 				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
 				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
 				ctx.strokeStyle = gradient;
-	
+
 				ctx.stroke();
 				ctx.className = "whiteWave_"+i;
 				wave.increment += wave.frequency;
@@ -382,16 +212,16 @@
 				ctx.clearRect(0, 0, width, height);
 				ctx.beginPath();
 				ctx.moveTo( 0, ( (height / 2) + (i * 15) ) );
-				for (let i = 0; i < width * 9; i++) {		
+				for (let i = 0; i < width * 9; i++) {
 					ctx.lineTo( i, ((height / 2) + (m * 15)) + Math.sin(i * wave.wavelength + wave.increment) * wave.amplitude );
 				}
-	
+
 				let gradient = ctx.createLinearGradient(0, 0, width, 0);
 				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
 				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
 				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
 				ctx.strokeStyle = gradient;
-	
+
 				ctx.stroke();
 				ctx.className = "whiteWave_"+i;
 				wave.increment += wave.frequency;
@@ -400,7 +230,7 @@
 			animate()
 		}
 		// drawSingleWaves(canvasWidth, canvasHeight);	// RUN DUDE, RUN!
-		
+
 
 		//____________________________
 		//
@@ -461,27 +291,264 @@
 					gradient.addColorStop(0,"rgba(23, 210, 168, 0.1)");
 					gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.1)");
 					gradient.addColorStop(1,"rgba(23, 210, 168, 0.1)");
-									
+
 					var index = -1;
 					var length = this.waves.length;
 					while(++index < length){
 						this.waves[index].strokeStyle = gradient;
 					}
-					
+
 					// Clean Up
 					index = void 0;
 					length = void 0;
-					gradient = void 0; },
+					gradient = void 0; 
+				},
 			});
 		}
 		// drawSineWaves();
 
+		//____________________________
+		//
+		// 		Draw Stars With Move
+		//____________________________
 
-		//==================================
+		/**
+		 * Generates random particles using canvas
+		 *
+		 * @class Particles
+		 * @constructor
+		 */
+		function Particles(){
+			//particle colors
+			this.colors = [
+				'255, 255, 255',
+			];
+			//particle radius min/max
+			this.minRadius = 0.2;
+			this.maxRadius = 1.9;
+			//particle opacity min/max
+			this.minOpacity = 0;
+			this.maxOpacity = 1;
+			//particle speed min/max
+			this.minSpeed = .005;
+			this.maxSpeed = .1;
+			//frames per second
+			this.fps = 5;
+			//number of particles
+			this.numParticles = 1100;
+			//required canvas variables
+			this.canvas = document.getElementById('canvas');
+			this.ctx = this.canvas.getContext('2d');
+		}
+
+		/**
+		* Initializes everything
+		* @method init
+		*/
+		Particles.prototype.init = function(){
+			this.render();
+			this.createCircle();
+		}
+
+		/**
+		* generates random number between min and max values
+		* @param	{number} min value
+		* @param	{number} max malue
+		* @return {number} random number between min and max
+		* @method _rand
+		*/
+		Particles.prototype._rand = function(min, max){
+			return Math.random() * (max - min) + min;
+		}
+
+		/**
+		* Sets canvas size and updates values on resize
+		* @method render
+		*/
+		Particles.prototype.render = function(){
+			var self = this,
+				wHeight = window.innerHeight,
+				wWidth = window.innerWidth;
+
+				self.canvas.width = wWidth;
+				self.canvas.height = wHeight;
+
+			//window.on('resize', self.render);
+		}
+
+		/**
+		* Randomly creates particle attributes
+		* @method createCircle
+		*/
+		Particles.prototype.createCircle = function(){
+			var particle = [];
+
+			for (var i = 0; i < this.numParticles; i++) {
+				var self = this,
+				color = self.colors[~~(self._rand(0, self.colors.length))];
+				particle[i] = {
+					radius		: self._rand(self.minRadius, self.maxRadius),
+					xPos		: self._rand(0, canvas.width),
+					yPos		: self._rand(0, canvas.height/this.numParticles * i),
+					xVelocity 	: self._rand(self.minSpeed, self.maxSpeed),
+					yVelocity 	: self._rand(self.minSpeed, self.maxSpeed),
+					color		: 'rgba(' + color + ',' + self._rand(self.minOpacity, self.maxOpacity) + ')'
+				}
+
+				//once values are determined, draw particle on canvas
+				self.draw(particle, i);
+			}
+			//...and once drawn, animate the particle
+			self.animate(particle);
+		}
+
+		/**
+		* Draws particles on canvas
+		* @param	{array} Particle array from createCircle method
+		* @param	{number} i value from createCircle method
+		* @method draw
+		*/
+		Particles.prototype.draw = function(particle, i){
+			var self = this,
+				ctx = self.ctx;
+
+			ctx.fillStyle = particle[i].color;
+
+			ctx.beginPath();
+			ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 4 * Math.PI, false);
+			ctx.fill();
+		}
+
+		/**
+		* Animates particles
+		* @param	{array} particle value from createCircle & draw methods
+		* @method animate
+		*/
+		Particles.prototype.animate = function(particle){
+			var self = this,
+				ctx = self.ctx;
+
+			setInterval(function(){
+				//clears canvas
+				self.clearCanvas();
+				//then redraws particles in new positions based on velocity
+				for (var i = 0; i < self.numParticles; i++) {
+					particle[i].xPos += particle[i].xVelocity;
+					particle[i].yPos -= particle[i].yVelocity;
+
+					//if particle goes off screen call reset method to place it offscreen to the left/bottom
+					if (particle[i].xPos > self.canvas.width + particle[i].radius || particle[i].yPos > self.canvas.height + particle[i].radius) {
+						self.resetParticle(particle, i);
+					} else {
+						self.draw(particle, i);
+					}
+				}
+			}, 200/self.fps);
+		}
+
+		/**
+		* Resets position of particle when it goes off screen
+		* @param	{array} particle value from createCircle & draw methods
+		* @param	{number} i value from createCircle method
+		* @method resetParticle
+		*/
+		Particles.prototype.resetParticle = function(particle, i){
+			var self = this;
+
+			var random = self._rand(0, 1);
+
+			if (random > .5) {
+				// 50% chance particle comes from left side of window...
+				particle[i].xPos = -particle[i].radius;
+				particle[i].yPos = self._rand(0, canvas.height);
+			} else {
+				//... or bottom of window
+				particle[i].xPos = self._rand(0, canvas.width);
+				particle[i].yPos = canvas.height + particle[i].radius;
+			}
+			//redraw particle with new values
+			self.draw(particle, i);
+		}
+
+		/**
+		* Clears canvas between animation frames
+		* @method clearCanvas
+		*/
+		Particles.prototype.clearCanvas = function(){
+			this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+		}
+
+		new Particles().init(); // RUN DUDE, RUN!
 
 
 
-		//==================================
+		//__________________________________________________________________________
+		//
+		//	 							MOUSE
+		//__________________________________________________________________________
+
+		let circle = $('.o-centerCircle');
+		let follow = $('.o-followCircle');
+
+
+	
+		// I. Mouser Over
+		//_______________________________________
+
+		function changeObject(ID, type) {
+			var rootGroupSelected = document.getElementById(ID);
+			if(type == 'fill') {
+
+				// I. Path Light
+				var groupChangePath = rootGroupSelected.getElementsByClassName("--change")[0];
+				groupChangePath.classList.add("--fill");
+				
+				// II. Convert Path From White To transparent [Only For Fedora Linux]
+				if(ID == 'underWaterLinux'){
+					var groupChangePathWhite = rootGroupSelected.getElementsByClassName("--transparent")[0];
+					groupChangePathWhite.classList.add("--fill");
+				}
+			}
+		}
+
+
+		// II. Mouser Leave
+		//_______________________________________
+
+		function resetChangeObject(ID, type) {
+			var rootGroupSelected = document.getElementById(ID);
+			if(type == 'fill') {
+
+				// I. Path Light
+				var groupChange = rootGroupSelected.getElementsByClassName("--change")[0];
+				groupChange.classList.remove("--fill");
+				
+				// II. Convert Path From White To Transparent
+				if(ID == 'underWaterLinux'){
+					var groupChangeWhite = rootGroupSelected.getElementsByClassName("--transparent")[0];
+					groupChangeWhite.classList.remove("--fill");
+				}
+			}
+		}
+
+		const landscapeObjects = document.querySelectorAll('svg g.c-landscape__object');
+		landscapeObjects.forEach((landscapeObject) => {
+			
+			// I. Mouse Over
+			landscapeObject.addEventListener('mouseenter', () => {
+				var landscapeObjectID	= landscapeObject.id;
+				var landscapeObjectType = landscapeObject.dataset.type;
+				changeObject(landscapeObjectID, landscapeObjectType);
+			});
+				
+			// II. Mouse Leave
+			landscapeObject.addEventListener('mouseleave', () => {
+				var landscapeObjectID	= landscapeObject.id;
+				var landscapeObjectType = landscapeObject.dataset.type;
+				resetChangeObject(landscapeObjectID, landscapeObjectType);
+			});
+		});
+
 
 
 
@@ -492,7 +559,7 @@
 
 		window.addEventListener('resize', function() {
 			canvasDimension();
-			stars();
+			// stars();
 			// drawMultiWaves(canvasWidth, canvasHeight);
 			// drawSingleWaves(canvasWidth, canvasHeight);
 			// drawSineWaves();

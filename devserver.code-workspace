@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "../../../../devserver"
+		}
+	],
+	"settings": {
+		"workbench.preferredDarkColorTheme": "Default Light+"
+	}
+}

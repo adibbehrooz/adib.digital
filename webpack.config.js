@@ -14,6 +14,7 @@
 	const path					= require('path');
 	const BrowserSyncPlugin 	= require('browser-sync-webpack-plugin');
 
+
 	//________________________
 	//
 	// 		II. Constants
@@ -22,6 +23,7 @@
 	const MiniCssExtractPlugin	= require('mini-css-extract-plugin');
 	const CssMinimizerPlugin 	= require('css-minimizer-webpack-plugin');
 	const TerserPlugin			= require("terser-webpack-plugin");
+
 
 	//______________________
 	//
@@ -33,12 +35,10 @@
 		// I. BASIC
 		watch: true,
 		watchOptions: {
-			ignored: [
-			  /node_modules([\\]+|\/)+(?!tailwind-breakpoint)/, /tailwind-breakpoint([\\]+|\/)node_modules/
-			]
-		},	  
+			ignored: /node_modules/
+		},	
 		target: 'web',
-		cache: true,
+		cache: false,
 
 		// II. ENTERY
 		entry: {
@@ -61,27 +61,30 @@
 		// V. Plugins
 		plugins: [
 
-			// 1. MiniCssExtractPlugin
+			// MiniCssExtractPlugin
 			new MiniCssExtractPlugin({
 				filename: '../../css/main.min.css',
 				chunkFilename: '[id].css',
 			}),
 
-			// 2. JQuery
+			// JQuery
 			new webpack.ProvidePlugin({
 				$: 'jquery',
 				jQuery: 'jquery',
 			}),
 
+			// SineWaves
 			new webpack.ProvidePlugin({
 				'SineWaves':
 				 'sine-waves'
 			}),
+
+			// gsap
 			new webpack.ProvidePlugin({
 				'gsap': 'gsap'
 			}),
 
-			// 3. Browser Sync
+			// Browser Sync
 			new BrowserSyncPlugin({
 				ghostMode: {
 					scroll: true,
@@ -89,8 +92,8 @@
 					forms: true
 				},
 				watchOptions: {
-					reloadDelay: 800,
-					debounceDelay: 800
+					reloadDelay: 850,
+					debounceDelay: 850
 				},
 				host: 'localhost',
 				watchTask: true,
@@ -99,14 +102,13 @@
 				files: [
 					{
 					match: [
+
 						// I. PHP
 						'../../../../../../wp-config.php', '../../../../../wp-config.php', '../../../wp-config.php', // Wordpress Root
 						'../../../*.php', '*.php' , // Wordpress Theme Root
 						'../../../woocommerce/*.php', './woocommerce/*.php', // Wordpress WooCommerce
 						'../../../framework/*.php', './framework/*.php', // Wordpress Framework
 						'!../../../node_modules',
-						'../../../node_modules/tailwind-breakpoint',
-						'./node_modules/tailwind-breakpoint',
 
 						// II. JS
 						'../src/*.js',
@@ -241,7 +243,6 @@
 				
 				// 2. JS
 				SineWaves:		path.resolve(__dirname,'./node_modules/sine-waves/sine-waves.js'),
-				Gsap:			path.resolve(__dirname,'./node_modules/gsap'),
 			},			
 			extensions: ['.js', '.jsx', '.css', '.scss'],
 			extensionAlias: {
