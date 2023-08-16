@@ -22,9 +22,10 @@
 			//								II. Custom Design
 			//____________________________________________________________________________
 		?>
+
 		<canvas id="canvas"></canvas>
-		<div class="absolute top-64">
-			<canvas id="firstwaves"></canvas>
-		</div>
+		<div class="absolute top-64"><canvas id="firstwaves"></canvas></div>
+
+	</section>
 
 	<?php get_footer(); ?>

@@ -52,6 +52,7 @@
 	<body <?php body_class(); ?> >
 
 		<?php // Cursor ?>
+		
 		<div class="o-centerCircle"></div>
 		<div class="o-followCircle"></div>
 

@@ -411,6 +411,29 @@
 /****************************************************************************************/
 
 
+.meteor {
+	background-image: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0));
+	opacity: 1;
+	transform: rotate(-45deg);
+	width: 300px;
+  }
+  
+  .meteor:before {
+	background: rgba(255, 255, 255, 0.7);
+	border-radius: 50%;
+	box-shadow: 0 0 15px 3px #fff;
+	content: "";
+	height: 5px;
+	margin-top: -2px;
+	position: fixed;
+	width: 4px;
+}
+  
+  .meteor {
+	height: 1px;
+	position: fixed;
+	z-index: -1;
+}
   
 
 /****************************************** MISC ****************************************

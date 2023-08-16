@@ -472,7 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
     this.maxOpacity = 1;
     //particle speed min/max
     this.minSpeed = .005;
-    this.maxSpeed = .1;
+    this.maxSpeed = .15;
     //frames per second
     this.fps = 5;
     //number of particles
@@ -552,7 +552,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ctx = self.ctx;
     ctx.fillStyle = particle[i].color;
     ctx.beginPath();
-    ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 4 * Math.PI, false);
+    ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 6 * Math.PI, false);
     ctx.fill();
   };
 
@@ -612,6 +612,178 @@ document.addEventListener("DOMContentLoaded", function () {
     this.ctx.clearRect(0, 0, canvas.width, canvas.height);
   };
   new Particles().init(); // RUN DUDE, RUN!
+
+  //____________________________
+  //
+  // 			Meteor Shower
+  //____________________________
+
+  /** A percentage of the screen to use in each grid, should be a fraction of 1 */
+  const STARS_GRID_SIZE = 1 / 4;
+  /** Lower is more dense */
+  const STARS_DENSITY = 14;
+  const METEOR_SPEED = 0.02;
+  const METEOR_MAX_FRAMES = 1000;
+  const METEOR_MAX_LIFE = 5000;
+  const METEOR_SPAWN_INTERVAL = 1000;
+
+  /**
+   * Helper functions
+   */
+  function rescale(value, currentMin, currentMax, newMin, newMax) {
+    const percentage = (value - currentMin) / (currentMax - currentMin);
+    return percentage * (newMax - newMin) + newMin;
+  }
+  function random(min, max) {
+    const randomNumber = Math.random() * (max - min + 1) + min;
+    if (!Number.isInteger(min) || !Number.isInteger(max)) {
+      return randomNumber;
+    } else {
+      return Math.floor(randomNumber);
+    }
+  }
+  function debounce(func, wait, immediate) {
+    let timeout;
+    return function () {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+      let context = this;
+      clearTimeout(timeout);
+      timeout = setTimeout(function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      }, wait);
+      if (immediate && !timeout) func.apply(context, args);
+    };
+  }
+
+  /**
+   * The input values are percentages of the screen that the number can be picked within.
+   *
+   * For example, `pickRandomCoordinateOnScreen(0, 0.5, 0.75, 1)` can be picked within the
+   * first 50% of the x axis (left half) and the last 25% of the y axis (bottom quarter).
+   */
+  function pickRandomCoordinateOnScreen() {
+    let xMin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    let xMax = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    let yMin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    let yMax = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
+    const maxX = window.innerWidth;
+    const maxY = window.innerHeight;
+    const x = rescale(random(0, maxX), 0, maxX, xMin * maxX, xMax * maxX);
+    const y = rescale(random(0, maxY), 0, maxY, yMin * maxY, yMax * maxY);
+    return {
+      x,
+      y
+    };
+  }
+
+  /**
+  * Classes
+  */
+  class Meteor {
+    constructor(x, y, speed) {
+      this.pos = {
+        x,
+        y
+      };
+      const velScale = Math.min(window.innerWidth, window.innerHeight);
+      this.vel = {
+        x: -speed * velScale,
+        y: speed * velScale
+      };
+      this.opacity = 1;
+      this.scale = random(0.2, 0.7);
+      this.created = Date.now();
+      this.element = document.createElement('div');
+      this.element.classList.add('meteor');
+      document.body.appendChild(this.element);
+    }
+    update() {
+      this.pos.x += this.vel.x * this.scale;
+      this.pos.y += this.vel.y * this.scale;
+      this.updateElementStyle();
+    }
+    updateElementStyle() {
+      this.element.style = `
+					top: ${this.pos.y}px;
+					left: ${this.pos.x}px;
+					opacity: ${this.opacity};
+					transform: rotate(-45deg) scale(${this.scale});
+				`;
+    }
+    cleanup() {
+      this.element.remove();
+    }
+  }
+  class Stars {
+    constructor() {
+      let gridSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : STARS_GRID_SIZE;
+      let density = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : STARS_DENSITY;
+      this.gridSize = gridSize;
+      this.density = density;
+      this.element = document.createElement('div');
+      this.element.classList.add('stars');
+      document.body.appendChild(this.element);
+      this.update = debounce(this.update.bind(this), 500);
+      this.update();
+      window.addEventListener('resize', this.update);
+    }
+    stars = [];
+    update() {
+      const translations = [];
+      const w = window.screen.width;
+      const h = window.screen.height;
+      const count = Math.floor(Math.sqrt(w * h) / this.density * this.gridSize * this.gridSize);
+      for (let x = 0; x < 1; x += this.gridSize) {
+        for (let y = 0; y < 1; y += this.gridSize) {
+          for (let i = 0; i < count; i++) {
+            const xMax = x + this.gridSize;
+            const yMax = y + this.gridSize;
+            const coordinate = pickRandomCoordinateOnScreen();
+            translations.push(`${coordinate.x}px ${coordinate.y}px`);
+          }
+        }
+      }
+      this.element.style = `
+					box-shadow: ${translations.map(x => `rgb(255, 255, 255) ${x}`).join(', ')};
+				`;
+    }
+    cleanup() {
+      window.removeEventListener('resize', this.update);
+      this.element.remove();
+    }
+  }
+  function spawnMeteor() {
+    const startPoint = pickRandomCoordinateOnScreen(0.1, 1.5, -0.5, -0.25);
+    const meteor = new Meteor(startPoint.x, startPoint.y, METEOR_SPEED);
+    let frame = 0;
+    function updateMeteor() {
+      meteor.update();
+      const isWithinScreen = meteor.pos.x > -(window.innerWidth / 2) && meteor.pos.y < window.innerHeight * 2;
+      if (isWithinScreen && ++frame < METEOR_MAX_FRAMES && Date.now() - meteor.created < METEOR_MAX_LIFE) {
+        requestAnimationFrame(updateMeteor);
+      } else {
+        meteor.cleanup();
+      }
+    }
+    updateMeteor();
+    setTimeout(spawnMeteor, random(2.7 * METEOR_SPAWN_INTERVAL, 6.3 * METEOR_SPAWN_INTERVAL));
+  }
+
+  /**
+  * Main
+  */
+  // stars = new Stars();
+  // spawnMeteor();
+
+  //____________________________
+  //
+  // 			Meteor Shower 
+  //____________________________
+
+  // https://codepen.io/jh3y/pen/XoXgPP
 
   //__________________________________________________________________________
   //
@@ -715,7 +887,7 @@ module.exports = {
     enabled: true,
     content: ['./*.php', './assets/**/*.{php, css, js, png, svg, jpg, scss, map, ico}', './dist/*.{js, map}', './framework/*.php', './inc/*.php', './misc/*.*', './woocommerce/*.php']
   },
-  darkMode: false,
+  darkMode: true,
   // or 'media' or 'class'
   theme: {
     screens: {
