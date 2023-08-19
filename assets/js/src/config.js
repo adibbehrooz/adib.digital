@@ -111,202 +111,6 @@
 			canvas.height = height;
 		}
 
-
-		//____________________________
-		//
-		// 			Draw Stars
-		//____________________________
-
-		function random(min, max) {
-			return min + Math.random() * (max + 1 - min);
-		}
-
-		function stars() {
-			//Add stars to a small fraction of the canvas
-			const canvasSize = canvas.width * canvas.height;
-			const starsFraction = canvasSize / 1000;
-
-			for(let i = 0; i < starsFraction; i++) {
-				//Set up random elements
-				let xPos = random(2, canvas.width - 2);
-				let yPos = random(2, canvas.height - 2);
-				let alpha = random(0.5, 1);
-				let size = random(1, 2);
-
-				//Add stars
-				ctx.fillStyle = '#ffffff';
-				ctx.globalAlpha = alpha;
-				ctx.fillRect(xPos, yPos, size, size);
-			}
-		}
-		// stars(); // RUN DUDE, RUN!
-
-
-		//____________________________
-		//
-		// 		Draw Multi Waves
-		//____________________________
-
-		function drawMultiWaves(width, height) {
-			for(let m = 0; m < 75; m++) {
-				let wave = { amplitude: 10, // Math.random() * (10 - 1) + 1,
-				wavelength: 0.02, // Math.random() * (0.04 - 0.01) + 0.01,
-				frequency: Math.random() * (0.05 - 0.01) + 0.01,
-				increment: Math.random() * (0.05 - 0.01) + 0.01,
-				};
-
-				gsap.to(wave, { amplitude: 1,
-					duration: 1,
-					yoyo: true,
-					repeat: -1,
-				});
-
-				ctx.beginPath();
-				ctx.moveTo( 0, ( (height / 1.3) + (i * 15) ) );
-
-				// 1. Draw Straight line
-				// ctx.lineTo( width, ((height / 2) + (i * 15)) );
-
-				// 2. Draw Wave
-				for (let i = -55; i < width * 9; i++) {
-					ctx.lineTo( i, ((height / 1.3) + (m * 15)) + Math.sin(i * wave.wavelength + wave.increment) * wave.amplitude );
-				}
-
-				let gradient = ctx.createLinearGradient(0, 0, width, 0);
-				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-				ctx.strokeStyle = gradient;
-
-				ctx.stroke();
-				ctx.className = "whiteWave_"+i;
-				wave.increment += wave.frequency;
-			};
-		}
-		// drawMultiWaves(canvasWidth, canvasHeight);	// RUN DUDE, RUN!
-
-
-		//____________________________
-		//
-		// 		Draw Single Waves
-		//____________________________
-
-		function drawSingleWaves(width, height) {
-			let m = 0;
-			let wave = {
-				amplitude: 10, // Math.random() * (10 - 1) + 1
-				wavelength: 0.02, // Math.random() * (0.04 - 0.01) + 0.01
-				frequency: Math.random() * (0.05 - 0.01) + 0.01,
-				increment: Math.random() * (0.05 - 0.01) + 0.01,
-			};
-
-			gsap.to(wave, {
-				amplitude: 1,
-				duration: 1,
-				yoyo: true,
-				repeat: -1,
-			});
-
-			const animate = () => {
-				requestAnimationFrame(animate);
-				ctx.clearRect(0, 0, width, height);
-				ctx.beginPath();
-				ctx.moveTo( 0, ( (height / 2) + (i * 15) ) );
-				for (let i = 0; i < width * 9; i++) {
-					ctx.lineTo( i, ((height / 2) + (m * 15)) + Math.sin(i * wave.wavelength + wave.increment) * wave.amplitude );
-				}
-
-				let gradient = ctx.createLinearGradient(0, 0, width, 0);
-				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-				ctx.strokeStyle = gradient;
-
-				ctx.stroke();
-				ctx.className = "whiteWave_"+i;
-				wave.increment += wave.frequency;
-			};
-
-			animate()
-		}
-		// drawSingleWaves(canvasWidth, canvasHeight);	// RUN DUDE, RUN!
-
-
-		//____________________________
-		//
-		// 		Draw SineWaves
-		//____________________________
-
-		function drawSineWaves() {
-
-			new SineWaves({
-				el: document.getElementById('firstwaves'),
-				speed: 4, // 4
-				width: function() {
-					return $(window).width(); },
-				height: function() {
-					return $(window).height(); },
-				ease: 'SineInOut',
-				wavesWidth: '200%',
-				waves: [
-					{ timeModifier: 4, lineWidth: 1, amplitude: -5, wavelength: 5 },
-					{ timeModifier: 2, lineWidth: 2, amplitude: -10, wavelength: 10 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 25 },
-					{ timeModifier: 0.5, lineWidth: 1, amplitude: -20, wavelength: 45 },
-					{ timeModifier: 0.25, lineWidth: 2,amplitude: -15, wavelength: 55 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -21, wavelength: 35 },
-					{ timeModifier: 2, lineWidth: 2, amplitude: -20, wavelength: 45 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 45 },
-					{ timeModifier: 0.5, lineWidth: 1, amplitude: -40, wavelength: 55 },
-					{ timeModifier: 0.25, lineWidth: 2, amplitude: -15, wavelength: 35 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 45 },
-					{ timeModifier: 0.5, lineWidth: 1, amplitude: -25, wavelength: 55 },
-					{ timeModifier: 0.25, lineWidth: 2, amplitude: -10, wavelength: 35},
-					{ timeModifier: 1, lineWidth: 1, amplitude: -15, wavelength: 25 },
-					{ timeModifier: 0.5, lineWidth: 1, amplitude: -25, wavelength: 45 },
-					{ timeModifier: 0.25, lineWidth: 2, amplitude: -19, wavelength: 55 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 35 },
-					{ timeModifier: 4, lineWidth: 1, amplitude: -5, wavelength: 5 },
-					{ timeModifier: 2, lineWidth: 2, amplitude: -10, wavelength: 10 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -15, wavelength: 25 },
-					{ timeModifier: 0.5, lineWidth: 1, amplitude: -22, wavelength: 45 },
-					{ timeModifier: 0.25, lineWidth: 2, amplitude: -20, wavelength: 55 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 35 },
-					{ timeModifier: 2, lineWidth: 2, amplitude: -15, wavelength: 45 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 45 },
-					{ timeModifier: 0.5, lineWidth: 1, amplitude: -20, wavelength: 55 },
-					{ timeModifier: 0.25, lineWidth: 2, amplitude: -20, wavelength: 55 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 35 },
-					{ timeModifier: 0.25, lineWidth: 2, amplitude: -15, wavelength: 35 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 45 },
-					{ timeModifier: 0.5, lineWidth: 1, amplitude: -15, wavelength: 55 },
-					{ timeModifier: 0.25, lineWidth: 2, amplitude: -20, wavelength: 35 },
-					{ timeModifier: 1, lineWidth: 1, amplitude: -25, wavelength: 25 },
-					{ timeModifier: 0.5, lineWidth: 1, amplitude: -20, wavelength: 45 },
-				],
-
-				// Called on window resize
-				resizeEvent: function() {
-					var gradient = this.ctx.createLinearGradient(0, 0, this.width, 0);
-					gradient.addColorStop(0,"rgba(23, 210, 168, 0.1)");
-					gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.1)");
-					gradient.addColorStop(1,"rgba(23, 210, 168, 0.1)");
-
-					var index = -1;
-					var length = this.waves.length;
-					while(++index < length){
-						this.waves[index].strokeStyle = gradient;
-					}
-
-					// Clean Up
-					index = void 0;
-					length = void 0;
-					gradient = void 0; 
-				},
-			});
-		}
-		// drawSineWaves();
-
 		//____________________________
 		//
 		// 		Draw Stars With Move
@@ -480,182 +284,6 @@
 
 		new Particles().init(); // RUN DUDE, RUN!
 
-
-		//____________________________
-		//
-		// 			Meteor Shower
-		//____________________________
-
-		/** A percentage of the screen to use in each grid, should be a fraction of 1 */
-		const STARS_GRID_SIZE = 1 / 4;
-		/** Lower is more dense */
-		const STARS_DENSITY = 14;
-
-		const METEOR_SPEED = 0.02;
-		const METEOR_MAX_FRAMES = 1000;
-		const METEOR_MAX_LIFE = 5000;
-		const METEOR_SPAWN_INTERVAL = 1000;
-
-		/**
-		 * Helper functions
-		 */
-		function rescale(value, currentMin, currentMax, newMin, newMax) {
-			const percentage = (value - currentMin) / (currentMax - currentMin);
-			return percentage * (newMax - newMin) + newMin;
-		}
-
-		function random(min, max) {
-			const randomNumber = Math.random() * (max - min + 1) + min;
-
-			if (!Number.isInteger(min) || !Number.isInteger(max)) {
-				return randomNumber;
-			} else {
-				return Math.floor(randomNumber);
-			}
-		}
-
-		function debounce(func, wait, immediate) {
-			let timeout;
-			
-			return function(...args) {
-				let context = this;
-				clearTimeout(timeout);
-				
-				timeout = setTimeout(function() {
-					timeout = null;
-					if (!immediate) func.apply(context, args);
-				}, wait);
-				
-				if (immediate && !timeout) func.apply(context, args);
-			}
-		}
-
-		/**
-		 * The input values are percentages of the screen that the number can be picked within.
-		 *
-		 * For example, `pickRandomCoordinateOnScreen(0, 0.5, 0.75, 1)` can be picked within the
-		 * first 50% of the x axis (left half) and the last 25% of the y axis (bottom quarter).
-		 */
-		function pickRandomCoordinateOnScreen(xMin = 0, xMax = 1, yMin = 0, yMax = 1) {
-			const maxX = window.innerWidth;
-			const maxY = window.innerHeight;
-
-			const x = rescale(random(0, maxX), 0, maxX, xMin * maxX, xMax * maxX);
-			const y = rescale(random(0, maxY), 0, maxY, yMin * maxY, yMax * maxY);
-
-			return { x, y };
-		}
-
-		/**
-		* Classes
-		*/
-		class Meteor {
-			constructor(x, y, speed) {
-				this.pos = { x, y };
-				const velScale = Math.min(window.innerWidth, window.innerHeight);
-				this.vel = { x: -speed * velScale, y: speed * velScale };
-				this.opacity = 1;
-				this.scale = random(0.2, 0.7);
-				
-				this.created = Date.now();
-				
-				this.element = document.createElement('div');
-				this.element.classList.add('meteor');
-				document.body.appendChild(this.element);
-			}
-			
-			update() {
-				this.pos.x += this.vel.x * this.scale;
-				this.pos.y += this.vel.y * this.scale;
-				this.updateElementStyle()
-			}
-			
-			updateElementStyle() {
-				this.element.style = `
-					top: ${this.pos.y}px;
-					left: ${this.pos.x}px;
-					opacity: ${this.opacity};
-					transform: rotate(-45deg) scale(${this.scale});
-				`
-			}
-			
-			cleanup() {
-				this.element.remove();
-			}
-		}
-
-		class Stars {
-			constructor(gridSize = STARS_GRID_SIZE, density = STARS_DENSITY) {
-				this.gridSize = gridSize;
-				this.density = density;
-				
-				this.element = document.createElement('div');
-				this.element.classList.add('stars');
-				document.body.appendChild(this.element);
-				
-				this.update = debounce(this.update.bind(this), 500);
-				this.update();
-				window.addEventListener('resize', this.update);
-			}
-			
-			stars = [];
-			
-			update() {	
-				const translations = [];
-				
-				const w = window.screen.width;
-				const h = window.screen.height;
-				const count = Math.floor(Math.sqrt(w * h) / this.density * this.gridSize * this.gridSize);
-
-				for (let x = 0; x < 1; x += this.gridSize) {
-					for (let y = 0; y < 1; y += this.gridSize) {
-						for (let i = 0; i < count; i++) {
-							const xMax = x + this.gridSize;
-							const yMax = y + this.gridSize;
-							const coordinate = pickRandomCoordinateOnScreen()
-							translations.push(`${coordinate.x}px ${coordinate.y}px`);
-						}
-					}
-				}
-				
-				this.element.style = `
-					box-shadow: ${translations
-						.map((x) => `rgb(255, 255, 255) ${x}`)
-						.join(', ')};
-				`
-			}
-			
-			cleanup() {
-				window.removeEventListener('resize', this.update);
-				this.element.remove();
-			}
-		}
-
-		function spawnMeteor() {
-			const startPoint = pickRandomCoordinateOnScreen(0.1, 1.5, -0.5, -0.25);
-			const meteor = new Meteor(startPoint.x, startPoint.y, METEOR_SPEED);
-			
-			let frame = 0
-			function updateMeteor() {
-				meteor.update();
-				const isWithinScreen = meteor.pos.x > -(window.innerWidth / 2) && meteor.pos.y < (window.innerHeight * 2);
-				if (isWithinScreen && ++frame < METEOR_MAX_FRAMES && Date.now() - meteor.created < METEOR_MAX_LIFE) {
-					requestAnimationFrame(updateMeteor);
-				} else {
-					meteor.cleanup();
-				}
-			}
-			
-			updateMeteor()
-			setTimeout(spawnMeteor, random(2.7 * METEOR_SPAWN_INTERVAL, 6.3 * METEOR_SPAWN_INTERVAL));
-		}
-
-		/**
-		* Main
-		*/
-		// stars = new Stars();
-		// spawnMeteor();
-
 		//____________________________
 		//
 		// 			Meteor Shower 
@@ -664,15 +292,82 @@
 		// https://codepen.io/jh3y/pen/XoXgPP
 
 
-		
+		function meteorShower() {
+
+			const cLandscapeFrame = document.getElementById('middle');
+
+			// I. PARENT DIV
+			const meteorShowerParentDiv = document.createElement("div");
+			meteorShowerParentDiv.setAttribute ('class', 'o-meteorShower__parent');
+			meteorShowerParentDiv.setAttribute ('id', 'meteorShower__parent');
+	
+			for (let p = 0; p < 7; p++ ) {
+				// Meteor Features
+				let meteorFeatures = {
+					"angle"	:	Math.floor(Math.random() * (95 - 45 + 1) + 45),
+					"speed"	:	Math.floor(Math.random() * (20 - 8 + 1) + 8),
+					"delay"	:	Math.floor(Math.random() * (25 - 1 + 1) + 1),
+					"x"		:	Math.floor(Math.random() * (80 - 0 + 1) + 0),
+					"y"		:	Math.floor(Math.random() * (25 - 0 + 1) + 0),
+					"travel":	Math.floor(Math.random() * (50 - 10 + 1) + 10),
+					"trail":	Math.floor(Math.random() * (5 - 1 + 1) + 1),
+				};	
+
+				// II. CHILD DIV
+				const meteorShowerChildDiv = document.createElement("div");
+				meteorShowerChildDiv.setAttribute ('class', 'o-meteorShower o-meteorShower --'+p);
+				meteorShowerChildDiv.setAttribute ('id', 'meteorShower --'+p);
+				
+				meteorShowerChildDiv.style.setProperty('--angle', Object.values(meteorFeatures)[0] );
+				meteorShowerChildDiv.style.setProperty('--speed', Object.values(meteorFeatures)[1] );
+				meteorShowerChildDiv.style.setProperty('--delay', Object.values(meteorFeatures)[2] );
+				meteorShowerChildDiv.style.setProperty('--x', Object.values(meteorFeatures)[3] );
+				meteorShowerChildDiv.style.setProperty('--y', Object.values(meteorFeatures)[4] );
+				meteorShowerChildDiv.style.setProperty('--travel', Object.values(meteorFeatures)[5] );
+				meteorShowerChildDiv.style.setProperty('--trail', Object.values(meteorFeatures)[6] );
+			  
+				// Connect Child To Father
+				meteorShowerParentDiv.appendChild(meteorShowerChildDiv);
+
+				// II. GRANDCHILD DIV
+				const meteorShowerGrandchildDiv = document.createElement("div");
+				meteorShowerGrandchildDiv.setAttribute ('class', 'o-meteorShower__child o-meteorShower__child --'+p);
+				meteorShowerGrandchildDiv.setAttribute ('id', 'meteorShower__child --'+p);	
+				
+				// Connect Grandchild To Child
+				meteorShowerChildDiv.appendChild(meteorShowerGrandchildDiv);	
+				
+				
+				// Connect Father to <sectopn> tag
+				cLandscapeFrame.appendChild(meteorShowerParentDiv);
+			}
+		}
+		meteorShower();
 		
 		//__________________________________________________________________________
 		//
 		//	 							MOUSE
 		//__________________________________________________________________________
 
-		let circle = $('.o-centerCircle');
-		let follow = $('.o-followCircle');
+		function cursorCircle() {
+			const cLandscapeFrame = document.getElementById('middle');
+
+			// create a Div element with class and id
+			const circleDiv = document.createElement("div");
+			circleDiv.setAttribute ('class', 'o-centerCircle');
+			circleDiv.setAttribute ('id', 'centerCircle');
+
+			// create a Div element with class and id
+			const followDiv = document.createElement("div");
+			followDiv.setAttribute ('class', 'o-followCircle');
+			followDiv.setAttribute ('id', 'followCircle');
+
+			cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
+			cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
+
+		}
+		cursorCircle();
+
 
 
 	
@@ -733,9 +428,6 @@
 			});
 		});
 
-
-
-
 		//____________________________
 		//
 		// 			Resize
@@ -743,10 +435,6 @@
 
 		window.addEventListener('resize', function() {
 			canvasDimension();
-			// stars();
-			// drawMultiWaves(canvasWidth, canvasHeight);
-			// drawSingleWaves(canvasWidth, canvasHeight);
-			// drawSineWaves();
 		});
 
 	}); // [END] Javascript Document Ready

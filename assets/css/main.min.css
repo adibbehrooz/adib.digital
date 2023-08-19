@@ -502,6 +502,45 @@ video {
   transform: scale(3);
   background: black;
 }
+.o-meteorShower {
+  position: absolute;
+  top: calc(var(--y) * 1vh);
+  left: calc(var(--x) * 1vw);
+  animation: shoot calc(var(--speed) * 1s) calc(var(--delay) * 1s) infinite linear both;
+}
+.o-meteorShower__child {
+  height: 2px;
+  width: 25px;
+  position: absolute;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.85));
+  border-radius: 100% 25% 25% 100%;
+  filter: blur(1px);
+  transform-origin: right;
+  filter: drop-shadow(0 0 5px #fafafa);
+  animation: spark calc(var(--speed) * 1s) calc(var(--delay) * 1s) infinite linear both;
+}
+@media (min-width: 768px) {
+  .o-meteorShower__child {
+    height: 5px;
+    width: 50px;
+  }
+}
+@keyframes shoot {
+  0% {
+    transform: rotate(calc(var(--angle) * 1deg));
+  }
+  5%, 100% {
+    transform: rotate(calc(var(--angle) * 1deg)) translate(calc(var(--travel) * 1vw), 0);
+  }
+}
+@keyframes spark {
+  0%, 5%, 100% {
+    transform: scaleX(0);
+  }
+  1%, 4% {
+    transform: scaleX(var(--trail));
+  }
+}
 /****************************************** COMPONENTS *************************************
 /*******************************************************************************************/
 /*
@@ -643,26 +682,5 @@ video {
 }
 /****************************************** PLUGINS *************************************
 /****************************************************************************************/
-.meteor {
-  background-image: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0));
-  opacity: 1;
-  transform: rotate(-45deg);
-  width: 300px;
-}
-.meteor:before {
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  box-shadow: 0 0 15px 3px #fff;
-  content: "";
-  height: 5px;
-  margin-top: -2px;
-  position: fixed;
-  width: 4px;
-}
-.meteor {
-  height: 1px;
-  position: fixed;
-  z-index: -1;
-}
 /****************************************** MISC ****************************************
 /****************************************************************************************/
