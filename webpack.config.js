@@ -5,30 +5,30 @@
 	Author: Mohammad Bagher Adib Behrooz
 	Version: 1.0
 */
-	//______________________
+	//___________________________________________
 	//
-	// 		I. Require
-	//______________________
+	// 				I. Require
+	//___________________________________________
 
 	const webpack				= require('webpack');
 	const path					= require('path');
 	const BrowserSyncPlugin 	= require('browser-sync-webpack-plugin');
 
 
-	//________________________
+	//___________________________________________
 	//
-	// 		II. Constants
-	//________________________
+	// 				II. Constants
+	//___________________________________________
 
 	const MiniCssExtractPlugin	= require('mini-css-extract-plugin');
 	const CssMinimizerPlugin 	= require('css-minimizer-webpack-plugin');
 	const TerserPlugin			= require("terser-webpack-plugin");
 
 
-	//______________________
+	//___________________________________________
 	//
-	// 		III. Exports
-	//______________________
+	// 				III. Exports
+	//___________________________________________
 
 	module.exports = {
 
@@ -65,23 +65,6 @@
 			new MiniCssExtractPlugin({
 				filename: '../../css/main.min.css',
 				chunkFilename: '[id].css',
-			}),
-
-			// JQuery
-			new webpack.ProvidePlugin({
-				$: 'jquery',
-				jQuery: 'jquery',
-			}),
-
-			// SineWaves
-			new webpack.ProvidePlugin({
-				'SineWaves':
-				 'sine-waves'
-			}),
-
-			// gsap
-			new webpack.ProvidePlugin({
-				'gsap': 'gsap'
 			}),
 
 			// Browser Sync
@@ -243,7 +226,7 @@
 				
 				// 2. JS
 				SineWaves:		path.resolve(__dirname,'./node_modules/sine-waves/sine-waves.js'),
-			},			
+			},
 			extensions: ['.js', '.jsx', '.css', '.scss'],
 			extensionAlias: {
 				'.js': ['.ts', '.js'],

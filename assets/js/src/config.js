@@ -12,7 +12,6 @@
 
 	document.addEventListener("DOMContentLoaded", function() {
 
-
 		//__________________________________________________________________________
 		//
 		//	 						TAILWIND SCREEN IN JS
@@ -289,9 +288,6 @@
 		// 			Meteor Shower 
 		//____________________________
 
-		// https://codepen.io/jh3y/pen/XoXgPP
-
-
 		function meteorShower() {
 
 			const cLandscapeFrame = document.getElementById('middle');
@@ -344,32 +340,7 @@
 		}
 		meteorShower();
 		
-		//__________________________________________________________________________
-		//
-		//	 							MOUSE
-		//__________________________________________________________________________
-
-		function cursorCircle() {
-			const cLandscapeFrame = document.getElementById('middle');
-
-			// create a Div element with class and id
-			const circleDiv = document.createElement("div");
-			circleDiv.setAttribute ('class', 'o-centerCircle');
-			circleDiv.setAttribute ('id', 'centerCircle');
-
-			// create a Div element with class and id
-			const followDiv = document.createElement("div");
-			followDiv.setAttribute ('class', 'o-followCircle');
-			followDiv.setAttribute ('id', 'followCircle');
-
-			cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
-			cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
-
-		}
-		cursorCircle();
-
-
-
+			
 	
 		// I. Mouser Over
 		//_______________________________________
@@ -437,15 +408,37 @@
 			canvasDimension();
 		});
 
+		//__________________________________________________________________________
+		//
+		//	 							MOUSE
+		//__________________________________________________________________________
+
+		function cursorCircle() {
+			const cLandscapeFrame = document.getElementById('middle');
+
+			// create a Div element with class and id
+			const circleDiv = document.createElement("div");
+			circleDiv.setAttribute ('class', 'o-centerCircle');
+			circleDiv.setAttribute ('id', 'centerCircle');
+
+			// create a Div element with class and id
+			const followDiv = document.createElement("div");
+			followDiv.setAttribute ('class', 'o-followCircle');
+			followDiv.setAttribute ('id', 'followCircle');
+
+			cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
+			cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
+			
+			cLandscapeFrame.addEventListener("mousemove", (event) => {
+				let x = event.clientX;
+				let y = event.clientY;
+				circleDiv.style.left = x + 'px';
+				circleDiv.style.top  = y + 'px';
+
+				followDiv.style.left = x + 'px';
+				followDiv.style.top  = y + 'px';
+			});
+		}
+		cursorCircle();
+
 	}); // [END] Javascript Document Ready
-
-
-
-	//__________________________________________________________________________
-	//
-	//	 							JQUERY
-	//__________________________________________________________________________
-
-	jQuery(function () {
-
-	}); // [END] JQuery

@@ -427,6 +427,9 @@ video {
 .top-64 {
   top: 16rem;
 }
+.z-50 {
+  z-index: 50;
+}
 @tailwind variants;
 /******************************************* TOOLS *****************************************
 /*******************************************************************************************/
@@ -509,7 +512,7 @@ video {
   animation: shoot calc(var(--speed) * 1s) calc(var(--delay) * 1s) infinite linear both;
 }
 .o-meteorShower__child {
-  height: 2px;
+  height: 1px;
   width: 25px;
   position: absolute;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.85));
