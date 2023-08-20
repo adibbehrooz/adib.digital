@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //frames per second
     this.fps = 5;
     //number of particles
-    this.numParticles = 1100;
+    this.numParticles = 1000;
     //required canvas variables
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
@@ -421,14 +421,34 @@ document.addEventListener("DOMContentLoaded", function () {
     followDiv.setAttribute('id', 'followCircle');
     cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
     cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
-    cLandscapeFrame.addEventListener("mousemove", event => {
-      let x = event.clientX;
-      let y = event.clientY;
-      circleDiv.style.left = x + 'px';
-      circleDiv.style.top = y + 'px';
-      followDiv.style.left = x + 'px';
-      followDiv.style.top = y + 'px';
-    });
+    let ease = 0.13,
+      targetX = 0,
+      targetY = 0,
+      currentX = 0,
+      currentY = 0;
+    const landscapeWidth = followDiv.getBoundingClientRect().width;
+    const landscapeHeight = followDiv.getBoundingClientRect().height;
+
+    // Compute target position
+    const onMouseMove = moveEvent => {
+      targetX = moveEvent.pageX - landscapeWidth / 2;
+      targetY = moveEvent.pageY - landscapeHeight / 2;
+    };
+
+    // Move the cursor
+    const animate = () => {
+      requestAnimationFrame(animate);
+      currentX += (targetX - currentX) * ease;
+      currentY += (targetY - currentY) * ease;
+      const translate3d = `translate3d(${currentX}px,${currentY}px,0px)`;
+      let styleDiv = followDiv.style;
+      styleDiv['transform'] = translate3d;
+      styleDiv['webkitTransform'] = translate3d;
+      styleDiv['mozTransform'] = translate3d;
+      styleDiv['msTransform'] = translate3d;
+    };
+    animate();
+    document.body.addEventListener('mousemove', onMouseMove);
   }
   cursorCircle();
 }); // [END] Javascript Document Ready
