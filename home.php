@@ -26,16 +26,6 @@
 		<canvas id="canvas"></canvas>
 		<div class="absolute top-64"><canvas id="firstwaves"></canvas></div>
 
-		<div class="one-box z-50"></div>
-
-		<style>
-		.one-box {
-			width: 300px;
-			height: 300px;
-			background: green;
-		}
-	</style>
-
 	</section>
 
 	<?php get_footer(); ?>

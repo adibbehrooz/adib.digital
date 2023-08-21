@@ -1,24 +1,13 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/js/src/ajax.js":
-/*!*******************************!*\
-  !*** ./assets/js/src/ajax.js ***!
-  \*******************************/
+/***/ "./assets/js/src/canvas.js":
+/*!*********************************!*\
+  !*** ./assets/js/src/canvas.js ***!
+  \*********************************/
 /***/ (() => {
 
-/*
-	Theme Name: AdibOnline Theme
-	Theme URI: http://www.adibbehrooz.com/
-	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
-	Author: Mohammad Bagher Adib Behrooz
-	Version: 1.0
-*/
-
-/******************************** Configuration ********************************
-/*******************************************************************************/
-
-document.addEventListener("DOMContentLoaded", function () {});
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: /home/adibmint/Dropbox/www/website/lib/themes/adib.online/assets/js/src/canvas.js: Unexpected token (20:9)\n\n\u001b[0m \u001b[90m 18 |\u001b[39m \t\tvoice \u001b[33m=\u001b[39m \u001b[32m'Owoo'\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 19 |\u001b[39m \t\tname \u001b[33m=\u001b[39m \u001b[32m'Hedwig'\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 20 |\u001b[39m \t\tconsole\u001b[33m.\u001b[39mlog(screens)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m \t\t       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 21 |\u001b[39m \t\t\t\u001b[0m\n\u001b[0m \u001b[90m 22 |\u001b[39m \t\t\t\u001b[0m\n\u001b[0m \u001b[90m 23 |\u001b[39m \t\t\u001b[90m//sreensKeys = Object.keys(customScreens);\u001b[39m\u001b[0m\n    at instantiate (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:63:32)\n    at constructor (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:358:12)\n    at Parser.raise (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:3255:19)\n    at Parser.unexpected (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:3285:16)\n    at Parser.parseClassMemberWithIsStatic (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:13547:12)\n    at Parser.parseClassMember (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:13435:10)\n    at /home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:13385:14\n    at Parser.withSmartMixTopicForbiddingContext (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:12257:14)\n    at Parser.parseClassBody (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:13365:10)\n    at Parser.parseClass (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:13343:22)\n    at Parser.parseExprAtom (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:11189:21)\n    at Parser.parseNoCallExpr (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:11110:38)\n    at Parser.parseNewCallee (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:11596:24)\n    at Parser.parseNew (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:11585:10)\n    at Parser.parseNewOrNewTarget (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:11582:17)\n    at Parser.parseExprAtom (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:11191:21)\n    at Parser.parseExprSubscripts (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10890:23)\n    at Parser.parseUpdate (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10873:21)\n    at Parser.parseMaybeUnary (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10849:23)\n    at Parser.parseMaybeUnaryOrPrivate (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10687:61)\n    at Parser.parseExprOps (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10692:23)\n    at Parser.parseMaybeConditional (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10669:23)\n    at Parser.parseMaybeAssign (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10630:21)\n    at Parser.parseMaybeAssign (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10656:25)\n    at Parser.parseExpressionBase (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10584:23)\n    at /home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10580:39\n    at Parser.allowInAnd (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:12275:16)\n    at Parser.parseExpression (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:10580:17)\n    at Parser.parseStatementContent (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:12733:23)\n    at Parser.parseStatementLike (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:12584:17)\n    at Parser.parseModuleItem (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:12561:17)\n    at Parser.parseBlockOrModuleBlockBody (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:13185:36)\n    at Parser.parseBlockBody (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:13178:10)\n    at Parser.parseProgram (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:12460:10)\n    at Parser.parseTopLevel (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:12450:25)\n    at Parser.parse (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:14345:10)\n    at parse (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/parser/lib/index.js:14386:38)\n    at parser (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/core/lib/parser/index.js:41:34)\n    at parser.next (<anonymous>)\n    at normalizeFile (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/core/lib/transformation/normalize-file.js:64:38)\n    at normalizeFile.next (<anonymous>)\n    at run (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/core/lib/transformation/index.js:21:50)\n    at run.next (<anonymous>)\n    at transform (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/@babel/core/lib/transform.js:22:41)\n    at transform.next (<anonymous>)\n    at step (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/gensync/index.js:261:32)\n    at /home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/gensync/index.js:273:13\n    at async.call.result.err.err (/home/adibmint/Dropbox/www/website/lib/themes/adib.online/node_modules/gensync/index.js:223:11)");
 
 /***/ }),
 
@@ -42,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {});
 document.addEventListener("DOMContentLoaded", function () {
   //__________________________________________________________________________
   //
-  //	 						TAILWIND SCREEN IN JS
+  //	TAILWIND SCREEN IN JS
   //__________________________________________________________________________
 
   const customScreens = (__webpack_require__(/*! ../../../tailwind.config.js */ "./tailwind.config.js").variants.theme.screens);
@@ -100,12 +89,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //__________________________________________________________________________
   //
-  //	 							CANVAS
+  //	 CANVAS
   //__________________________________________________________________________
 
   //____________________________
   //
-  // 			Global Data
+  // 	Global Data
   //____________________________
 
   const canvas = document.getElementById("canvas");
@@ -115,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //____________________________
   //
-  // 			Dimension
+  // 	Dimension
   //____________________________
 
   function canvasDimension() {
@@ -127,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //____________________________
   //
-  // 		Draw Stars With Move
+  // 	Draw Stars With Move
   //____________________________
 
   /**
@@ -147,11 +136,11 @@ document.addEventListener("DOMContentLoaded", function () {
     this.maxOpacity = 1;
     //particle speed min/max
     this.minSpeed = .005;
-    this.maxSpeed = .15;
+    this.maxSpeed = .19;
     //frames per second
-    this.fps = 5;
+    this.fps = 3;
     //number of particles
-    this.numParticles = 1000;
+    this.numParticles = 800;
     //required canvas variables
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
@@ -240,9 +229,12 @@ document.addEventListener("DOMContentLoaded", function () {
     var self = this,
       ctx = self.ctx;
     setInterval(function () {
+      // const starAnimate = () => {
       //clears canvas
       self.clearCanvas();
       //then redraws particles in new positions based on velocity
+      const fps = 25;
+      // setTimeout(() => { requestAnimationFrame(starAnimate); }, 1000 / fps);
       for (var i = 0; i < self.numParticles; i++) {
         particle[i].xPos += particle[i].xVelocity;
         particle[i].yPos -= particle[i].yVelocity;
@@ -254,6 +246,8 @@ document.addEventListener("DOMContentLoaded", function () {
           self.draw(particle, i);
         }
       }
+      // }
+      // starAnimate();
     }, 200 / self.fps);
   };
 
@@ -290,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //____________________________
   //
-  // 			Meteor Shower 
+  // 	Meteor Shower 
   //____________________________
 
   function meteorShower() {
@@ -395,7 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //____________________________
   //
-  // 			Resize
+  // 	Resize
   //____________________________
 
   window.addEventListener('resize', function () {
@@ -404,7 +398,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //__________________________________________________________________________
   //
-  //	 							MOUSE
+  //	 MOUSE
   //__________________________________________________________________________
 
   function cursorCircle() {
@@ -421,37 +415,106 @@ document.addEventListener("DOMContentLoaded", function () {
     followDiv.setAttribute('id', 'followCircle');
     cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
     cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
-    let ease = 0.13,
-      targetX = 0,
-      targetY = 0,
-      currentX = 0,
-      currentY = 0;
-    const landscapeWidth = followDiv.getBoundingClientRect().width;
+
+    //________________ Mehod 1 [No Effect] ________________
+    /*
+    cLandscapeFrame.addEventListener("mousemove", (eventMove) => {
+    	let mouseX = eventMove.pageX;
+    	let mouseY = eventMove.pageY;
+    		circleDiv.style.left = mouseX + 'px';
+    	circleDiv.style.top  = mouseY + 'px';
+    		followDiv.style.left = mouseX + 'px';
+    	followDiv.style.top  = mouseY + 'px';
+    	});
+    */
+    //________________ Mehod 2 [requestAnimationFrame] ________________
+    /*
+    let ease = 0.2, 
+    	targetX = 0,
+    	targetY = 0,
+    	currentX = 0,
+    	currentY = 0;
+    	const landscapeWidth = followDiv.getBoundingClientRect().width;
     const landscapeHeight = followDiv.getBoundingClientRect().height;
-
-    // Compute target position
-    const onMouseMove = moveEvent => {
-      targetX = moveEvent.pageX - landscapeWidth / 2;
-      targetY = moveEvent.pageY - landscapeHeight / 2;
+    	// Compute target position
+    const onMouseMove = (moveEvent) => {
+    	targetX = moveEvent.pageX - (landscapeWidth/2);
+    	targetY = moveEvent.pageY - (landscapeHeight/2);
     };
-
+    
     // Move the cursor
     const animate = () => {
-      requestAnimationFrame(animate);
-      currentX += (targetX - currentX) * ease;
-      currentY += (targetY - currentY) * ease;
-      const translate3d = `translate3d(${currentX}px,${currentY}px,0px)`;
-      let styleDiv = followDiv.style;
-      styleDiv['transform'] = translate3d;
-      styleDiv['webkitTransform'] = translate3d;
-      styleDiv['mozTransform'] = translate3d;
-      styleDiv['msTransform'] = translate3d;
+    	currentX += (targetX - currentX) * ease;
+    	currentY += (targetY - currentY) * ease;
+    		const translate3d = `translate3d(${currentX}px,${currentY}px,0px)`;
+    	let styleDiv = followDiv.style;
+    	styleDiv['transform'] = translate3d;
+    	
+    	requestAnimationFrame(animate);
     };
     animate();
     document.body.addEventListener('mousemove', onMouseMove);
+    */
+
+    //________________ Mehod 3 [GSAP] ________________
+
+    gsap.set(".o-followCircle", {
+      xPercent: -50,
+      yPercent: -50
+    });
+    const ball = document.querySelector(".o-followCircle");
+    const pos = {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2
+    };
+    const mouse = {
+      x: pos.x,
+      y: pos.y
+    };
+    const speed = 0.2;
+    const xSet = gsap.quickSetter(ball, "x", "px");
+    const ySet = gsap.quickSetter(ball, "y", "px");
+    window.addEventListener("mousemove", mouseEvent => {
+      mouse.x = mouseEvent.x;
+      mouse.y = mouseEvent.y;
+    });
+    gsap.ticker.add(() => {
+      // adjust speed for higher refresh monitors
+      const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
+      pos.x += (mouse.x - pos.x) * dt;
+      pos.y += (mouse.y - pos.y) * dt;
+      xSet(pos.x);
+      ySet(pos.y);
+    });
   }
   cursorCircle();
+
+  //__________________________________________________________________________
+  //
+  //	 PAN
+  //__________________________________________________________________________		
 }); // [END] Javascript Document Ready
+
+/***/ }),
+
+/***/ "./assets/js/src/sky.js":
+/*!******************************!*\
+  !*** ./assets/js/src/sky.js ***!
+  \******************************/
+/***/ (() => {
+
+/*
+	Theme Name: AdibOnline Theme
+	Theme URI: http://www.adibbehrooz.com/
+	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
+	Author: Mohammad Bagher Adib Behrooz
+	Version: 1.0
+*/
+
+/******************************** SKY ********************************
+/*********************************************************************/
+
+document.addEventListener("DOMContentLoaded", function () {});
 
 /***/ }),
 
@@ -725,8 +788,8 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./assets/js/src/config.js");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_config__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ajax */ "./assets/js/src/ajax.js");
-/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_ajax__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _sky__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sky */ "./assets/js/src/sky.js");
+/* harmony import */ var _sky__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_sky__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var main__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! main */ "./assets/scss/main.scss");
 /*
 	Theme Name: AdibOnline Theme
@@ -744,8 +807,17 @@ __webpack_require__.r(__webpack_exports__);
 /* 							I. Bundle Javascript
 /*____________________________________________________________________________*/
 
- // I. CONFIG
- // II. AJAX
+ // I. Config
+// import './canvas'; // II. Canvas
+ // III. Sky
+
+document.addEventListener("DOMContentLoaded", function () {
+  const Owl = __webpack_require__(/*! ./canvas */ "./assets/js/src/canvas.js");
+  console.log('Information about owl: ', Owl);
+  console.log('Who is owl: ', Owl.whoIs());
+  console.log('What owl says: ', Owl.getVoice());
+  console.log('What is your name, Owl: ', Owl.getName());
+});
 
 /*____________________________________________________________________________*/
 /*

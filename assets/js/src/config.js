@@ -14,7 +14,7 @@
 
 		//__________________________________________________________________________
 		//
-		//	 						TAILWIND SCREEN IN JS
+		//	TAILWIND SCREEN IN JS
 		//__________________________________________________________________________
 
 		const customScreens = require("../../../tailwind.config.js").variants.theme.screens;
@@ -83,13 +83,13 @@
 
 		//__________________________________________________________________________
 		//
-		//	 							CANVAS
+		//	 CANVAS
 		//__________________________________________________________________________
 
 
 		//____________________________
 		//
-		// 			Global Data
+		// 	Global Data
 		//____________________________
 
 		const canvas = document.getElementById("canvas");
@@ -100,7 +100,7 @@
 
 		//____________________________
 		//
-		// 			Dimension
+		// 	Dimension
 		//____________________________
 
 		function canvasDimension() {
@@ -112,7 +112,7 @@
 
 		//____________________________
 		//
-		// 		Draw Stars With Move
+		// 	Draw Stars With Move
 		//____________________________
 
 		/**
@@ -134,11 +134,11 @@
 			this.maxOpacity = 1;
 			//particle speed min/max
 			this.minSpeed = .005;
-			this.maxSpeed = .15;
+			this.maxSpeed = .19;
 			//frames per second
-			this.fps = 5;
+			this.fps = 3;
 			//number of particles
-			this.numParticles = 1000;
+			this.numParticles = 800;
 			//required canvas variables
 			this.canvas = document.getElementById('canvas');
 			this.ctx = this.canvas.getContext('2d');
@@ -232,9 +232,12 @@
 				ctx = self.ctx;
 
 			setInterval(function(){
+			// const starAnimate = () => {
 				//clears canvas
 				self.clearCanvas();
 				//then redraws particles in new positions based on velocity
+				const fps = 25;
+				// setTimeout(() => { requestAnimationFrame(starAnimate); }, 1000 / fps);
 				for (var i = 0; i < self.numParticles; i++) {
 					particle[i].xPos += particle[i].xVelocity;
 					particle[i].yPos -= particle[i].yVelocity;
@@ -246,6 +249,8 @@
 						self.draw(particle, i);
 					}
 				}
+			// }
+			// starAnimate();
 			}, 200/self.fps);
 		}
 
@@ -285,7 +290,7 @@
 
 		//____________________________
 		//
-		// 			Meteor Shower 
+		// 	Meteor Shower 
 		//____________________________
 
 		function meteorShower() {
@@ -321,7 +326,7 @@
 				meteorShowerChildDiv.style.setProperty('--y', Object.values(meteorFeatures)[4] );
 				meteorShowerChildDiv.style.setProperty('--travel', Object.values(meteorFeatures)[5] );
 				meteorShowerChildDiv.style.setProperty('--trail', Object.values(meteorFeatures)[6] );
-			  
+			 
 				// Connect Child To Father
 				meteorShowerParentDiv.appendChild(meteorShowerChildDiv);
 
@@ -401,7 +406,7 @@
 
 		//____________________________
 		//
-		// 			Resize
+		// 	Resize
 		//____________________________
 
 		window.addEventListener('resize', function() {
@@ -410,7 +415,7 @@
 
 		//__________________________________________________________________________
 		//
-		//	 							MOUSE
+		//	 MOUSE
 		//__________________________________________________________________________
 
 		function cursorCircle() {
@@ -428,7 +433,24 @@
 
 			cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
 			cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
-			let 	ease = 0.13, 
+			
+			//________________ Mehod 1 [No Effect] ________________
+			/*
+			cLandscapeFrame.addEventListener("mousemove", (eventMove) => {
+				let mouseX = eventMove.pageX;
+				let mouseY = eventMove.pageY;
+
+				circleDiv.style.left = mouseX + 'px';
+				circleDiv.style.top  = mouseY + 'px';
+
+				followDiv.style.left = mouseX + 'px';
+				followDiv.style.top  = mouseY + 'px';
+
+			});
+			*/		
+			//________________ Mehod 2 [requestAnimationFrame] ________________
+			/*
+			let ease = 0.2, 
 				targetX = 0,
 				targetY = 0,
 				currentX = 0,
@@ -445,22 +467,56 @@
 			
 			// Move the cursor
 			const animate = () => {
-				requestAnimationFrame(animate);
 				currentX += (targetX - currentX) * ease;
 				currentY += (targetY - currentY) * ease;
-  
+
 				const translate3d = `translate3d(${currentX}px,${currentY}px,0px)`;
 				let styleDiv = followDiv.style;
-  
 				styleDiv['transform'] = translate3d;
-				styleDiv['webkitTransform'] = translate3d;
-				styleDiv['mozTransform'] = translate3d;
-				styleDiv['msTransform'] = translate3d;
+				
+				requestAnimationFrame(animate);
 			};
 			animate();
 			document.body.addEventListener('mousemove', onMouseMove);
+			*/
 			
-			}
+			//________________ Mehod 3 [GSAP] ________________
+			
+			gsap.set(".o-followCircle", {xPercent: -50, yPercent: -50});
+
+			const ball = document.querySelector(".o-followCircle");
+			const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+			const mouse = { x: pos.x, y: pos.y };
+			const speed = 0.2;
+
+			const xSet = gsap.quickSetter(ball, "x", "px");
+			const ySet = gsap.quickSetter(ball, "y", "px");
+
+			window.addEventListener("mousemove", mouseEvent => {    
+			 	mouse.x = mouseEvent.x;
+			 	mouse.y = mouseEvent.y;  
+			});
+
+			gsap.ticker.add(() => {
+			  
+				// adjust speed for higher refresh monitors
+				const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio()); 
+			  
+				pos.x += (mouse.x - pos.x) * dt;
+				pos.y += (mouse.y - pos.y) * dt;
+				xSet(pos.x);
+				ySet(pos.y);
+			});
+			
+		}
 		cursorCircle();
+
+		//__________________________________________________________________________
+		//
+		//	 PAN
+		//__________________________________________________________________________		
+		
+
+	
 
 	}); // [END] Javascript Document Ready

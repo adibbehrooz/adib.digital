@@ -238,7 +238,7 @@
 		z-index: 6;
 		transform: scale(1);
 		transform: translate(2px, 2px);
-		box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+		box-shadow: 0 0 13px rgba(255, 255, 255, 0.6);
 		&.active {
 			transform: scale(3);
 			background: black;
@@ -275,23 +275,22 @@
 
 	@keyframes shoot {
 		0% {
-		  transform: rotate(calc(var(--angle) * 1deg));
+			transform: rotate(calc(var(--angle) * 1deg));
 		}
 		5%, 100% {
-		  transform: rotate(calc(var(--angle) * 1deg)) translate(calc(var(--travel) * 1vw), 0);
+			transform: rotate(calc(var(--angle) * 1deg)) translate(calc(var(--travel) * 1vw), 0);
 		}
 	}
 	 
 
 	@keyframes spark {
 		0%, 5%, 100% {
-		  transform: scaleX(0);
+			transform: scaleX(0);
 		}
 		1%, 4% {
-		  transform: scaleX(var(--trail));
+			transform: scaleX(var(--trail));
 		}
 	}
-	  
 
 
 /****************************************** COMPONENTS *************************************
