@@ -17,6 +17,13 @@
 		//	TAILWIND SCREEN IN JS
 		//__________________________________________________________________________
 
+		// import resolveConfig from 'tailwindcss/resolveConfig'
+		// import tailwindConfig from '../../../tailwind.config.js'
+
+		// const fullConfig = resolveConfig(tailwindConfig)
+		// fullConfig.theme.width[4]; // => '1rem'
+		// fullConfig.theme.screens.md; // => '768px'
+
 		const customScreens = require("../../../tailwind.config.js").variants.theme.screens;
 		const sreensKeys = Object.keys(customScreens);
 		const screensValues = Object.values(customScreens);
@@ -411,6 +418,7 @@
 
 		window.addEventListener('resize', function() {
 			canvasDimension();
+			// new Particles().init();
 		});
 
 		//__________________________________________________________________________

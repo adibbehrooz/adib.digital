@@ -10,6 +10,9 @@ var __webpack_exports__ = {};
 	Author: Mohammad Bagher Adib Behrooz
 	Version: 1.0
 */
+
+/******************************** SAMPLE *******************************
+/***********************************************************************/
 /******/ })()
 ;
 //# sourceMappingURL=sample.js.map

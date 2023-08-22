@@ -17,15 +17,8 @@
 
 	import './config'; // I. Config
 	// import './canvas'; // II. Canvas
-	import './sky'; // III. Sky
-	
-	document.addEventListener("DOMContentLoaded", function() {
-	const Owl = require('./canvas');
-	console.log('Information about owl: ', Owl);
-	console.log('Who is owl: ', Owl.whoIs() );
-	console.log('What owl says: ',Owl.getVoice());
-	console.log('What is your name, Owl: ',Owl.getName());
-	});
+	// import './sky'; // III. Sky
+
 	
 	/*____________________________________________________________________________*/
 	/*
