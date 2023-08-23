@@ -40,7 +40,7 @@
 			THEME_DIR_JS_DIST.'/build.js', //source
 			null,
 			'1.0', //version
-			false //run in footer
+			true //run in footer
 		);
 
 		//_________ GSAP _________

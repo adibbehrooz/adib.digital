@@ -1,12 +1,187 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
+
+/***/ "./assets/js/src/canvas.js":
+/*!*********************************!*\
+  !*** ./assets/js/src/canvas.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Canvas: () => (/* binding */ Canvas)
+/* harmony export */ });
+/*
+	Theme Name: AdibOnline Theme
+	Theme URI: http://www.adibbehrooz.com/
+	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
+	Author: Mohammad Bagher Adib Behrooz
+	Version: 1.0
+*/
+
+/******************************** Canvas ********************************
+/************************************************************************/
+
+class Canvas {
+  //____________________________
+  //
+  // 	Constructor
+  //____________________________
+
+  constructor() {
+    // Global
+    this.canvas = document.getElementById('canvas');
+    this.ctx = canvas.getContext('2d');
+
+    // Pan 
+    this.cameraOffset = {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2
+    };
+    this.cameraZoom = 1;
+    this.MAX_ZOOM = 5;
+    this.MIN_ZOOM = 0.1;
+    this.SCROLL_SENSITIVITY = 0.0005;
+    this.isDragging = false;
+    this.dragStart = {
+      x: 0,
+      y: 0
+    };
+  }
+  //____________________________
+  //
+  // 	Responsive Canvas 
+  //____________________________
+
+  canvasResize() {
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+    this.canvas.width = windowWidth;
+    this.canvas.height = windowHeight;
+    window.addEventListener("resize", e => {
+      this.canvasResize();
+    });
+  }
+  //____________________________
+  //
+  // 	Cursor
+  //____________________________
+
+  canvasCursor() {
+    const cLandscapeFrame = document.getElementById('middle');
+
+    // create a Div element with class and id
+    const circleDiv = document.createElement("div");
+    circleDiv.setAttribute('class', 'o-centerCircle');
+    circleDiv.setAttribute('id', 'centerCircle');
+
+    // create a Div element with class and id
+    const followDiv = document.createElement("div");
+    followDiv.setAttribute('class', 'o-followCircle');
+    followDiv.setAttribute('id', 'followCircle');
+    cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
+    cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
+
+    //________________ [GSAP] ________________
+
+    gsap.set(".o-followCircle", {
+      xPercent: -50,
+      yPercent: -50
+    });
+    const ball = document.querySelector(".o-followCircle");
+    const pos = {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2
+    };
+    const mouse = {
+      x: pos.x,
+      y: pos.y
+    };
+    const speed = 0.2;
+    const xSet = gsap.quickSetter(ball, "x", "px");
+    const ySet = gsap.quickSetter(ball, "y", "px");
+    window.addEventListener("mousemove", mouseEvent => {
+      mouse.x = mouseEvent.x;
+      mouse.y = mouseEvent.y;
+    });
+    gsap.ticker.add(() => {
+      // adjust speed for higher refresh monitors
+      const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
+      pos.x += (mouse.x - pos.x) * dt;
+      pos.y += (mouse.y - pos.y) * dt;
+      xSet(pos.x);
+      ySet(pos.y);
+    });
+  }
+  //____________________________
+  //
+  // 	Pan
+  //____________________________
+
+  draw() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+
+    // Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
+    this.ctx.translate(window.innerWidth / 2, window.innerHeight / 2);
+    this.ctx.scale(this.cameraZoom, this.cameraZoom);
+    this.ctx.translate(-window.innerWidth / 2 + cameraOffset.x, -window.innerHeight / 2 + cameraOffset.y);
+    this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    this.ctx.fillStyle = "#991111";
+    this.drawRect(-50, -50, 100, 100);
+    this.ctx.fillStyle = "#eecc77";
+    this.drawRect(-35, -35, 20, 20);
+    this.drawRect(15, -35, 20, 20);
+    this.drawRect(-35, 15, 70, 20);
+    this.ctx.fillStyle = "#fff";
+    this.drawText("Simple Pan and Zoom Canvas", -255, -100, 32, "courier");
+    this.ctx.rotate(-31 * Math.PI / 180);
+    this.ctx.fillStyle = `#${(Math.round(Date.now() / 40) % 4096).toString(16)}`;
+    this.drawText("Now with touch!", -110, 100, 32, "courier");
+    this.ctx.fillStyle = "#fff";
+    this.ctx.rotate(31 * Math.PI / 180);
+    this.drawText("Wow, you found me!", -260, -2000, 48, "courier");
+    requestAnimationFrame(draw);
+  }
+  getEventLocation(event) {
+    if (event.touches && event.touches.length == 1) {
+      return {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY
+      };
+    } else if (event.clientX && event.clientY) {
+      return {
+        x: e.clientX,
+        y: e.clientY
+      };
+    }
+  }
+  onPointerDown(event) {
+    isDragging = true;
+    dragStart.x = getEventLocation(event).x / this.cameraZoom - this.cameraOffset.x;
+    dragStart.y = getEventLocation(event).y / this.cameraZoom - cameraOffset.y;
+  }
+  onPointerUp(event) {
+    isDragging = false;
+    initialPinchDistance = null;
+    lastZoom = cameraZoom;
+  }
+}
+;
+
+
+/***/ }),
 
 /***/ "./assets/js/src/config.js":
 /*!*********************************!*\
   !*** ./assets/js/src/config.js ***!
   \*********************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _canvas__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./canvas */ "./assets/js/src/canvas.js");
+/* harmony import */ var _sky__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sky */ "./assets/js/src/sky.js");
 /*
 	Theme Name: AdibOnline Theme
 	Theme URI: http://www.adibbehrooz.com/
@@ -18,111 +193,52 @@
 /******************************** Library Configuration ********************************
 /***************************************************************************************/
 
-document.addEventListener("DOMContentLoaded", function () {
-  //__________________________________________________________________________
-  //
-  //	TAILWIND SCREEN IN JS
-  //__________________________________________________________________________
+// I. Frame
+//__________
 
-  // import resolveConfig from 'tailwindcss/resolveConfig'
-  // import tailwindConfig from '../../../tailwind.config.js'
 
-  // const fullConfig = resolveConfig(tailwindConfig)
-  // fullConfig.theme.width[4]; // => '1rem'
-  // fullConfig.theme.screens.md; // => '768px'
+const Frame = new _canvas__WEBPACK_IMPORTED_MODULE_0__.Canvas();
+Frame.canvasResize();
+Frame.canvasCursor();
 
-  const customScreens = (__webpack_require__(/*! ../../../tailwind.config.js */ "./tailwind.config.js").variants.theme.screens);
-  const sreensKeys = Object.keys(customScreens);
-  const screensValues = Object.values(customScreens);
-  let i = 0;
-  for (const property in sreensKeys) {
-    const breakpoint = sreensKeys[i];
-    module.exports = {
-      breakpoint
-    };
-    let j = 0;
-    for (keys in screensValues) {
-      if (i == j) {
-        size = screensValues[keys];
-        const mediaQuery = `( (min-width: ${size["min"]}) and (max-width: ${size["max"]}) )`;
-        module.exports = {
-          mediaQuery
-        };
-        if (window.matchMedia(mediaQuery).matches) {
-          window.addEventListener('load', function () {
-            addBreakpointElement(breakpoint);
-            // console.log(breakpoint);
-          });
-        }
+// II. Night Sky
+//______________
 
-        function windowResize() {
-          if (window.matchMedia(mediaQuery).matches) {
-            addBreakpointElement(breakpoint);
-            // console.log(breakpoint);
-          }
-        }
 
-        window.addEventListener("resize", windowResize);
-      }
-      j++;
-    }
-    i++;
-  }
-  function addBreakpointElement(breakpointName) {
-    // create a new div element
-    const breakpointDiv = document.createElement("div");
-    breakpointDiv.className = "breakpointClass";
-    breakpointDiv.style.cssText = 'position: fixed;' + 'bottom: 5px;' + 'left: 5px;' + 'padding: 5px;' + 'width: 100px;' + 'height: 35px;' + 'text-align: center;' + 'border-radius: 5px;' + 'background: black;' + 'color: white;';
+const nightSky = new _sky__WEBPACK_IMPORTED_MODULE_1__.Sky();
+nightSky.stars();
+nightSky.meteorShower();
 
-    // add the newly created element and its content into the DOM
-    document.body.appendChild(breakpointDiv);
+/***/ }),
 
-    // and give it some content
-    const breakpointNameDiv = document.createTextNode(breakpointName);
+/***/ "./assets/js/src/sky.js":
+/*!******************************!*\
+  !*** ./assets/js/src/sky.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-    // add the text node to the newly created div
-    breakpointDiv.appendChild(breakpointNameDiv);
-  }
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Sky: () => (/* binding */ Sky)
+/* harmony export */ });
+/*
+	Theme Name: AdibOnline Theme
+	Theme URI: http://www.adibbehrooz.com/
+	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
+	Author: Mohammad Bagher Adib Behrooz
+	Version: 1.0
+*/
 
-  //__________________________________________________________________________
-  //
-  //	 CANVAS
-  //__________________________________________________________________________
+/******************************** SKY ********************************
+/*********************************************************************/
 
+class Sky {
   //____________________________
   //
-  // 	Global Data
+  // 	Constructor
   //____________________________
 
-  const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = canvasWidth = window.innerWidth;
-  canvas.height = canvasHeight = window.innerHeight;
-
-  //____________________________
-  //
-  // 	Dimension
-  //____________________________
-
-  function canvasDimension() {
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-  }
-
-  //____________________________
-  //
-  // 	Draw Stars With Move
-  //____________________________
-
-  /**
-   * Generates random particles using canvas
-   *
-   * @class Particles
-   * @constructor
-   */
-  function Particles() {
+  constructor() {
     //particle colors
     this.colors = ['255, 255, 255'];
     //particle radius min/max
@@ -142,149 +258,92 @@ document.addEventListener("DOMContentLoaded", function () {
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
   }
+  //____________________________
+  //
+  // 	Stars 
+  //____________________________
 
-  /**
-  * Initializes everything
-  * @method init
-  */
-  Particles.prototype.init = function () {
+  stars() {
     this.render();
     this.createCircle();
-  };
-
-  /**
-  * generates random number between min and max values
-  * @param	{number} min value
-  * @param	{number} max malue
-  * @return {number} random number between min and max
-  * @method _rand
-  */
-  Particles.prototype._rand = function (min, max) {
+  }
+  _rand(min, max) {
     return Math.random() * (max - min) + min;
-  };
-
-  /**
-  * Sets canvas size and updates values on resize
-  * @method render
-  */
-  Particles.prototype.render = function () {
-    var self = this,
-      wHeight = window.innerHeight,
-      wWidth = window.innerWidth;
-    self.canvas.width = wWidth;
-    self.canvas.height = wHeight;
-
-    //window.on('resize', self.render);
-  };
-
-  /**
-  * Randomly creates particle attributes
-  * @method createCircle
-  */
-  Particles.prototype.createCircle = function () {
+  }
+  render() {
+    //var this = this,
+    let wHeight = window.innerHeight;
+    let wWidth = window.innerWidth;
+    this.canvas.width = wWidth;
+    this.canvas.height = wHeight;
+  }
+  createCircle() {
     var particle = [];
     for (var i = 0; i < this.numParticles; i++) {
-      var self = this,
-        color = self.colors[~~self._rand(0, self.colors.length)];
+      let color = this.colors[~~this._rand(0, this.colors.length)];
       particle[i] = {
-        radius: self._rand(self.minRadius, self.maxRadius),
-        xPos: self._rand(0, canvas.width),
-        yPos: self._rand(0, canvas.height / this.numParticles * i),
-        xVelocity: self._rand(self.minSpeed, self.maxSpeed),
-        yVelocity: self._rand(self.minSpeed, self.maxSpeed),
-        color: 'rgba(' + color + ',' + self._rand(self.minOpacity, self.maxOpacity) + ')'
+        radius: this._rand(this.minRadius, this.maxRadius),
+        xPos: this._rand(0, canvas.width),
+        yPos: this._rand(0, canvas.height / this.numParticles * i),
+        xVelocity: this._rand(this.minSpeed, this.maxSpeed),
+        yVelocity: this._rand(this.minSpeed, this.maxSpeed),
+        color: 'rgba(' + color + ',' + this._rand(this.minOpacity, this.maxOpacity) + ')'
       };
 
       //once values are determined, draw particle on canvas
-      self.draw(particle, i);
+      this.draw(particle, i);
     }
-    //...and once drawn, animate the particle
-    self.animate(particle);
-  };
-
-  /**
-  * Draws particles on canvas
-  * @param	{array} Particle array from createCircle method
-  * @param	{number} i value from createCircle method
-  * @method draw
-  */
-  Particles.prototype.draw = function (particle, i) {
-    var self = this,
-      ctx = self.ctx;
-    ctx.fillStyle = particle[i].color;
-    ctx.beginPath();
-    ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 6 * Math.PI, false);
-    ctx.fill();
-  };
-
-  /**
-  * Animates particles
-  * @param	{array} particle value from createCircle & draw methods
-  * @method animate
-  */
-  Particles.prototype.animate = function (particle) {
-    var self = this,
-      ctx = self.ctx;
-    setInterval(function () {
-      // const starAnimate = () => {
-      //clears canvas
-      self.clearCanvas();
-      //then redraws particles in new positions based on velocity
-      const fps = 25;
-      // setTimeout(() => { requestAnimationFrame(starAnimate); }, 1000 / fps);
-      for (var i = 0; i < self.numParticles; i++) {
+    //...and once drawn, animateCircle the particle
+    this.animateCircle(particle);
+  }
+  draw(particle, i) {
+    this.ctx.fillStyle = particle[i].color;
+    this.ctx.beginPath();
+    this.ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 6 * Math.PI, false);
+    this.ctx.fill();
+  }
+  animateCircle(particle) {
+    const starAnimate = () => {
+      this.clearCanvas();
+      for (var i = 0; i < this.numParticles; i++) {
         particle[i].xPos += particle[i].xVelocity;
         particle[i].yPos -= particle[i].yVelocity;
 
         //if particle goes off screen call reset method to place it offscreen to the left/bottom
-        if (particle[i].xPos > self.canvas.width + particle[i].radius || particle[i].yPos > self.canvas.height + particle[i].radius) {
-          self.resetParticle(particle, i);
+        if (particle[i].xPos > this.canvas.width + particle[i].radius || particle[i].yPos > this.canvas.height + particle[i].radius) {
+          this.resetParticle(particle, i);
         } else {
-          self.draw(particle, i);
+          this.draw(particle, i);
         }
       }
-      // }
-      // starAnimate();
-    }, 200 / self.fps);
-  };
+    };
+    setInterval(starAnimate, 200 / this.fps);
+  }
+  resetParticle(particle, i) {
+    //var this = this;
 
-  /**
-  * Resets position of particle when it goes off screen
-  * @param	{array} particle value from createCircle & draw methods
-  * @param	{number} i value from createCircle method
-  * @method resetParticle
-  */
-  Particles.prototype.resetParticle = function (particle, i) {
-    var self = this;
-    var random = self._rand(0, 1);
+    var random = this._rand(0, 1);
     if (random > .5) {
       // 50% chance particle comes from left side of window...
       particle[i].xPos = -particle[i].radius;
-      particle[i].yPos = self._rand(0, canvas.height);
+      particle[i].yPos = this._rand(0, canvas.height);
     } else {
       //... or bottom of window
-      particle[i].xPos = self._rand(0, canvas.width);
+      particle[i].xPos = this._rand(0, canvas.width);
       particle[i].yPos = canvas.height + particle[i].radius;
     }
     //redraw particle with new values
-    self.draw(particle, i);
-  };
-
-  /**
-  * Clears canvas between animation frames
-  * @method clearCanvas
-  */
-  Particles.prototype.clearCanvas = function () {
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-  };
-  new Particles().init(); // RUN DUDE, RUN!
-
+    this.draw(particle, i);
+  }
+  clearCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
   //____________________________
   //
   // 	Meteor Shower 
   //____________________________
 
-  function meteorShower() {
+  meteorShower() {
     const cLandscapeFrame = document.getElementById('middle');
 
     // I. PARENT DIV
@@ -330,349 +389,8 @@ document.addEventListener("DOMContentLoaded", function () {
       cLandscapeFrame.appendChild(meteorShowerParentDiv);
     }
   }
-  meteorShower();
+}
 
-  // I. Mouser Over
-  //_______________________________________
-
-  function changeObject(ID, type) {
-    var rootGroupSelected = document.getElementById(ID);
-    if (type == 'fill') {
-      // I. Path Light
-      var groupChangePath = rootGroupSelected.getElementsByClassName("--change")[0];
-      groupChangePath.classList.add("--fill");
-
-      // II. Convert Path From White To transparent [Only For Fedora Linux]
-      if (ID == 'underWaterLinux') {
-        var groupChangePathWhite = rootGroupSelected.getElementsByClassName("--transparent")[0];
-        groupChangePathWhite.classList.add("--fill");
-      }
-    }
-  }
-
-  // II. Mouser Leave
-  //_______________________________________
-
-  function resetChangeObject(ID, type) {
-    var rootGroupSelected = document.getElementById(ID);
-    if (type == 'fill') {
-      // I. Path Light
-      var groupChange = rootGroupSelected.getElementsByClassName("--change")[0];
-      groupChange.classList.remove("--fill");
-
-      // II. Convert Path From White To Transparent
-      if (ID == 'underWaterLinux') {
-        var groupChangeWhite = rootGroupSelected.getElementsByClassName("--transparent")[0];
-        groupChangeWhite.classList.remove("--fill");
-      }
-    }
-  }
-  const landscapeObjects = document.querySelectorAll('svg g.c-landscape__object');
-  landscapeObjects.forEach(landscapeObject => {
-    // I. Mouse Over
-    landscapeObject.addEventListener('mouseenter', () => {
-      var landscapeObjectID = landscapeObject.id;
-      var landscapeObjectType = landscapeObject.dataset.type;
-      changeObject(landscapeObjectID, landscapeObjectType);
-    });
-
-    // II. Mouse Leave
-    landscapeObject.addEventListener('mouseleave', () => {
-      var landscapeObjectID = landscapeObject.id;
-      var landscapeObjectType = landscapeObject.dataset.type;
-      resetChangeObject(landscapeObjectID, landscapeObjectType);
-    });
-  });
-
-  //____________________________
-  //
-  // 	Resize
-  //____________________________
-
-  window.addEventListener('resize', function () {
-    canvasDimension();
-    // new Particles().init();
-  });
-
-  //__________________________________________________________________________
-  //
-  //	 MOUSE
-  //__________________________________________________________________________
-
-  function cursorCircle() {
-    const cLandscapeFrame = document.getElementById('middle');
-
-    // create a Div element with class and id
-    const circleDiv = document.createElement("div");
-    circleDiv.setAttribute('class', 'o-centerCircle');
-    circleDiv.setAttribute('id', 'centerCircle');
-
-    // create a Div element with class and id
-    const followDiv = document.createElement("div");
-    followDiv.setAttribute('class', 'o-followCircle');
-    followDiv.setAttribute('id', 'followCircle');
-    cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
-    cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
-
-    //________________ Mehod 1 [No Effect] ________________
-    /*
-    cLandscapeFrame.addEventListener("mousemove", (eventMove) => {
-    	let mouseX = eventMove.pageX;
-    	let mouseY = eventMove.pageY;
-    		circleDiv.style.left = mouseX + 'px';
-    	circleDiv.style.top  = mouseY + 'px';
-    		followDiv.style.left = mouseX + 'px';
-    	followDiv.style.top  = mouseY + 'px';
-    	});
-    */
-    //________________ Mehod 2 [requestAnimationFrame] ________________
-    /*
-    let ease = 0.2, 
-    	targetX = 0,
-    	targetY = 0,
-    	currentX = 0,
-    	currentY = 0;
-    	const landscapeWidth = followDiv.getBoundingClientRect().width;
-    const landscapeHeight = followDiv.getBoundingClientRect().height;
-    	// Compute target position
-    const onMouseMove = (moveEvent) => {
-    	targetX = moveEvent.pageX - (landscapeWidth/2);
-    	targetY = moveEvent.pageY - (landscapeHeight/2);
-    };
-    
-    // Move the cursor
-    const animate = () => {
-    	currentX += (targetX - currentX) * ease;
-    	currentY += (targetY - currentY) * ease;
-    		const translate3d = `translate3d(${currentX}px,${currentY}px,0px)`;
-    	let styleDiv = followDiv.style;
-    	styleDiv['transform'] = translate3d;
-    	
-    	requestAnimationFrame(animate);
-    };
-    animate();
-    document.body.addEventListener('mousemove', onMouseMove);
-    */
-
-    //________________ Mehod 3 [GSAP] ________________
-
-    gsap.set(".o-followCircle", {
-      xPercent: -50,
-      yPercent: -50
-    });
-    const ball = document.querySelector(".o-followCircle");
-    const pos = {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2
-    };
-    const mouse = {
-      x: pos.x,
-      y: pos.y
-    };
-    const speed = 0.2;
-    const xSet = gsap.quickSetter(ball, "x", "px");
-    const ySet = gsap.quickSetter(ball, "y", "px");
-    window.addEventListener("mousemove", mouseEvent => {
-      mouse.x = mouseEvent.x;
-      mouse.y = mouseEvent.y;
-    });
-    gsap.ticker.add(() => {
-      // adjust speed for higher refresh monitors
-      const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
-      pos.x += (mouse.x - pos.x) * dt;
-      pos.y += (mouse.y - pos.y) * dt;
-      xSet(pos.x);
-      ySet(pos.y);
-    });
-  }
-  cursorCircle();
-
-  //__________________________________________________________________________
-  //
-  //	 PAN
-  //__________________________________________________________________________		
-}); // [END] Javascript Document Ready
-
-/***/ }),
-
-/***/ "./tailwind.config.js":
-/*!****************************!*\
-  !*** ./tailwind.config.js ***!
-  \****************************/
-/***/ ((module) => {
-
-/*
-	Theme Name: AdibOnline Theme
-	Theme URI: http://www.adibbehrooz.com/
-	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
-	Author: Mohammad Bagher Adib Behrooz
-	Version: 1.0
-*/
-
-module.exports = {
-  content: {
-    enabled: true,
-    content: ['./*.php', './assets/**/*.{php, css, js, png, svg, jpg, scss, map, ico}', './dist/*.{js, map}', './framework/*.php', './inc/*.php', './misc/*.*', './woocommerce/*.php']
-  },
-  darkMode: true,
-  // or 'media' or 'class'
-  prefix: 'fc-',
-  // Framework Class
-  theme: {
-    screens: {
-      'xs': '475px',
-      // => @media (min-width: 475px) { ... }
-
-      'sm': '640px',
-      // => @media (min-width: 640px) { ... }
-
-      'md': '768px',
-      // => @media (min-width: 768px) { ... }
-
-      'lg': '1024px',
-      // => @media (min-width: 1024px) { ... }
-
-      'xl': '1280px',
-      // => @media (min-width: 1280px) { ... }
-
-      '2xl': '1536px'
-      // => @media (min-width: 1536px) { ... }
-    },
-
-    // Font size
-    fontSize: {
-      // Default
-      'xs': ['0.64rem', {
-        lineHeight: '1.5rem'
-      }],
-      'sm': ['0.8rem', {
-        lineHeight: '1.5rem'
-      }],
-      'base': ['1rem', {
-        lineHeight: '2rem'
-      }],
-      'md': ['1.25rem', {
-        lineHeight: '2.5rem'
-      }],
-      'lg': ['1.563rem', {
-        lineHeight: '3rem'
-      }],
-      'xl': ['1.953rem', {
-        lineHeight: '3.5rem'
-      }],
-      '2xl': ['2.441rem', {
-        lineHeight: '4rem'
-      }],
-      '3xl': ['3.052rem', {
-        lineHeight: '4.5rem'
-      }],
-      '4xl': ['3.815rem', {
-        lineHeight: '4.5rem'
-      }],
-      // Expand
-      'xsmall': ['2rem', {
-        lineHeight: '1.5rem'
-      }],
-      'small': ['2rem', {
-        lineHeight: '1.5rem'
-      }],
-      'basic': ['3rem', {
-        lineHeight: '2rem'
-      }],
-      'medium': ['4rem', {
-        lineHeight: '3rem'
-      }],
-      'large': ['5rem', {
-        lineHeight: '3rem'
-      }],
-      'xlarge': ['6rem', {
-        lineHeight: '3rem'
-      }],
-      '2xlarge': ['7rem', {
-        lineHeight: '3rem'
-      }],
-      '3xlarge': ['9rem', {
-        lineHeight: '4.5rem'
-      }],
-      '4xlarge': ['10rem', {
-        lineHeight: '4.5rem'
-      }]
-    },
-    extend: {
-      gridTemplateColumns: {
-        '16': 'repeat(16, minmax(0, 1fr))' // 16 Columns
-      },
-
-      // Font Family
-      fontFamily: {
-        'montserrat': ['Montserrat'],
-        'roboto': ['Roboto'],
-        'Imbue': ['"Imbue"', 'serif'],
-        'robotoMono': ['"Roboto Mono"', 'monospace']
-      }
-    }
-  },
-  variants: {
-    extend: {},
-    theme: {
-      screens: {
-        'xsmall': {
-          'min': '475px',
-          'max': '639px'
-        },
-        // => @media (min-width: 475px and max-width: 639px) { ... }
-
-        'small': {
-          'min': '640px',
-          'max': '767px'
-        },
-        // => @media (min-width: 640px and max-width: 767px) { ... }
-
-        'medium': {
-          'min': '768px',
-          'max': '1023px'
-        },
-        // => @media (min-width: 768px and max-width: 1023px) { ... }
-
-        'large': {
-          'min': '1024px',
-          'max': '1279px'
-        },
-        // => @media (min-width: 1024px and max-width: 1279px) { ... }
-
-        'xlarge': {
-          'min': '1280px',
-          'max': '1535px'
-        },
-        // => @media (min-width: 1280px and max-width: 1535px) { ... }
-
-        '2xlarge': {
-          'min': '1536px',
-          'max': '2300px'
-        }
-        // => @media (min-width: 1536px) { ... }
-      },
-
-      spacing: {
-        "quarter": "0.375rem",
-        "half": "0.75rem",
-        "one": "1.5rem",
-        "two": "3rem",
-        "three": "4.5rem",
-        "four": "6rem",
-        "five": "7.5rem",
-        "six": "9rem",
-        "eight": "12rem",
-        "twelve": "18rem",
-        "sixteen": "24rem"
-      }
-    },
-    container: {
-      center: true
-    }
-  },
-  plugins: []
-};
 
 /***/ }),
 
@@ -682,7 +400,6 @@ module.exports = {
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
@@ -716,18 +433,6 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -758,15 +463,13 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-"use strict";
 /*!********************************!*\
   !*** ./assets/js/src/index.js ***!
   \********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./assets/js/src/config.js");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_config__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! main */ "./assets/scss/main.scss");
 /*
 	Theme Name: AdibOnline Theme
@@ -781,22 +484,20 @@ __webpack_require__.r(__webpack_exports__);
 
 /*____________________________________________________________________________*/
 /*
-/* 							I. Bundle Javascript
+/* 	I. Bundle Javascript
 /*____________________________________________________________________________*/
 
  // I. Config
-// import './canvas'; // II. Canvas
-// import './sky'; // III. Sky
 
 /*____________________________________________________________________________*/
 /*
-/* 							II. Bundle SCSS & CSS
+/* 	II. Bundle SCSS & CSS
 /*____________________________________________________________________________*/
 
-//		I. SCSS PLUGINS
+//	I. SCSS PLUGINS
 //_________________________
 
-//		II. SCSS CORE
+//	II. SCSS CORE
 //_________________________
 
  // Import
