@@ -17,18 +17,10 @@
 		//____________________________
 			
 		constructor() {
+
 			// Global
 			this.canvas = document.getElementById('canvas');
 			this.ctx = canvas.getContext('2d');
-			
-			// Pan 
-			this.cameraOffset = { x: window.innerWidth/2, y: window.innerHeight/2 };
-			this.cameraZoom = 1;
-			this.MAX_ZOOM = 5;
-			this.MIN_ZOOM = 0.1;
-			this.SCROLL_SENSITIVITY = 0.0005;
-			this.isDragging = false
-			this.dragStart = { x: 0, y: 0 }
 		};
 			
 		//____________________________
@@ -102,66 +94,7 @@
 		//
 		// 	Pan
 		//____________________________
-		
-		draw() {
-			this.canvas.width = window.innerWidth;
-			this.canvas.height = window.innerHeight;
-	
-			// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-			this.ctx.translate( window.innerWidth / 2, window.innerHeight / 2 );
-			this.ctx.scale(this.cameraZoom, this.cameraZoom);
-			this.ctx.translate( -window.innerWidth / 2 + cameraOffset.x, -window.innerHeight / 2 + cameraOffset.y );
-			this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
-			this.ctx.fillStyle = "#991111";
-			this.drawRect(-50,-50,100,100);
-	
-			this.ctx.fillStyle = "#eecc77";
-			this.drawRect(-35,-35,20,20);
-			this.drawRect(15,-35,20,20);
-			this.drawRect(-35,15,70,20);
-			
-			this.ctx.fillStyle = "#fff";
-			this.drawText("Simple Pan and Zoom Canvas", -255, -100, 32, "courier");
-			
-			this.ctx.rotate(-31*Math.PI / 180);
-			this.ctx.fillStyle = `#${(Math.round(Date.now()/40)%4096).toString(16)}`;
-			this.drawText("Now with touch!", -110, 100, 32, "courier");
-			
-			this.ctx.fillStyle = "#fff";
-			this.ctx.rotate(31*Math.PI / 180);
-			
-			this.drawText("Wow, you found me!", -260, -2000, 48, "courier");
-			
-			requestAnimationFrame( draw );	
-		};
-		
-		getEventLocation(event) {
-			if (event.touches && event.touches.length == 1) {
-				return { 
-					x: event.touches[0].clientX, 
-					y: event.touches[0].clientY 
-				};
-			}
-			else if (event.clientX && event.clientY) {
-				return { 
-					x: e.clientX,
-					y: e.clientY 
-				};		
-			}
-		};
-		
-		onPointerDown(event) {
-			isDragging = true
-			dragStart.x = getEventLocation(event).x/this.cameraZoom - this.cameraOffset.x
-			dragStart.y = getEventLocation(event).y/this.cameraZoom - cameraOffset.y
-		};
-		
-		onPointerUp(event) {
-			isDragging = false
-			initialPinchDistance = null
-			lastZoom = cameraZoom
-		}
-		
+
 	};
 		
 	export { Canvas };
