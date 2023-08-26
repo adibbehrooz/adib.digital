@@ -18,6 +18,11 @@
 		
 
 		constructor() {
+		
+			//Required canvas variables
+			this.canvas = document.getElementById('canvas');
+			this.ctx = this.canvas.getContext('2d');
+					
 			//particle colors
 			this.colors = [ '255, 255, 255',];
 			//particle radius min/max
@@ -32,29 +37,11 @@
 			//frames per second
 			this.fps = 3;
 			//number of particles
-			this.numParticles = 800;
-			//required canvas variables
-			this.canvas = document.getElementById('canvas');
-			this.ctx = this.canvas.getContext('2d');
-		};
-				
-		//____________________________
-		//
-		// 	Stars 
-		//____________________________
-
-		
-		stars() {
-			this.render();
-			this.createCircle();
+			this.numParticles = 850;
 		};
 		
-		_rand(min, max) {
-			return Math.random() * (max - min) + min;
-		};
 		
 		render() {
-		//var this = this,
 			let wHeight = window.innerHeight;
 			let wWidth = window.innerWidth;
 
@@ -62,10 +49,38 @@
 			this.canvas.height = wHeight;
 		};
 		
-		createCircle() {
-			var particle = [];
+				
+		//_______________________________
+		//
+		// All Objects in Night Sky
+		//_______________________________
+								
+		init() {
+			this.stars(); // 1. Stars
+			this.meteorShower(); // 2. Meteor Shower 
+			this._cursorTemporary();
+		};			
+				
+		//____________________________
+		//
+		// Stars
+		//____________________________
+								
+		stars() {
+			this.render();
+			this.createCircle();
+		};
+		
+		
+		_rand(min, max) {
+			return Math.random() * (max - min) + min;
+		};
 
-			for (var i = 0; i < this.numParticles; i++) {
+
+		createCircle() {
+			let particle = [];
+
+			for (let i = 0; i < this.numParticles; i++) {
 				let color = this.colors[~~(this._rand(0, this.colors.length))];
 				particle[i] = {
 					radius		: this._rand(this.minRadius, this.maxRadius),
@@ -77,26 +92,27 @@
 				}
 
 				//once values are determined, draw particle on canvas
-				this.draw(particle, i);
+				this.drawParticles(particle, i);
 			}
 			//...and once drawn, animateCircle the particle
-			this.animateCircle(particle);
+			// this.animateCircle(particle);
 		};
 
-		draw(particle, i) {
+
+		drawParticles(particle, i) {
 
 			this.ctx.fillStyle = particle[i].color;
-
 			this.ctx.beginPath();
 			this.ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 6 * Math.PI, false);
 			this.ctx.fill();
 		};
 
+
 		animateCircle(particle) {
 			
-			const starAnimate = () => {
+			const animate = () => {
 				this.clearCanvas();
-				for (var i = 0; i < this.numParticles; i++) {
+				for (let i = 0; i < this.numParticles; i++) {
 					particle[i].xPos += particle[i].xVelocity;
 					particle[i].yPos -= particle[i].yVelocity;
 
@@ -104,17 +120,18 @@
 					if (particle[i].xPos > this.canvas.width + particle[i].radius || particle[i].yPos > this.canvas.height + particle[i].radius) {
 						this.resetParticle(particle, i);
 					} else {
-						this.draw(particle, i);
+						this.drawParticles(particle, i);
 					}
 				}
 			};
-			setInterval(starAnimate, 200/this.fps); 	
+			// animate();
+			setInterval(animate, 200/this.fps); 	
 		};
 		
+		
 		resetParticle(particle, i) {
-			//var this = this;
 
-			var random = this._rand(0, 1);
+			let random = this._rand(0, 1);
 
 			if (random > .5) {
 				// 50% chance particle comes from left side of window...
@@ -126,8 +143,9 @@
 				particle[i].yPos = canvas.height + particle[i].radius;
 			}
 			//redraw particle with new values
-			this.draw(particle, i);
+			this.drawParticles(particle, i);
 		};
+		
 		
 		clearCanvas() {
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -187,6 +205,56 @@
 				// Connect Father to <sectopn> tag
 				cLandscapeFrame.appendChild(meteorShowerParentDiv);
 			}
+		};
+		
+		//____________________________
+		//
+		// 	Cursor [TEMPORARY]
+		//____________________________
+
+		_cursorTemporary() {
+			const cLandscapeFrame = document.getElementById('middle');
+
+			// create a Div element with class and id
+			const circleDiv = document.createElement("div");
+			circleDiv.setAttribute ('class', 'o-centerCircle');
+			circleDiv.setAttribute ('id', 'centerCircle');
+
+			// create a Div element with class and id
+			const followDiv = document.createElement("div");
+			followDiv.setAttribute ('class', 'o-followCircle');
+			followDiv.setAttribute ('id', 'followCircle');
+
+			cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
+			cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
+
+			//________________ [GSAP] ________________
+				
+			gsap.set(".o-followCircle", {xPercent: -50, yPercent: -50});
+
+			const ball = document.querySelector(".o-followCircle");
+			const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+			const mouse = { x: pos.x, y: pos.y };
+			const speed = 0.2;
+
+			const xSet = gsap.quickSetter(ball, "x", "px");
+			const ySet = gsap.quickSetter(ball, "y", "px");
+
+			window.addEventListener("mousemove", mouseEvent => {    
+			 	mouse.x = mouseEvent.x;
+				mouse.y = mouseEvent.y;  
+			});
+
+			gsap.ticker.add(() => {
+				  
+				// adjust speed for higher refresh monitors
+				const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio()); 
+				  
+				pos.x += (mouse.x - pos.x) * dt;
+				pos.y += (mouse.y - pos.y) * dt;
+				xSet(pos.x);
+				ySet(pos.y);
+			});	
 		};
 	}
 	

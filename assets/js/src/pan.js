@@ -1,4 +1,17 @@
+/*
+	Theme Name: AdibOnline Theme
+	Theme URI: http://www.adibbehrooz.com/
+	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
+	Author: Mohammad Bagher Adib Behrooz
+	Version: 1.0
+*/
 
+/******************************** SKY ********************************
+/*********************************************************************/
+
+	import { Sky } from './sky';
+	const nightSky = new Sky();
+	
 	class Pan {
 		
 		//____________________________
@@ -12,7 +25,9 @@
 			this.canvas.width = window.innerWidth;
 			this.canvas.height = window.innerHeight;
 
-			this.cameraOffset = { x: window.innerWidth/2, y: window.innerHeight/2 };
+			// this.cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+			// this.cameraOffset = { x: -window.innerWidth, y: -window.innerHeight};	
+			this.cameraOffset = { x: 0, y: 0};	
 			this.cameraZoom = 1;
 			this.MAX_ZOOM = 5;
 			this.MIN_ZOOM = 0.1;
@@ -23,7 +38,37 @@
 			this.lastZoom = this.cameraZoom;
 			
 			this.isDragging = false;
-			this.dragStart = { x: 0, y: 0 };	
+			this.speedDrag = 0.2;
+			this.dragStart = { x: 0, y: 0 };
+			this.currentX = 0;			
+			this.currentY = 0;
+			
+			//particle colors
+			this.colors = [ '255, 255, 255',];
+			//particle radius min/max
+			this.minRadius = 0.2;
+			this.maxRadius = 1.9;
+			//particle opacity min/max
+			this.minOpacity = 0;
+			this.maxOpacity = 1;
+			//particle speed min/max
+			this.minSpeed = .005;
+			this.maxSpeed = .19;
+			//frames per second
+			this.fps = 4;
+			//number of particles
+			this.numParticles = 1100;
+		};
+		
+				
+		//_______________________________
+		//
+		// All 
+		//_______________________________
+								
+		init() {
+			this.draw();
+			this._eventListeners();
 		};
 		
 		//____________________________
@@ -36,11 +81,7 @@
 			let windowHeight = window.innerHeight;
 
 			this.canvas.width = windowWidth;
-			this.canvas.height = windowHeight;	
-							
-			window.addEventListener("resize", (e) => {
-				this.PanResize();
-			});	
+			this.canvas.height = windowHeight;		
 		};
 
 			
@@ -94,35 +135,126 @@
 			});	
 		};
 		
-		
+		_rand(min, max) {
+			return Math.random() * (max - min) + min;
+		};
+				
 		draw() {
-			const animate = () => {
-				this.canvas.width = window.innerWidth
-				this.canvas.height = window.innerHeight
-				    
-				// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-				this.ctx.translate( window.innerWidth / 2, window.innerHeight / 2 )
-				this.ctx.scale(this.cameraZoom, this.cameraZoom)
-				this.ctx.translate( -window.innerWidth / 2 + this.cameraOffset.x, -window.innerHeight / 2 + this.cameraOffset.y )
-				this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight)
-
-				  
+			this._cursor();
+			const text = () => {				
+				// FONT ONE				  
 				this.ctx.font = "bold 24px verdana, sans-serif ";
 				this.welcomeMessage = "Welcome to the store!";
 				this.ctx.textAlign = "start";
 				this.ctx.textBaseline = "bottom";
-				this.ctx.fillStyle = "#ff0000"; //<======= here
+				this.ctx.fillStyle = "#ff0000";
 				this.ctx.fillText(this.welcomeMessage, 10, 50);
 
+				// FONT TWO
 				this.ctx.font = "bold 14px verdana, sans-serif";
 				this.message2 = "Your favorite store for videos games and latest DVDs!";
 				this.ctx.textAlign = "start";
 				this.ctx.textBaseline = "bottom";
-				this.ctx.fillStyle = "#00ff00"; //<======= and here
+				this.ctx.fillStyle = "#00ff00";
 				this.ctx.fillText(this.message2, 10, 100);
-				requestAnimationFrame( animate );
+			};
+				
+			const stars = () => {
+				this.canvas.width = window.innerWidth;
+				this.canvas.height = window.innerHeight;
+															 
+				// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
+				this.ctx.translate( window.innerWidth , window.innerHeight );
+				this.ctx.scale(this.cameraZoom, this.cameraZoom);
+				
+				// 1.
+				this.ctx.translate( -window.innerWidth + this.cameraOffset.x, -window.innerHeight + this.cameraOffset.y );
+				
+				// 2.
+				// this.ctx.translate( -window.innerWidth, -window.innerHeight + this.cameraOffset.y );
+				
+				// 3.
+				// this.ctx.translate( -window.innerWidth, -window.innerHeight );
+				
+				this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
+				
+				nightSky.createCircle();
+				text();
+				requestAnimationFrame( stars );
+			};
+			stars();
+	
+			/*
+			const animate = () => {
+				this.canvas.width = window.innerWidth;
+				this.canvas.height = window.innerHeight;
+															 
+				// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
+				this.ctx.translate( window.innerWidth , window.innerHeight );
+				this.ctx.scale(this.cameraZoom, this.cameraZoom);
+				this.ctx.translate( -window.innerWidth + this.cameraOffset.x, -window.innerHeight + this.cameraOffset.y );
+				this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
+				
+				// FONT ONE				  
+				this.ctx.font = "bold 24px verdana, sans-serif ";
+				this.welcomeMessage = "Welcome to the store!";
+				this.ctx.textAlign = "start";
+				this.ctx.textBaseline = "bottom";
+				this.ctx.fillStyle = "#ff0000";
+				this.ctx.fillText(this.welcomeMessage, 10, 50);
+
+				// FONT TWO
+				this.ctx.font = "bold 14px verdana, sans-serif";
+				this.message2 = "Your favorite store for videos games and latest DVDs!";
+				this.ctx.textAlign = "start";
+				this.ctx.textBaseline = "bottom";
+				this.ctx.fillStyle = "#00ff00";
+				this.ctx.fillText(this.message2, 10, 100);
+				nightSky.createCircle();
+				
+				requestAnimationFrame( animate );  
+				
 			};
 			animate();
+			*/
+			/*	
+			const animate = () => {	
+				this.canvas.width = window.innerWidth;
+				this.canvas.height = window.innerHeight;
+				this.ctx = canvas.getContext('2d');
+																 
+				// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
+				this.ctx.translate( window.innerWidth , window.innerHeight );
+				this.ctx.scale(this.cameraZoom, this.cameraZoom);
+				// this.ctx.translate( -window.innerWidth, -window.innerHeight );
+				this.ctx.translate( -window.innerWidth, -window.innerHeight + this.cameraOffset.y );
+				this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
+				
+				// STARS
+				let particle = [];
+				for (let i = 0; i < 100; i++) {
+					let color = this.colors[~~(this._rand(0, this.colors.length))];
+					particle[i] = {
+						radius		: this._rand(this.minRadius, this.maxRadius),
+						xPos		: this._rand(0, canvas.width),
+						yPos		: this._rand(0, canvas.height/this.numParticles * i),
+						xVelocity 	: this._rand(this.minSpeed, this.maxSpeed),
+						yVelocity 	: this._rand(this.minSpeed, this.maxSpeed),
+						color		: 'rgba(' + color + ',' + this._rand(this.minOpacity, this.maxOpacity) + ')'
+					}
+
+					//once values are determined, draw particle on canvas
+					this.ctx.fillStyle = particle[i].color;
+					this.ctx.beginPath();
+					this.ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 15 * Math.PI, true);
+					this.ctx.fill();
+			
+				}
+			
+				requestAnimationFrame( animate );  
+			};
+			animate();
+			*/
 		};
 		
 		geteLocation(event) {
@@ -147,33 +279,27 @@
 		};
 		
 		onPointerDown(event) {
-			this.isDragging = true;			
-			this.dragStart.x = this.geteLocation(event).x / this.cameraZoom - this.cameraOffset.x;
-			this.dragStart.y = this.geteLocation(event).y / this.cameraZoom - this.cameraOffset.y;
-						
-			// console.log(" == MOUSE POINTER DOWN == " + "DRAG: "+ this.isDragging+" DRAG X: "+dragStartX +" DRAG Y: "+dragStartY  +" CAMERA OFFSET X: "+this.cameraOffset.x +" CAMERA OFFSET Y: "+this.cameraOffset.y );
+			this.isDragging = true;					
+			this.dragStart.x = event.clientX / this.cameraZoom - this.cameraOffset.x;
+			this.dragStart.y = event.clientY / this.cameraZoom - this.cameraOffset.y;			
+			// console.log(" POINTER DOWN " + " DRAG X: "+ this.dragStart.x + " DRAG Y: "+this.dragStart.y  + " CAMERA OFFSET X: "+this.cameraOffset.x + " CAMERA OFFSET Y: "+this.cameraOffset.y );
 		};
 
 		onPointerUp() {
 			this.isDragging = false;
 			let initialPinchDistance = null;
 			let lastZoom = this.cameraZoom;	
-	
 			// console.log(" == MOUSE POINTER UP == " + "DRAG: "+ this.isDragging+" LAST ZOOM: "+lastZoom);
 		};
 		
 		onPointerMove() {
 			if ( this.isDragging ) {
-				let dragStartX = this.dragStart.x;
-				let dragStartY = this.dragStart.y;
-							
-				this.cameraOffset.x = this.geteLocation(event).x / this.cameraZoom - this.dragStart.x;
-				this.cameraOffset.y = this.geteLocation(event).y / this.cameraZoom - this.dragStart.y;
-				
-				// console.log(" == MOUSE POINTER DRAG == " + "DRAG: "+ this.isDragging + " CAMERA OFFSET X: "+ this.cameraOffset.x +" CAMERA OFFSET Y: "+ this.cameraOffset.y);
+			
+				this.cameraOffset.x = event.clientX / this.cameraZoom - this.dragStart.x;
+				this.cameraOffset.y = event.clientY / this.cameraZoom - this.dragStart.y;					
+				// console.log( " POINTER DRAG " +  " Location X: " + event.clientX + " Location Y: " + event.clientY +" CAMERA OFFSET X: " + this.cameraOffset.x + " CAMERA OFFSET Y: " + this.cameraOffset.y );
 			}
-			
-			
+
 		};
 		
 		handleTouch(event, singleTouchHandler) {
@@ -217,8 +343,13 @@
 		};
 			
 		_eventListeners() {
- 			   			
-			// 1. Mouse
+ 			  
+			// 1. Resize
+			window.addEventListener("resize", () => {
+				this._resize();
+			});
+								
+			// 2. Mouse
 			this.canvas.addEventListener( "mousedown", event => { 
 				this.onPointerDown(event); 
 			});				
@@ -229,7 +360,7 @@
 				this.onPointerMove(event); 
 			});
 			
-			// 2. Touch
+			// 3. Touch
 			this.canvas.addEventListener( "touchstart", event => {
 				this.handleTouch( event,  this.onPointerDown(event) );
 			});
