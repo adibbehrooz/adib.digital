@@ -11,19 +11,26 @@
 /***************************************************************************************/
 	
 	
-	// I. PAN
-	//__________
+	// Canvas
+	//______________
 	
-	import { Pan } from './pan.js';
+	import { Canvas } from './canvas';
+	const canvas = new Canvas();
+	canvas.init();
+		
+	// Pan
+	//______________
+	
+	import { Pan } from './pan';
 	const pan = new Pan();
 	pan.init();
 	
-	// II. Night Sky
+	// Night Sky
 	//______________
 	
 	import { Sky } from './sky';
 	const nightSky = new Sky();
-	// nightSky.init();
-	
+	nightSky.init();
+		
 	
 

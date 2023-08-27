@@ -17,9 +17,6 @@
 	
 	<?php global $redux_demo; // [Theme Options]  ?>
 
-	<footer id="footer">
-
-	</footer>
 
 	<?php wp_footer(); ?>
 	

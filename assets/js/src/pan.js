@@ -9,9 +9,6 @@
 /******************************** SKY ********************************
 /*********************************************************************/
 
-	import { Sky } from './sky';
-	const nightSky = new Sky();
-	
 	class Pan {
 		
 		//____________________________
@@ -19,15 +16,18 @@
 		// 	Constructor 
 		//____________________________
 		
-		constructor() {
-			this.canvas = document.getElementById('canvas');
-			this.ctx = canvas.getContext('2d');
-			this.canvas.width = window.innerWidth;
-			this.canvas.height = window.innerHeight;
+		constructor() {	
+			this.panCanvas = document.getElementById('canvas__pan');
+			this.panCanvas.style.position = 'absolute';
+			this.ctx = this.panCanvas.getContext('2d');
 
-			// this.cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-			// this.cameraOffset = { x: -window.innerWidth, y: -window.innerHeight};	
-			this.cameraOffset = { x: 0, y: 0};	
+			this.panCanvas.width = window.innerWidth;
+			this.panCanvas.height = window.innerHeight;
+
+			this.cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 }; 
+			this.negativeCamera = { x: -window.innerWidth / 2, y: -window.innerHeight / 2 };
+			this.zeroCamera = { x: 0, y: 0};	
+						
 			this.cameraZoom = 1;
 			this.MAX_ZOOM = 5;
 			this.MIN_ZOOM = 0.1;
@@ -42,35 +42,20 @@
 			this.dragStart = { x: 0, y: 0 };
 			this.currentX = 0;			
 			this.currentY = 0;
-			
-			//particle colors
-			this.colors = [ '255, 255, 255',];
-			//particle radius min/max
-			this.minRadius = 0.2;
-			this.maxRadius = 1.9;
-			//particle opacity min/max
-			this.minOpacity = 0;
-			this.maxOpacity = 1;
-			//particle speed min/max
-			this.minSpeed = .005;
-			this.maxSpeed = .19;
-			//frames per second
-			this.fps = 4;
-			//number of particles
-			this.numParticles = 1100;
 		};
-		
-				
+
+
 		//_______________________________
 		//
 		// All 
 		//_______________________________
 								
 		init() {
-			this.draw();
 			this._eventListeners();
+			this.draw();
 		};
-		
+
+
 		//____________________________
 		//
 		// 	Responsive 
@@ -80,114 +65,14 @@
 			let windowWidth = window.innerWidth;
 			let windowHeight = window.innerHeight;
 
-			this.canvas.width = windowWidth;
-			this.canvas.height = windowHeight;		
-		};
-
-			
-		//____________________________
-		//
-		// 	Cursor
-		//____________________________
-
-		_cursor() {
-			const cLandscapeFrame = document.getElementById('middle');
-
-			// create a Div element with class and id
-			const circleDiv = document.createElement("div");
-			circleDiv.setAttribute ('class', 'o-centerCircle');
-			circleDiv.setAttribute ('id', 'centerCircle');
-
-			// create a Div element with class and id
-			const followDiv = document.createElement("div");
-			followDiv.setAttribute ('class', 'o-followCircle');
-			followDiv.setAttribute ('id', 'followCircle');
-
-			cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
-			cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
-
-			//________________ [GSAP] ________________
-				
-			gsap.set(".o-followCircle", {xPercent: -50, yPercent: -50});
-
-			const ball = document.querySelector(".o-followCircle");
-			const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-			const mouse = { x: pos.x, y: pos.y };
-			const speed = 0.2;
-
-			const xSet = gsap.quickSetter(ball, "x", "px");
-			const ySet = gsap.quickSetter(ball, "y", "px");
-
-			window.addEventListener("mousemove", mouseEvent => {    
-			 	mouse.x = mouseEvent.x;
-				mouse.y = mouseEvent.y;  
-			});
-
-			gsap.ticker.add(() => {
-				  
-				// adjust speed for higher refresh monitors
-				const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio()); 
-				  
-				pos.x += (mouse.x - pos.x) * dt;
-				pos.y += (mouse.y - pos.y) * dt;
-				xSet(pos.x);
-				ySet(pos.y);
-			});	
-		};
-		
-		_rand(min, max) {
-			return Math.random() * (max - min) + min;
+			this.panCanvas.width = windowWidth;
+			this.panCanvas.height = windowHeight;		
 		};
 				
 		draw() {
-			this._cursor();
-			const text = () => {				
-				// FONT ONE				  
-				this.ctx.font = "bold 24px verdana, sans-serif ";
-				this.welcomeMessage = "Welcome to the store!";
-				this.ctx.textAlign = "start";
-				this.ctx.textBaseline = "bottom";
-				this.ctx.fillStyle = "#ff0000";
-				this.ctx.fillText(this.welcomeMessage, 10, 50);
-
-				// FONT TWO
-				this.ctx.font = "bold 14px verdana, sans-serif";
-				this.message2 = "Your favorite store for videos games and latest DVDs!";
-				this.ctx.textAlign = "start";
-				this.ctx.textBaseline = "bottom";
-				this.ctx.fillStyle = "#00ff00";
-				this.ctx.fillText(this.message2, 10, 100);
-			};
-				
-			const stars = () => {
-				this.canvas.width = window.innerWidth;
-				this.canvas.height = window.innerHeight;
-															 
-				// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-				this.ctx.translate( window.innerWidth , window.innerHeight );
-				this.ctx.scale(this.cameraZoom, this.cameraZoom);
-				
-				// 1.
-				this.ctx.translate( -window.innerWidth + this.cameraOffset.x, -window.innerHeight + this.cameraOffset.y );
-				
-				// 2.
-				// this.ctx.translate( -window.innerWidth, -window.innerHeight + this.cameraOffset.y );
-				
-				// 3.
-				// this.ctx.translate( -window.innerWidth, -window.innerHeight );
-				
-				this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
-				
-				nightSky.createCircle();
-				text();
-				requestAnimationFrame( stars );
-			};
-			stars();
-	
-			/*
 			const animate = () => {
-				this.canvas.width = window.innerWidth;
-				this.canvas.height = window.innerHeight;
+				this.panCanvas.width = window.innerWidth;
+				this.panCanvas.height = window.innerHeight;
 															 
 				// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
 				this.ctx.translate( window.innerWidth , window.innerHeight );
@@ -195,66 +80,19 @@
 				this.ctx.translate( -window.innerWidth + this.cameraOffset.x, -window.innerHeight + this.cameraOffset.y );
 				this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
 				
-				// FONT ONE				  
-				this.ctx.font = "bold 24px verdana, sans-serif ";
-				this.welcomeMessage = "Welcome to the store!";
-				this.ctx.textAlign = "start";
-				this.ctx.textBaseline = "bottom";
-				this.ctx.fillStyle = "#ff0000";
-				this.ctx.fillText(this.welcomeMessage, 10, 50);
-
-				// FONT TWO
-				this.ctx.font = "bold 14px verdana, sans-serif";
-				this.message2 = "Your favorite store for videos games and latest DVDs!";
-				this.ctx.textAlign = "start";
-				this.ctx.textBaseline = "bottom";
-				this.ctx.fillStyle = "#00ff00";
-				this.ctx.fillText(this.message2, 10, 100);
-				nightSky.createCircle();
+				// Line
+				this.ctx.beginPath();
+				this.ctx.moveTo( this.negativeCamera.x, this.cameraOffset.y );
+				this.ctx.lineTo( this.cameraOffset.x, this.cameraOffset.y );
+				this.ctx.strokeStyle = 'white';
+				this.ctx.lineWidth = 1;
+				this.ctx.stroke();
 				
+				this.ctx.restore();
 				requestAnimationFrame( animate );  
 				
 			};
-			animate();
-			*/
-			/*	
-			const animate = () => {	
-				this.canvas.width = window.innerWidth;
-				this.canvas.height = window.innerHeight;
-				this.ctx = canvas.getContext('2d');
-																 
-				// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-				this.ctx.translate( window.innerWidth , window.innerHeight );
-				this.ctx.scale(this.cameraZoom, this.cameraZoom);
-				// this.ctx.translate( -window.innerWidth, -window.innerHeight );
-				this.ctx.translate( -window.innerWidth, -window.innerHeight + this.cameraOffset.y );
-				this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
-				
-				// STARS
-				let particle = [];
-				for (let i = 0; i < 100; i++) {
-					let color = this.colors[~~(this._rand(0, this.colors.length))];
-					particle[i] = {
-						radius		: this._rand(this.minRadius, this.maxRadius),
-						xPos		: this._rand(0, canvas.width),
-						yPos		: this._rand(0, canvas.height/this.numParticles * i),
-						xVelocity 	: this._rand(this.minSpeed, this.maxSpeed),
-						yVelocity 	: this._rand(this.minSpeed, this.maxSpeed),
-						color		: 'rgba(' + color + ',' + this._rand(this.minOpacity, this.maxOpacity) + ')'
-					}
-
-					//once values are determined, draw particle on canvas
-					this.ctx.fillStyle = particle[i].color;
-					this.ctx.beginPath();
-					this.ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 15 * Math.PI, true);
-					this.ctx.fill();
-			
-				}
-			
-				requestAnimationFrame( animate );  
-			};
-			animate();
-			*/
+			animate();	
 		};
 		
 		geteLocation(event) {
@@ -350,29 +188,29 @@
 			});
 								
 			// 2. Mouse
-			this.canvas.addEventListener( "mousedown", event => { 
+			this.panCanvas.addEventListener( "mousedown", event => { 
 				this.onPointerDown(event); 
 			});				
-			this.canvas.addEventListener( "mouseup", () => { 
+			this.panCanvas.addEventListener( "mouseup", () => { 
 				this.onPointerUp(); 
 			});
-			this.canvas.addEventListener( "mousemove", event => { 
+			this.panCanvas.addEventListener( "mousemove", event => { 
 				this.onPointerMove(event); 
 			});
 			
 			// 3. Touch
-			this.canvas.addEventListener( "touchstart", event => {
+			this.panCanvas.addEventListener( "touchstart", event => {
 				this.handleTouch( event,  this.onPointerDown(event) );
 			});
-			this.canvas.addEventListener( "touchend",  event => {
+			this.panCanvas.addEventListener( "touchend",  event => {
 				this.handleTouch( event, this.onPointerUp() );
 			});
-			this.canvas.addEventListener( "touchmove", event => {
+			this.panCanvas.addEventListener( "touchmove", event => {
 				this.handleTouch( event, this.onPointerMove(event) );
 			});
 			
 			// 3. Wheel
-			this.canvas.addEventListener( "wheel", event => { 
+			this.panCanvas.addEventListener( "wheel", event => { 
 				this.adjustZoom( event.deltaY*this.SCROLL_SENSITIVITY );
 			});
 		};

@@ -13,36 +13,66 @@
 				
 		//____________________________
 		//
-		// 	Constructor
+		// Constructor
 		//____________________________
 			
 		constructor() {
-
-			// Global
-			this.canvas = document.getElementById('canvas');
-			this.ctx = canvas.getContext('2d');
+			// Silence is Golden	
 		};
+		
 			
 		//____________________________
 		//
-		// 	Responsive Canvas 
-		//____________________________
-								
-		canvasResize() {
-			let windowWidth = window.innerWidth;
-			let windowHeight = window.innerHeight;
-
-			this.canvas.width = windowWidth;
-			this.canvas.height = windowHeight;	
-							
-			window.addEventListener("resize", (e) => {
-				this.canvasResize();
-			});	
-		};
-			
+		// Run
+		//____________________________	
+		
+		init() {
+			this.allCanvas();
+			this.canvasCursor();
+		};	
+		
+	
 		//____________________________
 		//
-		// 	Cursor
+		// Create Section
+		//____________________________
+		
+		createSection() {
+			const middleSection = document.createElement("section");
+			middleSection.setAttribute('class', 'o-canvas');
+			middleSection.setAttribute('id', 'middle');	
+			middleSection.setAttribute('data', "renderType: 'canvas'");	
+			document.body.appendChild(middleSection);
+			return middleSection;			
+		};
+		
+		allCanvas() {
+			const middleSection = this.createSection();
+			middleSection.appendChild(this.panCanvas());			
+			middleSection.appendChild(this.skyCanvas());			
+		};
+		
+		skyCanvas() {
+			const canvasSky = document.createElement("canvas");
+			canvasSky.setAttribute('class', 'o-canvas__sky');
+			canvasSky.setAttribute('id', 'canvas__sky');
+			canvasSky.width = window.innerWidth;
+			canvasSky.height = window.innerHeight;			
+			return canvasSky;			
+		};
+				
+		panCanvas() {
+			const canvasPan = document.createElement("canvas");
+			canvasPan.setAttribute('class', 'o-canvas__pan');
+			canvasPan.setAttribute('id', 'canvas__pan');
+			
+			return canvasPan;
+		};
+		
+
+		//____________________________
+		//
+		// Cursor
 		//____________________________
 
 		canvasCursor() {
@@ -89,11 +119,6 @@
 				ySet(pos.y);
 			});	
 		};
-			
-		//____________________________
-		//
-		// 	Pan
-		//____________________________
 
 	};
 		

@@ -2,53 +2,16 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/js/src/config.js":
+/***/ "./assets/js/src/canvas.js":
 /*!*********************************!*\
-  !*** ./assets/js/src/config.js ***!
+  !*** ./assets/js/src/canvas.js ***!
   \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _pan_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pan.js */ "./assets/js/src/pan.js");
-/* harmony import */ var _sky__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sky */ "./assets/js/src/sky.js");
-/*
-	Theme Name: AdibOnline Theme
-	Theme URI: http://www.adibbehrooz.com/
-	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
-	Author: Mohammad Bagher Adib Behrooz
-	Version: 1.0
-*/
-
-/******************************** Library Configuration ********************************
-/***************************************************************************************/
-
-// I. PAN
-//__________
-
-
-const pan = new _pan_js__WEBPACK_IMPORTED_MODULE_0__.Pan();
-pan.init();
-
-// II. Night Sky
-//______________
-
-
-const nightSky = new _sky__WEBPACK_IMPORTED_MODULE_1__.Sky();
-// nightSky.init();
-
-/***/ }),
-
-/***/ "./assets/js/src/pan.js":
-/*!******************************!*\
-  !*** ./assets/js/src/pan.js ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Pan: () => (/* binding */ Pan)
+/* harmony export */   Canvas: () => (/* binding */ Canvas)
 /* harmony export */ });
-/* harmony import */ var _sky__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sky */ "./assets/js/src/sky.js");
 /*
 	Theme Name: AdibOnline Theme
 	Theme URI: http://www.adibbehrooz.com/
@@ -57,87 +20,65 @@ __webpack_require__.r(__webpack_exports__);
 	Version: 1.0
 */
 
-/******************************** SKY ********************************
-/*********************************************************************/
+/******************************** Canvas ********************************
+/************************************************************************/
 
-
-const nightSky = new _sky__WEBPACK_IMPORTED_MODULE_0__.Sky();
-class Pan {
+class Canvas {
   //____________________________
   //
-  // 	Constructor 
+  // Constructor
   //____________________________
 
   constructor() {
-    this.canvas = document.getElementById('canvas');
-    this.ctx = canvas.getContext('2d');
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-
-    // this.cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    // this.cameraOffset = { x: -window.innerWidth, y: -window.innerHeight};	
-    this.cameraOffset = {
-      x: 0,
-      y: 0
-    };
-    this.cameraZoom = 1;
-    this.MAX_ZOOM = 5;
-    this.MIN_ZOOM = 0.1;
-    this.SCROLL_SENSITIVITY = 0.0005;
-    this.fps = 25;
-    this.initialPinchDistance = null;
-    this.lastZoom = this.cameraZoom;
-    this.isDragging = false;
-    this.speedDrag = 0.2;
-    this.dragStart = {
-      x: 0,
-      y: 0
-    };
-    this.currentX = 0;
-    this.currentY = 0;
-
-    //particle colors
-    this.colors = ['255, 255, 255'];
-    //particle radius min/max
-    this.minRadius = 0.2;
-    this.maxRadius = 1.9;
-    //particle opacity min/max
-    this.minOpacity = 0;
-    this.maxOpacity = 1;
-    //particle speed min/max
-    this.minSpeed = .005;
-    this.maxSpeed = .19;
-    //frames per second
-    this.fps = 4;
-    //number of particles
-    this.numParticles = 1100;
+    // Silence is Golden	
   }
-  //_______________________________
+  //____________________________
   //
-  // All 
-  //_______________________________
+  // Run
+  //____________________________	
 
   init() {
-    this.draw();
-    this._eventListeners();
+    this.allCanvas();
+    this.canvasCursor();
   }
   //____________________________
   //
-  // 	Responsive 
+  // Create Section
   //____________________________
 
-  _resize() {
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
-    this.canvas.width = windowWidth;
-    this.canvas.height = windowHeight;
+  createSection() {
+    const middleSection = document.createElement("section");
+    middleSection.setAttribute('class', 'o-canvas');
+    middleSection.setAttribute('id', 'middle');
+    middleSection.setAttribute('data', "renderType: 'canvas'");
+    document.body.appendChild(middleSection);
+    return middleSection;
+  }
+  allCanvas() {
+    const middleSection = this.createSection();
+    middleSection.appendChild(this.panCanvas());
+    middleSection.appendChild(this.skyCanvas());
+  }
+  skyCanvas() {
+    const canvasSky = document.createElement("canvas");
+    canvasSky.setAttribute('class', 'o-canvas__sky');
+    canvasSky.setAttribute('id', 'canvas__sky');
+    canvasSky.width = window.innerWidth;
+    canvasSky.height = window.innerHeight;
+    return canvasSky;
+  }
+  panCanvas() {
+    const canvasPan = document.createElement("canvas");
+    canvasPan.setAttribute('class', 'o-canvas__pan');
+    canvasPan.setAttribute('id', 'canvas__pan');
+    return canvasPan;
   }
   //____________________________
   //
-  // 	Cursor
+  // Cursor
   //____________________________
 
-  _cursor() {
+  canvasCursor() {
     const cLandscapeFrame = document.getElementById('middle');
 
     // create a Div element with class and id
@@ -183,123 +124,160 @@ class Pan {
       ySet(pos.y);
     });
   }
-  _rand(min, max) {
-    return Math.random() * (max - min) + min;
+}
+;
+
+
+/***/ }),
+
+/***/ "./assets/js/src/config.js":
+/*!*********************************!*\
+  !*** ./assets/js/src/config.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _canvas__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./canvas */ "./assets/js/src/canvas.js");
+/* harmony import */ var _pan__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pan */ "./assets/js/src/pan.js");
+/* harmony import */ var _sky__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sky */ "./assets/js/src/sky.js");
+/*
+	Theme Name: AdibOnline Theme
+	Theme URI: http://www.adibbehrooz.com/
+	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
+	Author: Mohammad Bagher Adib Behrooz
+	Version: 1.0
+*/
+
+/******************************** Library Configuration ********************************
+/***************************************************************************************/
+
+// Canvas
+//______________
+
+
+const canvas = new _canvas__WEBPACK_IMPORTED_MODULE_0__.Canvas();
+canvas.init();
+
+// Pan
+//______________
+
+
+const pan = new _pan__WEBPACK_IMPORTED_MODULE_1__.Pan();
+pan.init();
+
+// Night Sky
+//______________
+
+
+const nightSky = new _sky__WEBPACK_IMPORTED_MODULE_2__.Sky();
+nightSky.init();
+
+/***/ }),
+
+/***/ "./assets/js/src/pan.js":
+/*!******************************!*\
+  !*** ./assets/js/src/pan.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Pan: () => (/* binding */ Pan)
+/* harmony export */ });
+/*
+	Theme Name: AdibOnline Theme
+	Theme URI: http://www.adibbehrooz.com/
+	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
+	Author: Mohammad Bagher Adib Behrooz
+	Version: 1.0
+*/
+
+/******************************** SKY ********************************
+/*********************************************************************/
+
+class Pan {
+  //____________________________
+  //
+  // 	Constructor 
+  //____________________________
+
+  constructor() {
+    this.panCanvas = document.getElementById('canvas__pan');
+    this.panCanvas.style.position = 'absolute';
+    this.ctx = this.panCanvas.getContext('2d');
+    this.panCanvas.width = window.innerWidth;
+    this.panCanvas.height = window.innerHeight;
+    this.cameraOffset = {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2
+    };
+    this.negativeCamera = {
+      x: -window.innerWidth / 2,
+      y: -window.innerHeight / 2
+    };
+    this.zeroCamera = {
+      x: 0,
+      y: 0
+    };
+    this.cameraZoom = 1;
+    this.MAX_ZOOM = 5;
+    this.MIN_ZOOM = 0.1;
+    this.SCROLL_SENSITIVITY = 0.0005;
+    this.fps = 25;
+    this.initialPinchDistance = null;
+    this.lastZoom = this.cameraZoom;
+    this.isDragging = false;
+    this.speedDrag = 0.2;
+    this.dragStart = {
+      x: 0,
+      y: 0
+    };
+    this.currentX = 0;
+    this.currentY = 0;
+  }
+  //_______________________________
+  //
+  // All 
+  //_______________________________
+
+  init() {
+    this._eventListeners();
+    this.draw();
+  }
+  //____________________________
+  //
+  // 	Responsive 
+  //____________________________
+
+  _resize() {
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+    this.panCanvas.width = windowWidth;
+    this.panCanvas.height = windowHeight;
   }
   draw() {
-    this._cursor();
-    const text = () => {
-      // FONT ONE				  
-      this.ctx.font = "bold 24px verdana, sans-serif ";
-      this.welcomeMessage = "Welcome to the store!";
-      this.ctx.textAlign = "start";
-      this.ctx.textBaseline = "bottom";
-      this.ctx.fillStyle = "#ff0000";
-      this.ctx.fillText(this.welcomeMessage, 10, 50);
-
-      // FONT TWO
-      this.ctx.font = "bold 14px verdana, sans-serif";
-      this.message2 = "Your favorite store for videos games and latest DVDs!";
-      this.ctx.textAlign = "start";
-      this.ctx.textBaseline = "bottom";
-      this.ctx.fillStyle = "#00ff00";
-      this.ctx.fillText(this.message2, 10, 100);
-    };
-    const stars = () => {
-      this.canvas.width = window.innerWidth;
-      this.canvas.height = window.innerHeight;
+    const animate = () => {
+      this.panCanvas.width = window.innerWidth;
+      this.panCanvas.height = window.innerHeight;
 
       // Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
       this.ctx.translate(window.innerWidth, window.innerHeight);
       this.ctx.scale(this.cameraZoom, this.cameraZoom);
-
-      // 1.
       this.ctx.translate(-window.innerWidth + this.cameraOffset.x, -window.innerHeight + this.cameraOffset.y);
-
-      // 2.
-      // this.ctx.translate( -window.innerWidth, -window.innerHeight + this.cameraOffset.y );
-
-      // 3.
-      // this.ctx.translate( -window.innerWidth, -window.innerHeight );
-
       this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      nightSky.createCircle();
-      text();
-      requestAnimationFrame(stars);
-    };
-    stars();
 
-    /*
-    const animate = () => {
-    	this.canvas.width = window.innerWidth;
-    	this.canvas.height = window.innerHeight;
-    												 
-    	// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-    	this.ctx.translate( window.innerWidth , window.innerHeight );
-    	this.ctx.scale(this.cameraZoom, this.cameraZoom);
-    	this.ctx.translate( -window.innerWidth + this.cameraOffset.x, -window.innerHeight + this.cameraOffset.y );
-    	this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
-    	
-    	// FONT ONE				  
-    	this.ctx.font = "bold 24px verdana, sans-serif ";
-    	this.welcomeMessage = "Welcome to the store!";
-    	this.ctx.textAlign = "start";
-    	this.ctx.textBaseline = "bottom";
-    	this.ctx.fillStyle = "#ff0000";
-    	this.ctx.fillText(this.welcomeMessage, 10, 50);
-    		// FONT TWO
-    	this.ctx.font = "bold 14px verdana, sans-serif";
-    	this.message2 = "Your favorite store for videos games and latest DVDs!";
-    	this.ctx.textAlign = "start";
-    	this.ctx.textBaseline = "bottom";
-    	this.ctx.fillStyle = "#00ff00";
-    	this.ctx.fillText(this.message2, 10, 100);
-    	nightSky.createCircle();
-    	
-    	requestAnimationFrame( animate );  
-    	
+      // Line
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.negativeCamera.x, this.cameraOffset.y);
+      this.ctx.lineTo(this.cameraOffset.x, this.cameraOffset.y);
+      this.ctx.strokeStyle = 'white';
+      this.ctx.lineWidth = 1;
+      this.ctx.stroke();
+      this.ctx.restore();
+      requestAnimationFrame(animate);
     };
     animate();
-    */
-    /*	
-    const animate = () => {	
-    	this.canvas.width = window.innerWidth;
-    	this.canvas.height = window.innerHeight;
-    	this.ctx = canvas.getContext('2d');
-    													 
-    	// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-    	this.ctx.translate( window.innerWidth , window.innerHeight );
-    	this.ctx.scale(this.cameraZoom, this.cameraZoom);
-    	// this.ctx.translate( -window.innerWidth, -window.innerHeight );
-    	this.ctx.translate( -window.innerWidth, -window.innerHeight + this.cameraOffset.y );
-    	this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
-    	
-    	// STARS
-    	let particle = [];
-    	for (let i = 0; i < 100; i++) {
-    		let color = this.colors[~~(this._rand(0, this.colors.length))];
-    		particle[i] = {
-    			radius		: this._rand(this.minRadius, this.maxRadius),
-    			xPos		: this._rand(0, canvas.width),
-    			yPos		: this._rand(0, canvas.height/this.numParticles * i),
-    			xVelocity 	: this._rand(this.minSpeed, this.maxSpeed),
-    			yVelocity 	: this._rand(this.minSpeed, this.maxSpeed),
-    			color		: 'rgba(' + color + ',' + this._rand(this.minOpacity, this.maxOpacity) + ')'
-    		}
-    			//once values are determined, draw particle on canvas
-    		this.ctx.fillStyle = particle[i].color;
-    		this.ctx.beginPath();
-    		this.ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 15 * Math.PI, true);
-    		this.ctx.fill();
-    
-    	}
-    
-    	requestAnimationFrame( animate );  
-    };
-    animate();
-    */
   }
-
   geteLocation(event) {
     if (event.touches && event.touches.length == 1) {
       let touchPos = {
@@ -393,29 +371,29 @@ class Pan {
     });
 
     // 2. Mouse
-    this.canvas.addEventListener("mousedown", event => {
+    this.panCanvas.addEventListener("mousedown", event => {
       this.onPointerDown(event);
     });
-    this.canvas.addEventListener("mouseup", () => {
+    this.panCanvas.addEventListener("mouseup", () => {
       this.onPointerUp();
     });
-    this.canvas.addEventListener("mousemove", event => {
+    this.panCanvas.addEventListener("mousemove", event => {
       this.onPointerMove(event);
     });
 
     // 3. Touch
-    this.canvas.addEventListener("touchstart", event => {
+    this.panCanvas.addEventListener("touchstart", event => {
       this.handleTouch(event, this.onPointerDown(event));
     });
-    this.canvas.addEventListener("touchend", event => {
+    this.panCanvas.addEventListener("touchend", event => {
       this.handleTouch(event, this.onPointerUp());
     });
-    this.canvas.addEventListener("touchmove", event => {
+    this.panCanvas.addEventListener("touchmove", event => {
       this.handleTouch(event, this.onPointerMove(event));
     });
 
     // 3. Wheel
-    this.canvas.addEventListener("wheel", event => {
+    this.panCanvas.addEventListener("wheel", event => {
       this.adjustZoom(event.deltaY * this.SCROLL_SENSITIVITY);
     });
   }
@@ -454,8 +432,8 @@ class Sky {
 
   constructor() {
     //Required canvas variables
-    this.canvas = document.getElementById('canvas');
-    this.ctx = this.canvas.getContext('2d');
+    this.skyCanvas = document.getElementById('canvas__sky');
+    this.ctx = this.skyCanvas.getContext('2d');
 
     //particle colors
     this.colors = ['255, 255, 255'];
@@ -476,8 +454,8 @@ class Sky {
   render() {
     let wHeight = window.innerHeight;
     let wWidth = window.innerWidth;
-    this.canvas.width = wWidth;
-    this.canvas.height = wHeight;
+    this.skyCanvas.width = wWidth;
+    this.skyCanvas.height = wHeight;
   }
   //_______________________________
   //
@@ -487,8 +465,8 @@ class Sky {
   init() {
     this.stars(); // 1. Stars
     this.meteorShower(); // 2. Meteor Shower 
-    this._cursorTemporary();
   }
+
   //____________________________
   //
   // Stars
@@ -507,8 +485,8 @@ class Sky {
       let color = this.colors[~~this._rand(0, this.colors.length)];
       particle[i] = {
         radius: this._rand(this.minRadius, this.maxRadius),
-        xPos: this._rand(0, canvas.width),
-        yPos: this._rand(0, canvas.height / this.numParticles * i),
+        xPos: this._rand(0, this.skyCanvas.width),
+        yPos: this._rand(0, this.skyCanvas.height / this.numParticles * i),
         xVelocity: this._rand(this.minSpeed, this.maxSpeed),
         yVelocity: this._rand(this.minSpeed, this.maxSpeed),
         color: 'rgba(' + color + ',' + this._rand(this.minOpacity, this.maxOpacity) + ')'
@@ -518,9 +496,8 @@ class Sky {
       this.drawParticles(particle, i);
     }
     //...and once drawn, animateCircle the particle
-    // this.animateCircle(particle);
+    this.animateCircle(particle);
   }
-
   drawParticles(particle, i) {
     this.ctx.fillStyle = particle[i].color;
     this.ctx.beginPath();
@@ -535,7 +512,7 @@ class Sky {
         particle[i].yPos -= particle[i].yVelocity;
 
         //if particle goes off screen call reset method to place it offscreen to the left/bottom
-        if (particle[i].xPos > this.canvas.width + particle[i].radius || particle[i].yPos > this.canvas.height + particle[i].radius) {
+        if (particle[i].xPos > this.skyCanvas.width + particle[i].radius || particle[i].yPos > this.skyCanvas.height + particle[i].radius) {
           this.resetParticle(particle, i);
         } else {
           this.drawParticles(particle, i);
@@ -550,17 +527,17 @@ class Sky {
     if (random > .5) {
       // 50% chance particle comes from left side of window...
       particle[i].xPos = -particle[i].radius;
-      particle[i].yPos = this._rand(0, canvas.height);
+      particle[i].yPos = this._rand(0, this.skyCanvas.height);
     } else {
       //... or bottom of window
-      particle[i].xPos = this._rand(0, canvas.width);
-      particle[i].yPos = canvas.height + particle[i].radius;
+      particle[i].xPos = this._rand(0, this.skyCanvas.width);
+      particle[i].yPos = this.skyCanvas.height + particle[i].radius;
     }
     //redraw particle with new values
     this.drawParticles(particle, i);
   }
   clearCanvas() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.clearRect(0, 0, this.skyCanvas.width, this.skyCanvas.height);
   }
   //____________________________
   //
@@ -612,57 +589,6 @@ class Sky {
       // Connect Father to <sectopn> tag
       cLandscapeFrame.appendChild(meteorShowerParentDiv);
     }
-  }
-  //____________________________
-  //
-  // 	Cursor [TEMPORARY]
-  //____________________________
-
-  _cursorTemporary() {
-    const cLandscapeFrame = document.getElementById('middle');
-
-    // create a Div element with class and id
-    const circleDiv = document.createElement("div");
-    circleDiv.setAttribute('class', 'o-centerCircle');
-    circleDiv.setAttribute('id', 'centerCircle');
-
-    // create a Div element with class and id
-    const followDiv = document.createElement("div");
-    followDiv.setAttribute('class', 'o-followCircle');
-    followDiv.setAttribute('id', 'followCircle');
-    cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
-    cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
-
-    //________________ [GSAP] ________________
-
-    gsap.set(".o-followCircle", {
-      xPercent: -50,
-      yPercent: -50
-    });
-    const ball = document.querySelector(".o-followCircle");
-    const pos = {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2
-    };
-    const mouse = {
-      x: pos.x,
-      y: pos.y
-    };
-    const speed = 0.2;
-    const xSet = gsap.quickSetter(ball, "x", "px");
-    const ySet = gsap.quickSetter(ball, "y", "px");
-    window.addEventListener("mousemove", mouseEvent => {
-      mouse.x = mouseEvent.x;
-      mouse.y = mouseEvent.y;
-    });
-    gsap.ticker.add(() => {
-      // adjust speed for higher refresh monitors
-      const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
-      pos.x += (mouse.x - pos.x) * dt;
-      pos.y += (mouse.y - pos.y) * dt;
-      xSet(pos.x);
-      ySet(pos.y);
-    });
   }
 }
 
