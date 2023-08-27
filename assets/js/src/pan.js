@@ -13,9 +13,9 @@
 		
 		//____________________________
 		//
-		// 	Constructor 
+		// Constructor 
 		//____________________________
-		
+
 		constructor() {	
 			this.panCanvas = document.getElementById('canvas__pan');
 			this.panCanvas.style.position = 'absolute';
@@ -26,8 +26,8 @@
 
 			this.cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 }; 
 			this.negativeCamera = { x: -window.innerWidth / 2, y: -window.innerHeight / 2 };
-			this.zeroCamera = { x: 0, y: 0};	
-						
+			this.zeroCamera = { x: 0, y: 0};
+
 			this.cameraZoom = 1;
 			this.MAX_ZOOM = 5;
 			this.MIN_ZOOM = 0.1;
@@ -40,7 +40,7 @@
 			this.isDragging = false;
 			this.speedDrag = 0.2;
 			this.dragStart = { x: 0, y: 0 };
-			this.currentX = 0;			
+			this.currentX = 0;
 			this.currentY = 0;
 		};
 
@@ -49,7 +49,7 @@
 		//
 		// All 
 		//_______________________________
-								
+
 		init() {
 			this._eventListeners();
 			this.draw();
@@ -58,46 +58,46 @@
 
 		//____________________________
 		//
-		// 	Responsive 
+		// Responsive 
 		//____________________________
-								
+
 		_resize() {
 			let windowWidth = window.innerWidth;
 			let windowHeight = window.innerHeight;
 
 			this.panCanvas.width = windowWidth;
-			this.panCanvas.height = windowHeight;		
+			this.panCanvas.height = windowHeight;
 		};
-				
+
 		draw() {
 			const animate = () => {
 				this.panCanvas.width = window.innerWidth;
 				this.panCanvas.height = window.innerHeight;
-															 
+				
+				
 				// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
 				this.ctx.translate( window.innerWidth , window.innerHeight );
 				this.ctx.scale(this.cameraZoom, this.cameraZoom);
-				this.ctx.translate( -window.innerWidth + this.cameraOffset.x, -window.innerHeight + this.cameraOffset.y );
+				this.ctx.translate( -window.innerWidth, -window.innerHeight );
 				this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
-				
 				// Line
 				this.ctx.beginPath();
-				this.ctx.moveTo( this.negativeCamera.x, this.cameraOffset.y );
-				this.ctx.lineTo( this.cameraOffset.x, this.cameraOffset.y );
+				this.ctx.moveTo( -window.innerWidth, this.cameraOffset.y );
+				this.ctx.lineTo( window.innerWidth, this.cameraOffset.y );
 				this.ctx.strokeStyle = 'white';
 				this.ctx.lineWidth = 1;
 				this.ctx.stroke();
 				
 				this.ctx.restore();
 				requestAnimationFrame( animate );  
-				
+
 			};
-			animate();	
+			animate();
 		};
-		
+
 		geteLocation(event) {
-	
-			if (event.touches && event.touches.length == 1) {	
+
+			if (event.touches && event.touches.length == 1) {
 				let touchPos = { x: event.touches[0].clientX, y: event.touches[0].clientY };
 				// console.log(" == GET LOCATION == "+ "TOUCH POSITION" + `(${touchPos.x}, ${touchPos.y})` );
 				return { 
@@ -107,7 +107,7 @@
 			}
 			else if (event.clientX && event.clientY) {
 				let cursorPos = { x: event.clientX, y: event.clientY };
-				// console.log(" == GET LOCATION == "+ "CURSOR POSITION" + `(${cursorPos.x}, ${cursorPos.y})` );	
+				// console.log(" == GET LOCATION == "+ "CURSOR POSITION" + `(${cursorPos.x}, ${cursorPos.y})` );
 				return { 
 					x: event.clientX, 
 					y: event.clientY
@@ -115,11 +115,11 @@
 			}
 			
 		};
-		
+
 		onPointerDown(event) {
-			this.isDragging = true;					
+			this.isDragging = true;	
 			this.dragStart.x = event.clientX / this.cameraZoom - this.cameraOffset.x;
-			this.dragStart.y = event.clientY / this.cameraZoom - this.cameraOffset.y;			
+			this.dragStart.y = event.clientY / this.cameraZoom - this.cameraOffset.y;
 			// console.log(" POINTER DOWN " + " DRAG X: "+ this.dragStart.x + " DRAG Y: "+this.dragStart.y  + " CAMERA OFFSET X: "+this.cameraOffset.x + " CAMERA OFFSET Y: "+this.cameraOffset.y );
 		};
 
@@ -134,12 +134,12 @@
 			if ( this.isDragging ) {
 			
 				this.cameraOffset.x = event.clientX / this.cameraZoom - this.dragStart.x;
-				this.cameraOffset.y = event.clientY / this.cameraZoom - this.dragStart.y;					
+				this.cameraOffset.y = event.clientY / this.cameraZoom - this.dragStart.y;
 				// console.log( " POINTER DRAG " +  " Location X: " + event.clientX + " Location Y: " + event.clientY +" CAMERA OFFSET X: " + this.cameraOffset.x + " CAMERA OFFSET Y: " + this.cameraOffset.y );
 			}
 
 		};
-		
+
 		handleTouch(event, singleTouchHandler) {
 			if ( event.touches.length == 1 ) {
 				singleTouchHandler(event);
@@ -148,7 +148,7 @@
 				this.handlePinch(event);
 			}
 		};
-		
+
 		handlePinch(event) {
 			event.preDefault();
 			
@@ -164,7 +164,7 @@
 				this.adjustZoom( null, currentDistance/this.initialPinchDistance );
 			}
 		};
-		
+
 		adjustZoom(zoomAmount, zoomFactor) {
 			if (!this.isDragging) {
 				if (zoomAmount) {
@@ -179,25 +179,25 @@
 				// console.log(zoomAmount)
 			}
 		};
-			
+
 		_eventListeners() {
  			  
 			// 1. Resize
 			window.addEventListener("resize", () => {
 				this._resize();
 			});
-								
+
 			// 2. Mouse
 			this.panCanvas.addEventListener( "mousedown", event => { 
 				this.onPointerDown(event); 
-			});				
+			});
 			this.panCanvas.addEventListener( "mouseup", () => { 
 				this.onPointerUp(); 
 			});
 			this.panCanvas.addEventListener( "mousemove", event => { 
 				this.onPointerMove(event); 
 			});
-			
+
 			// 3. Touch
 			this.panCanvas.addEventListener( "touchstart", event => {
 				this.handleTouch( event,  this.onPointerDown(event) );
@@ -208,14 +208,14 @@
 			this.panCanvas.addEventListener( "touchmove", event => {
 				this.handleTouch( event, this.onPointerMove(event) );
 			});
-			
+
 			// 3. Wheel
 			this.panCanvas.addEventListener( "wheel", event => { 
 				this.adjustZoom( event.deltaY*this.SCROLL_SENSITIVITY );
 			});
 		};
-				
+
 	};
-	
+
 	export { Pan };
 

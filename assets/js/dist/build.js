@@ -198,7 +198,7 @@ __webpack_require__.r(__webpack_exports__);
 class Pan {
   //____________________________
   //
-  // 	Constructor 
+  // Constructor 
   //____________________________
 
   constructor() {
@@ -246,7 +246,7 @@ class Pan {
   }
   //____________________________
   //
-  // 	Responsive 
+  // Responsive 
   //____________________________
 
   _resize() {
@@ -263,13 +263,12 @@ class Pan {
       // Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
       this.ctx.translate(window.innerWidth, window.innerHeight);
       this.ctx.scale(this.cameraZoom, this.cameraZoom);
-      this.ctx.translate(-window.innerWidth + this.cameraOffset.x, -window.innerHeight + this.cameraOffset.y);
+      this.ctx.translate(-window.innerWidth, -window.innerHeight);
       this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
       // Line
       this.ctx.beginPath();
-      this.ctx.moveTo(this.negativeCamera.x, this.cameraOffset.y);
-      this.ctx.lineTo(this.cameraOffset.x, this.cameraOffset.y);
+      this.ctx.moveTo(-window.innerWidth, this.cameraOffset.y);
+      this.ctx.lineTo(window.innerWidth, this.cameraOffset.y);
       this.ctx.strokeStyle = 'white';
       this.ctx.lineWidth = 1;
       this.ctx.stroke();
@@ -294,7 +293,7 @@ class Pan {
         x: event.clientX,
         y: event.clientY
       };
-      // console.log(" == GET LOCATION == "+ "CURSOR POSITION" + `(${cursorPos.x}, ${cursorPos.y})` );	
+      // console.log(" == GET LOCATION == "+ "CURSOR POSITION" + `(${cursorPos.x}, ${cursorPos.y})` );
       return {
         x: event.clientX,
         y: event.clientY
@@ -438,8 +437,8 @@ class Sky {
     //particle colors
     this.colors = ['255, 255, 255'];
     //particle radius min/max
-    this.minRadius = 0.2;
-    this.maxRadius = 1.9;
+    this.minRadius = 0.4;
+    this.maxRadius = 2;
     //particle opacity min/max
     this.minOpacity = 0;
     this.maxOpacity = 1;
@@ -447,9 +446,9 @@ class Sky {
     this.minSpeed = .005;
     this.maxSpeed = .19;
     //frames per second
-    this.fps = 3;
+    this.fps = 4;
     //number of particles
-    this.numParticles = 850;
+    this.numParticles = 1100;
   }
   render() {
     let wHeight = window.innerHeight;

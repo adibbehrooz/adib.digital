@@ -23,10 +23,10 @@
 			this.ctx = this.skyCanvas.getContext('2d');
 					
 			//particle colors
-			this.colors = [ '255, 255, 255',];
+			this.colors = [ '255, 255, 255' ];
 			//particle radius min/max
-			this.minRadius = 0.2;
-			this.maxRadius = 1.9;
+			this.minRadius = 0.4;
+			this.maxRadius = 2;
 			//particle opacity min/max
 			this.minOpacity = 0;
 			this.maxOpacity = 1;
@@ -34,9 +34,9 @@
 			this.minSpeed = .005;
 			this.maxSpeed = .19;
 			//frames per second
-			this.fps = 3;
+			this.fps = 4;
 			//number of particles
-			this.numParticles = 850;
+			this.numParticles = 1100;
 		};
 
 

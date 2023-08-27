@@ -8,19 +8,19 @@
 
 /******************************** Canvas ********************************
 /************************************************************************/
-					
+
 	class Canvas {
-				
+
 		//____________________________
 		//
 		// Constructor
 		//____________________________
-			
+
 		constructor() {
 			// Silence is Golden	
 		};
-		
-			
+
+
 		//____________________________
 		//
 		// Run
@@ -30,28 +30,28 @@
 			this.allCanvas();
 			this.canvasCursor();
 		};	
-		
-	
+
+
 		//____________________________
 		//
 		// Create Section
 		//____________________________
-		
+
 		createSection() {
 			const middleSection = document.createElement("section");
 			middleSection.setAttribute('class', 'o-canvas');
-			middleSection.setAttribute('id', 'middle');	
-			middleSection.setAttribute('data', "renderType: 'canvas'");	
+			middleSection.setAttribute('id', 'middle');
+			middleSection.setAttribute('data', "renderType: 'canvas'");
 			document.body.appendChild(middleSection);
 			return middleSection;			
 		};
-		
+
 		allCanvas() {
 			const middleSection = this.createSection();
-			middleSection.appendChild(this.panCanvas());			
-			middleSection.appendChild(this.skyCanvas());			
+			middleSection.appendChild(this.panCanvas());
+			middleSection.appendChild(this.skyCanvas());
 		};
-		
+
 		skyCanvas() {
 			const canvasSky = document.createElement("canvas");
 			canvasSky.setAttribute('class', 'o-canvas__sky');
@@ -60,7 +60,7 @@
 			canvasSky.height = window.innerHeight;			
 			return canvasSky;			
 		};
-				
+
 		panCanvas() {
 			const canvasPan = document.createElement("canvas");
 			canvasPan.setAttribute('class', 'o-canvas__pan');
@@ -68,7 +68,7 @@
 			
 			return canvasPan;
 		};
-		
+
 
 		//____________________________
 		//
@@ -109,7 +109,7 @@
 			});
 
 			gsap.ticker.add(() => {
-				  
+				
 				// adjust speed for higher refresh monitors
 				const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio()); 
 				  
@@ -121,7 +121,7 @@
 		};
 
 	};
-		
+
 	export { Canvas };
 	
 	
