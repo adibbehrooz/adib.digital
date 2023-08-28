@@ -65,7 +65,6 @@
 			const canvasPan = document.createElement("canvas");
 			canvasPan.setAttribute('class', 'o-canvas__pan');
 			canvasPan.setAttribute('id', 'canvas__pan');
-			
 			return canvasPan;
 		};
 

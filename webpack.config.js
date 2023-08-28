@@ -69,6 +69,7 @@
 
 			// Browser Sync
 			new BrowserSyncPlugin({
+				browser: ['google-chrome'],
 				ghostMode: {
 					scroll: true,
 					links: true,

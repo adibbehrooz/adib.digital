@@ -202,11 +202,14 @@ class Pan {
   //____________________________
 
   constructor() {
+    // Canvas
     this.panCanvas = document.getElementById('canvas__pan');
     this.panCanvas.style.position = 'absolute';
     this.ctx = this.panCanvas.getContext('2d');
     this.panCanvas.width = window.innerWidth;
     this.panCanvas.height = window.innerHeight;
+
+    // Pan 
     this.cameraOffset = {
       x: window.innerWidth / 2,
       y: window.innerHeight / 2
@@ -219,6 +222,8 @@ class Pan {
       x: 0,
       y: 0
     };
+
+    // Zoom
     this.cameraZoom = 1;
     this.MAX_ZOOM = 5;
     this.MIN_ZOOM = 0.1;
@@ -226,6 +231,8 @@ class Pan {
     this.fps = 25;
     this.initialPinchDistance = null;
     this.lastZoom = this.cameraZoom;
+
+    // Drag
     this.isDragging = false;
     this.speedDrag = 0.2;
     this.dragStart = {
@@ -234,6 +241,15 @@ class Pan {
     };
     this.currentX = 0;
     this.currentY = 0;
+
+    // Wave
+    this.rad = Math.PI / 180;
+    this.amplitude = 10;
+    this.frequency = 0.02;
+    this.speed = 0.045;
+    this.phi = 0;
+    this.frames = 0;
+    this.stopped = true;
   }
   //_______________________________
   //
@@ -256,7 +272,7 @@ class Pan {
     this.panCanvas.height = windowHeight;
   }
   draw() {
-    const animate = () => {
+    const start = () => {
       this.panCanvas.width = window.innerWidth;
       this.panCanvas.height = window.innerHeight;
 
@@ -265,14 +281,55 @@ class Pan {
       this.ctx.scale(this.cameraZoom, this.cameraZoom);
       this.ctx.translate(-window.innerWidth, -window.innerHeight);
       this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      // Line
-      this.ctx.beginPath();
-      this.ctx.moveTo(-window.innerWidth, this.cameraOffset.y);
-      this.ctx.lineTo(window.innerWidth, this.cameraOffset.y);
-      this.ctx.strokeStyle = 'white';
-      this.ctx.lineWidth = 1;
-      this.ctx.stroke();
-      this.ctx.restore();
+    };
+    const staticLines = () => {
+      for (let m = 0; m < 70; m++) {
+        // Draw Lines
+        this.ctx.beginPath();
+        this.ctx.moveTo(-window.innerWidth, this.cameraOffset.y / 2 * 2.5 + m * 10);
+        this.ctx.lineTo(window.innerWidth, this.cameraOffset.y / 2 * 2.5 + m * 10);
+
+        // Width
+        this.ctx.lineWidth = 1;
+
+        // Gradient Line
+        let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
+        gradient.addColorStop(0, "rgba(23, 210, 168, 0.2)");
+        gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.5)");
+        gradient.addColorStop(1, "rgba(23, 210, 168, 0.2)");
+        this.ctx.strokeStyle = gradient;
+        this.ctx.stroke();
+        this.ctx.restore();
+      }
+      ;
+    };
+    const dynamicLines = () => {
+      for (let m = 0; m < 25; m++) {
+        this.frames++;
+        this.phi = this.frames / 50;
+        this.ctx.beginPath();
+        this.ctx.moveTo(-window.innerWidth, this.cameraOffset.y / 2 * 2.5 + m * 15);
+        for (let x = -window.innerWidth; x < window.innerWidth; x++) {
+          let y = Math.sin(x * this.frequency + this.phi) * this.amplitude / 8 + this.amplitude / 12;
+          this.ctx.lineTo(x, this.cameraOffset.y / 2 * 2.5 + y + m * 15); // 15 = offset
+        }
+
+        // Gradient Line
+        let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
+        gradient.addColorStop(0, "rgba(23, 210, 168, 0.2)");
+        gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.5)");
+        gradient.addColorStop(1, "rgba(23, 210, 168, 0.2)");
+        this.ctx.strokeStyle = gradient;
+
+        // this.ctx.lineTo( window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5) +  (m * 10) ) );
+        this.ctx.stroke();
+        this.ctx.restore();
+      }
+      ;
+    };
+    const animate = () => {
+      start();
+      dynamicLines();
       requestAnimationFrame(animate);
     };
     animate();
@@ -365,6 +422,7 @@ class Pan {
 
   _eventListeners() {
     // 1. Resize
+    this._resize();
     window.addEventListener("resize", () => {
       this._resize();
     });
@@ -393,7 +451,7 @@ class Pan {
 
     // 3. Wheel
     this.panCanvas.addEventListener("wheel", event => {
-      this.adjustZoom(event.deltaY * this.SCROLL_SENSITIVITY);
+      // this.adjustZoom( event.deltaY*this.SCROLL_SENSITIVITY );
     });
   }
 }
@@ -448,7 +506,7 @@ class Sky {
     //frames per second
     this.fps = 4;
     //number of particles
-    this.numParticles = 1100;
+    this.numParticles = 800;
   }
   render() {
     let wHeight = window.innerHeight;

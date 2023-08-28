@@ -36,7 +36,7 @@
 			//frames per second
 			this.fps = 4;
 			//number of particles
-			this.numParticles = 1100;
+			this.numParticles = 800;
 		};
 
 
