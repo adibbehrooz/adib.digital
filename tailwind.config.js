@@ -128,10 +128,11 @@ module.exports = {
 			},
 			// Font Family
 			fontFamily: {
-				'montserrat': ['Montserrat'],
-				'roboto': ['Roboto'],
-				'Imbue': ['"Imbue"', 'serif'],	
-				'robotoMono': ['"Roboto Mono"', 'monospace'],
+				'montserrat'	: ['Montserrat'],
+				'jetbrains'	: ['JetBrains'],
+				'roboto'	: ['Roboto'],
+				'Imbue'		: ['"Imbue"', 'serif'],	
+				'robotoMono'	: ['"Roboto Mono"', 'monospace'],
 			},
 		},
 	},

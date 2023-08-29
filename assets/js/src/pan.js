@@ -31,9 +31,9 @@
 			
 			// Zoom
 			this.cameraZoom = 1;
-			this.MAX_ZOOM = 5;
-			this.MIN_ZOOM = 0.1;
-			this.SCROLL_SENSITIVITY = 0.0005;
+			this.maxZoom = 5;
+			this.minZoom = 0.1;
+			this.scrollSensitivity = 0.0005;
 			this.fps = 25;
 			
 			this.initialPinchDistance = null;
@@ -47,7 +47,7 @@
 			this.currentY = 0;
 			
 			// Wave
-			this.rad = Math.PI / 180;
+			this.radious = Math.PI / 180;
 			this.amplitude = 10;
 			this.frequency = 0.02;
 			this.speed = 0.045;
@@ -96,7 +96,7 @@
 			};
 
 			const staticLines = () => {
-				for( let m = 0; m < 70; m++ ) {	
+				for( let m = 0; m < 2; m++ ) {	
 					// Draw Lines
 					this.ctx.beginPath();
 					this.ctx.moveTo( -window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5)  + (m * 10) ) );
@@ -111,6 +111,13 @@
 					gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
 					gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
 					this.ctx.strokeStyle = gradient;
+					
+					this.ctx.lineWidth     = 1;
+					this.ctx.strokeStyle = "#392E49";
+					this.ctx.shadowOffsetX = 0;
+					this.ctx.shadowOffsetY = -10;
+					this.ctx.shadowBlur    = 55;
+					this.ctx.shadowColor   = "rgba(255, 255, 255, 1)";
 
 					this.ctx.stroke();
 					this.ctx.restore();
@@ -118,35 +125,44 @@
 			};
 			
 			const dynamicLines = () => {
-			
-				for( let m = 0; m < 25; m++ ) {	
+				let k = 5, opacity = [ 0, 0 ];
+				for( let m = 0; m < 13; m++ ) {	
+				
+					let firstOpacity = opacity[0] += 0.015;
+					let secondOpacity = opacity[1] += 0.038;					
 					this.frames++;
 					this.phi = this.frames / 50;	
 					
 					this.ctx.beginPath();
-					this.ctx.moveTo( -window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5)  + (m * 15) ) );
-						
+					this.ctx.moveTo( -window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5)  + (m * k) ) );
+					
+					// Sin Wave	
 					for (let x = -window.innerWidth; x < window.innerWidth; x++) {
 						let y = Math.sin(x * this.frequency + this.phi) * this.amplitude / 8 + this.amplitude / 12;
-						this.ctx.lineTo(x, ((this.cameraOffset.y / 2) * 2.5) + y +  (m * 15) ); // 15 = offset
-					}	
-								
+						this.ctx.lineTo(x, ((this.cameraOffset.y / 2) * 2.5) + y +  (m * k) );
+					}
+					//Width
+					this.ctx.lineWidth     = 1;				
 					// Gradient Line
 					let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
-					gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-					gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-					gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-					this.ctx.strokeStyle = gradient;	
-									
-					// this.ctx.lineTo( window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5) +  (m * 10) ) );
+					gradient.addColorStop(0,"rgba(23, 210, 168, "+ firstOpacity +")");
+					gradient.addColorStop(0.5,"rgba(255, 255, 255, "+ secondOpacity +")");
+					gradient.addColorStop(1,"rgba(23, 210, 168, "+ firstOpacity +")");
+					this.ctx.strokeStyle = gradient;
+					// Shadow Line
+					this.ctx.shadowOffsetX = 0;
+					this.ctx.shadowOffsetY = 0;
+					this.ctx.shadowBlur    = 0;						
+
 					this.ctx.stroke();	
 					this.ctx.restore();
-				
+					if( m >= 0 && m < 7) k+=1.1; else k +=0.8;
 				};						
 			};
 
 			const animate = () => {
 				start();
+				staticLines();
 				dynamicLines();
 				requestAnimationFrame( animate );
 			};
@@ -232,8 +248,8 @@
 					this.cameraZoom = zoomFactor*this.lastZoom;
 				}
 				
-				this.cameraZoom = Math.min( this.cameraZoom, this.MAX_ZOOM );
-				this.cameraZoom = Math.max( this.cameraZoom, this.MIN_ZOOM );
+				this.cameraZoom = Math.min( this.cameraZoom, this.maxZoom );
+				this.cameraZoom = Math.max( this.cameraZoom, this.minZoom );
 				// console.log(zoomAmount)
 			}
 		};
@@ -270,7 +286,7 @@
 
 			// 3. Wheel
 			this.panCanvas.addEventListener( "wheel", event => { 
-				// this.adjustZoom( event.deltaY*this.SCROLL_SENSITIVITY );
+				// this.adjustZoom( event.deltaY*this.scrollSensitivity );
 			});
 		};
 

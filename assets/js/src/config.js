@@ -17,6 +17,13 @@
 	import { Canvas } from './canvas';
 	const canvas = new Canvas();
 	canvas.init();
+	
+	// Cursor
+	//______________
+	
+	import { Cursor } from './canvas';
+	const cursor = new Cursor();
+	cursor.init();	
 		
 	// Pan
 	//______________

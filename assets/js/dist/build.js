@@ -10,7 +10,8 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Canvas: () => (/* binding */ Canvas)
+/* harmony export */   Canvas: () => (/* binding */ Canvas),
+/* harmony export */   Cursor: () => (/* binding */ Cursor)
 /* harmony export */ });
 /*
 	Theme Name: AdibOnline Theme
@@ -39,7 +40,6 @@ class Canvas {
 
   init() {
     this.allCanvas();
-    this.canvasCursor();
   }
   //____________________________
   //
@@ -73,26 +73,101 @@ class Canvas {
     canvasPan.setAttribute('id', 'canvas__pan');
     return canvasPan;
   }
+}
+;
+
+class Cursor {
+  //____________________________
+  //
+  // Constructor
+  //____________________________
+
+  constructor() {
+    this.radius = 50;
+    this.circleLength = 2 * Math.PI * this.radius;
+    this.angle = 2 * this.angleRad * 180 / Math.PI / 7;
+  }
   //____________________________
   //
   // Cursor
   //____________________________
 
-  canvasCursor() {
-    const cLandscapeFrame = document.getElementById('middle');
+  init() {
+    this.cursorModules();
+    this.curveText();
+    this.animateCursor();
+  }
+  cursorModules() {
+    //________________ Circle Cursor ________________
 
-    // create a Div element with class and id
-    const circleDiv = document.createElement("div");
-    circleDiv.setAttribute('class', 'o-centerCircle');
-    circleDiv.setAttribute('id', 'centerCircle');
+    const circleCursor = () => {
+      const cLandscapeFrame = document.getElementById('middle');
+      const circleDiv = document.createElement("div");
+      circleDiv.setAttribute('class', 'o-centerCircle');
+      circleDiv.setAttribute('id', 'centerCircle');
+      cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
+    };
+    const followDiv = () => {
+      const cLandscapeFrame = document.getElementById('middle');
+      const followDiv = document.createElement("div");
+      followDiv.setAttribute('class', 'o-followCircle');
+      followDiv.setAttribute('id', 'followCircle');
+      const textDiv = document.createElement("div");
+      textDiv.setAttribute('class', 'o-followText');
+      textDiv.setAttribute('id', 'followText');
+      followDiv.appendChild(textDiv);
+      textDiv.innerHTML += 'DRAG ME';
+      cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
+    };
+    const allmodules = () => {
+      circleCursor();
+      followDiv();
+    };
+    allmodules();
+  }
+  curveText() {
+    this.curvedText = document.getElementById('followText');
+    let text = this.curvedText.innerText;
+    let html = "";
+    for (let i = 0; i < text.length; i++) {
+      html += `<span>${text[i]}</span>`;
+    }
+    // console.log(html);
+    this.curvedText.innerHTML = html;
+    this.curvedText.style.minWidth = "initial";
+    this.curvedText.style.minHeight = "initial";
+    let curveWidth = this.curvedText.offsetWidth;
+    let curveHeight = this.curvedText.offsetHeight;
+    let spanLetters = this.curvedText.innerHTML;
+    console.log(spanLetters);
 
-    // create a Div element with class and id
-    const followDiv = document.createElement("div");
-    followDiv.setAttribute('class', 'o-followCircle');
-    followDiv.setAttribute('id', 'followCircle');
-    cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
-    cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
+    /*
+    let lettersStyle = {
+    	'position': 'absolute',
+    	'transform-origin': 'bottom center',
+    	'height': this.radius+'px',
+    };
+    let cssResult = "";
+    Object.keys(lettersStyle).forEach(function (prop) {
+    	cssResult += prop + ": " + lettersStyle[prop] + "; ";	
+    });
+    letters.style = cssResult;
+    
+    let angleRad = curveWidth / (2 * this.radius );
+    /*
+    $letters.each(function(idx,el){
+    	 $(el).css({
+    		transform:`translate(${w/2}px,0px) rotate(${idx * angle - text.length*angle/2}deg)`
+    	})
+    });
+    
+    letters.forEach((element) => {
+    	console.log(`${element}`);
+    });
+    */
+  }
 
+  animateCursor() {
     //________________ [GSAP] ________________
 
     gsap.set(".o-followCircle", {
@@ -157,6 +232,13 @@ __webpack_require__.r(__webpack_exports__);
 
 const canvas = new _canvas__WEBPACK_IMPORTED_MODULE_0__.Canvas();
 canvas.init();
+
+// Cursor
+//______________
+
+
+const cursor = new _canvas__WEBPACK_IMPORTED_MODULE_0__.Cursor();
+cursor.init();
 
 // Pan
 //______________
@@ -225,9 +307,9 @@ class Pan {
 
     // Zoom
     this.cameraZoom = 1;
-    this.MAX_ZOOM = 5;
-    this.MIN_ZOOM = 0.1;
-    this.SCROLL_SENSITIVITY = 0.0005;
+    this.maxZoom = 5;
+    this.minZoom = 0.1;
+    this.scrollSensitivity = 0.0005;
     this.fps = 25;
     this.initialPinchDistance = null;
     this.lastZoom = this.cameraZoom;
@@ -243,7 +325,7 @@ class Pan {
     this.currentY = 0;
 
     // Wave
-    this.rad = Math.PI / 180;
+    this.radious = Math.PI / 180;
     this.amplitude = 10;
     this.frequency = 0.02;
     this.speed = 0.045;
@@ -283,7 +365,7 @@ class Pan {
       this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     };
     const staticLines = () => {
-      for (let m = 0; m < 70; m++) {
+      for (let m = 0; m < 2; m++) {
         // Draw Lines
         this.ctx.beginPath();
         this.ctx.moveTo(-window.innerWidth, this.cameraOffset.y / 2 * 2.5 + m * 10);
@@ -298,37 +380,54 @@ class Pan {
         gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.5)");
         gradient.addColorStop(1, "rgba(23, 210, 168, 0.2)");
         this.ctx.strokeStyle = gradient;
+        this.ctx.lineWidth = 1;
+        this.ctx.strokeStyle = "#392E49";
+        this.ctx.shadowOffsetX = 0;
+        this.ctx.shadowOffsetY = -10;
+        this.ctx.shadowBlur = 55;
+        this.ctx.shadowColor = "rgba(255, 255, 255, 1)";
         this.ctx.stroke();
         this.ctx.restore();
       }
       ;
     };
     const dynamicLines = () => {
-      for (let m = 0; m < 25; m++) {
+      let k = 5,
+        opacity = [0, 0];
+      for (let m = 0; m < 13; m++) {
+        let firstOpacity = opacity[0] += 0.015;
+        let secondOpacity = opacity[1] += 0.038;
         this.frames++;
         this.phi = this.frames / 50;
         this.ctx.beginPath();
-        this.ctx.moveTo(-window.innerWidth, this.cameraOffset.y / 2 * 2.5 + m * 15);
+        this.ctx.moveTo(-window.innerWidth, this.cameraOffset.y / 2 * 2.5 + m * k);
+
+        // Sin Wave	
         for (let x = -window.innerWidth; x < window.innerWidth; x++) {
           let y = Math.sin(x * this.frequency + this.phi) * this.amplitude / 8 + this.amplitude / 12;
-          this.ctx.lineTo(x, this.cameraOffset.y / 2 * 2.5 + y + m * 15); // 15 = offset
+          this.ctx.lineTo(x, this.cameraOffset.y / 2 * 2.5 + y + m * k);
         }
-
+        //Width
+        this.ctx.lineWidth = 1;
         // Gradient Line
         let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
-        gradient.addColorStop(0, "rgba(23, 210, 168, 0.2)");
-        gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.5)");
-        gradient.addColorStop(1, "rgba(23, 210, 168, 0.2)");
+        gradient.addColorStop(0, "rgba(23, 210, 168, " + firstOpacity + ")");
+        gradient.addColorStop(0.5, "rgba(255, 255, 255, " + secondOpacity + ")");
+        gradient.addColorStop(1, "rgba(23, 210, 168, " + firstOpacity + ")");
         this.ctx.strokeStyle = gradient;
-
-        // this.ctx.lineTo( window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5) +  (m * 10) ) );
+        // Shadow Line
+        this.ctx.shadowOffsetX = 0;
+        this.ctx.shadowOffsetY = 0;
+        this.ctx.shadowBlur = 0;
         this.ctx.stroke();
         this.ctx.restore();
+        if (m >= 0 && m < 7) k += 1.1;else k += 0.8;
       }
       ;
     };
     const animate = () => {
       start();
+      staticLines();
       dynamicLines();
       requestAnimationFrame(animate);
     };
@@ -414,8 +513,8 @@ class Pan {
         // console.log(zoomFactor);
         this.cameraZoom = zoomFactor * this.lastZoom;
       }
-      this.cameraZoom = Math.min(this.cameraZoom, this.MAX_ZOOM);
-      this.cameraZoom = Math.max(this.cameraZoom, this.MIN_ZOOM);
+      this.cameraZoom = Math.min(this.cameraZoom, this.maxZoom);
+      this.cameraZoom = Math.max(this.cameraZoom, this.minZoom);
       // console.log(zoomAmount)
     }
   }
@@ -451,7 +550,7 @@ class Pan {
 
     // 3. Wheel
     this.panCanvas.addEventListener("wheel", event => {
-      // this.adjustZoom( event.deltaY*this.SCROLL_SENSITIVITY );
+      // this.adjustZoom( event.deltaY*this.scrollSensitivity );
     });
   }
 }

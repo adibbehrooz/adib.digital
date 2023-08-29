@@ -497,6 +497,11 @@ video {
   transform: scale(3);
   background: black;
 }
+.o-followText {
+  color: white;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+}
 .o-meteorShower {
   position: absolute;
   top: calc(var(--y) * 1vh);

@@ -28,7 +28,6 @@
 		
 		init() {
 			this.allCanvas();
-			this.canvasCursor();
 		};	
 
 
@@ -67,6 +66,22 @@
 			canvasPan.setAttribute('id', 'canvas__pan');
 			return canvasPan;
 		};
+		
+	};
+	export { Canvas };
+	
+	class Cursor {
+
+		//____________________________
+		//
+		// Constructor
+		//____________________________
+
+		constructor() {
+			this.radius = 50;
+			this.circleLength = 2 * Math.PI * this.radius;
+			this.angle = 2 * this.angleRad * 180 / Math.PI / 7;		
+		};
 
 
 		//____________________________
@@ -74,21 +89,98 @@
 		// Cursor
 		//____________________________
 
-		canvasCursor() {
-			const cLandscapeFrame = document.getElementById('middle');
+		init() {
+			this.cursorModules();
+			this.curveText();
+			this.animateCursor();
+		};
+		
+		cursorModules() {
+		
+			//________________ Circle Cursor ________________
+			
+			const circleCursor = () => {
+				const cLandscapeFrame = document.getElementById('middle');
+				const circleDiv = document.createElement("div");
+				circleDiv.setAttribute ('class', 'o-centerCircle');
+				circleDiv.setAttribute ('id', 'centerCircle');
+				cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);			
+			};
+			
 
-			// create a Div element with class and id
-			const circleDiv = document.createElement("div");
-			circleDiv.setAttribute ('class', 'o-centerCircle');
-			circleDiv.setAttribute ('id', 'centerCircle');
+			const followDiv = () => {
+				const cLandscapeFrame = document.getElementById('middle');
+				const followDiv = document.createElement("div");
+				followDiv.setAttribute ('class', 'o-followCircle');
+				followDiv.setAttribute ('id', 'followCircle');
+				
+				const textDiv = document.createElement("div");
+				textDiv.setAttribute ('class', 'o-followText');
+				textDiv.setAttribute ('id', 'followText');
+				followDiv.appendChild(textDiv);
+				textDiv.innerHTML += 'DRAG ME'; 
+								
+				cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);			
+			};
+						
+			
+			const allmodules = () => {
+				circleCursor();
+				followDiv();
+			
+			};
+			allmodules();
+			
+		};
+		
+		curveText() {
+			this.curvedText = document.getElementById('followText');
+			let text = this.curvedText.innerText;
+			let html = "";
+			for (let i = 0; i < text.length; i++) {
+				html += `<span>${text[i]}</span>`;
+			}
+			// console.log(html);
+			this.curvedText.innerHTML = html;
 
-			// create a Div element with class and id
-			const followDiv = document.createElement("div");
-			followDiv.setAttribute ('class', 'o-followCircle');
-			followDiv.setAttribute ('id', 'followCircle');
-
-			cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);
-			cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
+			this.curvedText.style.minWidth = "initial";
+			this.curvedText.style.minHeight = "initial";	
+						
+			let curveWidth = this.curvedText.offsetWidth;
+			let curveHeight = this.curvedText.offsetHeight;
+	
+			let spanLetters = this.curvedText.innerHTML;
+			
+			console.log(spanLetters);
+			
+			/*
+			let lettersStyle = {
+				'position': 'absolute',
+				'transform-origin': 'bottom center',
+				'height': this.radius+'px',
+			};
+			let cssResult = "";
+			Object.keys(lettersStyle).forEach(function (prop) {
+				cssResult += prop + ": " + lettersStyle[prop] + "; ";	
+			});
+			letters.style = cssResult;
+			
+			let angleRad = curveWidth / (2 * this.radius );
+			/*
+			$letters.each(function(idx,el){
+				 $(el).css({
+					transform:`translate(${w/2}px,0px) rotate(${idx * angle - text.length*angle/2}deg)`
+				})
+			});
+			
+			letters.forEach((element) => {
+				console.log(`${element}`);
+			});
+			*/
+			
+		};
+			
+		animateCursor() {	
 
 			//________________ [GSAP] ________________
 				
@@ -121,7 +213,7 @@
 
 	};
 
-	export { Canvas };
+	export { Cursor };
 	
 	
 	

@@ -245,6 +245,12 @@
 			background: black;
 		}
 	}
+	
+	@include object ('followText') {
+		color: white;
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.9rem;
+	}
 
 
 	//______________________ Meteor Shower ______________________
