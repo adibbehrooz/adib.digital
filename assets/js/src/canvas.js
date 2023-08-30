@@ -23,7 +23,7 @@
 
 		//____________________________
 		//
-		// Run
+		// RUN
 		//____________________________	
 		
 		init() {
@@ -69,6 +69,10 @@
 		
 	};
 	export { Canvas };
+
+
+/******************************** Cursor ********************************
+/************************************************************************/
 	
 	class Cursor {
 
@@ -86,18 +90,24 @@
 
 		//____________________________
 		//
-		// Cursor
+		// RUN
 		//____________________________
 
 		init() {
 			this.cursorModules();
 			this.curveText();
-			this.animateCursor();
+			this.animateMoveCursor();
+			this.fadeLetters(0.002);
 		};
+
+		//____________________________
+		//
+		// Modules
+		//____________________________
+
 		
 		cursorModules() {
 		
-			//________________ Circle Cursor ________________
 			
 			const circleCursor = () => {
 				const cLandscapeFrame = document.getElementById('middle');
@@ -132,15 +142,19 @@
 			allmodules();
 			
 		};
-		
+
+		//____________________________
+		//
+		// Curve Text
+		//____________________________
+
 		curveText() {
-			this.curvedText = document.getElementById('followText');
+			this.curvedText = document.getElementById('followText');			
 			let text = this.curvedText.innerText;
 			let html = "";
 			for (let i = 0; i < text.length; i++) {
 				html += `<span>${text[i]}</span>`;
 			}
-			// console.log(html);
 			this.curvedText.innerHTML = html;
 
 			this.curvedText.style.minWidth = "initial";
@@ -151,38 +165,108 @@
 	
 			let spanLetters = this.curvedText.innerHTML;
 			
-			console.log(spanLetters);
+			let letters = this.curvedText.querySelectorAll("span");
 			
-			/*
 			let lettersStyle = {
 				'position': 'absolute',
 				'transform-origin': 'bottom center',
 				'height': this.radius+'px',
 			};
 			let cssResult = "";
-			Object.keys(lettersStyle).forEach(function (prop) {
-				cssResult += prop + ": " + lettersStyle[prop] + "; ";	
-			});
-			letters.style = cssResult;
-			
-			let angleRad = curveWidth / (2 * this.radius );
-			/*
-			$letters.each(function(idx,el){
-				 $(el).css({
-					transform:`translate(${w/2}px,0px) rotate(${idx * angle - text.length*angle/2}deg)`
-				})
+			Object.keys(lettersStyle).forEach(function (prop, index) {
+				cssResult += prop + ": " + lettersStyle[prop] + "; ";
+				
 			});
 			
-			letters.forEach((element) => {
-				console.log(`${element}`);
-			});
-			*/
-			
-		};
-			
-		animateCursor() {	
+			const curveSpanLetters = () => {
+				letters.forEach((spanLetters, index) => {
+					spanLetters.style = cssResult;
+					// 1. Default
+					// spanLetters.style.transform = "translate("+(curveWidth / 2)+"px, 0px) rotate("+index * curveWidth+"deg)";
+					
+					// 2. Optimize
+					switch(index) {
+						// D
+						case 0: 
+							spanLetters.style.top = "-20px"; 
+							spanLetters.style.left = "4px"; 
+							spanLetters.style.transform = "translate(11px, 0px) rotate(325deg)";
+						break;
+						
+						// R
+						case 1: 
+							spanLetters.style.top = "-18px";
+							 spanLetters.style.left = "0px"; 
+							 spanLetters.style.transform = "translate(10px, 0px) rotate(3deg)";
+						break;
+						
+						// A
+						case 2:
+							spanLetters.style.height = "47px";
+							 spanLetters.style.top = "-24px"; spanLetters.style.left = "-8px"; 
+							 spanLetters.style.transform = "translate(10px, 0px) rotate(47deg)";
+						break;
+						
+						// G
+						case 3: 
+							spanLetters.style.top = "-22px"; 
+							spanLetters.style.left = "-10px"; 
+							spanLetters.style.transform = "translate(10px, 0px) rotate(71deg)";
+						break;
+						
+						// Space
+						case 4: 
+							spanLetters.style.top = "-24px"; 
+							spanLetters.style.left = "-8px"; 
+							spanLetters.style.transform = "translate(10px, 0px) rotate(100deg)";
+						break;
+						
+						// M
+						case 5: 
+							spanLetters.style.bottom = "29px"; 
+							spanLetters.style.left = "3px"; 
+							spanLetters.style.transform = "translate(10px, 0px) rotate(186deg)";
+						break;
+						
+						// E
+						case 6: 
+							spanLetters.style.bottom = "25px"; 
+							spanLetters.style.left = "11px"; 
+							spanLetters.style.transform = "translate(10px, 0px) rotate(220deg)";
+						break;
+					};
 
-			//________________ [GSAP] ________________
+					
+				});
+			};
+			curveSpanLetters();
+		};
+		
+		//____________________________
+		//
+		// Fade Letters
+		//____________________________
+				
+		fadeLetters(speedFade) {
+			const fade = () => {
+				const followTextSelector = document.querySelector("#followText");
+				let opacity = followTextSelector.style.opacity; 
+				if(!opacity) opacity = 1;
+				if( opacity > 0 ) {
+					opacity -= speedFade;
+					followTextSelector.style.opacity = opacity;
+				}
+				requestAnimationFrame( fade );		
+			};
+			fade();		
+		}
+		
+		//____________________________
+		//
+		// Animate Cursor With GSAP
+		//____________________________
+					
+		animateMoveCursor() {
 				
 			gsap.set(".o-followCircle", {xPercent: -50, yPercent: -50});
 
@@ -210,7 +294,6 @@
 				ySet(pos.y);
 			});	
 		};
-
 	};
 
 	export { Cursor };
