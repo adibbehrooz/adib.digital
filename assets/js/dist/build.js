@@ -388,7 +388,7 @@ class Pan {
     this.cameraZoom = 1;
     this.maxZoom = 5;
     this.minZoom = 0.1;
-    this.scrollSensitivity = 0.0005;
+    this.scrollSensitivity = 0.000 * 3.55;
     this.fps = 25;
     this.initialPinchDistance = null;
     this.lastZoom = this.cameraZoom;
@@ -486,15 +486,15 @@ class Pan {
           let y = Math.sin(x * this.frequency + this.phi) * this.amplitude / 8 + this.amplitude / 12;
           this.ctx.lineTo(x, this.cameraOffset.y / 2 * 2.5 + y + m * k);
         }
-        //Width
+        // 1. Width
         this.ctx.lineWidth = 1;
-        // Gradient Line
+        // 2. Gradient Line
         let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
         gradient.addColorStop(0, "rgba(23, 210, 168, " + firstOpacity + ")");
         gradient.addColorStop(0.5, "rgba(255, 255, 255, " + secondOpacity + ")");
         gradient.addColorStop(1, "rgba(23, 210, 168, " + firstOpacity + ")");
         this.ctx.strokeStyle = gradient;
-        // Shadow Line
+        // 3. Shadow Line
         this.ctx.shadowOffsetX = 0;
         this.ctx.shadowOffsetY = 0;
         this.ctx.shadowBlur = 0;
@@ -504,10 +504,65 @@ class Pan {
       }
       ;
     };
+    const css3Outline = () => {
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 1;
+
+      // Outline
+      this.ctx.moveTo(window.innerWidth / 2 + 0.000000 * 3.5, this.cameraOffset.y / 2 + 19.23200 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 9.635000 * 3.5, this.cameraOffset.y / 2 + 23.25000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 20.80000 * 3.5, this.cameraOffset.y / 2 + 19.23200 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 24.00000 * 3.5, this.cameraOffset.y / 2 + 0.751000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 24.00000 * 3.5, this.cameraOffset.y / 2 + 0.750000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 3.630000 * 3.5, this.cameraOffset.y / 2 + 0.750000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 2.815000 * 3.5, this.cameraOffset.y / 2 + 4.868000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 19.48500 * 3.5, this.cameraOffset.y / 2 + 4.868000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 18.96000 * 3.5, this.cameraOffset.y / 2 + 7.515000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 2.275000 * 3.5, this.cameraOffset.y / 2 + 7.515000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 1.475000 * 3.5, this.cameraOffset.y / 2 + 11.63300 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 18.14500 * 3.5, this.cameraOffset.y / 2 + 11.63300 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 17.20500 * 3.5, this.cameraOffset.y / 2 + 16.51000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 10.50000 * 3.5, this.cameraOffset.y / 2 + 18.73900 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 4.680000 * 3.5, this.cameraOffset.y / 2 + 16.51000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 5.080000 * 3.5, this.cameraOffset.y / 2 + 14.47100 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 1.475000 * 3.5, this.cameraOffset.y / 2 + 14.47100 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 0.100000 * 3.5, this.cameraOffset.y / 2 + 19.14200 * 3.5);
+
+      // this.ctx.fill();					
+      this.ctx.stroke();
+    };
+    const css3Inline = () => {
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 1;
+
+      // Inline
+      this.ctx.moveTo(window.innerWidth / 2 + 3.175000 * 3.5, this.cameraOffset.y / 2 + 2.750000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 21.50000 * 3.5, this.cameraOffset.y / 2 + 2.750000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 18.70000 * 3.5, this.cameraOffset.y / 2 + 17.9000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 9.70000 * 3.5, this.cameraOffset.y / 2 + 21.00000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 1.70000 * 3.5, this.cameraOffset.y / 2 + 17.50000 * 3.5);
+      this.ctx.moveTo(window.innerWidth / 2 + 2.175000 * 3.5, this.cameraOffset.y / 2 + 9.750000 * 3.5);
+      this.ctx.lineTo(window.innerWidth / 2 + 20.175000 * 3.5, this.cameraOffset.y / 2 + 9.750000 * 3.5);
+      this.ctx.stroke();
+    };
+    const css3Stars = () => {
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 1;
+
+      // Little Stars
+      this.ctx.arc(window.innerWidth / 2 + 41.70000 * 3.5, this.cameraOffset.y / 2 + 17.35000 * 3.5, 50, 0, 2 * Math.PI);
+      this.ctx.arc(window.innerWidth / 2 + 49.70000 * 3.5, this.cameraOffset.y / 2 + 20.85000 * 3.5, 50, 0, 2 * Math.PI);
+      this.ctx.stroke();
+    };
     const animate = () => {
       start();
       staticLines();
       dynamicLines();
+
+      // 1. CSS3
+      css3Outline();
+      css3Inline();
+      css3Stars();
       requestAnimationFrame(animate);
     };
     animate();
