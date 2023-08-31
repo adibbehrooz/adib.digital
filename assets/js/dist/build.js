@@ -411,6 +411,9 @@ class Pan {
     this.phi = 0;
     this.frames = 0;
     this.stopped = true;
+
+    // Size
+    this.scaleSize = 3.5;
   }
   //_______________________________
   //
@@ -504,34 +507,76 @@ class Pan {
       }
       ;
     };
-    const css3Outline = () => {
+    const cssOutline = () => {
       this.ctx.beginPath();
       this.ctx.lineWidth = 1;
+      const relPosition = {
+        x: window.innerWidth / 2,
+        y: this.cameraOffset.y / 2
+      };
+      const linePosition = [{
+        x: 0.000000,
+        y: 19.23200
+      }, {
+        x: 9.635000,
+        y: 23.25000
+      }, {
+        x: 20.80000,
+        y: 19.23200
+      }, {
+        x: 24.00000,
+        y: 0.750000
+      }, {
+        x: 3.630000,
+        y: 0.750000
+      }, {
+        x: 2.815000,
+        y: 4.868000
+      }, {
+        x: 19.48500,
+        y: 4.868000
+      }, {
+        x: 18.96000,
+        y: 7.515000
+      }, {
+        x: 2.275000,
+        y: 7.515000
+      }, {
+        x: 1.475000,
+        y: 11.63300
+      }, {
+        x: 18.14500,
+        y: 11.63300
+      }, {
+        x: 17.20500,
+        y: 16.51000
+      }, {
+        x: 10.50000,
+        y: 18.73900
+      }, {
+        x: 4.680000,
+        y: 16.51000
+      }, {
+        x: 5.080000,
+        y: 14.47100
+      }, {
+        x: 1.475000,
+        y: 14.47100
+      }, {
+        x: 0.100000,
+        y: 19.14200
+      }];
 
-      // Outline
-      this.ctx.moveTo(window.innerWidth / 2 + 0.000000 * 3.5, this.cameraOffset.y / 2 + 19.23200 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 9.635000 * 3.5, this.cameraOffset.y / 2 + 23.25000 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 20.80000 * 3.5, this.cameraOffset.y / 2 + 19.23200 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 24.00000 * 3.5, this.cameraOffset.y / 2 + 0.751000 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 24.00000 * 3.5, this.cameraOffset.y / 2 + 0.750000 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 3.630000 * 3.5, this.cameraOffset.y / 2 + 0.750000 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 2.815000 * 3.5, this.cameraOffset.y / 2 + 4.868000 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 19.48500 * 3.5, this.cameraOffset.y / 2 + 4.868000 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 18.96000 * 3.5, this.cameraOffset.y / 2 + 7.515000 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 2.275000 * 3.5, this.cameraOffset.y / 2 + 7.515000 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 1.475000 * 3.5, this.cameraOffset.y / 2 + 11.63300 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 18.14500 * 3.5, this.cameraOffset.y / 2 + 11.63300 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 17.20500 * 3.5, this.cameraOffset.y / 2 + 16.51000 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 10.50000 * 3.5, this.cameraOffset.y / 2 + 18.73900 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 4.680000 * 3.5, this.cameraOffset.y / 2 + 16.51000 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 5.080000 * 3.5, this.cameraOffset.y / 2 + 14.47100 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 1.475000 * 3.5, this.cameraOffset.y / 2 + 14.47100 * 3.5);
-      this.ctx.lineTo(window.innerWidth / 2 + 0.100000 * 3.5, this.cameraOffset.y / 2 + 19.14200 * 3.5);
+      // this.ctx.moveTo( (window.innerWidth / 2) + 0.000000 * 3.5, (this.cameraOffset.y / 2) + 19.23200 * 3.5 );
+      this.ctx.moveTo(relPosition.x + linePosition[0].x * this.scaleSize, relPosition.y + linePosition[0].y * this.scaleSize);
+      for (let i = 1; i < linePosition.length; i++) {
+        this.ctx.lineTo(relPosition.x + linePosition[i].x * this.scaleSize, relPosition.y + linePosition[i].y * this.scaleSize);
+      }
 
       // this.ctx.fill();					
       this.ctx.stroke();
     };
-    const css3Inline = () => {
+    const cssInline = () => {
       this.ctx.beginPath();
       this.ctx.lineWidth = 1;
 
@@ -545,24 +590,34 @@ class Pan {
       this.ctx.lineTo(window.innerWidth / 2 + 20.175000 * 3.5, this.cameraOffset.y / 2 + 9.750000 * 3.5);
       this.ctx.stroke();
     };
-    const css3Stars = () => {
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 1;
+    const cssStars = () => {
+      let starPosition = {};
 
       // Little Stars
-      this.ctx.arc(window.innerWidth / 2 + 41.70000 * 3.5, this.cameraOffset.y / 2 + 17.35000 * 3.5, 50, 0, 2 * Math.PI);
-      this.ctx.arc(window.innerWidth / 2 + 49.70000 * 3.5, this.cameraOffset.y / 2 + 20.85000 * 3.5, 50, 0, 2 * Math.PI);
-      this.ctx.stroke();
+      for (let i = 0; i < 7; i++) {
+        this.ctx.beginPath();
+        if (i == 0) this.ctx.arc(window.innerWidth / 2 + 1.70000 * 3.5, this.cameraOffset.y / 2 + 17.35000 * 3.5, 1, 0, 2 * Math.PI, false);
+        if (i == 1) this.ctx.arc(window.innerWidth / 2 + 9.70000 * 3.5, this.cameraOffset.y / 2 + 20.85000 * 3.5, 1, 0, 2 * Math.PI, false);
+        this.ctx.stroke();
+      }
+    };
+    const css = () => {
+      // 2. CSS3
+      cssOutline();
+      cssInline();
+      cssStars();
     };
     const animate = () => {
       start();
+
+      // 1. Lines
       staticLines();
       dynamicLines();
 
-      // 1. CSS3
-      css3Outline();
-      css3Inline();
-      css3Stars();
+      // 2. CSS
+      css();
+
+      // Animation							
       requestAnimationFrame(animate);
     };
     animate();
