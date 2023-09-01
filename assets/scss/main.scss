@@ -430,6 +430,7 @@
 		// 2. Single Star
 		@include element('star') {
 			fill: white;
+			animation: twinkle $twinkle-duration ease infinite;
 			&:nth-child(3n) { opacity: .8; }
 			&:nth-child(7n) { opacity: .6; }
 			&:nth-child(13n) { opacity: .4; }

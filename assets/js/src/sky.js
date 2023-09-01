@@ -36,7 +36,7 @@
 			//frames per second
 			this.fps = 4;
 			//number of particles
-			this.numParticles = 800;
+			this.numParticles = 900;
 		};
 
 
@@ -112,8 +112,8 @@
 			const animate = () => {
 				this.clearCanvas();
 				for (let i = 0; i < this.numParticles; i++) {
-					particle[i].xPos += particle[i].xVelocity;
-					particle[i].yPos -= particle[i].yVelocity;
+					particle[i].xPos += particle[i].xVelocity; // Stars Move to Right
+					particle[i].yPos -= particle[i].yVelocity; // Stars Move to Top
 
 					//if particle goes off screen call reset method to place it offscreen to the left/bottom
 					if (particle[i].xPos > this.skyCanvas.width + particle[i].radius || particle[i].yPos > this.skyCanvas.height + particle[i].radius) {

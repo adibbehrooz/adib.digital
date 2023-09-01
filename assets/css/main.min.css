@@ -636,6 +636,7 @@ video {
 }
 .c-landscape__star {
   fill: white;
+  animation: twinkle 4s ease infinite;
 }
 .c-landscape__star:nth-child(3n) {
   opacity: 0.8;

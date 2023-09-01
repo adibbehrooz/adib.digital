@@ -25,7 +25,7 @@
 			this.panCanvas.width = window.innerWidth;
 			this.panCanvas.height = window.innerHeight;
 
-			// Pan 
+			// Pan Default Offset
 			this.cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 }; 
 			this.negativeCamera = { x: -window.innerWidth / 2, y: -window.innerHeight / 2 };
 			this.zeroCamera = { x: 0, y: 0};
@@ -56,9 +56,16 @@
 			this.frames = 0;
 			this.stopped = true;	
 			
-			// Size
+			// Constellation
 			this.scaleSize = 3.5;
-
+			
+			// "Stars" Inside Constellation
+			this.starColor = 'rgba(255, 255, 255, 0.4)';
+			this.fixedRadius = 2;
+			this.minMaxRadius = { minRadius: 1, maxRadius : 2.4 };
+			this.radiusChange = 0.015;
+			this.redStarColor = 'rgba(255, 194, 184, 1)';
+			this.shadowBlur = 1;
 		};
 
 
@@ -86,181 +93,236 @@
 			this.panCanvas.height = windowHeight;
 		};
 
+		//____________________________
+		//
+		// Draw 
+		//____________________________
+		
 		draw() {
-			const start = () => {
-				this.panCanvas.width = window.innerWidth;
-				this.panCanvas.height = window.innerHeight;
+		
+			//____________ 1. Start ____________
 
-				// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-				this.ctx.translate( window.innerWidth , window.innerHeight );
-				this.ctx.scale(this.cameraZoom, this.cameraZoom);
-				this.ctx.translate( -window.innerWidth, -window.innerHeight );
+			this.initDraw();
+
+			//____________ 2. Lines ____________
+
+			this.animation();
+
+
+		};
+		
+		initDraw() {
+
+			this.panCanvas.width = window.innerWidth;
+			this.panCanvas.height = window.innerHeight;
+
+			// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
+			this.ctx.translate( window.innerWidth , window.innerHeight );
+			this.ctx.scale(this.cameraZoom, this.cameraZoom);
+			this.ctx.translate( -window.innerWidth, -window.innerHeight );
 				
-				this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
-			};
-
-			const staticLines = () => {
-				for( let m = 0; m < 2; m++ ) {	
-					// Draw Lines
-					this.ctx.beginPath();
-					this.ctx.moveTo( -window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5)  + (m * 10) ) );
-					this.ctx.lineTo( window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5) +  (m * 10) ) );
-
-					// Width
-					this.ctx.lineWidth = 1;
-
-					// Gradient Line
-					let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
-					gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-					gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-					gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-					this.ctx.strokeStyle = gradient;
-					
-					this.ctx.lineWidth     = 1;
-					this.ctx.strokeStyle = "#392E49";
-					this.ctx.shadowOffsetX = 0;
-					this.ctx.shadowOffsetY = -10;
-					this.ctx.shadowBlur    = 55;
-					this.ctx.shadowColor   = "rgba(255, 255, 255, 1)";
-
-					this.ctx.stroke();
-					this.ctx.restore();
-				};
-			};
-			
-			const dynamicLines = () => {
-				let k = 5, opacity = [ 0, 0 ];
-				for( let m = 0; m < 13; m++ ) {	
+			this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
+		};
+		
+		/****************** LINES ******************/
+		/*******************************************/	
 				
-					let firstOpacity = opacity[0] += 0.015;
-					let secondOpacity = opacity[1] += 0.038;					
-					this.frames++;
-					this.phi = this.frames / 50;	
-					
-					this.ctx.beginPath();
-					this.ctx.moveTo( -window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5)  + (m * k) ) );
-					
-					// Sin Wave	
-					for (let x = -window.innerWidth; x < window.innerWidth; x++) {
-						let y = Math.sin(x * this.frequency + this.phi) * this.amplitude / 8 + this.amplitude / 12;
-						this.ctx.lineTo(x, ((this.cameraOffset.y / 2) * 2.5) + y +  (m * k) );
-					}
-					// 1. Width
-					this.ctx.lineWidth = 1;				
-					// 2. Gradient Line
-					let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
-					gradient.addColorStop(0,"rgba(23, 210, 168, "+ firstOpacity +")");
-					gradient.addColorStop(0.5,"rgba(255, 255, 255, "+ secondOpacity +")");
-					gradient.addColorStop(1,"rgba(23, 210, 168, "+ firstOpacity +")");
-					this.ctx.strokeStyle = gradient;
-					// 3. Shadow Line
-					this.ctx.shadowOffsetX = 0;
-					this.ctx.shadowOffsetY = 0;
-					this.ctx.shadowBlur    = 0;						
-
-					this.ctx.stroke();	
-					this.ctx.restore();
-					if( m >= 0 && m < 7) k+=1.1; else k +=0.8;
-				};						
-			};
-
-			const cssOutline = () => {
-			
+		// Static Lines
+		staticLines() {
+			for( let m = 0; m < 2; m++ ) {	
+				// Draw Lines
 				this.ctx.beginPath();
+				this.ctx.moveTo( -window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5)  + (m * 10) ) );
+				this.ctx.lineTo( window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5) +  (m * 10) ) );
+
+				// Width
 				this.ctx.lineWidth = 1;
 
-				const relPosition ={ 
-					x: window.innerWidth / 2, 
-					y: this.cameraOffset.y / 2 
-				};
-								
-				const linePosition = [ 
-					{ x: 0.000000, y: 19.23200 },
-					{ x: 9.635000, y: 23.25000 },					
-					{ x: 20.80000, y: 19.23200 },
-					{ x: 24.00000, y: 0.750000 },
-					{ x: 3.630000, y: 0.750000 },
-					{ x: 2.815000, y: 4.868000 },
-					{ x: 19.48500, y: 4.868000 },
-					{ x: 18.96000, y: 7.515000 },
-					{ x: 2.275000, y: 7.515000 },
-					{ x: 1.475000, y: 11.63300 },
-					{ x: 18.14500, y: 11.63300 },
-					{ x: 17.20500, y: 16.51000 },					
-					{ x: 10.50000, y: 18.73900 },
-					{ x: 4.680000, y: 16.51000 },
-					{ x: 5.080000, y: 14.47100 },
-					{ x: 1.475000, y: 14.47100 },	
-					{ x: 0.100000, y: 19.14200 },				
-				];
-				
-				// this.ctx.moveTo( (window.innerWidth / 2) + 0.000000 * 3.5, (this.cameraOffset.y / 2) + 19.23200 * 3.5 );
-				this.ctx.moveTo( relPosition.x + linePosition[0].x *  this.scaleSize, relPosition.y + linePosition[0].y * this.scaleSize );
-				for( let i = 1; i < linePosition.length; i++ ) {
-					this.ctx.lineTo( relPosition.x + linePosition[i].x * this.scaleSize, relPosition.y + linePosition[i].y * this.scaleSize );
-				}
+				// Gradient Line
+				let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
+				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
+				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
+				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
+				this.ctx.strokeStyle = gradient;
+					
+				this.ctx.lineWidth     = 1;
+				this.ctx.strokeStyle = "#392E49";
+				this.ctx.shadowOffsetX = 0;
+				this.ctx.shadowOffsetY = -10;
+				this.ctx.shadowBlur    = 55;
+				this.ctx.shadowColor   = "rgba(255, 255, 255, 1)";
 
-				// this.ctx.fill();					
+				this.ctx.stroke();
+				this.ctx.restore();
+			};
+		};
+		
+		// Dynamic Lines
+		dynamicLines() {
+			let k = 5, opacity = [ 0, 0 ];
+			for( let m = 0; m < 13; m++ ) {	
+				
+				let firstOpacity = opacity[0] += 0.015;
+				let secondOpacity = opacity[1] += 0.038;					
+				this.frames++;
+				this.phi = this.frames / 50;	
+					
+				this.ctx.beginPath();
+				this.ctx.moveTo( -window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5)  + (m * k) ) );
+					
+				// Sin Wave	
+				for (let x = -window.innerWidth; x < window.innerWidth; x++) {
+					let y = Math.sin(x * this.frequency + this.phi) * this.amplitude / 8 + this.amplitude / 12;
+					this.ctx.lineTo(x, ((this.cameraOffset.y / 2) * 2.5) + y +  (m * k) );
+				}
+				// 1. Width
+				this.ctx.lineWidth = 1;				
+				// 2. Gradient Line
+				let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
+				gradient.addColorStop(0,"rgba(23, 210, 168, "+ firstOpacity +")");
+				gradient.addColorStop(0.5,"rgba(255, 255, 255, "+ secondOpacity +")");
+				gradient.addColorStop(1,"rgba(23, 210, 168, "+ firstOpacity +")");
+				this.ctx.strokeStyle = gradient;
+				// 3. Shadow Line
+				this.ctx.shadowOffsetX = 0;
+				this.ctx.shadowOffsetY = 0;
+				this.ctx.shadowBlur    = 0;						
+
 				this.ctx.stroke();	
-			};
-			
-			const cssInline = () => {
-				this.ctx.beginPath();
-				this.ctx.lineWidth = 1;
-							
-				// Inline
-				this.ctx.moveTo( (window.innerWidth / 2) + 3.175000 * 3.5, (this.cameraOffset.y / 2) + 2.750000 * 3.5 );
-				this.ctx.lineTo( (window.innerWidth / 2) + 21.50000 * 3.5, (this.cameraOffset.y / 2) + 2.750000 * 3.5 );
-				this.ctx.lineTo( (window.innerWidth / 2) + 18.70000 * 3.5, (this.cameraOffset.y / 2) + 17.9000 * 3.5 );
-				this.ctx.lineTo( (window.innerWidth / 2) + 9.70000 * 3.5, (this.cameraOffset.y / 2) + 21.00000 * 3.5 );
-				this.ctx.lineTo( (window.innerWidth / 2) + 1.70000 * 3.5, (this.cameraOffset.y / 2) + 17.50000 * 3.5 );
-												
-				this.ctx.moveTo( (window.innerWidth / 2) + 2.175000 * 3.5, (this.cameraOffset.y / 2) + 9.750000 * 3.5 );
-				this.ctx.lineTo( (window.innerWidth / 2) + 20.175000 * 3.5, (this.cameraOffset.y / 2) + 9.750000 * 3.5 );
-								
-				this.ctx.stroke();				
-			};
-			
-			const cssStars = () => {
-			
-				let starPosition = {
-					
-				};
-				
-				// Little Stars
-				for (let i = 0; i < 7; i++ ) {
-					this.ctx.beginPath(); 
-					if(i == 0) this.ctx.arc( (window.innerWidth / 2) + 1.70000 * 3.5, (this.cameraOffset.y / 2) + 17.35000 * 3.5, 1, 0, 2 * Math.PI, false);
-				
-				if(i == 1) this.ctx.arc( (window.innerWidth / 2) + 9.70000 * 3.5, (this.cameraOffset.y / 2) + 20.85000 * 3.5, 1, 0, 2 * Math.PI, false);
-					this.ctx.stroke();				
-				}
-	
-			};
-			
-			const css = () => {
-				// 2. CSS3
-				cssOutline();
-				cssInline();
-				cssStars();				
-			};
+				this.ctx.restore();
+				if( m >= 0 && m < 7) k+=1.1; else k +=0.8;
+			};						
+		};
+		
+		/****************** LINES ******************/
+		/*******************************************/
+		
+		css() {
+			// this.cssOutlines();
+			this.cssInlines();
+			this.cssStars();
+		}
 
-			const animate = () => {
-				start();
+		cssOutlines() {
+			
+			let relatePosition = { x: window.innerWidth / 2, y: this.cameraOffset.y / 2 };
+			const linePosition = [ 
+				{ x: 0.000, 	y: 19.232 },
+				{ x: 9.635, 	y: 23.250 },					
+				{ x: 20.800, 	y: 19.232 },
+				{ x: 24.000, 	y: 0.750 },
+				{ x: 3.630, 	y: 0.750 },
+				{ x: 2.815, 	y: 4.868 },
+				{ x: 19.485, 	y: 4.868 },
+				{ x: 18.960, 	y: 7.515 },
+				{ x: 2.2750, 	y: 7.515 },
+				{ x: 1.4750, 	y: 11.633 },
+				{ x: 18.145, 	y: 11.633 },
+				{ x: 17.205, 	y: 16.510 },					
+				{ x: 10.500, 	y: 18.739 },
+				{ x: 4.6800, 	y: 16.510 },
+				{ x: 5.0800, 	y: 14.471 },
+				{ x: 1.475, 	y: 14.471 },	
+				{ x: 0.100, 	y: 19.142 },				
+			];
 				
-				// 1. Lines
-				staticLines();
-				dynamicLines();
+			this.ctx.beginPath();
+			this.ctx.lineWidth = 1;				
 				
-				// 2. CSS
-				css();
+			this.ctx.moveTo( relatePosition.x + linePosition[0].x *  this.scaleSize, relatePosition.y + linePosition[0].y * this.scaleSize );
+			for( let i = 1; i < linePosition.length; i++ ) {
+				this.ctx.lineTo(  relatePosition.x + linePosition[i].x * this.scaleSize,  relatePosition.y + linePosition[i].y * this.scaleSize );
+			}
+			// this.ctx.fill();
+			this.ctx.strokeStyle = this.strokeStyle;					
+			this.ctx.stroke();	
+		};
+		
+		cssInlines() {
 				
-				// Animation							
-				requestAnimationFrame( animate );
+			let relatePosition = { x: window.innerWidth / 2, y: this.cameraOffset.y / 2 };
+			const linePosition = [ 
+				{ x: 3.175, 	y: 2.750 },
+				{ x: 21.500, 	y: 2.750 },					
+				{ x: 18.700, 	y: 17.900 },
+				{ x: 9.700, 	y: 21.000 },
+				{ x: 1.700, 	y: 17.500 },
+				{ x: 2.175,	y: 9.750 },
+				{ x: 20.175,	y: 9.750 },
+			];
+												
+			this.ctx.beginPath();
+			this.ctx.lineWidth = 1;
+
+			// Inline	
+			this.ctx.moveTo( relatePosition.x + linePosition[0].x *  this.scaleSize,  relatePosition.y + linePosition[0].y * this.scaleSize );
+			for( let i = 1; i < linePosition.length; i++ ) {
+				if ( i == 5 ) {
+					this.ctx.moveTo( relatePosition.x + linePosition[i].x * this.scaleSize,  relatePosition.y + linePosition[i].y * this.scaleSize );
+				} else {
+					this.ctx.lineTo( relatePosition.x + linePosition[i].x * this.scaleSize,  relatePosition.y + linePosition[i].y * this.scaleSize );
+				}
+			}
+			this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';		
+			this.ctx.stroke();
+		};
+		
+		cssStars() {		
+				
+			let relatePosition = { x: window.innerWidth / 2, y: this.cameraOffset.y / 2 };
+			let starPosition = [
+				{ x: 3.175, 	y: 2.750 },
+				{ x: 21.500, 	y: 2.750 },					
+				{ x: 18.700, 	y: 17.900 },
+				{ x: 9.700, 	y: 21.000 },
+				{ x: 1.700, 	y: 17.500 },
+				{ x: 2.175,		y: 9.750 },
+				{ x: 20.175, 	y: 9.750 },					
+			];	
+			let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius; 
+			
+			// Update
+			const update = () => {
+				for (let i = 0; i < starPosition.length; i++ ) {
+					if (randomRadius > 2 || randomRadius < .8) {
+						this.radiusChange = - this.radiusChange;
+					}
+					randomRadius += this.radiusChange;
+				}
 			};
-			animate();
+					
+			const renders = () => {
+				for (let i = 0; i < starPosition.length; i++ ) {
+					this.ctx.beginPath();
+					this.ctx.arc( relatePosition.x + starPosition[i].x * this.scaleSize, relatePosition.y + starPosition[i].y * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
+					this.ctx.shadowBlur = this.shadowBlur;
+					this.ctx.shadowColor = this.starColor;
+					this.ctx.fillStyle = this.redStarColor;
+					this.ctx.fill();				
+					this.ctx.stroke();					
+				}		
+			};
+			renders();
 		};
 
+		// Animation
+		animation() {
+			const animate = () => {
+				this.initDraw()
+				this.staticLines();
+				this.dynamicLines();
+				this.css();
+				requestAnimationFrame( animate );
+			};
+			animate();	
+		};
+
+		
+		//____________________________
+		//
+		// Events 
+		//____________________________		
+		
 		geteLocation(event) {
 
 			if (event.touches && event.touches.length == 1) {
@@ -345,7 +407,12 @@
 				// console.log(zoomAmount)
 			}
 		};
-
+		
+		//____________________________
+		//
+		// Event Listeners
+		//____________________________	
+		
 		_eventListeners() {
  			  
 			// 1. Resize

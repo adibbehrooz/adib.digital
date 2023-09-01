@@ -256,7 +256,7 @@
 					opacity -= speedFade;
 					followTextSelector.style.opacity = opacity;
 				}
-				requestAnimationFrame( fade );		
+				requestAnimationFrame( fade );
 			};
 			fade();		
 		}
