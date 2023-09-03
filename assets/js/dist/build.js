@@ -343,7 +343,8 @@ nightSky.init();
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Pan: () => (/* binding */ Pan)
+/* harmony export */   Pan: () => (/* binding */ Pan),
+/* harmony export */   Pan2: () => (/* binding */ Pan2)
 /* harmony export */ });
 /*
 	Theme Name: AdibOnline Theme
@@ -465,18 +466,24 @@ class Pan {
   initDraw() {
     this.panCanvas.width = window.innerWidth;
     this.panCanvas.height = window.innerHeight;
+    this.ctx.scale(this.cameraZoom, this.cameraZoom);
 
     // Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-    this.ctx.translate(window.innerWidth, window.innerHeight);
-    this.ctx.scale(this.cameraZoom, this.cameraZoom);
-    this.ctx.translate(-window.innerWidth, -window.innerHeight);
-    this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    // this.ctx.translate( window.innerWidth / 2, window.innerHeight / 2 ); // Pan (Right To Left)
+    this.ctx.translate(window.innerWidth, window.innerHeight); // Pan (Top To Bottom)
+
+    // this.ctx.translate( -window.innerWidth / 2 + this.cameraOffset.x, -window.innerHeight / 2 + this.cameraOffset.y ); // Pan (Right To Left)
+    // this.ctx.translate( -window.innerWidth, -window.innerHeight ); // Pan (Top To Bottom)
   }
+
   /****************** LINES ******************/
   /*******************************************/
 
   // Static Lines
   staticLines() {
+    // this.ctx.translate( window.innerWidth , window.innerHeight );
+    // this.ctx.translate( -window.innerWidth, -window.innerHeight );
+    // this.ctx.translate( -(window.innerWidth / 1) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
     for (let m = 0; m < 2; m++) {
       // Draw Lines
       this.ctx.beginPath();
@@ -505,6 +512,7 @@ class Pan {
   }
   // Dynamic Lines
   dynamicLines() {
+    this.ctx.translate(-window.innerWidth, -window.innerHeight);
     let k = 5,
       opacity = [0, 0];
     for (let m = 0; m < 13; m++) {
@@ -542,12 +550,15 @@ class Pan {
   /*****************************************/
 
   css() {
+    this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
     this.cssOutlines();
     this.cssInlines();
     this.cssStars();
-    // this.cssBpundries();
   }
-
+  cssBpund() {
+    this.ctx.translate(-(window.innerWidth / 1.2) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
+    this.cssBpundries();
+  }
   cssOutlines() {
     let relatePosition = {
       x: window.innerWidth / 2,
@@ -772,7 +783,8 @@ class Pan {
       this.dynamicLines();
       this.css();
       // constellations.css();
-      requestAnimationFrame(animate); // PAN
+      this.cssBpund();
+      // requestAnimationFrame( animate ); // PAN
     };
 
     animate();
@@ -920,340 +932,173 @@ class Pan {
 }
 ;
 
-
-/***/ }),
-
-/***/ "./assets/js/src/sample.js":
-/*!*********************************!*\
-  !*** ./assets/js/src/sample.js ***!
-  \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Circle: () => (/* binding */ Circle)
-/* harmony export */ });
-/*
-	Theme Name: AdibOnline Theme
-	Theme URI: http://www.adibbehrooz.com/
-	Description: The Theme Designed By Mohammad Bagher Adib Behrooz.
-	Author: Mohammad Bagher Adib Behrooz
-	Version: 1.0
-*/
-
-/******************************** SAMPLE *******************************
-/***********************************************************************/
-
-/*
-class stars {
-		constructor( x,y,r,color ) {
-		this.canvas = document.getElementById("canvas");
-		this.context = this.canvas.getContext("2d");
-		
-		this.C_WIDTH = this.canvas.width = document.body.offsetWidth;
-		this.C_HEIGHT = this.canvas.height = document.body.offsetHeight;
-			this.x = x;
-		this.y = y;
-		this.r = r;
-		this.rChange = 0.015;
-		this.color = color;
-	};
-		starRender( x,y,r,color ) {
-		this.context.beginPath();
-		this.context.arc(this.x, this.y, this.r, 0, 2*Math.PI, false);
-		this.context.shadowBlur = 8; 
-		this.context.shadowColor = "white";
-		this.context.fillStyle = this.color;
-		this.context.fill();		
-	};
-		starUpdate() {
-		if (this.r > 2 || this.r < .8){
-			this.rChange = - this.rChange;
-		}
-		this.r += this.rChange;		
-	}
-		randomColor() {
-		let arrColors = ["ffffff", "ffecd3" , "bfcfff"];
-		return "#"+arrColors[Math.floor((Math.random()*3))];
-	};
-		build() {
-		let arrStars = [];
-		for(let i = 0; i < 400; i++){
-			let randX = Math.floor((Math.random()*this.C_WIDTH)+1);
-			let randY = Math.floor((Math.random()*this.C_HEIGHT)+1);
-			let randR = Math.random() * 1.7 + .5;
-				
-			let star = new stars(randX, randY, randR, this.randomColor());
-			star.starRender();
-				arrStars.push(star);
-		}
-			return arrStars;
-	}
-		update() {
-		let arrStars = this.build();
-		for(let i = 0; i < arrStars.length; i ++){
-			arrStars[i].this.starUpdate();
-		}
-	};
-		animate(){
-		this.update();
-		let arrStars = this.build();
-			this.context.clearRect(0,0, this.C_WIDTH, this.C_HEIGHT);
-			for(let i = 0; i < arrStars.length; i++){
-				arrStars[i].this.starRender();
-			}
-			requestAnimationFrame(animate);
-	};
-	}
-	export { stars };
-/*
-function Star(x,y,r,color){
-this.x = x;
-this.y = y;
-this.r = r;
-this.rChange = 0.015;
-// this.vx = Math.floor(Math.random()*4+1);
-// this.vy = Math.floor(Math.random()*4+1);
-this.color = color;
-}
-Star.prototype = {
-constructor: Star,
-render: function(){
-	context.beginPath();
-	context.arc(this.x, this.y, this.r, 0, 2*Math.PI, false);
-	context.shadowBlur = 8; 
-	context.shadowColor = "white";
-	context.fillStyle = this.color;
-	context.fill();
-},
-update: function(){
-	
-	 if (this.r > 2 || this.r < .8){
-		 this.rChange = - this.rChange;
-	 }
-	 this.r += this.rChange;
-}
-}
-var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
-var C_WIDTH = canvas.width = document.body.offsetWidth;
-var C_HEIGHT = canvas.height = document.body.offsetHeight;
-function randomColor(){
-	var arrColors = ["ffffff", "ffecd3" , "bfcfff"];
-	return "#"+arrColors[Math.floor((Math.random()*3))];
-}
-	
-var arrStars = [];
-for(i = 0; i < 400; i++){
-var randX = Math.floor((Math.random()*C_WIDTH)+1);
-var randY = Math.floor((Math.random()*C_HEIGHT)+1);
-var randR = Math.random() * 1.7 + .5;
-
-var star = new Star(randX, randY, randR, randomColor());
-arrStars.push(star);
-}
-function update(){
-for(i = 0; i < arrStars.length; i ++){
-arrStars[i].update();
-}
-}
-function animate(){
-update();
-//context.fillStyle = 'rgba(255, 255, 255, .1)';
-//context.fillRect(0,0,C_WIDTH,C_HEIGHT);
-context.clearRect(0,0,C_WIDTH,C_HEIGHT);
-for(var i = 0; i < arrStars.length; i++){
-	arrStars[i].render();
-}
-requestAnimationFrame(animate);
-}
-animate();
-*/
-
-/*================================================================================================================
-
-// https://stackoverflow.com/questions/53318646/change-colour-of-each-rectangle-in-canvas/53320540#53320540
-
-const canvas = document.getElementById("canvas");
-const c = canvas.getContext("2d");
-let cw = canvas.width = 700,
-	cx = cw / 2;
-let ch = canvas.height = 700,
-	cy = ch / 2;
-c.translate(-200,0);
-c.fillStyle = "white";
-
-let mouse = {}
-
-
-let rects = [
-	{c:'#CEF19E',data:[500, 100, 100, 100]},
-	{c:'#A7DDA7',data:[250, 100, 100, 100]},
-	{c:'#78BE97',data:[500, 500, 100, 100]},
-	{c:'#398689',data:[700, 600, 100, 100]},
-	{c:'#0B476D',data:[800, 100, 100, 100]}
-]
-
-
-
-rects.forEach(r=>{
-	c.fillRect(...r.data);
-})
-
-canvas.addEventListener("mousemove",(evt)=>{
-	// clear the canvas
-	c.clearRect(200,0,cw,ch);
-	mouse = oMousePos(canvas, evt);
-	//for each rect in the rects array
-	rects.forEach((r,i)=>{
-	c.beginPath();
-	// draw the rect
-	c.rect(...r.data);
-	// if thr mouse is inside the rect
-	if(c.isPointInPath(mouse.x,mouse.y)){
-	// fill the rect with the color in the rects array 
-	c.fillStyle = r.c;//color
-	
-	// fill the rect
-	c.beginPath();
-	c.fillRect(...r.data);
-	}else{
-	
-	// if the mouse is not in the rects array let it be white
-	c.fillStyle = "white";
-	c.fillRect(...r.data); 
-	}
-	})
-})
-
-// a function to detect the mouse position on the canvas
-function oMousePos(canvas, evt) {
-	var ClientRect = canvas.getBoundingClientRect();
-	return { //objeto
-	x: Math.round(evt.clientX - ClientRect.left),
-	y: Math.round(evt.clientY - ClientRect.top)
-}
-}
-*******************************************************************************************/
-
-class Circle {
+class Pan2 {
   constructor() {
-    // Canvas
-    this.panCanvas = document.getElementById('canvas');
-    this.panCanvas.style.position = 'absolute';
-    this.ctx = this.panCanvas.getContext('2d');
-    this.panCanvas.width = window.innerWidth;
-    this.panCanvas.height = window.innerHeight;
-
-    // Pan Default Offset
+    this.canvasPan2 = document.getElementById("canvas__pan2");
+    this.ctx = this.canvasPan2.getContext('2d');
     this.cameraOffset = {
       x: window.innerWidth / 2,
       y: window.innerHeight / 2
     };
-    this.negativeCamera = {
-      x: -window.innerWidth / 2,
-      y: -window.innerHeight / 2
-    };
-    this.zeroCamera = {
-      x: 0,
-      y: 0
-    };
-
-    // Zoom
     this.cameraZoom = 1;
-    this.maxZoom = 5;
-    this.minZoom = 0.1;
-    this.scrollSensitivity = 0.000 * 3.55;
-    this.fps = 25;
-    this.initialPinchDistance = null;
-    this.lastZoom = this.cameraZoom;
-
-    // Drag
+    this.MAX_ZOOM = 5;
+    this.MIN_ZOOM = 0.1;
+    this.SCROLL_SENSITIVITY = 0.0005;
     this.isDragging = false;
-    this.speedDrag = 0.2;
     this.dragStart = {
       x: 0,
       y: 0
     };
-    this.currentX = 0;
-    this.currentY = 0;
-
-    // Wave
-    this.radious = Math.PI / 180;
-    this.amplitude = 10;
-    this.frequency = 0.02;
-    this.speed = 0.045;
-    this.phi = 0;
-    this.frames = 0;
-    this.stopped = true;
-
-    // Constellation
-    this.scaleSize = 3.5;
-    this.fillColor = 'rgba(255, 255, 255, 1)';
-
-    // "Stars" Inside Constellation
-    this.starColor = 'rgba(255, 255, 255, 0.4)';
-    this.fixedRadius = 2;
-    this.minMaxRadius = {
-      minRadius: 1,
-      maxRadius: 2.5
-    };
-    this.radiusChange = 0.15;
-    this.redStarColor = 'rgba(255, 194, 184, 1)';
-    this.shadowBlur = 1;
+    this.initialPinchDistance = null;
+    this.lastZoom = this.cameraZoom;
   }
-  circle() {
-    const cssBpundries = new Path2D();
-    let relatePosition = {
-      x: window.innerWidth / 2,
-      y: this.cameraOffset.y / 2
+  init() {
+    this.draw();
+    this.addEventListeners();
+  }
+  draw() {
+    this.canvasPan2.width = window.innerWidth;
+    this.canvasPan2.height = window.innerHeight;
+    const animation = () => {
+      // Translate to the canvasPan2 centre before zooming - so you'll always zoom on what you're looking directly at
+      this.ctx.translate(window.innerWidth / 2, window.innerHeight / 2);
+      this.ctx.scale(this.cameraZoom, this.cameraZoom);
+      this.ctx.translate(-window.innerWidth / 2 + this.cameraOffset.x, -window.innerHeight / 2 + this.cameraOffset.y);
+      this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      this.ctx.fillStyle = "#991111";
+      this.drawRect(-50, -50, 100, 100);
+      this.ctx.fillStyle = "#eecc77";
+      this.drawRect(-35, -35, 20, 20);
+      this.drawRect(15, -35, 20, 20);
+      this.drawRect(-35, 15, 70, 20);
+      this.ctx.fillStyle = "#fff";
+      this.drawText("Simple Pan and Zoom canvasPan2", -255, -100, 32, "courier");
+      this.ctx.rotate(-31 * Math.PI / 180);
+      this.ctx.fillStyle = `#${(Math.round(Date.now() / 40) % 4096).toString(16)}`;
+      this.drawText("Now with touch!", -110, 100, 32, "courier");
+      this.ctx.fillStyle = "#fff";
+      this.ctx.rotate(31 * Math.PI / 180);
+      this.drawText("Wow, you found me!", -260, -2000, 48, "courier");
+      requestAnimationFrame(animation);
     };
-    const linePosition = [{
-      x: 0.000,
-      y: 19.232
-    }, {
-      x: 9.635,
-      y: 23.250
-    }, {
-      x: 20.800,
-      y: 19.232
-    }, {
-      x: 24.000,
-      y: 0.750
-    }, {
-      x: 3.630,
-      y: 0.750
-    }, {
-      x: 2.815,
-      y: 4.868
-    }, {
-      x: 0.000,
-      y: 19.142
-    }];
-    // this.ctx.beginPath();
-    cssBpundries.moveTo(relatePosition.x + linePosition[0].x * this.scaleSize, relatePosition.y + linePosition[0].y * this.scaleSize);
-    for (let i = 1; i < linePosition.length; i++) {
-      cssBpundries.lineTo(relatePosition.x + linePosition[i].x * this.scaleSize, relatePosition.y + linePosition[i].y * this.scaleSize);
+    animation();
+  }
+  // Draw
+
+  getEventLocation(event) {
+    if (event.touches && event.touches.length == 1) {
+      return {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY
+      };
+    } else if (event.clientX && event.clientY) {
+      return {
+        x: event.clientX,
+        y: event.clientY
+      };
     }
-    this.ctx.lineWidth = 1;
-    this.ctx.fillStyle = 'white';
-    cssBpundries.closePath();
-    this.ctx.fill(cssBpundries);
-    this.ctx.stroke();
-    // console.log(cssBpundries);
+  }
+  drawRect(x, y, width, height) {
+    this.ctx.fillRect(x, y, width, height);
+  }
+  drawText(text, x, y, size, font) {
+    this.ctx.font = `${size}px ${font}`;
+    this.ctx.fillText(text, x, y);
+  }
+  onPointerDown(event) {
+    this.isDragging = true;
+    this.dragStart.x = this.getEventLocation(event).x / this.cameraZoom - this.cameraOffset.x;
+    this.dragStart.y = this.getEventLocation(event).y / this.cameraZoom - this.cameraOffset.y;
+  }
+  onPointerUp(event) {
+    this.isDragging = false;
+    this.initialPinchDistance = null;
+    this.lastZoom = this.cameraZoom;
+  }
+  onPointerMove(event) {
+    if (this.isDragging) {
+      this.cameraOffset.x = this.getEventLocation(event).x / this.cameraZoom - this.dragStart.x;
+      this.cameraOffset.y = this.getEventLocation(event).y / this.cameraZoom - this.dragStart.y;
+    }
+  }
+  handleTouch(event, singleTouchHandler) {
+    if (event.touches.length == 1) {
+      singleTouchHandler(event);
+    } else if (event.type == "touchmove" && event.touches.length == 2) {
+      this.isDragging = false;
+      this.handlePinch(event);
+    }
+  }
+  handlePinch(event) {
+    event.preventDefault();
+    let touch1 = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY
+    };
+    let touch2 = {
+      x: event.touches[1].clientX,
+      y: event.touches[1].clientY
+    };
 
-    // Listen for mouse moves
-    this.panCanvas.addEventListener("mousemove", event => {
-      // Check whether point is inside circle
-      const isPointInPath = this.ctx.isPointInPath(cssBpundries, event.offsetX, event.offsetY);
-      this.ctx.fillStyle = isPointInPath ? "green" : "red";
+    // This is distance squared, but no need for an expensive sqrt as it's only used in ratio
+    let currentDistance = (touch1.x - touch2.x) ** 2 + (touch1.y - touch2.y) ** 2;
+    if (this.initialPinchDistance == null) {
+      this.initialPinchDistance = currentDistance;
+    } else {
+      this.adjustZoom(null, currentDistance / initialPinchDistance);
+    }
+  }
+  adjustZoom(zoomAmount, zoomFactor) {
+    if (!this.isDragging) {
+      if (zoomAmount) {
+        this.cameraZoom += this.zoomAmount;
+      } else if (zoomFactor) {
+        // console.log(zoomFactor)
+        this.cameraZoom = this.zoomFactor * this.lastZoom;
+      }
+      this.cameraZoom = Math.min(this.cameraZoom, this.MAX_ZOOM);
+      this.cameraZoom = Math.max(this.cameraZoom, this.MIN_ZOOM);
+      console.log(zoomAmount);
+    }
+  }
+  addEventListeners() {
+    // 2. Mouse
+    //_____________________________________
 
-      // Draw circle
-      this.ctx.fill(cssBpundries);
+    // 2.1 Mouse For "Canvas Pan"
+    this.canvasPan2.addEventListener("mousedown", event => {
+      this.onPointerDown(event);
+    });
+    this.canvasPan2.addEventListener("mouseup", () => {
+      this.onPointerUp();
+    });
+    this.canvasPan2.addEventListener("mousemove", event => {
+      this.onPointerMove(event);
+    });
+
+    // 3. Touch
+    //_____________________________________
+
+    this.canvasPan2.addEventListener("touchstart", event => {
+      this.handleTouch(event, this.onPointerDown(event));
+    });
+    this.canvasPan2.addEventListener("touchend", event => {
+      this.handleTouch(event, this.onPointerUp());
+    });
+    this.canvasPan2.addEventListener("touchmove", event => {
+      this.handleTouch(event, this.onPointerMove(event));
+    });
+
+    // 4. Wheel
+    //_____________________________________
+
+    this.canvasPan2.addEventListener("wheel", event => {
+      // this.adjustZoom( event.deltaY*this.scrollSensitivity );
     });
   }
 }
-;
+; // Pan Class
+
 
 
 /***/ }),
@@ -1526,8 +1371,7 @@ var __webpack_exports__ = {};
   \********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./assets/js/src/config.js");
-/* harmony import */ var _sample__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sample */ "./assets/js/src/sample.js");
-/* harmony import */ var main__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! main */ "./assets/scss/main.scss");
+/* harmony import */ var main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! main */ "./assets/scss/main.scss");
 /*
 	Theme Name: AdibOnline Theme
 	Theme URI: http://www.adibbehrooz.com/
@@ -1546,10 +1390,10 @@ __webpack_require__.r(__webpack_exports__);
 
  // I. Config
 
- // II. Sample
-
-const newCircle = new _sample__WEBPACK_IMPORTED_MODULE_1__.Circle();
-newCircle.circle();
+//import './sample'; // II. Sample
+//import { Circle } from './sample';
+//const newCircle = new Circle();
+//newCircle.circle();
 
 /*____________________________________________________________________________*/
 /*

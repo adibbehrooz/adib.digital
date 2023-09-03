@@ -219,7 +219,7 @@ function oMousePos(canvas, evt) {
 }
 }
 *******************************************************************************************/
-
+/*
 	class Circle {
 
 		constructor() {
@@ -313,4 +313,7 @@ function oMousePos(canvas, evt) {
 
 	};
 
+
 	export { Circle };
+
+*/

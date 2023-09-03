@@ -17,10 +17,10 @@
 
 	import './config'; // I. Config
 
-	import './sample'; // II. Sample
-	import { Circle } from './sample';
-	const newCircle = new Circle();
-	newCircle.circle();
+	//import './sample'; // II. Sample
+	//import { Circle } from './sample';
+	//const newCircle = new Circle();
+	//newCircle.circle();
 	
 
 	/*____________________________________________________________________________*/

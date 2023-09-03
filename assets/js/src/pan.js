@@ -117,13 +117,15 @@
 
 			this.panCanvas.width = window.innerWidth;
 			this.panCanvas.height = window.innerHeight;
+			this.ctx.scale(this.cameraZoom, this.cameraZoom);
+
 
 			// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-			this.ctx.translate( window.innerWidth , window.innerHeight );
-			this.ctx.scale(this.cameraZoom, this.cameraZoom);
-			this.ctx.translate( -window.innerWidth, -window.innerHeight );
-				
-			this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
+			// this.ctx.translate( window.innerWidth / 2, window.innerHeight / 2 ); // Pan (Right To Left)
+			this.ctx.translate( window.innerWidth , window.innerHeight ); // Pan (Top To Bottom)
+			
+			// this.ctx.translate( -window.innerWidth / 2 + this.cameraOffset.x, -window.innerHeight / 2 + this.cameraOffset.y ); // Pan (Right To Left)
+			// this.ctx.translate( -window.innerWidth, -window.innerHeight ); // Pan (Top To Bottom)
 		};
 		
 		/****************** LINES ******************/
@@ -131,6 +133,9 @@
 				
 		// Static Lines
 		staticLines() {
+			// this.ctx.translate( window.innerWidth , window.innerHeight );
+			// this.ctx.translate( -window.innerWidth, -window.innerHeight );
+			// this.ctx.translate( -(window.innerWidth / 1) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
 			for( let m = 0; m < 2; m++ ) {	
 				// Draw Lines
 				this.ctx.beginPath();
@@ -161,6 +166,7 @@
 		
 		// Dynamic Lines
 		dynamicLines() {
+			this.ctx.translate( -window.innerWidth, -window.innerHeight );
 			let k = 5, opacity = [ 0, 0 ];
 			for( let m = 0; m < 13; m++ ) {	
 				
@@ -200,10 +206,16 @@
 		/*****************************************/
 		
 		css() {
+			this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
 			this.cssOutlines();
 			this.cssInlines();
 			this.cssStars();
-			// this.cssBpundries();
+			
+		}
+
+		cssBpund() {
+			this.ctx.translate( -(window.innerWidth / 1.2) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
+			this.cssBpundries();
 		}
 
 		cssOutlines() {
@@ -356,7 +368,8 @@
 				this.dynamicLines();
 				this.css();
 				// constellations.css();
-				requestAnimationFrame( animate ); // PAN
+				this.cssBpund();
+				// requestAnimationFrame( animate ); // PAN
 			};
 			animate();	
 		};
@@ -510,3 +523,185 @@
 
 	export { Pan };
 
+	class Pan2 {
+		
+		constructor() {	
+			this.canvasPan2 = document.getElementById("canvas__pan2")
+			this.ctx = this.canvasPan2.getContext('2d')
+			
+			this.cameraOffset = { x: window.innerWidth/2, y: window.innerHeight/2 }
+			this.cameraZoom = 1
+			this.MAX_ZOOM = 5
+			this.MIN_ZOOM = 0.1
+			this.SCROLL_SENSITIVITY = 0.0005
+
+			this.isDragging = false
+			this.dragStart = { x: 0, y: 0 }
+
+			this.initialPinchDistance = null;
+			this.lastZoom = this.cameraZoom;
+		};
+
+		init() {
+			this.draw();
+			this.addEventListeners();
+		};
+
+		draw() {		
+			this.canvasPan2.width = window.innerWidth
+			this.canvasPan2.height = window.innerHeight
+			
+			const animation = () => {
+				// Translate to the canvasPan2 centre before zooming - so you'll always zoom on what you're looking directly at
+				this.ctx.translate( window.innerWidth / 2, window.innerHeight / 2 )
+				this.ctx.scale(this.cameraZoom, this.cameraZoom)
+				this.ctx.translate( -window.innerWidth / 2 + this.cameraOffset.x, -window.innerHeight / 2 + this.cameraOffset.y )
+				this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight)
+				this.ctx.fillStyle = "#991111"
+				this.drawRect(-50,-50,100,100)
+				
+				this.ctx.fillStyle = "#eecc77"
+				this.drawRect(-35,-35,20,20)
+				this.drawRect(15,-35,20,20)
+				this.drawRect(-35,15,70,20)
+				
+				this.ctx.fillStyle = "#fff"
+				this.drawText("Simple Pan and Zoom canvasPan2", -255, -100, 32, "courier")
+				
+				this.ctx.rotate(-31*Math.PI / 180)
+				this.ctx.fillStyle = `#${(Math.round(Date.now()/40)%4096).toString(16)}`
+				this.drawText("Now with touch!", -110, 100, 32, "courier")
+				
+				this.ctx.fillStyle = "#fff"
+				this.ctx.rotate(31*Math.PI / 180)
+				
+				this.drawText("Wow, you found me!", -260, -2000, 48, "courier")
+				requestAnimationFrame( animation );
+			};
+			animation();
+			
+		}; // Draw
+
+		getEventLocation(event) {
+			if (event.touches && event.touches.length == 1) {
+				return { x:event.touches[0].clientX, y: event.touches[0].clientY }
+			}
+			else if (event.clientX && event.clientY) {
+				return { x: event.clientX, y: event.clientY }        
+			}
+		};
+
+		drawRect(x, y, width, height) {
+			this.ctx.fillRect( x, y, width, height )
+		};
+
+		drawText(text, x, y, size, font) {
+			this.ctx.font = `${size}px ${font}`
+			this.ctx.fillText(text, x, y)
+		};
+
+		onPointerDown(event) {
+			this.isDragging = true
+			this.dragStart.x = this.getEventLocation(event).x / this.cameraZoom - this.cameraOffset.x
+			this.dragStart.y = this.getEventLocation(event).y / this.cameraZoom - this.cameraOffset.y
+		};	
+
+		onPointerUp(event) {
+			this.isDragging = false
+			this.initialPinchDistance = null
+			this.lastZoom = this.cameraZoom
+		};
+
+		onPointerMove(event) {
+			if (this.isDragging) {
+				this.cameraOffset.x = this.getEventLocation(event).x / this.cameraZoom - this.dragStart.x
+				this.cameraOffset.y = this.getEventLocation(event).y / this.cameraZoom - this.dragStart.y
+			}
+		};
+
+		handleTouch(event, singleTouchHandler) {
+			if ( event.touches.length == 1 ) {
+				singleTouchHandler(event)
+			} else if (event.type == "touchmove" && event.touches.length == 2){
+				this.isDragging = false
+				this.handlePinch(event)
+			}
+		};
+		handlePinch(event) {
+			event.preventDefault()
+			
+			let touch1 = { x: event.touches[0].clientX, y: event.touches[0].clientY }
+			let touch2 = { x: event.touches[1].clientX, y: event.touches[1].clientY }
+			
+			// This is distance squared, but no need for an expensive sqrt as it's only used in ratio
+			let currentDistance = (touch1.x - touch2.x)**2 + (touch1.y - touch2.y)**2
+			
+			if (this.initialPinchDistance == null) {
+				this.initialPinchDistance = currentDistance
+			} else { 
+				this.adjustZoom( null, currentDistance/initialPinchDistance )
+			}
+		};
+
+		adjustZoom(zoomAmount, zoomFactor) {
+			if (!this.isDragging){
+				if (zoomAmount) {
+					this.cameraZoom += this.zoomAmount
+				}
+				else if (zoomFactor)
+				{
+					// console.log(zoomFactor)
+					this.cameraZoom = this.zoomFactor * this.lastZoom
+				}
+				
+				this.cameraZoom = Math.min( this.cameraZoom, this.MAX_ZOOM )
+				this.cameraZoom = Math.max( this.cameraZoom, this.MIN_ZOOM )
+				
+				console.log(zoomAmount)
+			}
+		}
+
+		addEventListeners() {
+
+
+			// 2. Mouse
+			//_____________________________________
+			
+			// 2.1 Mouse For "Canvas Pan"
+			this.canvasPan2.addEventListener( "mousedown", event => { 
+				this.onPointerDown(event); 
+			});
+			this.canvasPan2.addEventListener( "mouseup", () => { 
+				this.onPointerUp(); 
+			});
+			this.canvasPan2.addEventListener( "mousemove", event => { 
+				this.onPointerMove(event);
+			});
+
+			// 3. Touch
+			//_____________________________________
+
+			this.canvasPan2.addEventListener( "touchstart", event => {
+				this.handleTouch( event,  this.onPointerDown(event) );
+			});
+			this.canvasPan2.addEventListener( "touchend",  event => {
+				this.handleTouch( event, this.onPointerUp() );
+			});
+			this.canvasPan2.addEventListener( "touchmove", event => {
+				this.handleTouch( event, this.onPointerMove(event) );
+			});
+
+
+			// 4. Wheel
+			//_____________________________________
+
+			this.canvasPan2.addEventListener( "wheel", event => { 
+				// this.adjustZoom( event.deltaY*this.scrollSensitivity );
+			});
+
+		};
+
+
+	}; // Pan Class
+
+	export { Pan2 };

@@ -1,46 +1,8 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/************************************************************************/
 var __webpack_exports__ = {};
 /*!*********************************!*\
   !*** ./assets/js/src/sample.js ***!
   \*********************************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Circle: () => (/* binding */ Circle)
-/* harmony export */ });
 /*
 	Theme Name: AdibOnline Theme
 	Theme URI: http://www.adibbehrooz.com/
@@ -243,126 +205,104 @@ function oMousePos(canvas, evt) {
 }
 }
 *******************************************************************************************/
+/*
+	class Circle {
 
-class Circle {
-  constructor() {
-    // Canvas
-    this.panCanvas = document.getElementById('canvas');
-    this.panCanvas.style.position = 'absolute';
-    this.ctx = this.panCanvas.getContext('2d');
-    this.panCanvas.width = window.innerWidth;
-    this.panCanvas.height = window.innerHeight;
+		constructor() {
+		
+			// Canvas
+			this.panCanvas = document.getElementById('canvas');
+			this.panCanvas.style.position = 'absolute';
+			this.ctx = this.panCanvas.getContext('2d');
+			this.panCanvas.width = window.innerWidth;
+			this.panCanvas.height = window.innerHeight;
 
-    // Pan Default Offset
-    this.cameraOffset = {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2
-    };
-    this.negativeCamera = {
-      x: -window.innerWidth / 2,
-      y: -window.innerHeight / 2
-    };
-    this.zeroCamera = {
-      x: 0,
-      y: 0
-    };
+			// Pan Default Offset
+			this.cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 }; 
+			this.negativeCamera = { x: -window.innerWidth / 2, y: -window.innerHeight / 2 };
+			this.zeroCamera = { x: 0, y: 0};
+			
+			// Zoom
+			this.cameraZoom = 1;
+			this.maxZoom = 5;
+			this.minZoom = 0.1;
+			this.scrollSensitivity = 0.000 * 3.55;
+			this.fps = 25;
+			
+			this.initialPinchDistance = null;
+			this.lastZoom = this.cameraZoom;
+			
+			// Drag
+			this.isDragging = false;
+			this.speedDrag = 0.2;
+			this.dragStart = { x: 0, y: 0 };
+			this.currentX = 0;
+			this.currentY = 0;
+			
+			// Wave
+			this.radious = Math.PI / 180;
+			this.amplitude = 10;
+			this.frequency = 0.02;
+			this.speed = 0.045;
+			this.phi = 0;
+			this.frames = 0;
+			this.stopped = true;	
+			
+			// Constellation
+			this.scaleSize = 3.5;
+			this.fillColor = 'rgba(255, 255, 255, 1)';
+			
+			// "Stars" Inside Constellation
+			this.starColor = 'rgba(255, 255, 255, 0.4)';
+			this.fixedRadius = 2;
+			this.minMaxRadius = { minRadius: 1, maxRadius : 2.5 };
+			this.radiusChange = 0.15;
+			this.redStarColor = 'rgba(255, 194, 184, 1)';
+			this.shadowBlur = 1;
+		}
 
-    // Zoom
-    this.cameraZoom = 1;
-    this.maxZoom = 5;
-    this.minZoom = 0.1;
-    this.scrollSensitivity = 0.000 * 3.55;
-    this.fps = 25;
-    this.initialPinchDistance = null;
-    this.lastZoom = this.cameraZoom;
+		circle() {
 
-    // Drag
-    this.isDragging = false;
-    this.speedDrag = 0.2;
-    this.dragStart = {
-      x: 0,
-      y: 0
-    };
-    this.currentX = 0;
-    this.currentY = 0;
+			const cssBpundries = new Path2D();
+			let relatePosition = { x: window.innerWidth / 2, y: this.cameraOffset.y / 2 };
+			const linePosition = [ 
+				{ x: 0.000, 	y: 19.232 },
+				{ x: 9.635, 	y: 23.250 },					
+				{ x: 20.800, 	y: 19.232 },
+				{ x: 24.000, 	y: 0.750 },
+				{ x: 3.630, 	y: 0.750 },
+				{ x: 2.815, 	y: 4.868 },
+				{ x: 0.000, 	y: 19.142 },	
+			];
+			// this.ctx.beginPath();
+			cssBpundries.moveTo( relatePosition.x + linePosition[0].x *  this.scaleSize, relatePosition.y + linePosition[0].y * this.scaleSize );
+			for( let i = 1; i < linePosition.length; i++ ) {
+				cssBpundries.lineTo(  relatePosition.x + linePosition[i].x * this.scaleSize,  relatePosition.y + linePosition[i].y * this.scaleSize );
+			}
+			this.ctx.lineWidth = 1;	
+			this.ctx.fillStyle = 'white';
+			cssBpundries.closePath();
+			this.ctx.fill(cssBpundries);	
+			this.ctx.stroke();
+			// console.log(cssBpundries);
+			
+			// Listen for mouse moves
+			this.panCanvas.addEventListener("mousemove", (event) => {
+				// Check whether point is inside circle
+				const isPointInPath = this.ctx.isPointInPath( cssBpundries, event.offsetX, event.offsetY );
+				this.ctx.fillStyle = isPointInPath ? "green" : "red";
 
-    // Wave
-    this.radious = Math.PI / 180;
-    this.amplitude = 10;
-    this.frequency = 0.02;
-    this.speed = 0.045;
-    this.phi = 0;
-    this.frames = 0;
-    this.stopped = true;
+				// Draw circle
+				this.ctx.fill(cssBpundries);
+			});				
+		}
 
-    // Constellation
-    this.scaleSize = 3.5;
-    this.fillColor = 'rgba(255, 255, 255, 1)';
+	};
 
-    // "Stars" Inside Constellation
-    this.starColor = 'rgba(255, 255, 255, 0.4)';
-    this.fixedRadius = 2;
-    this.minMaxRadius = {
-      minRadius: 1,
-      maxRadius: 2.5
-    };
-    this.radiusChange = 0.15;
-    this.redStarColor = 'rgba(255, 194, 184, 1)';
-    this.shadowBlur = 1;
-  }
-  circle() {
-    const cssBpundries = new Path2D();
-    let relatePosition = {
-      x: window.innerWidth / 2,
-      y: this.cameraOffset.y / 2
-    };
-    const linePosition = [{
-      x: 0.000,
-      y: 19.232
-    }, {
-      x: 9.635,
-      y: 23.250
-    }, {
-      x: 20.800,
-      y: 19.232
-    }, {
-      x: 24.000,
-      y: 0.750
-    }, {
-      x: 3.630,
-      y: 0.750
-    }, {
-      x: 2.815,
-      y: 4.868
-    }, {
-      x: 0.000,
-      y: 19.142
-    }];
-    // this.ctx.beginPath();
-    cssBpundries.moveTo(relatePosition.x + linePosition[0].x * this.scaleSize, relatePosition.y + linePosition[0].y * this.scaleSize);
-    for (let i = 1; i < linePosition.length; i++) {
-      cssBpundries.lineTo(relatePosition.x + linePosition[i].x * this.scaleSize, relatePosition.y + linePosition[i].y * this.scaleSize);
-    }
-    this.ctx.lineWidth = 1;
-    this.ctx.fillStyle = 'white';
-    cssBpundries.closePath();
-    this.ctx.fill(cssBpundries);
-    this.ctx.stroke();
-    // console.log(cssBpundries);
 
-    // Listen for mouse moves
-    this.panCanvas.addEventListener("mousemove", event => {
-      // Check whether point is inside circle
-      const isPointInPath = this.ctx.isPointInPath(cssBpundries, event.offsetX, event.offsetY);
-      this.ctx.fillStyle = isPointInPath ? "green" : "red";
+	export { Circle };
 
-      // Draw circle
-      this.ctx.fill(cssBpundries);
-    });
-  }
-}
-;
-
+*/
 /******/ })()
 ;
 //# sourceMappingURL=sample.js.map
