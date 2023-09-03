@@ -49,6 +49,7 @@
 			const middleSection = this.createSection();
 			middleSection.appendChild(this.panCanvas());
 			middleSection.appendChild(this.skyCanvas());
+			middleSection.appendChild(this.constellationCanvas());
 		};
 
 		skyCanvas() {
@@ -65,6 +66,14 @@
 			canvasPan.setAttribute('class', 'o-canvas__pan');
 			canvasPan.setAttribute('id', 'canvas__pan');
 			return canvasPan;
+		};
+
+
+		constellationCanvas() {
+			const canvasConstellation = document.createElement("canvas");
+			canvasConstellation.setAttribute('class', 'o-canvas__constellation');
+			canvasConstellation.setAttribute('id', 'canvas__constellation');
+			return canvasConstellation;
 		};
 		
 	};

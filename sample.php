@@ -22,8 +22,6 @@
 		<meta property="og:url" content="">
 		<meta property="og:image" content="">
 
-		<link rel="manifest" href="site.webmanifest">
-
 		<link rel="shortcut icon" href="<?php bloginfo('template_directory'); ?>/assets/images/favicon.ico" />
 		<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/assets/css/main.min.css" />
 		
@@ -37,28 +35,13 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/PixiPlugin.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
-
-		<script type="text/javascript" src="<?php bloginfo('template_directory'); ?>/assets/js/dist/sample.js"></script>
-
 		<meta name="theme-color" content="#fafafa">
 	</head>
 
-	<body>
-
-	<div class="box"></div>
-	<style>
-		.box {
-			width: 300px;
-			height: 300px;
-			background: green;
-		}
-	</style>
-
-	<script>
-		gsap.to(".box", {rotation: 27, x: 100, duration: 1});
-	</script>
-
+	<body style="cursor: pointer;">
+		<canvas id="canvas"></canvas>
 	</body>
 
+	<script type="text/javascript" src="<?php bloginfo('template_directory'); ?>/assets/js/dist/build.js"></script>
 
 </html>

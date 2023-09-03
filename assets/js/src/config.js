@@ -38,6 +38,3 @@
 	import { Sky } from './sky';
 	const nightSky = new Sky();
 	nightSky.init();
-		
-	
-

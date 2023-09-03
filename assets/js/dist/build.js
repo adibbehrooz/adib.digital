@@ -58,6 +58,7 @@ class Canvas {
     const middleSection = this.createSection();
     middleSection.appendChild(this.panCanvas());
     middleSection.appendChild(this.skyCanvas());
+    middleSection.appendChild(this.constellationCanvas());
   }
   skyCanvas() {
     const canvasSky = document.createElement("canvas");
@@ -72,6 +73,12 @@ class Canvas {
     canvasPan.setAttribute('class', 'o-canvas__pan');
     canvasPan.setAttribute('id', 'canvas__pan');
     return canvasPan;
+  }
+  constellationCanvas() {
+    const canvasConstellation = document.createElement("canvas");
+    canvasConstellation.setAttribute('class', 'o-canvas__constellation');
+    canvasConstellation.setAttribute('id', 'canvas__constellation');
+    return canvasConstellation;
   }
 }
 ;
@@ -356,6 +363,7 @@ __webpack_require__.r(__webpack_exports__);
 /******************************** SKY ********************************
 /*********************************************************************/
 
+// import * as constellations from './constellations/css.js';
 class Pan {
   //____________________________
   //
@@ -414,15 +422,16 @@ class Pan {
 
     // Constellation
     this.scaleSize = 3.5;
+    this.fillColor = 'rgba(255, 255, 255, 1)';
 
     // "Stars" Inside Constellation
     this.starColor = 'rgba(255, 255, 255, 0.4)';
     this.fixedRadius = 2;
     this.minMaxRadius = {
       minRadius: 1,
-      maxRadius: 2.4
+      maxRadius: 2.5
     };
-    this.radiusChange = 0.015;
+    this.radiusChange = 0.15;
     this.redStarColor = 'rgba(255, 194, 184, 1)';
     this.shadowBlur = 1;
   }
@@ -536,14 +545,16 @@ class Pan {
     }
     ;
   }
-  /****************** LINES ******************/
-  /*******************************************/
+  /****************** CSS ******************/
+  /*****************************************/
 
   css() {
-    // this.cssOutlines();
+    this.cssOutlines();
     this.cssInlines();
     this.cssStars();
+    // this.cssBpundries();
   }
+
   cssOutlines() {
     let relatePosition = {
       x: window.innerWidth / 2,
@@ -598,18 +609,21 @@ class Pan {
       x: 1.475,
       y: 14.471
     }, {
-      x: 0.100,
+      x: 0.000,
       y: 19.142
     }];
     this.ctx.beginPath();
-    this.ctx.lineWidth = 1;
     this.ctx.moveTo(relatePosition.x + linePosition[0].x * this.scaleSize, relatePosition.y + linePosition[0].y * this.scaleSize);
     for (let i = 1; i < linePosition.length; i++) {
       this.ctx.lineTo(relatePosition.x + linePosition[i].x * this.scaleSize, relatePosition.y + linePosition[i].y * this.scaleSize);
     }
-    // this.ctx.fill();
-    this.ctx.strokeStyle = this.strokeStyle;
+    this.ctx.lineWidth = 1;
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    // this.ctx.fill();	
+    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    this.ctx.closePath();
     this.ctx.stroke();
+    this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
   }
   cssInlines() {
     let relatePosition = {
@@ -681,11 +695,12 @@ class Pan {
       y: 9.750
     }];
     let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius;
+    let staticRadius = 2;
 
     // Update
     const update = () => {
       for (let i = 0; i < starPosition.length; i++) {
-        if (randomRadius > 2 || randomRadius < .8) {
+        if (randomRadius > 2.2 || randomRadius < 1) {
           this.radiusChange = -this.radiusChange;
         }
         randomRadius += this.radiusChange;
@@ -700,10 +715,62 @@ class Pan {
         this.ctx.fillStyle = this.redStarColor;
         this.ctx.fill();
         this.ctx.stroke();
+        update();
       }
     };
     renders();
   }
+  cssBpundries() {
+    const cssBpundries = new Path2D();
+    let relatePosition = {
+      x: window.innerWidth / 2,
+      y: this.cameraOffset.y / 2
+    };
+    const linePosition = [{
+      x: 0.000,
+      y: 19.232
+    }, {
+      x: 9.635,
+      y: 23.250
+    }, {
+      x: 20.800,
+      y: 19.232
+    }, {
+      x: 24.000,
+      y: 0.750
+    }, {
+      x: 3.630,
+      y: 0.750
+    }, {
+      x: 2.815,
+      y: 4.868
+    }, {
+      x: 0.000,
+      y: 19.142
+    }];
+    cssBpundries.moveTo(relatePosition.x + linePosition[0].x * this.scaleSize, relatePosition.y + linePosition[0].y * this.scaleSize);
+    for (let i = 1; i < linePosition.length; i++) {
+      cssBpundries.lineTo(relatePosition.x + linePosition[i].x * this.scaleSize, relatePosition.y + linePosition[i].y * this.scaleSize);
+    }
+    this.ctx.lineWidth = 1;
+    this.ctx.fillStyle = 'white';
+    cssBpundries.closePath();
+    this.ctx.fill(cssBpundries);
+
+    // Event
+    this.panCanvas.addEventListener("mousemove", event => {
+      let isPointInPath = this.ctx.isPointInPath(cssBpundries, event.offsetX, event.offsetY);
+      if (isPointInPath) {
+        this.ctx.fillStyle = 'green';
+        console.log("This Is True");
+      } else {
+        this.ctx.fillStyle = 'white';
+        console.log("This Is False");
+      }
+      this.ctx.fill(cssBpundries);
+    });
+  }
+
   // Animation
   animation() {
     const animate = () => {
@@ -711,8 +778,10 @@ class Pan {
       this.staticLines();
       this.dynamicLines();
       this.css();
-      requestAnimationFrame(animate);
+      // constellations.css();
+      requestAnimationFrame(animate); // PAN
     };
+
     animate();
   }
   //____________________________
@@ -757,12 +826,13 @@ class Pan {
     // console.log(" == MOUSE POINTER UP == " + "DRAG: "+ this.isDragging+" LAST ZOOM: "+lastZoom);
   }
 
-  onPointerMove() {
+  onPointerMove(event) {
     if (this.isDragging) {
       this.cameraOffset.x = event.clientX / this.cameraZoom - this.dragStart.x;
       this.cameraOffset.y = event.clientY / this.cameraZoom - this.dragStart.y;
       // console.log( " POINTER DRAG " +  " Location X: " + event.clientX + " Location Y: " + event.clientY +" CAMERA OFFSET X: " + this.cameraOffset.x + " CAMERA OFFSET Y: " + this.cameraOffset.y );
     }
+    // console.log( " POINTER MOVE " +  " Location X: " + event.clientX + " Location Y: " + event.clientY );
   }
 
   handleTouch(event, singleTouchHandler) {
@@ -812,13 +882,18 @@ class Pan {
   //____________________________	
 
   _eventListeners() {
-    // 1. Resize
+    // 1. Resize Pan
+    //_____________________________________
+
     this._resize();
     window.addEventListener("resize", () => {
       this._resize();
     });
 
     // 2. Mouse
+    //_____________________________________
+
+    // 2.1 Mouse For "Canvas Pan"
     this.panCanvas.addEventListener("mousedown", event => {
       this.onPointerDown(event);
     });
@@ -830,6 +905,8 @@ class Pan {
     });
 
     // 3. Touch
+    //_____________________________________
+
     this.panCanvas.addEventListener("touchstart", event => {
       this.handleTouch(event, this.onPointerDown(event));
     });
@@ -840,7 +917,9 @@ class Pan {
       this.handleTouch(event, this.onPointerMove(event));
     });
 
-    // 3. Wheel
+    // 4. Wheel
+    //_____________________________________
+
     this.panCanvas.addEventListener("wheel", event => {
       // this.adjustZoom( event.deltaY*this.scrollSensitivity );
     });
@@ -1137,9 +1216,11 @@ __webpack_require__.r(__webpack_exports__);
 /*____________________________________________________________________________*/
 
  // I. Config
-// import { stars } from './sample';
-// const star = new stars();
-// star.animate();
+
+// import './sample'; // II. Sample
+// import { Circle } from './sample';
+// const newCircle = new Circle();
+// newCircle.circle();
 
 /*____________________________________________________________________________*/
 /*

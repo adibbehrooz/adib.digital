@@ -16,12 +16,13 @@
 	/*____________________________________________________________________________*/
 
 	import './config'; // I. Config
-	// import { stars } from './sample';
-	// const star = new stars();
-	// star.animate();
+
+	// import './sample'; // II. Sample
+	// import { Circle } from './sample';
+	// const newCircle = new Circle();
+	// newCircle.circle();
 	
 
-	
 	/*____________________________________________________________________________*/
 	/*
 	/* 	II. Bundle SCSS & CSS
