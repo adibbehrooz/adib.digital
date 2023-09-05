@@ -12,7 +12,7 @@
 		
         <?php // Start of Home ?>
     
-        <?php if(is_home()): get_template_part( 'home', 'canvas' ); ?>
+        <?php if(is_home()): get_template_part( 'home' ); ?>
         
         <?php elseif ( is_page() ) : get_template_part( 'page' ); ?>
         

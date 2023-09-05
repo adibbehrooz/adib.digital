@@ -8,58 +8,46 @@
 
 /******************************** CONSTELLATION ********************************
 /*******************************************************************************/
-	
-		let constCanvas = document.getElementById('canvas__pan');
-		let ctx = constCanvas.getContext('2d');
-		constCanvas.width = window.innerWidth;
-		constCanvas.height = window.innerHeight;
 
-		// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-		ctx.translate( window.innerWidth , window.innerHeight );
-		ctx.translate( -window.innerWidth, -window.innerHeight );
-					
-		ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
-
-	
-		/****************** CSS ******************/
-		/*****************************************/
+	class CSS {
 		
-		function cssBpundries() {
-			const cssBpundries = new Path2D();
-			let relatePosition = { x: window.innerWidth / 2, y: (window.innerHeight / 2) / 2 };
-			const linePosition = [ 
-				{ x: 0.000, 	y: 19.232 },
-				{ x: 9.635, 	y: 23.250 },					
-				{ x: 20.800, 	y: 19.232 },
-				{ x: 24.000, 	y: 0.750 },
-				{ x: 3.630, 	y: 0.750 },
-				{ x: 2.815, 	y: 4.868 },
-				{ x: 0.000, 	y: 19.142 },	
-			];
-			cssBpundries.moveTo( relatePosition.x + linePosition[0].x *  scaleSize, relatePosition.y + linePosition[0].y * scaleSize );
-			for( let i = 1; i < linePosition.length; i++ ) {
-				cssBpundries.lineTo(  relatePosition.x + linePosition[i].x * scaleSize,  relatePosition.y + linePosition[i].y * scaleSize );
-			}
-			ctx.lineWidth = 1;	
-			ctx.fillStyle = 'white';
-			cssBpundries.closePath();
-			ctx.fill(cssBpundries);
+		//____________________________
+		//
+		// Constructor 
+		//____________________________
 
-			// Event
-			constCanvas.addEventListener( "mousemove", event => { 
-				let isPointInPath = ctx.isPointInPath(cssBpundries, event.offsetX, event.offsetY);
-				if(isPointInPath) {
-					ctx.fillStyle = 'green';
-					console.log("This Is True");
-				} else {
-					ctx.fillStyle = 'white';
-					console.log("This Is False");
-				}
-				ctx.fill(cssBpundries);
-			});
-		}
+		constructor() {
+			this.cssCanvas = document.getElementById('canvas__pan');
+			this.ctx = this.cssCanvas.getContext('2d');
+			this.cssCanvas.width = window.innerWidth;
+			this.cssCanvas.height = window.innerHeight;	
+			
+			// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
+			this.ctx.translate( window.innerWidth , window.innerHeight );
+			this.ctx.translate( -window.innerWidth, -window.innerHeight );	
+			this.ctx.clearRect(0,0, window.innerWidth, window.innerHeight);		
 
-		function cssOutlines() {
+			// Constellation
+			this.scaleSize = 3.5;
+			this.fillColor = 'rgba(255, 255, 255, 1)';
+
+			// "Stars" Inside Constellation
+			this.starColor = 'rgba(255, 255, 255, 0.4)';
+			this.fixedRadius = 2;
+			this.minMaxRadius = { minRadius: 1, maxRadius : 2.5 };
+			this.radiusChange = 0.15;
+			this.redStarColor = 'rgba(255, 194, 184, 1)';
+			this.shadowBlur = 1;
+		};
+
+		init() {
+			this.cssOutlines();
+			this.cssInlines();
+			this.cssStars();
+			// cssBpundries();
+		};
+
+		cssOutlines() {
 			let relatePosition = { x: window.innerWidth / 2, y: (window.innerHeight / 2) / 2 };
 			const linePosition = [ 
 				{ x: 0.000, 	y: 19.232 },
@@ -81,21 +69,20 @@
 				{ x: 0.000, 	y: 19.142 },				
 			];
 				
-			ctx.beginPath();
-			ctx.moveTo( relatePosition.x + linePosition[0].x *  scaleSize, relatePosition.y + linePosition[0].y * scaleSize );
+			this.ctx.beginPath();
+			this.ctx.moveTo( relatePosition.x + linePosition[0].x *  this.scaleSize, relatePosition.y + linePosition[0].y * this.scaleSize );
 			for( let i = 1; i < linePosition.length; i++ ) {
-				ctx.lineTo(  relatePosition.x + linePosition[i].x * scaleSize,  relatePosition.y + linePosition[i].y * scaleSize );
+				this.ctx.lineTo(  relatePosition.x + linePosition[i].x * this.scaleSize,  relatePosition.y + linePosition[i].y * this.scaleSize );
 			}
-			ctx.lineWidth = 1;	
-			ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';		
+			this.ctx.lineWidth = 1;	
+			this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';		
 			// ctx.fill();	
-			ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';		
-			ctx.closePath();
-			ctx.stroke();
-			ctx.fillRect(posX, posY, width, height);
+			this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';		
+			this.ctx.closePath();
+			this.ctx.stroke();
 		};
 		
-		function cssInlines() {
+		cssInlines() {
 			let relatePosition = { x: window.innerWidth / 2, y: (window.innerHeight / 2) / 2 };
 			const linePosition = [ 
 				{ x: 3.175, 	y: 2.750 },
@@ -107,23 +94,23 @@
 				{ x: 20.175,	y: 9.750 },
 			];
 												
-			ctx.beginPath();
-			ctx.lineWidth = 1;
+			this.ctx.beginPath();
+			this.ctx.lineWidth = 1;
 
 			// Inline	
-			ctx.moveTo( relatePosition.x + linePosition[0].x *  scaleSize,  relatePosition.y + linePosition[0].y * scaleSize );
+			this.ctx.moveTo( relatePosition.x + linePosition[0].x *  this.scaleSize,  relatePosition.y + linePosition[0].y * this.scaleSize );
 			for( let i = 1; i < linePosition.length; i++ ) {
 				if ( i == 5 ) {
-					ctx.moveTo( relatePosition.x + linePosition[i].x * scaleSize,  relatePosition.y + linePosition[i].y * scaleSize );
+					this.ctx.moveTo( relatePosition.x + linePosition[i].x * this.scaleSize,  relatePosition.y + linePosition[i].y * this.scaleSize );
 				} else {
-					ctx.lineTo( relatePosition.x + linePosition[i].x * scaleSize,  relatePosition.y + linePosition[i].y * scaleSize );
+					this.ctx.lineTo( relatePosition.x + linePosition[i].x * this.scaleSize,  relatePosition.y + linePosition[i].y * this.scaleSize );
 				}
 			}
-			ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';		
-			ctx.stroke();
+			this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';		
+			this.ctx.stroke();
 		};
 		
-		function cssStars() {		
+		cssStars() {		
 			let relatePosition = { x: window.innerWidth / 2, y: (window.innerHeight / 2) / 2 };
 			let starPosition = [
 				{ x: 3.175, 	y: 2.750 },
@@ -134,36 +121,69 @@
 				{ x: 2.175,		y: 9.750 },
 				{ x: 20.175, 	y: 9.750 },					
 			];	
-			let randomRadius = Math.random() * (minMaxRadius.maxRadius - minMaxRadius.minRadius) + minMaxRadius.minRadius; 
+			let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius; 
 			let staticRadius = 2;
 			
 			// Update
 			const update = () => {
 				for (let i = 0; i < starPosition.length; i++ ) {
-					if (randomRadius > 2.2 || randomRadius < 1 ) {
-						radiusChange = - radiusChange;
+					if (this.randomRadius > 2.2 || this.randomRadius < 1 ) {
+						this.radiusChange = - this.radiusChange;
 					}
-					randomRadius += radiusChange;
+					this.randomRadius += this.radiusChange;
 				}
 			};
 					
 			const renders = () => {
 				for (let i = 0; i < starPosition.length; i++ ) {
-					ctx.beginPath();
-					ctx.arc( relatePosition.x + starPosition[i].x * scaleSize, relatePosition.y + starPosition[i].y * scaleSize, randomRadius, 0, 2 * Math.PI, false);
-					ctx.shadowBlur = shadowBlur;
-					ctx.shadowColor = starColor;
-					ctx.fillStyle = redStarColor;
-					ctx.fill();				
-					ctx.stroke();	
+					this.ctx.beginPath();
+					this.ctx.arc( relatePosition.x + starPosition[i].x * this.scaleSize, relatePosition.y + starPosition[i].y * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
+					this.ctx.shadowBlur = this.shadowBlur;
+					this.ctx.shadowColor = this.starColor;
+					this.ctx.fillStyle = this.redStarColor;
+					this.ctx.fill();				
+					this.ctx.stroke();	
 					update();				
 				}		
 			};
 			renders();
 		};
 
-		export function css() {
-			cssOutlines();
-			cssInlines();
-			cssStars();
-		}
+		cssBpundries() {
+			const cssBpundries = new Path2D();
+			let relatePosition = { x: window.innerWidth / 2, y: (window.innerHeight / 2) / 2 };
+			const linePosition = [ 
+				{ x: 0.000, 	y: 19.232 },
+				{ x: 9.635, 	y: 23.250 },					
+				{ x: 20.800, 	y: 19.232 },
+				{ x: 24.000, 	y: 0.750 },
+				{ x: 3.630, 	y: 0.750 },
+				{ x: 2.815, 	y: 4.868 },
+				{ x: 0.000, 	y: 19.142 },	
+			];
+			cssBpundries.moveTo( relatePosition.x + linePosition[0].x *  this.scaleSize, relatePosition.y + linePosition[0].y * this.scaleSize );
+			for( let i = 1; i < linePosition.length; i++ ) {
+				cssBpundries.lineTo(  relatePosition.x + linePosition[i].x * this.scaleSize,  relatePosition.y + linePosition[i].y * this.scaleSize );
+			}
+			this.ctx.lineWidth = 1;	
+			this.ctx.fillStyle = 'white';
+			cssBpundries.closePath();
+			this.ctx.fill(cssBpundries);
+
+			// Event
+			constCanvas.addEventListener( "mousemove", event => { 
+				let isPointInPath = this.ctx.isPointInPath(cssBpundries, event.offsetX, event.offsetY);
+				if(isPointInPath) {
+					this.ctx.fillStyle = 'green';
+					console.log("This Is True");
+				} else {
+					this.ctx.fillStyle = 'white';
+					console.log("This Is False");
+				}
+				this.ctx.fill(cssBpundries);
+			});
+		};
+
+	};
+
+	export { CSS };

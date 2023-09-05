@@ -357,7 +357,6 @@ __webpack_require__.r(__webpack_exports__);
 /******************************** SKY ********************************
 /*********************************************************************/
 
-// import * as constellations from './constellations/css.js';
 class Pan {
   //____________________________
   //
@@ -468,12 +467,16 @@ class Pan {
     this.panCanvas.height = window.innerHeight;
     this.ctx.scale(this.cameraZoom, this.cameraZoom);
 
-    // Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-    // this.ctx.translate( window.innerWidth / 2, window.innerHeight / 2 ); // Pan (Right To Left)
-    this.ctx.translate(window.innerWidth, window.innerHeight); // Pan (Top To Bottom)
+    // 1. Full Pan
+    this.ctx.translate(window.innerWidth, window.innerHeight); // Full Pan
 
-    // this.ctx.translate( -window.innerWidth / 2 + this.cameraOffset.x, -window.innerHeight / 2 + this.cameraOffset.y ); // Pan (Right To Left)
+    // 2. Top To Bottom Pan
+    // this.ctx.translate( window.innerWidth , window.innerHeight ); // Pan (Top To Bottom)
     // this.ctx.translate( -window.innerWidth, -window.innerHeight ); // Pan (Top To Bottom)
+
+    // 3. Right To Left Pan
+    // this.ctx.translate( window.innerWidth / 2, window.innerHeight / 2 ); // Pan (Right To Left)
+    // this.ctx.translate( -window.innerWidth / 2 + this.cameraOffset.x, -window.innerHeight / 2 + this.cameraOffset.y ); // Pan (Right To Left)
   }
 
   /****************** LINES ******************/
@@ -481,9 +484,6 @@ class Pan {
 
   // Static Lines
   staticLines() {
-    // this.ctx.translate( window.innerWidth , window.innerHeight );
-    // this.ctx.translate( -window.innerWidth, -window.innerHeight );
-    // this.ctx.translate( -(window.innerWidth / 1) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
     for (let m = 0; m < 2; m++) {
       // Draw Lines
       this.ctx.beginPath();
@@ -554,10 +554,6 @@ class Pan {
     this.cssOutlines();
     this.cssInlines();
     this.cssStars();
-  }
-  cssBpund() {
-    this.ctx.translate(-(window.innerWidth / 1.2) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
-    this.cssBpundries();
   }
   cssOutlines() {
     let relatePosition = {
@@ -725,6 +721,7 @@ class Pan {
     renders();
   }
   cssBpundries() {
+    this.ctx.translate(-(window.innerWidth / 3), -(window.innerHeight / 4));
     const cssBpundries = new Path2D();
     let relatePosition = {
       x: window.innerWidth / 2,
@@ -760,21 +757,9 @@ class Pan {
     this.ctx.fillStyle = 'white';
     cssBpundries.closePath();
     this.ctx.fill(cssBpundries);
-
-    // Event
-    this.panCanvas.addEventListener("mousemove", event => {
-      let isPointInPath = this.ctx.isPointInPath(cssBpundries, event.offsetX, event.offsetY);
-      if (isPointInPath) {
-        this.ctx.fillStyle = 'green';
-        console.log("This Is True");
-      } else {
-        this.ctx.fillStyle = 'white';
-        console.log("This Is False");
-      }
-      this.ctx.fill(cssBpundries);
-    });
+    this.ctx.save();
+    return cssBpundries;
   }
-
   // Animation
   animation() {
     const animate = () => {
@@ -782,9 +767,8 @@ class Pan {
       this.staticLines();
       this.dynamicLines();
       this.css();
-      // constellations.css();
-      this.cssBpund();
-      // requestAnimationFrame( animate ); // PAN
+      this.cssBpundries();
+      requestAnimationFrame(animate); // PAN
     };
 
     animate();
@@ -792,8 +776,20 @@ class Pan {
   //____________________________
   //
   // Events 
-  //____________________________		
+  //____________________________	
 
+  onBpundriesMove(event) {
+    const cssBoundary = this.cssBpundries();
+    // console.log( event.offsetX , event.offsetY );
+    // console.log( -(window.innerWidth / 3 ), -(window.innerHeight / 4) );
+    let isPointInPath = this.ctx.isPointInPath(cssBoundary, event.offsetX, event.offsetY);
+    console.log(window.innerWidth - event.offsetX);
+    if (isPointInPath) {
+      console.log("This Is True");
+    } else {
+      console.log("This Is False");
+    }
+  }
   geteLocation(event) {
     if (event.touches && event.touches.length == 1) {
       let touchPos = {
@@ -907,6 +903,7 @@ class Pan {
     });
     this.panCanvas.addEventListener("mousemove", event => {
       this.onPointerMove(event);
+      this.onBpundriesMove(event);
     });
 
     // 3. Touch

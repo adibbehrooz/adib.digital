@@ -8,8 +8,7 @@
 
 /******************************** SKY ********************************
 /*********************************************************************/
-
- 	// import * as constellations from './constellations/css.js';
+	
 	class Pan {
 		
 		//____________________________
@@ -95,6 +94,7 @@
 			this.panCanvas.height = windowHeight;
 		};
 
+
 		//____________________________
 		//
 		// Draw 
@@ -119,13 +119,17 @@
 			this.panCanvas.height = window.innerHeight;
 			this.ctx.scale(this.cameraZoom, this.cameraZoom);
 
+			// 1. Full Pan
+			this.ctx.translate( window.innerWidth , window.innerHeight ); // Full Pan
 
-			// Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
-			// this.ctx.translate( window.innerWidth / 2, window.innerHeight / 2 ); // Pan (Right To Left)
-			this.ctx.translate( window.innerWidth , window.innerHeight ); // Pan (Top To Bottom)
-			
-			// this.ctx.translate( -window.innerWidth / 2 + this.cameraOffset.x, -window.innerHeight / 2 + this.cameraOffset.y ); // Pan (Right To Left)
+			// 2. Top To Bottom Pan
+			// this.ctx.translate( window.innerWidth , window.innerHeight ); // Pan (Top To Bottom)
 			// this.ctx.translate( -window.innerWidth, -window.innerHeight ); // Pan (Top To Bottom)
+
+			// 3. Right To Left Pan
+			// this.ctx.translate( window.innerWidth / 2, window.innerHeight / 2 ); // Pan (Right To Left)
+			// this.ctx.translate( -window.innerWidth / 2 + this.cameraOffset.x, -window.innerHeight / 2 + this.cameraOffset.y ); // Pan (Right To Left)
+
 		};
 		
 		/****************** LINES ******************/
@@ -133,9 +137,6 @@
 				
 		// Static Lines
 		staticLines() {
-			// this.ctx.translate( window.innerWidth , window.innerHeight );
-			// this.ctx.translate( -window.innerWidth, -window.innerHeight );
-			// this.ctx.translate( -(window.innerWidth / 1) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
 			for( let m = 0; m < 2; m++ ) {	
 				// Draw Lines
 				this.ctx.beginPath();
@@ -213,13 +214,7 @@
 			
 		}
 
-		cssBpund() {
-			this.ctx.translate( -(window.innerWidth / 1.2) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
-			this.cssBpundries();
-		}
-
 		cssOutlines() {
-			
 			let relatePosition = { x: window.innerWidth / 2, y: this.cameraOffset.y / 2 };
 			const linePosition = [ 
 				{ x: 0.000, 	y: 19.232 },
@@ -256,7 +251,6 @@
 		};
 		
 		cssInlines() {
-				
 			let relatePosition = { x: window.innerWidth / 2, y: this.cameraOffset.y / 2 };
 			const linePosition = [ 
 				{ x: 3.175, 	y: 2.750 },
@@ -284,8 +278,7 @@
 			this.ctx.stroke();
 		};
 		
-		cssStars() {		
-				
+		cssStars() {
 			let relatePosition = { x: window.innerWidth / 2, y: this.cameraOffset.y / 2 };
 			let starPosition = [
 				{ x: 3.175, 	y: 2.750 },
@@ -325,6 +318,7 @@
 		};
 
 		cssBpundries() {
+			this.ctx.translate( -(window.innerWidth / 3 ), -(window.innerHeight / 4 )  );
 			const cssBpundries = new Path2D();
 			let relatePosition = { x: window.innerWidth / 2, y: this.cameraOffset.y / 2 };
 			const linePosition = [ 
@@ -344,21 +338,9 @@
 			this.ctx.fillStyle = 'white';
 			cssBpundries.closePath();
 			this.ctx.fill(cssBpundries);
-
-			// Event
-			this.panCanvas.addEventListener( "mousemove", event => { 
-				let isPointInPath = this.ctx.isPointInPath(cssBpundries, event.offsetX, event.offsetY);
-				if(isPointInPath) {
-					this.ctx.fillStyle = 'green';
-					console.log("This Is True");
-				} else {
-					this.ctx.fillStyle = 'white';
-					console.log("This Is False");
-				}
-				this.ctx.fill(cssBpundries);
-			});
-		}
-
+			this.ctx.save();
+			return cssBpundries;
+		};
 
 		// Animation
 		animation() {
@@ -367,18 +349,30 @@
 				this.staticLines();
 				this.dynamicLines();
 				this.css();
-				// constellations.css();
-				this.cssBpund();
-				// requestAnimationFrame( animate ); // PAN
+				this.cssBpundries();
+				requestAnimationFrame( animate ); // PAN
 			};
 			animate();	
 		};
 
-		
+
 		//____________________________
 		//
 		// Events 
-		//____________________________		
+		//____________________________	
+
+		onBpundriesMove(event) {
+			const cssBoundary = this.cssBpundries();
+			// console.log( event.offsetX , event.offsetY );
+			// console.log( -(window.innerWidth / 3 ), -(window.innerHeight / 4) );
+			let isPointInPath = this.ctx.isPointInPath( cssBoundary, event.offsetX , event.offsetY );
+			console.log( window.innerWidth - event.offsetX);
+			if(isPointInPath) {
+				console.log("This Is True");
+			} else {
+				console.log("This Is False");
+			}
+		};
 		
 		geteLocation(event) {
 
@@ -495,6 +489,7 @@
 			});
 			this.panCanvas.addEventListener( "mousemove", event => { 
 				this.onPointerMove(event);
+				this.onBpundriesMove(event);
 			});
 
 			// 3. Touch
