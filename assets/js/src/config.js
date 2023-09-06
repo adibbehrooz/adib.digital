@@ -21,9 +21,9 @@
 	// Cursor
 	//______________
 	
-	import { Cursor } from './canvas';
-	const cursor = new Cursor();
-	cursor.init();	
+	// import { Cursor } from './canvas';
+	// const cursor = new Cursor();
+	// cursor.init();	
 		
 	// Pan
 	//______________

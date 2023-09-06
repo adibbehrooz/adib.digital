@@ -27,9 +27,30 @@
 		//____________________________	
 		
 		init() {
+			this.bodyStyles();
 			this.allCanvas();
 		};	
 
+
+		//____________________________
+		//
+		// Define Body Styles
+		//____________________________
+
+		bodyStyles() {
+			let bodyStyle = {
+				'background': 'linear-gradient(#16161d,#1f1f3a,#3b2f4a)',
+				'background-repeat': 'no-repeat',
+				'min-height': '100vh',
+				'overflow': 'hidden',
+				// 'cursor': 'none',
+			};
+			let cssBodyResult = "";
+			Object.keys(bodyStyle).forEach(function (prop, index) {
+				cssBodyResult += prop + ": " + bodyStyle[prop] + "; ";
+			});
+			document.body.style = cssBodyResult;
+		};
 
 		//____________________________
 		//

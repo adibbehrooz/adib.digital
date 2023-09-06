@@ -39,7 +39,28 @@ class Canvas {
   //____________________________	
 
   init() {
+    this.bodyStyles();
     this.allCanvas();
+  }
+  //____________________________
+  //
+  // Define Body Styles
+  //____________________________
+
+  bodyStyles() {
+    let bodyStyle = {
+      'background': 'linear-gradient(#16161d,#1f1f3a,#3b2f4a)',
+      'background-repeat': 'no-repeat',
+      'min-height': '100vh',
+      'overflow': 'hidden'
+      // 'cursor': 'none',
+    };
+
+    let cssBodyResult = "";
+    Object.keys(bodyStyle).forEach(function (prop, index) {
+      cssBodyResult += prop + ": " + bodyStyle[prop] + "; ";
+    });
+    document.body.style = cssBodyResult;
   }
   //____________________________
   //
@@ -315,9 +336,9 @@ canvas.init();
 // Cursor
 //______________
 
-
-const cursor = new _canvas__WEBPACK_IMPORTED_MODULE_0__.Cursor();
-cursor.init();
+// import { Cursor } from './canvas';
+// const cursor = new Cursor();
+// cursor.init();	
 
 // Pan
 //______________
@@ -758,7 +779,6 @@ class Pan {
     cssBpundries.closePath();
     this.ctx.fill(cssBpundries);
     this.ctx.save();
-    return cssBpundries;
   }
   // Animation
   animation() {
@@ -780,16 +800,47 @@ class Pan {
 
   onBpundriesMove(event) {
     const cssBoundary = this.cssBpundries();
-    // console.log( event.offsetX , event.offsetY );
-    // console.log( -(window.innerWidth / 3 ), -(window.innerHeight / 4) );
-    let isPointInPath = this.ctx.isPointInPath(cssBoundary, event.offsetX, event.offsetY);
-    console.log(window.innerWidth - event.offsetX);
-    if (isPointInPath) {
+    let panPosition = [{
+      MinX: 610,
+      MaxX: 679
+    }, {
+      MinY: 90,
+      MaxY: 203
+    }];
+    let xPosition = this.cameraOffset.x - event.clientX;
+    let yPosition = this.cameraOffset.y - event.clientY + this.dragStart.y;
+    console.log(" X POSITION: " + xPosition);
+    console.log(" Y POSITION: " + yPosition);
+    console.log(" DRAG X: " + this.dragStart.x);
+    console.log(" DRAG Y: " + this.dragStart.y);
+    if (xPosition > panPosition[0].MinX && xPosition < panPosition[0].MaxX && yPosition > panPosition[1].MinY && yPosition < panPosition[1].MaxY) {
       console.log("This Is True");
+      //ctx.fillStyle = "green";
     } else {
       console.log("This Is False");
+      //ctx.fillStyle = "green";
     }
+
+    //let isPointInPath = this.ctx.isPointInPath( cssBoundary, xPosition , yPosition );
+    // let cssShapePoition
+    /*
+    console.log(" Camera Offset X: "+ this.cameraOffset.x );
+    console.log(" Camera Offset Y: "+ this.cameraOffset.y );
+    
+    console.log(" Camera Offset Y: "+ event.clientX );
+    console.log(" Camera Offset Y: "+ event.clientY );
+    
+    console.log(" X POSITION: "+ ( this.cameraOffset.x - event.clientX) );
+    console.log(" Y POSITION: "+ ( this.cameraOffset.y - event.clientY) );
+    */
+
+    //if(isPointInPath) {
+    //console.log("This Is True");
+    //} else {
+    //console.log("This Is False");
+    //}
   }
+
   geteLocation(event) {
     if (event.touches && event.touches.length == 1) {
       let touchPos = {

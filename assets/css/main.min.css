@@ -435,13 +435,6 @@ video {
 /**********************************************************************************************/
 /****************************************** ELEMENTS ******************************************
 /************************************** Unstyled Elements**************************************/
-body {
-  background: linear-gradient(#16161d, #1f1f3a, #3b2f4a);
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  overflow: hidden;
-  cursor: none;
-}
 table tfoot td, table tfoot th, table thead td, table thead th {
   font-weight: normal;
 }
