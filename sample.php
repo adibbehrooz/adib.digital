@@ -35,13 +35,17 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/PixiPlugin.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 		<meta name="theme-color" content="#fafafa">
 	</head>
 
-	<body style="cursor: pointer;">
-		<canvas id="canvas"></canvas>
+	<body>
+		<canvas id="canvasOne" width="800" height="800">Your browser does not support HTML5 Canvas.</canvas>
+		<input type="button" id="plus" value="+">
+		<input type="button" id="minus" value="-">
+		<h2 id='status'>0 | 0</h2>
 	</body>
 
-	<script type="text/javascript" src="<?php bloginfo('template_directory'); ?>/assets/js/dist/build.js"></script>
+	<script type="text/javascript" src="<?php bloginfo('template_directory'); ?>/assets/js/dist/sample.js"></script>
 
 </html>

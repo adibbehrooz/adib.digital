@@ -256,8 +256,6 @@
 							spanLetters.style.transform = "translate(10px, 0px) rotate(220deg)";
 						break;
 					};
-
-					
 				});
 			};
 			curveSpanLetters();
