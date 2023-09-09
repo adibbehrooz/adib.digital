@@ -488,7 +488,7 @@ video {
 }
 .o-followCircle.active {
   transform: scale(3);
-  background: black;
+  background: red;
 }
 .o-followText {
   color: white;

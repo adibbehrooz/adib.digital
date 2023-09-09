@@ -78,7 +78,7 @@
 				this.lines();
 				this.css();
 			};
-			setInterval( animate, 200 / this.fps);
+			setInterval( animate, 500 / this.fps);
 		};
 
 		//____________________________
@@ -220,23 +220,23 @@
 		cssOutline() {
 			const position = this.cssPosition();
 			this.ctx.beginPath();
-			this.ctx.lineWidth = 1;	
-
 			// Outline
 			this.ctx.moveTo( position.relate[0].x + position.outline[0].x * this.scaleSize, position.relate[0].y + position.outline[0].y * this.scaleSize );
 			for( let i = 1; i < position.outline.length; i++ ) {
 				this.ctx.lineTo(  position.relate[0].x + position.outline[i].x * this.scaleSize, position.relate[0].y + position.outline[i].y * this.scaleSize );
 			}
-			this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';		
+			this.ctx.lineWidth = 1;
+			this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';	 // Final : rgba(255, 255, 255, 1);	
 			this.ctx.strokeStyle = 'rgba(255, 255, 255, 0)';		
-			this.ctx.closePath();
 			this.ctx.stroke();
+			this.ctx.fill(); // HIDE IN FINAL
+			this.ctx.closePath();
 		};
 
 		cssInline() {
 			const position = this.cssPosition();
 			this.ctx.beginPath();
-			this.ctx.lineWidth = 1;
+			
 
 			// Inline	
 			this.ctx.moveTo(  position.relate[0].x + position.inline[0].x * this.scaleSize,  position.relate[0].y + position.inline[0].y * this.scaleSize );
@@ -247,8 +247,10 @@
 					this.ctx.lineTo( position.relate[0].x + position.inline[i].x * this.scaleSize, position.relate[0].y + position.inline[i].y * this.scaleSize );
 				}
 			}
+			this.ctx.lineWidth = 1;
 			this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';		
 			this.ctx.stroke();
+			this.ctx.closePath();
 		};
 
 		cssStars() {
@@ -273,14 +275,15 @@
 					this.ctx.shadowColor = this.starColor;
 					this.ctx.fillStyle = this.redStarColor;
 					this.ctx.fill();				
-					this.ctx.stroke();	
+					this.ctx.stroke();
+					this.ctx.closePath();
 					update();				
 				}		
 			};
 			render();
 		};
 
-		cssEvent( offsetX,offsetY ) {
+		cssEvent( cursor, offsetX, offsetY ) {
 			const position = this.cssPosition();
 			this.ctx.beginPath();
 
@@ -290,13 +293,17 @@
 			}
 			const isPointInPath = this.ctx.isPointInPath(offsetX, offsetY);
 			if( isPointInPath ) {
-				this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';		
-				console.log("true");
+				this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';	console.log("true"); 	// Final: rgba(255, 255, 255, 1)
+				gsap.to(cursor, 0.1, {
+					opacity: 0.7,
+					scale: 3
+				});				
 			} else {
-				this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';		
-				console.log("false");
+				this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';	console.log("false"); 	// Final : rgba(255, 255, 255, 0)
 			}
-			this.ctx.fill();	
+			this.ctx.fill();
+			
+			this.ctx.closePath();
 		};
 
 		//____________________________
@@ -347,9 +354,18 @@
 				this.cameraOffset.x = event.clientX - this.dragStart.x;
 				this.cameraOffset.y = event.clientY - this.dragStart.y;
 			}
+			// Cursor
+			const followCircle = document.getElementById('followCircle');
+			gsap.to(followCircle, 0.1, {
+				opacity: 1,
+				scale: 1
+			});
+			
+			// Offset
 			let xPosition = parseInt(event.clientX - this.offsetX);
 			let YPosition = parseInt(event.clientY - this.offsetY);
-			this.cssEvent(xPosition, YPosition);
+
+			this.cssEvent(followCircle, xPosition, YPosition);
 		};
 
 		handleTouch(event, singleTouchHandler) {
@@ -421,10 +437,7 @@
 				this.onPointerUp(); 
 			});
 			this.panCanvas.addEventListener( "mousemove", event => { 
-				this.onPointerMove(event);
-				let xPosition = parseInt(event.clientX - this.offsetX);
-				let YPosition = parseInt(event.clientY - this.offsetY);
-				this.cssEvent(xPosition, YPosition);				
+				this.onPointerMove(event);			
 			});
 
 			// 3. Touch

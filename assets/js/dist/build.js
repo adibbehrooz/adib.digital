@@ -52,10 +52,9 @@ class Canvas {
       'background': 'linear-gradient(#16161d,#1f1f3a,#3b2f4a)',
       'background-repeat': 'no-repeat',
       'min-height': '100vh',
-      'overflow': 'hidden'
-      // 'cursor': 'none',
+      'overflow': 'hidden',
+      'cursor': 'none'
     };
-
     let cssBodyResult = "";
     Object.keys(bodyStyle).forEach(function (prop, index) {
       cssBodyResult += prop + ": " + bodyStyle[prop] + "; ";
@@ -145,7 +144,8 @@ class Cursor {
       textDiv.setAttribute('class', 'o-followText');
       textDiv.setAttribute('id', 'followText');
       followDiv.appendChild(textDiv);
-      textDiv.innerHTML += 'DRAG ME';
+      // textDiv.innerHTML += 'DRAG ME'; 
+
       cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);
     };
     const allmodules = () => {
@@ -336,9 +336,9 @@ canvas.init();
 // Cursor
 //______________
 
-// import { Cursor } from './canvas';
-// const cursor = new Cursor();
-// cursor.init();	
+
+const cursor = new _canvas__WEBPACK_IMPORTED_MODULE_0__.Cursor();
+cursor.init();
 
 // Pan
 //______________
@@ -450,7 +450,7 @@ class Pan {
       this.lines();
       this.css();
     };
-    setInterval(animate, 200 / this.fps);
+    setInterval(animate, 500 / this.fps);
   }
   //____________________________
   //
@@ -630,22 +630,21 @@ class Pan {
   cssOutline() {
     const position = this.cssPosition();
     this.ctx.beginPath();
-    this.ctx.lineWidth = 1;
-
     // Outline
     this.ctx.moveTo(position.relate[0].x + position.outline[0].x * this.scaleSize, position.relate[0].y + position.outline[0].y * this.scaleSize);
     for (let i = 1; i < position.outline.length; i++) {
       this.ctx.lineTo(position.relate[0].x + position.outline[i].x * this.scaleSize, position.relate[0].y + position.outline[i].y * this.scaleSize);
     }
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+    this.ctx.lineWidth = 1;
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)'; // Final : rgba(255, 255, 255, 1);	
     this.ctx.strokeStyle = 'rgba(255, 255, 255, 0)';
-    this.ctx.closePath();
     this.ctx.stroke();
+    this.ctx.fill(); // HIDE IN FINAL
+    this.ctx.closePath();
   }
   cssInline() {
     const position = this.cssPosition();
     this.ctx.beginPath();
-    this.ctx.lineWidth = 1;
 
     // Inline	
     this.ctx.moveTo(position.relate[0].x + position.inline[0].x * this.scaleSize, position.relate[0].y + position.inline[0].y * this.scaleSize);
@@ -656,8 +655,10 @@ class Pan {
         this.ctx.lineTo(position.relate[0].x + position.inline[i].x * this.scaleSize, position.relate[0].y + position.inline[i].y * this.scaleSize);
       }
     }
+    this.ctx.lineWidth = 1;
     this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
     this.ctx.stroke();
+    this.ctx.closePath();
   }
   cssStars() {
     const position = this.cssPosition();
@@ -682,12 +683,13 @@ class Pan {
         this.ctx.fillStyle = this.redStarColor;
         this.ctx.fill();
         this.ctx.stroke();
+        this.ctx.closePath();
         update();
       }
     };
     render();
   }
-  cssEvent(offsetX, offsetY) {
+  cssEvent(cursor, offsetX, offsetY) {
     const position = this.cssPosition();
     this.ctx.beginPath();
     this.ctx.moveTo(position.relate[0].x + position.outline[0].x * this.scaleSize, position.relate[0].y + position.outline[0].y * this.scaleSize);
@@ -696,13 +698,19 @@ class Pan {
     }
     const isPointInPath = this.ctx.isPointInPath(offsetX, offsetY);
     if (isPointInPath) {
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-      console.log("true");
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      console.log("true"); // Final: rgba(255, 255, 255, 1)
+      gsap.to(cursor, 0.1, {
+        opacity: 0.7,
+        scale: 3
+      });
     } else {
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
-      console.log("false");
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+      console.log("false"); // Final : rgba(255, 255, 255, 0)
     }
+
     this.ctx.fill();
+    this.ctx.closePath();
   }
   //____________________________
   //
@@ -746,9 +754,17 @@ class Pan {
       this.cameraOffset.x = event.clientX - this.dragStart.x;
       this.cameraOffset.y = event.clientY - this.dragStart.y;
     }
+    // Cursor
+    const followCircle = document.getElementById('followCircle');
+    gsap.to(followCircle, 0.1, {
+      opacity: 1,
+      scale: 1
+    });
+
+    // Offset
     let xPosition = parseInt(event.clientX - this.offsetX);
     let YPosition = parseInt(event.clientY - this.offsetY);
-    this.cssEvent(xPosition, YPosition);
+    this.cssEvent(followCircle, xPosition, YPosition);
   }
   handleTouch(event, singleTouchHandler) {
     if (event.touches.length == 1) {
@@ -818,9 +834,6 @@ class Pan {
     });
     this.panCanvas.addEventListener("mousemove", event => {
       this.onPointerMove(event);
-      let xPosition = parseInt(event.clientX - this.offsetX);
-      let YPosition = parseInt(event.clientY - this.offsetY);
-      this.cssEvent(xPosition, YPosition);
     });
 
     // 3. Touch

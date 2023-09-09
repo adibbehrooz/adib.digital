@@ -43,7 +43,7 @@
 				'background-repeat': 'no-repeat',
 				'min-height': '100vh',
 				'overflow': 'hidden',
-				// 'cursor': 'none',
+				'cursor': 'none',
 			};
 			let cssBodyResult = "";
 			Object.keys(bodyStyle).forEach(function (prop, index) {
@@ -129,7 +129,6 @@
 		
 		cursorModules() {
 		
-			
 			const circleCursor = () => {
 				const cLandscapeFrame = document.getElementById('middle');
 				const circleDiv = document.createElement("div");
@@ -138,7 +137,6 @@
 				cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);			
 			};
 			
-
 			const followDiv = () => {
 				const cLandscapeFrame = document.getElementById('middle');
 				const followDiv = document.createElement("div");
@@ -149,12 +147,11 @@
 				textDiv.setAttribute ('class', 'o-followText');
 				textDiv.setAttribute ('id', 'followText');
 				followDiv.appendChild(textDiv);
-				textDiv.innerHTML += 'DRAG ME'; 
+				// textDiv.innerHTML += 'DRAG ME'; 
 								
 				cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);			
 			};
 						
-			
 			const allmodules = () => {
 				circleCursor();
 				followDiv();
