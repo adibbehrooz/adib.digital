@@ -444,9 +444,12 @@ document.getElementById("minus").addEventListener("click", function () {
 }, false);
 
 // Event listeners to handle screen panning
+// translatePos == cameraOffset
+// startDragOffset = dragStart
+// isDragging == mouseDown
 context.canvas.addEventListener("mousedown", function (evt) {
   mouseDown = true;
-  startDragOffset.x = evt.clientX - translatePos.x; // translatePos == cameraOffset
+  startDragOffset.x = evt.clientX - translatePos.x;
   startDragOffset.y = evt.clientY - translatePos.y;
 });
 context.canvas.addEventListener("mouseup", function (evt) {
