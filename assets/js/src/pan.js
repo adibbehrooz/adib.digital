@@ -177,7 +177,7 @@
 		/*******************************************/
 
 		shapeRelatedPosition() {
-			const position = {
+			const srPosition = {
 				css: {
             		relation: 	{ x: window.innerWidth / 2, y: this.cameraOffset.y / 2 },
         		},
@@ -185,7 +185,7 @@
             		relation: 	{ x: window.innerWidth / 2, y: this.cameraOffset.y / 2 },
         		},
 			};
-			return position;
+			return srPosition;
 		};
 
 		translate(shape) {

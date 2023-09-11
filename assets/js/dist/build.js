@@ -551,7 +551,7 @@ class Pan {
   /*******************************************/
 
   shapeRelatedPosition() {
-    const position = {
+    const srPosition = {
       css: {
         relation: {
           x: window.innerWidth / 2,
@@ -565,7 +565,7 @@ class Pan {
         }
       }
     };
-    return position;
+    return srPosition;
   }
   translate(shape) {
     switch (shape) {
