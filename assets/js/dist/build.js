@@ -551,28 +551,19 @@ class Pan {
   /*******************************************/
 
   shapeRelatedPosition() {
-    const srPosition = {
+    const position = {
       css: {
-        relation: {
-          x: window.innerWidth / 2,
-          y: this.cameraOffset.y / 2
-        }
-      },
-      webpack: {
         relation: {
           x: window.innerWidth / 2,
           y: this.cameraOffset.y / 2
         }
       }
     };
-    return srPosition;
+    return position;
   }
   translate(shape) {
     switch (shape) {
       case 'css':
-        this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
-        break;
-      case 'webpack':
         this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
         break;
     }
@@ -590,12 +581,12 @@ class Pan {
     this.ctx.beginPath();
 
     // 2. Draw Lines
-    this.ctx.moveTo(this.srp.shapeNamep.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[0].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[0].y * this.scaleSize);
-    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline.length; i++) {
-      if (_positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].move == true) {
-        this.ctx.moveTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].y * this.scaleSize);
+    this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][0]['y'] * this.scaleSize);
+    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'].length; i++) {
+      if (_positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['move'] == true) {
+        this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
       } else {
-        this.ctx.lineTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].y * this.scaleSize);
+        this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
       }
     }
 
@@ -612,12 +603,12 @@ class Pan {
     this.ctx.beginPath();
 
     // 2. Draw lines	
-    this.ctx.moveTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[0].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[0].y * this.scaleSize);
-    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline.length; i++) {
-      if (_positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].move == true) {
-        this.ctx.moveTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].y * this.scaleSize);
+    this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][0]['y'] * this.scaleSize);
+    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'].length; i++) {
+      if (_positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['move'] == true) {
+        this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['y'] * this.scaleSize);
       } else {
-        this.ctx.lineTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].y * this.scaleSize);
+        this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['y'] * this.scaleSize);
       }
     }
 
@@ -633,7 +624,7 @@ class Pan {
 
     // 2. Update
     const update = () => {
-      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline.length; i++) {
+      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline.length; i++) {
         if (randomRadius > 2.2 || randomRadius < 1) {
           this.radiusChange = -this.radiusChange;
         }
@@ -643,9 +634,9 @@ class Pan {
 
     // 3. Render Stars
     const render = () => {
-      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline.length; i++) {
+      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline.length; i++) {
         this.ctx.beginPath();
-        this.ctx.arc(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].y * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
+        this.ctx.arc(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['y'] * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
         this.ctx.shadowBlur = this.shadowBlur;
         this.ctx.shadowColor = this.starColor;
         this.ctx.fillStyle = this.redStarColor;
@@ -661,9 +652,9 @@ class Pan {
     // 1. Draw Shape
     const cssBpundries = new Path2D();
     this.ctx.beginPath();
-    cssBpundries.moveTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[0].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[0].y * this.scaleSize);
-    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline.length; i++) {
-      cssBpundries.lineTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].y * this.scaleSize);
+    cssBpundries.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][0]['y'] * this.scaleSize);
+    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'].length; i++) {
+      cssBpundries.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
     }
     const isPointInPath = this.ctx.isPointInPath(cssBpundries, offsetX, offsetY);
     if (isPointInPath) {
@@ -735,7 +726,9 @@ class Pan {
     // Offset
     let xPosition = parseInt(event.clientX - this.offsetX);
     let YPosition = parseInt(event.clientY - this.offsetY);
-    this.shapeEvent(followCircle, xPosition, YPosition);
+    for (let key of Object.keys(this.srp)) {
+      this.shapeEvent(followCircle, key, xPosition, YPosition);
+    }
   }
   handleTouch(event, singleTouchHandler) {
     if (event.touches.length == 1) {
