@@ -62,6 +62,7 @@
 			this.redStarColor = 'rgba(255, 194, 184, 1)';
 			this.shadowBlur = 1;
 			this.srp = this.shapeRelatedPosition();
+	
 		};
 
 
@@ -180,6 +181,9 @@
 				css: {
             		relation: 	{ x: window.innerWidth / 2, y: this.cameraOffset.y / 2 },
         		},
+				webpack: {
+            		relation: 	{ x: window.innerWidth / 2, y: this.cameraOffset.y / 2 },
+        		},
 			};
 			return position;
 		};
@@ -187,29 +191,37 @@
 		translate(shape) {
 			switch(shape) {
 				case 'css':
-					let transform = this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
+					this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
 				break;
-				return transform;
+
+				case 'webpack':
+					this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
+				break;
 			}
 		}
 
 		shape() {
-			this.translate('css');
-			this.shapeOutline();
-			this.shapeInline();
-			this.shapeStars();
+			for (let key of Object.keys( this.srp )) {
+				this.translate(key);
+				this.shapeOutline(key);
+				this.shapeInline(key);
+				this.shapeStars(key);
+			}
 		}
 
-		shapeOutline() {
+		shapeOutline(shapeName) {
 
 			// 1. Start
 			this.ctx.beginPath();
 
 			// 2. Draw Lines
-			this.ctx.moveTo( this.srp.css.relation.x + positions.css.outline[0].x * this.scaleSize, this.srp.css.relation.y + positions.css.outline[0].y * this.scaleSize );
-			for( let i = 1; i < positions.css.outline.length; i++ ) {
-				
-				this.ctx.lineTo( this.srp.css.relation.x + positions.css.outline[i].x * this.scaleSize, this.srp.css.relation.y + positions.css.outline[i].y * this.scaleSize );
+			this.ctx.moveTo( this.srp.shapeNamep.relation.x + positions.shapeName.outline[0].x * this.scaleSize, this.srp.shapeName.relation.y + positions.shapeName.outline[0].y * this.scaleSize );
+			for( let i = 1; i < positions.shapeName.outline.length; i++ ) {
+				if (  positions.shapeName.outline[i].move == true ) {
+					this.ctx.moveTo( this.srp.shapeName.relation.x + positions.shapeName.outline[i].x * this.scaleSize, this.srp.shapeName.relation.y + positions.shapeName.outline[i].y * this.scaleSize );
+				} else {
+					this.ctx.lineTo( this.srp.shapeName.relation.x + positions.shapeName.outline[i].x * this.scaleSize, this.srp.shapeName.relation.y + positions.shapeName.outline[i].y * this.scaleSize );
+				}
 			}
 
 			// 3. Line Features
@@ -221,18 +233,18 @@
 			this.ctx.closePath();
 		};
 
-		shapeInline() {
+		shapeInline(shapeName) {
 
 			//1. Start
 			this.ctx.beginPath();
 			
 			// 2. Draw lines	
-			this.ctx.moveTo( this.srp.css.relation.x + positions.css.inline[0].x * this.scaleSize,  this.srp.css.relation.y + positions.css.inline[0].y * this.scaleSize );
-			for( let i = 1; i < positions.css.inline.length; i++ ) {
-				if ( i == 5 ) {
-					this.ctx.moveTo( this.srp.css.relation.x + positions.css.inline[i].x * this.scaleSize, this.srp.css.relation.y + positions.css.inline[i].y * this.scaleSize );
+			this.ctx.moveTo( this.srp.shapeName.relation.x + positions.shapeName.inline[0].x * this.scaleSize,  this.srp.shapeName.relation.y + positions.shapeName.inline[0].y * this.scaleSize );
+			for( let i = 1; i < positions.shapeName.inline.length; i++ ) {
+				if (  positions.shapeName.inline[i].move == true ) {
+					this.ctx.moveTo( this.srp.shapeName.relation.x + positions.shapeName.inline[i].x * this.scaleSize, this.srp.shapeName.relation.y + positions.shapeName.inline[i].y * this.scaleSize );
 				} else {
-					this.ctx.lineTo( this.srp.css.relation.x + positions.css.inline[i].x * this.scaleSize, this.srp.css.relation.y + positions.css.inline[i].y * this.scaleSize );
+					this.ctx.lineTo( this.srp.shapeName.relation.x + positions.shapeName.inline[i].x * this.scaleSize, this.srp.shapeName.relation.y + positions.shapeName.inline[i].y * this.scaleSize );
 				}
 			}
 
@@ -243,14 +255,14 @@
 			this.ctx.closePath();
 		};
 
-		shapeStars() {
+		shapeStars(shapeName) {
 			
 			// 1. Start
 			let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius; 
 
 			// 2. Update
 			const update = () => {
-				for (let i = 0; i < positions.css.inline.length; i++ ) {
+				for (let i = 0; i < positions.shapeName.inline.length; i++ ) {
 					if (randomRadius > 2.2 || randomRadius < 1 ) {
 						this.radiusChange = - this.radiusChange;
 					}
@@ -260,9 +272,9 @@
 
 			// 3. Render Stars
 			const render = () => {
-				for (let i = 0; i < positions.css.inline.length; i++ ) {
+				for (let i = 0; i < positions.shapeName.inline.length; i++ ) {
 					this.ctx.beginPath();
-					this.ctx.arc( this.srp.css.relation.x + positions.css.inline[i].x * this.scaleSize, this.srp.css.relation.y + positions.css.inline[i].y * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
+					this.ctx.arc( this.srp.shapeName.relation.x + positions.shapeName.inline[i].x * this.scaleSize, this.srp.shapeName.relation.y + positions.shapeName.inline[i].y * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
 					this.ctx.shadowBlur = this.shadowBlur;
 					this.ctx.shadowColor = this.starColor;
 					this.ctx.fillStyle = this.redStarColor;
@@ -275,14 +287,14 @@
 			render();
 		};
 
-		shapeEvent( cursor, offsetX, offsetY ) {
+		shapeEvent( cursor, shapeName, offsetX, offsetY ) {
 
 			// 1. Draw Shape
 			const cssBpundries = new Path2D();
 			this.ctx.beginPath();
-			cssBpundries.moveTo( this.srp.css.relation.x + positions.css.outline[0].x * this.scaleSize, this.srp.css.relation.y + positions.css.outline[0].y * this.scaleSize );
-			for( let i = 1; i < positions.css.outline.length; i++ ) {
-				cssBpundries.lineTo( this.srp.css.relation.x + positions.css.outline[i].x * this.scaleSize, this.srp.css.relation.y + positions.css.outline[i].y * this.scaleSize );
+			cssBpundries.moveTo( this.srp.shapeName.relation.x + positions.shapeName.outline[0].x * this.scaleSize, this.srp.shapeName.relation.y + positions.shapeName.outline[0].y * this.scaleSize );
+			for( let i = 1; i < positions.shapeName.outline.length; i++ ) {
+				cssBpundries.lineTo( this.srp.shapeName.relation.x + positions.shapeName.outline[i].x * this.scaleSize, this.srp.shapeName.relation.y + positions.shapeName.outline[i].y * this.scaleSize );
 			}
 			const isPointInPath = this.ctx.isPointInPath(cssBpundries, offsetX, offsetY);
 			if( isPointInPath ) {

@@ -557,6 +557,12 @@ class Pan {
           x: window.innerWidth / 2,
           y: this.cameraOffset.y / 2
         }
+      },
+      webpack: {
+        relation: {
+          x: window.innerWidth / 2,
+          y: this.cameraOffset.y / 2
+        }
       }
     };
     return position;
@@ -564,25 +570,33 @@ class Pan {
   translate(shape) {
     switch (shape) {
       case 'css':
-        let transform = this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
+        this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
         break;
-        return transform;
+      case 'webpack':
+        this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
+        break;
     }
   }
   shape() {
-    this.translate('css');
-    this.shapeOutline();
-    this.shapeInline();
-    this.shapeStars();
+    for (let key of Object.keys(this.srp)) {
+      this.translate(key);
+      this.shapeOutline(key);
+      this.shapeInline(key);
+      this.shapeStars(key);
+    }
   }
-  shapeOutline() {
+  shapeOutline(shapeName) {
     // 1. Start
     this.ctx.beginPath();
 
     // 2. Draw Lines
-    this.ctx.moveTo(this.srp.css.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.outline[0].x * this.scaleSize, this.srp.css.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.outline[0].y * this.scaleSize);
-    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.outline.length; i++) {
-      this.ctx.lineTo(this.srp.css.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.outline[i].x * this.scaleSize, this.srp.css.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.outline[i].y * this.scaleSize);
+    this.ctx.moveTo(this.srp.shapeNamep.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[0].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[0].y * this.scaleSize);
+    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline.length; i++) {
+      if (_positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].move == true) {
+        this.ctx.moveTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].y * this.scaleSize);
+      } else {
+        this.ctx.lineTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].y * this.scaleSize);
+      }
     }
 
     // 3. Line Features
@@ -593,17 +607,17 @@ class Pan {
     this.ctx.fill(); // HIDE IN FINAL
     this.ctx.closePath();
   }
-  shapeInline() {
+  shapeInline(shapeName) {
     //1. Start
     this.ctx.beginPath();
 
     // 2. Draw lines	
-    this.ctx.moveTo(this.srp.css.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline[0].x * this.scaleSize, this.srp.css.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline[0].y * this.scaleSize);
-    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline.length; i++) {
-      if (i == 5) {
-        this.ctx.moveTo(this.srp.css.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline[i].x * this.scaleSize, this.srp.css.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline[i].y * this.scaleSize);
+    this.ctx.moveTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[0].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[0].y * this.scaleSize);
+    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline.length; i++) {
+      if (_positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].move == true) {
+        this.ctx.moveTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].y * this.scaleSize);
       } else {
-        this.ctx.lineTo(this.srp.css.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline[i].x * this.scaleSize, this.srp.css.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline[i].y * this.scaleSize);
+        this.ctx.lineTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].y * this.scaleSize);
       }
     }
 
@@ -613,13 +627,13 @@ class Pan {
     this.ctx.stroke();
     this.ctx.closePath();
   }
-  shapeStars() {
+  shapeStars(shapeName) {
     // 1. Start
     let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius;
 
     // 2. Update
     const update = () => {
-      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline.length; i++) {
+      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline.length; i++) {
         if (randomRadius > 2.2 || randomRadius < 1) {
           this.radiusChange = -this.radiusChange;
         }
@@ -629,9 +643,9 @@ class Pan {
 
     // 3. Render Stars
     const render = () => {
-      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline.length; i++) {
+      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline.length; i++) {
         this.ctx.beginPath();
-        this.ctx.arc(this.srp.css.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline[i].x * this.scaleSize, this.srp.css.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline[i].y * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
+        this.ctx.arc(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.inline[i].y * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
         this.ctx.shadowBlur = this.shadowBlur;
         this.ctx.shadowColor = this.starColor;
         this.ctx.fillStyle = this.redStarColor;
@@ -643,13 +657,13 @@ class Pan {
     };
     render();
   }
-  shapeEvent(cursor, offsetX, offsetY) {
+  shapeEvent(cursor, shapeName, offsetX, offsetY) {
     // 1. Draw Shape
     const cssBpundries = new Path2D();
     this.ctx.beginPath();
-    cssBpundries.moveTo(this.srp.css.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.outline[0].x * this.scaleSize, this.srp.css.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.outline[0].y * this.scaleSize);
-    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.outline.length; i++) {
-      cssBpundries.lineTo(this.srp.css.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.outline[i].x * this.scaleSize, this.srp.css.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.outline[i].y * this.scaleSize);
+    cssBpundries.moveTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[0].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[0].y * this.scaleSize);
+    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline.length; i++) {
+      cssBpundries.lineTo(this.srp.shapeName.relation.x + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].x * this.scaleSize, this.srp.shapeName.relation.y + _positions__WEBPACK_IMPORTED_MODULE_0__.positions.shapeName.outline[i].y * this.scaleSize);
     }
     const isPointInPath = this.ctx.isPointInPath(cssBpundries, offsetX, offsetY);
     if (isPointInPath) {
@@ -900,7 +914,8 @@ const positions = {
       y: 17.500
     }, {
       x: 2.175,
-      y: 9.750
+      y: 9.750,
+      move: true
     }, {
       x: 20.175,
       y: 9.750
@@ -933,7 +948,8 @@ const positions = {
       y: 181.652330
     }, {
       x: 24.146974,
-      y: 202.515590
+      y: 202.515590,
+      move: true
     }, {
       x: 100.562100,
       y: 245.744860
@@ -957,7 +973,8 @@ const positions = {
       y: 181.652330
     }, {
       x: 22.193391,
-      y: 101.530390
+      y: 101.530390,
+      move: true
     }, {
       x: 100.562100,
       y: 57.199096
@@ -972,7 +989,8 @@ const positions = {
       y: 117.584840
     }, {
       x: 185.643130,
-      y: 101.530390
+      y: 101.530390,
+      move: true
     }, {
       x: 107.274420,
       y: 57.199096
