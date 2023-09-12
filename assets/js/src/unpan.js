@@ -209,3 +209,56 @@ class UNPAN {
 };
 
 export { UNPAN };
+
+let canvas = document.querySelector('#canvas'),
+  ctx = canvas.getContext('2d');
+let b = [];
+
+class Board {
+  constructor(startX, startY, height, width, angle) {
+    this.startX = startX;
+    this.startY = startY;
+    this.height = height;
+    this.width = width;
+    this.angle = angle;
+    this.square = new Path2D();
+  }
+
+  drawBoard() {
+    let canvasWidth = window.innerWidth * 0.95,
+      drawWidth = canvasWidth * this.width,
+      drawHeight = canvasWidth * this.height,
+      drawStartX = canvasWidth * this.startX,
+      drawStartY = canvasWidth * this.startY;
+
+    ctx.rotate(this.angle * Math.PI / 180);
+    this.square.rect(drawStartX, drawStartY, drawHeight, drawWidth);
+    ctx.fillStyle = 'red';
+    ctx.fill(this.square);
+  }
+}
+
+canvas.addEventListener('mousemove', function(event) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  let currentSquare;
+  for (let i = 0; i < b.length; i++) {
+    currentSquare = b[i].square;
+    if (ctx.isPointInPath(currentSquare, event.offsetX, event.offsetY)) {
+      ctx.fillStyle = 'white';
+    } else {
+      ctx.fillStyle = 'red';
+    }
+    ctx.fill(currentSquare);
+  }
+});
+
+for (let i = 0; i < 10; i++) {
+  b.push(new Board(0.05 * i, 0.25, 0.04, 0.03, 0));
+}
+
+function loadFunctions() {
+  b.forEach(function(board) {
+    board.drawBoard();
+  })
+}
+loadFunctions();

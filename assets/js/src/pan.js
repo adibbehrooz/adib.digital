@@ -51,7 +51,7 @@
 			this.fps = 25;
 			
 			// Constellation
-			this.scaleSize = 3.5;
+			this.scaleSize = 4;
 			this.fillColor = 'rgba(255, 255, 255, 1)';
 			
 			// "Stars" Inside Constellation
@@ -82,7 +82,8 @@
 				this.lines();
 				this.shape();
 			};
-			setInterval( animate, 500 / this.fps);
+			animate();
+			// setInterval( animate, 500 / this.fps);
 		};
 
 		//____________________________
@@ -126,11 +127,11 @@
 				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
 				this.ctx.strokeStyle = gradient;
 					
-				this.ctx.lineWidth     = 1;
+				this.ctx.lineWidth	 = 1;
 				this.ctx.strokeStyle = "#392E49";
 				this.ctx.shadowOffsetX = 0;
 				this.ctx.shadowOffsetY = -10;
-				this.ctx.shadowBlur    = 55;
+				this.ctx.shadowBlur	= 55;
 				this.ctx.shadowColor   = "rgba(255, 255, 255, 1)";
 				this.ctx.stroke();
 			};
@@ -168,7 +169,7 @@
 				// 3. Shadow Line
 				this.ctx.shadowOffsetX = 0;
 				this.ctx.shadowOffsetY = 0;
-				this.ctx.shadowBlur    = 0;						
+				this.ctx.shadowBlur	= 0;						
 				this.ctx.stroke();	
 			};
 		};
@@ -179,8 +180,13 @@
 		shapeRelatedPosition() {
 			const position = {
 				css: {
-            		relation: 	{ x: window.innerWidth / 2, y: this.cameraOffset.y / 2 },
-        		},
+					relation: 	{ x: window.innerWidth / 2, y: this.cameraOffset.y / 2 },
+				},
+				
+				webpack: {
+					// relation: 	{ x: window.innerWidth - window.innerWidth, y: this.cameraOffset.y - (window.innerHeight / 2) },
+					relation: 	{ x: window.innerWidth - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2) },
+				},
 			};
 			return position;
 		};
@@ -190,40 +196,19 @@
 				case 'css':
 					this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
 				break;
+				case 'webpack':
+					this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
+				break;
 			}
 		}
 
 		shape() {
+			this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
 			for (let key of Object.keys( this.srp )) {
-				this.translate(key);
 				this.shapeOutline(key);
 				this.shapeInline(key);
 				this.shapeStars(key);
 			}
-		};
-
-		shapeOutline(shapeName) {
-
-			// 1. Start
-			this.ctx.beginPath();
-
-			// 2. Draw Lines
-			this.ctx.moveTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][0]['y'] * this.scaleSize );
-			for( let i = 1; i < positions[shapeName]['outline'].length; i++ ) {
-				if (  positions[shapeName]['outline'][i]['move'] == true ) {
-					this.ctx.moveTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][i]['y'] * this.scaleSize );
-				} else {
-					this.ctx.lineTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][i]['y'] * this.scaleSize );
-				}
-			}
-
-			// 3. Line Features
-			this.ctx.lineWidth = 1;
-			this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';	 // Final : rgba(255, 255, 255, 1);	
-			this.ctx.strokeStyle = 'rgba(255, 255, 255, 0)';		
-			this.ctx.stroke();
-			this.ctx.fill(); // HIDE IN FINAL
-			this.ctx.closePath();
 		};
 
 		shapeInline(shapeName) {
@@ -281,28 +266,50 @@
 		};
 
 		shapeEvent( cursor, shapeName, offsetX, offsetY ) {
-
 			// 1. Draw Shape
-			const cssBpundries = new Path2D();
+			const shape = new Path2D();
 			this.ctx.beginPath();
-			cssBpundries.moveTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][0]['y'] * this.scaleSize );
+			shape.moveTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][0]['y'] * this.scaleSize );
 			for( let i = 1; i < positions[shapeName]['outline'].length; i++ ) {
-				cssBpundries.lineTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][i]['y'] * this.scaleSize );
+				shape.lineTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][i]['y'] * this.scaleSize );
 			}
-			const isPointInPath = this.ctx.isPointInPath(cssBpundries, offsetX, offsetY);
-			if( isPointInPath ) {
-				this.ctx.fillStyle = 'rgba(255, 255, 255, 0.07)';	console.log("true"); 	// Final: rgba(255, 255, 255, 1)
-				// 1.1. Cursor
-				gsap.to(cursor, 0.1, {
-					opacity: 0.7,
-					scale: 3
-				});	
+			if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
+			this.ctx.fillStyle = 'rgba(255, 255, 255, 1)'; 	console.log(" TRUE "+" Shape Name :"+shapeName); 	// Final: rgba(255, 255, 255, 1)
+			// 1.1. Cursor
+			gsap.to(cursor, 0.1, {
+				opacity: 0.7,
+				scale: 3
+			});	
 			} else {
-				this.ctx.fillStyle = 'rgba(255, 255, 255, 0.000000001)';	console.log("false"); 	// Final : rgba(255, 255, 255, 0)
+				this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';	console.log(" FALSE "+" Shape Name :"+shapeName); 	// Final : rgba(255, 255, 255, 0)
 			}
 
 			// 2. Features
-			this.ctx.fill(cssBpundries);
+			this.ctx.fill(shape);
+			this.ctx.closePath();
+		};
+
+		shapeOutline(shapeName) {
+
+			// 1. Start
+			this.ctx.beginPath();
+
+			// 2. Draw Lines
+			this.ctx.moveTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][0]['y'] * this.scaleSize );
+			for( let i = 1; i < positions[shapeName]['outline'].length; i++ ) {
+				if (  positions[shapeName]['outline'][i]['move'] == true ) {
+					this.ctx.moveTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][i]['y'] * this.scaleSize );
+				} else {
+					this.ctx.lineTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][i]['y'] * this.scaleSize );
+				}
+			}
+
+			// 3. Line Features
+			this.ctx.lineWidth = 1;
+			this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';	 // Final : rgba(255, 255, 255, 1);	
+			this.ctx.strokeStyle = 'rgba(255, 255, 255, 0)';		
+			this.ctx.stroke();
+			this.ctx.fill(); // HIDE IN FINAL
 			this.ctx.closePath();
 		};
 
@@ -364,6 +371,7 @@
 			// Offset
 			let xPosition = parseInt(event.clientX - this.offsetX);
 			let YPosition = parseInt(event.clientY - this.offsetY);
+			// Shape Event
 			for (let key of Object.keys( this.srp )) {
 				this.shapeEvent(followCircle, key, xPosition, YPosition);
 			}
