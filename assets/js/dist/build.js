@@ -593,8 +593,7 @@ class Pan {
   shape() {
     this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
     for (let key of Object.keys(this.srp)) {
-      this.shapeOutline(key);
-      this.shapeInline(key);
+      this.shapeLines(key);
       this.shapeStars(key);
     }
   }
@@ -628,78 +627,55 @@ class Pan {
     };
     render();
   }
-  shapeInline(shapeName) {
-    // BUGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
-    for (let name of _positions__WEBPACK_IMPORTED_MODULE_0__.positions) {
-      console.log(name);
-    }
-    ;
-
+  shapeLines(shapeName) {
     // I. Start
     this.ctx.beginPath();
 
-    // II. Draw lines	
-    /// 1. First Line
-    this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][0]['y'] * this.scaleSize);
+    // II. Line Types Loop
+    let lineTypes = ['outline', 'inline'];
+    lineTypes.forEach(lineType => {
+      // 1. Draw lines	
+      /// First Line
+      this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][0]['y'] * this.scaleSize);
 
-    /// 2. Other Lines
-    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'].length; i++) {
-      let form = _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['form'];
-      switch (form) {
-        case 'move':
-          this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['y'] * this.scaleSize);
-          break;
-        case 'close':
-          this.ctx.closePath();
-          break;
-        case 'begin':
-          this.ctx.beginPath();
-          break;
-        default:
-          this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['y'] * this.scaleSize);
+      /// Other Lines
+      for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType].length; i++) {
+        let form = _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['form'];
+        switch (form) {
+          case 'move':
+            this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['y'] * this.scaleSize);
+            break;
+          case 'close':
+            this.ctx.closePath();
+            break;
+          case 'begin':
+            this.ctx.beginPath();
+            break;
+          default:
+            this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['y'] * this.scaleSize);
+            break;
+        }
       }
-    }
 
-    // III. Line Features
-    this.ctx.lineWidth = 1;
-    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-    this.ctx.stroke();
-    this.ctx.closePath();
-  }
-  shapeOutline(shapeName) {
-    // 1. Start
-    this.ctx.beginPath();
-
-    // 2. Draw Lines
-    this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][0]['y'] * this.scaleSize);
-
-    /// 2. Other Lines
-    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'].length; i++) {
-      let form = _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['form'];
-      switch (form) {
-        case 'move':
-          this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
-          break;
-        case 'close':
-          this.ctx.closePath();
-          break;
-        case 'begin':
-          this.ctx.beginPath();
-          break;
-        default:
-          this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
+      // III. Line Features
+      if (lineType == 'inline') {
+        this.ctx.lineWidth = 1;
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        this.ctx.closePath();
+      } else {
+        this.ctx.lineWidth = 0.01;
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.005)'; // Final : rgba(255, 255, 255, 1);	
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        this.ctx.shadowBlur = this.shadowBlur;
+        this.ctx.stroke();
+        this.ctx.fill(); // HIDE IN FINAL
       }
-    }
 
-    // 3. Line Features
-    this.ctx.lineWidth = 0.1;
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.005)'; // Final : rgba(255, 255, 255, 1);	
-    this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
-    this.ctx.shadowBlur = this.shadowBlur;
-    this.ctx.stroke();
-    this.ctx.fill(); // HIDE IN FINAL
-    this.ctx.closePath();
+      this.ctx.stroke();
+      this.ctx.closePath();
+    }); // [END] Loop for Line Types
   }
+
   shapeEvent(cursor, shapeName, offsetX, offsetY) {
     // 1. Draw Shape
     const shape = new Path2D();
