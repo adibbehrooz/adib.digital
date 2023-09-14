@@ -40,10 +40,8 @@
 	</head>
 
 	<body>
-		<canvas id="canvasOne" width="800" height="800">Your browser does not support HTML5 Canvas.</canvas>
-		<input type="button" id="plus" value="+">
-		<input type="button" id="minus" value="-">
-		<h2 id='status'>0 | 0</h2>
+		<h4 id=results>Drag the mouse to see net panning in x,y directions</h4>
+		<canvas id="canvas" width=600 height=300></canvas>
 	</body>
 
 	<script type="text/javascript" src="<?php bloginfo('template_directory'); ?>/assets/js/dist/sample.js"></script>

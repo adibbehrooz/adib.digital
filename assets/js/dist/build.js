@@ -359,9 +359,9 @@ nightSky.init();
 //	UNPAN
 //______________
 
-// import { UNPAN } from './unpan';
-// const unpan = new UNPAN();
-// unpan.init();
+// import { UNPANS } from './unpan';
+// const unpans = new UNPANS();
+// unpans.init();
 
 /***/ }),
 
@@ -421,6 +421,12 @@ class Pan {
     this.currentX = 0;
     this.currentY = 0;
 
+    //Zoom
+    this.cameraZoom = 1.1;
+    this.maxZoom = 5;
+    this.minZoom = 0.1;
+    this.scrollSensitivity = 0.000 * 3.55;
+
     // Wave
     this.radious = Math.PI / 180;
     this.amplitude = 10;
@@ -440,7 +446,7 @@ class Pan {
     this.fixedRadius = 2;
     this.minMaxRadius = {
       minRadius: 1,
-      maxRadius: 2.5
+      maxRadius: 2.7
     };
     this.radiusChange = 0.15;
     this.redStarColor = 'rgba(255, 194, 184, 1)';
@@ -461,11 +467,11 @@ class Pan {
       this.initDraw();
       this.lines();
       this.shape();
+      // requestAnimationFrame(animate);
     };
-    animate();
-    // setInterval( animate, 500 / this.fps);
+    // animate();
+    setInterval(animate, 200 / this.fps);
   }
-
   //____________________________
   //
   // Draw 
@@ -476,8 +482,13 @@ class Pan {
     this.panCanvas.height = window.innerHeight;
     this.ctx.scale(this.cameraZoom, this.cameraZoom);
     this.ctx.translate(window.innerWidth, window.innerHeight); // Full Pan	
-    this.ctx.clearRect(0, 0, this.panCanvas.width, this.panCanvas.height);
+
+    this.ctx.save();
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.restore();
+    // this.ctx.clearRect(0, 0, this.panCanvas.width, this.panCanvas.height);
   }
+
   /****************** LINES ******************/
   /*******************************************/
 
@@ -561,9 +572,8 @@ class Pan {
         }
       },
       webpack: {
-        // relation: 	{ x: window.innerWidth - window.innerWidth, y: this.cameraOffset.y - (window.innerHeight / 2) },
         relation: {
-          x: window.innerWidth - window.innerWidth / 2,
+          x: window.innerWidth / 1.1 - window.innerWidth / 2,
           y: this.cameraOffset.y - window.innerHeight / 2
         }
       }
@@ -587,26 +597,6 @@ class Pan {
       this.shapeInline(key);
       this.shapeStars(key);
     }
-  }
-  shapeInline(shapeName) {
-    //1. Start
-    this.ctx.beginPath();
-
-    // 2. Draw lines	
-    this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][0]['y'] * this.scaleSize);
-    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'].length; i++) {
-      if (_positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['move'] == true) {
-        this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['y'] * this.scaleSize);
-      } else {
-        this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['y'] * this.scaleSize);
-      }
-    }
-
-    // 3. Line Features
-    this.ctx.lineWidth = 1;
-    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-    this.ctx.stroke();
-    this.ctx.closePath();
   }
   shapeStars(shapeName) {
     // 1. Start
@@ -638,6 +628,78 @@ class Pan {
     };
     render();
   }
+  shapeInline(shapeName) {
+    // BUGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+    for (let name of _positions__WEBPACK_IMPORTED_MODULE_0__.positions) {
+      console.log(name);
+    }
+    ;
+
+    // I. Start
+    this.ctx.beginPath();
+
+    // II. Draw lines	
+    /// 1. First Line
+    this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][0]['y'] * this.scaleSize);
+
+    /// 2. Other Lines
+    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'].length; i++) {
+      let form = _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['form'];
+      switch (form) {
+        case 'move':
+          this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['y'] * this.scaleSize);
+          break;
+        case 'close':
+          this.ctx.closePath();
+          break;
+        case 'begin':
+          this.ctx.beginPath();
+          break;
+        default:
+          this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['y'] * this.scaleSize);
+      }
+    }
+
+    // III. Line Features
+    this.ctx.lineWidth = 1;
+    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    this.ctx.stroke();
+    this.ctx.closePath();
+  }
+  shapeOutline(shapeName) {
+    // 1. Start
+    this.ctx.beginPath();
+
+    // 2. Draw Lines
+    this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][0]['y'] * this.scaleSize);
+
+    /// 2. Other Lines
+    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'].length; i++) {
+      let form = _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['form'];
+      switch (form) {
+        case 'move':
+          this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
+          break;
+        case 'close':
+          this.ctx.closePath();
+          break;
+        case 'begin':
+          this.ctx.beginPath();
+          break;
+        default:
+          this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
+      }
+    }
+
+    // 3. Line Features
+    this.ctx.lineWidth = 0.1;
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.005)'; // Final : rgba(255, 255, 255, 1);	
+    this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+    this.ctx.shadowBlur = this.shadowBlur;
+    this.ctx.stroke();
+    this.ctx.fill(); // HIDE IN FINAL
+    this.ctx.closePath();
+  }
   shapeEvent(cursor, shapeName, offsetX, offsetY) {
     // 1. Draw Shape
     const shape = new Path2D();
@@ -647,42 +709,24 @@ class Pan {
       shape.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
     }
     if (this.ctx.isPointInPath(shape, offsetX, offsetY)) {
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+      this.ctx.lineWidth = 1;
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
       console.log(" TRUE " + " Shape Name :" + shapeName); // Final: rgba(255, 255, 255, 1)
-      // 1.1. Cursor
+      this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+      // Cursor GSAP
       gsap.to(cursor, 0.1, {
         opacity: 0.7,
         scale: 3
       });
     } else {
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+      this.ctx.lineWidth = 0.1;
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.005)';
       console.log(" FALSE " + " Shape Name :" + shapeName); // Final : rgba(255, 255, 255, 0)
+      this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
     }
 
     // 2. Features
     this.ctx.fill(shape);
-    this.ctx.closePath();
-  }
-  shapeOutline(shapeName) {
-    // 1. Start
-    this.ctx.beginPath();
-
-    // 2. Draw Lines
-    this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][0]['y'] * this.scaleSize);
-    for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'].length; i++) {
-      if (_positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['move'] == true) {
-        this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
-      } else {
-        this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
-      }
-    }
-
-    // 3. Line Features
-    this.ctx.lineWidth = 1;
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; // Final : rgba(255, 255, 255, 1);	
-    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0)';
-    this.ctx.stroke();
-    this.ctx.fill(); // HIDE IN FINAL
     this.ctx.closePath();
   }
   //____________________________
@@ -714,19 +758,27 @@ class Pan {
       };
     }
   }
+  // DOWN ↓↓↓↓
   onPointerDown(event) {
     this.isDragging = true;
     this.dragStart.x = event.clientX - this.cameraOffset.x;
     this.dragStart.y = event.clientY - this.cameraOffset.y;
   }
+  // UP ↑↑↑↑
   onPointerUp() {
     this.isDragging = false;
   }
+  // OUT →→→→→
+  onPointerMoveOut() {
+    this.isDragging = false;
+  }
+  // MOVE ⇆⇆⇆⇆⇆⇆
   onPointerMove(event) {
     if (this.isDragging) {
       this.cameraOffset.x = event.clientX - this.dragStart.x;
       this.cameraOffset.y = event.clientY - this.dragStart.y;
     }
+
     // Cursor
     const followCircle = document.getElementById('followCircle');
     gsap.to(followCircle, 0.1, {
@@ -736,10 +788,13 @@ class Pan {
 
     // Offset
     let xPosition = parseInt(event.clientX - this.offsetX);
-    let YPosition = parseInt(event.clientY - this.offsetY);
-    // Shape Event
+    let yPosition = parseInt(event.clientY - this.offsetY);
+    let dx = xPosition - this.dragStart.x;
+    let dy = yPosition - this.dragStart.y;
+
+    // Shape Event Loop
     for (let key of Object.keys(this.srp)) {
-      this.shapeEvent(followCircle, key, xPosition, YPosition);
+      this.shapeEvent(followCircle, key, xPosition, yPosition);
     }
   }
   handleTouch(event, singleTouchHandler) {
@@ -808,6 +863,9 @@ class Pan {
     this.panCanvas.addEventListener("mouseup", () => {
       this.onPointerUp();
     });
+    this.panCanvas.addEventListener("mouseout", () => {
+      this.onPointerMoveOut();
+    });
     this.panCanvas.addEventListener("mousemove", event => {
       this.onPointerMove(event);
     });
@@ -829,7 +887,7 @@ class Pan {
     //_____________________________________
 
     this.panCanvas.addEventListener("wheel", event => {
-      // this.adjustZoom( event.deltaY*this.scrollSensitivity );
+      this.adjustZoom(event.deltaY * this.scrollSensitivity);
     });
   }
 }
@@ -901,6 +959,8 @@ const positions = {
     }, {
       x: 0.000,
       y: 19.142
+    }, {
+      form: 'close'
     }],
     inline: [{
       x: 3.175,
@@ -920,7 +980,7 @@ const positions = {
     }, {
       x: 2.175,
       y: 9.750,
-      move: true
+      form: 'move'
     }, {
       x: 20.175,
       y: 9.750
@@ -930,75 +990,160 @@ const positions = {
     outline: [{
       x: 24.765896,
       y: 21.456033,
-      move: true
+      form: 'move'
     }, {
-      x: 13.778953,
+      x: 13.778953000000001,
       y: 27.671524
     }, {
-      x: 13.778953,
+      x: 13.778953000000001,
       y: 22.831661
     }, {
-      x: 20.624636,
+      x: 20.624636000000002,
       y: 19.064907
     }, {
-      x: 25.518523,
-      y: 20.775432,
-      move: true
+      form: 'close'
     }, {
-      x: 25.518523,
-      y: 7.779078
+      x: 25.518523000000002,
+      y: 20.775432000000002,
+      form: 'move'
     }, {
-      x: 21.499695,
+      x: 25.518523000000002,
+      y: 7.7790779
+    }, {
+      x: 21.499695000000003,
       y: 10.101786
     }, {
-      x: 21.499695,
+      x: 21.499695000000003,
       y: 18.456328
     }, {
-      x: 1.826920,
+      form: 'close'
+    }, {
+      x: 1.8269196,
       y: 21.456033,
-      move: true
+      form: 'move'
     }, {
-      x: 12.813860,
+      x: 12.81386,
       y: 27.671524
     }, {
-      x: 12.813860,
+      x: 12.81386,
       y: 22.831661
     }, {
-      x: 5.964575,
+      x: 5.9645745,
       y: 19.064907
     }, {
-      x: 1.074294,
+      form: 'close'
+    }, {
+      x: 1.0742942,
       y: 20.775432,
-      move: true
+      form: 'move'
     }, {
-      x: 1.074294,
-      y: 7.779078
+      x: 1.0742942,
+      y: 7.7790779
     }, {
-      x: 5.093110,
+      x: 5.0931101,
       y: 10.101786
     }, {
-      x: 5.093110,
+      x: 5.0931101,
       y: 18.456328
     }, {
-      x: 1.546033,
-      y: 6.936418,
-      move: true
+      form: 'close'
     }, {
-      x: 12.813860,
-      y: 0.562481
+      x: 1.5460332,
+      y: 6.9364181,
+      form: 'move'
     }, {
-      x: 12.813860,
-      y: 5.240307
+      x: 12.81386,
+      y: 0.56248086
     }, {
-      x: 5.593662,
+      x: 12.81386,
+      y: 5.2403071
+    }, {
+      x: 5.5936619,
       y: 9.212315
     }, {
+      x: 5.5360347,
+      y: 9.2446886
+    }, {
+      form: 'close'
+    }, {
+      x: 25.046772,
+      y: 6.9364181,
+      form: 'move'
+    }, {
+      x: 13.778953,
+      y: 0.56248086
+    }, {
+      x: 13.778953,
+      y: 5.2403071
+    }, {
+      x: 20.999144,
+      y: 9.2087097
+    }, {
+      x: 21.056784,
+      y: 9.2410837
+    }, {
+      form: 'close'
+    }, {
+      form: 'begin'
+    }, {
+      x: 12.81386,
+      y: 21.729723,
+      form: 'move'
+    }, {
+      x: 6.058206,
+      y: 18.013396
+    }, {
+      x: 6.058206,
+      y: 10.65636
+    }, {
+      x: 12.81386,
+      y: 14.556344
+    }, {
+      form: 'close'
+    }, {
+      x: 13.778953,
+      y: 21.729723,
+      form: 'move'
+    }, {
+      x: 20.534603,
+      y: 18.016993
+    }, {
+      x: 20.534603,
+      y: 10.65636
+    }, {
+      x: 13.778953000000001,
+      y: 14.556344
+    }, {
+      form: 'close'
+    }, {
+      x: 13.296402,
+      y: 14.275452,
+      form: 'move'
+    }, {
+      form: 'close'
+    }, {
+      x: 6.5155469,
+      y: 9.8064974,
+      form: 'move'
+    }, {
+      x: 13.296402,
+      y: 6.0793616
+    }, {
+      x: 20.077273,
+      y: 9.8064974
+    }, {
+      x: 13.296402,
+      y: 13.720887
+    }, {
+      form: 'close'
+    }],
+    inline: [{
       x: 5.536035,
       y: 9.244689
     }, {
       x: 25.046772,
       y: 6.936418,
-      move: true
+      form: 'move'
     }, {
       x: 13.778953,
       y: 0.562481
@@ -1014,7 +1159,7 @@ const positions = {
     }, {
       x: 12.813860,
       y: 21.729723,
-      move: true
+      form: 'move'
     }, {
       x: 6.058206,
       y: 18.013396
@@ -1027,7 +1172,7 @@ const positions = {
     }, {
       x: 13.778953,
       y: 21.729723,
-      move: true
+      form: 'move'
     }, {
       x: 20.534603,
       y: 18.016993
@@ -1040,11 +1185,11 @@ const positions = {
     }, {
       x: 13.296402,
       y: 14.275452,
-      move: true
+      form: 'move'
     }, {
       x: 6.515547,
       y: 9.806497,
-      move: true
+      form: 'move'
     }, {
       x: 13.296402,
       y: 6.079362
@@ -1054,29 +1199,6 @@ const positions = {
     }, {
       x: 13.296402,
       y: 13.720887
-    }],
-    inline: [{
-      x: 3.175,
-      y: 2.750
-    }, {
-      x: 21.500,
-      y: 2.750
-    }, {
-      x: 18.700,
-      y: 17.900
-    }, {
-      x: 9.700,
-      y: 21.000
-    }, {
-      x: 1.700,
-      y: 17.500
-    }, {
-      x: 2.175,
-      y: 9.750,
-      move: true
-    }, {
-      x: 20.175,
-      y: 9.750
     }]
   }
 };

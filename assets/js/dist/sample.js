@@ -300,196 +300,308 @@ function oMousePos(canvas, evt) {
 	};
 	export { Circle };
 */
-//Start
-theCanvas = document.getElementById("canvasOne");
-context = theCanvas.getContext("2d");
-var status = document.getElementById('status');
-var $canvas = $("#canvasOne");
-var canvasOffset = $canvas.offset();
-var offsetX = canvasOffset.left;
-var offsetY = canvasOffset.top;
-var scrollX = $canvas.scrollLeft();
-var scrollY = $canvas.scrollTop();
-var cw = theCanvas.width;
-var ch = theCanvas.height;
-var scaleFactor = 1.00;
-var panX = 0;
-var panY = 0;
-var mainX = 250;
-// setting the middle point position X value
-var mainY = 100;
-// setting the middle point position Y value
-var mainR = 125;
-// main ellipse radius R
-var no = 5;
-// number of nodes to display
-var div_angle = 360 / no;
-var circle = {
-  centerX: mainX,
-  centerY: mainY + 100,
-  radius: mainR,
-  angle: .9
-};
-var ball = {
-  x: 0,
-  y: 0,
-  speed: .1
-};
-var a = 1.8;
-//Ellipse width
-var b = .5;
-//Ellipse height
+/*
+			//Start
+			theCanvas = document.getElementById("canvasOne");
+			context = theCanvas.getContext("2d");
+			var status = document.getElementById('status');
+			var $canvas = $("#canvasOne");
+			var canvasOffset = $canvas.offset();
+			var offsetX = canvasOffset.left;
+			var offsetY = canvasOffset.top;
+			var scrollX = $canvas.scrollLeft();
+			var scrollY = $canvas.scrollTop();
+			var cw = theCanvas.width;
+			var ch = theCanvas.height;
+			var scaleFactor = 1.00;
+			var panX = 0;
+			var panY = 0;
+				var mainX = 250;
+			// setting the middle point position X value
+			var mainY = 100;
+			// setting the middle point position Y value
+			var mainR = 125;
+			// main ellipse radius R
+			var no = 5;
+			// number of nodes to display
+			var div_angle = 360 / no;
+				var circle = {
+			    centerX: mainX,
+			    centerY: mainY + 100,
+			    radius: mainR,
+			    angle: .9
+			};
+				var ball = {
+			    x: 0,
+			    y: 0,
+			    speed: .1
+			};
+			var a = 1.8;
+			//Ellipse width
+			var b = .5;
+			//Ellipse height
+				var translatePos = {
+			    x: 1,
+			    y: 1
+			};
+			var startDragOffset = {};
+			var mouseDown = false;
+				var elements = [{}];
+				// Animate
+			var animateInterval = setInterval(drawScreen, 1);
+				//Animation
+			function drawScreen() {
+			    context.clearRect(0, 0, cw, ch);
+			    // Background box
+			    context.beginPath();
+			    context.fillStyle = '#EEEEEE';
+			    context.fillRect(0, 0, theCanvas.width, theCanvas.height);
+			    context.strokeRect(1, 1, theCanvas.width - 2, theCanvas.height - 2);
+			    context.closePath();
+				    context.save();
+			    context.translate(panX, panY);
+			    context.scale(scaleFactor, scaleFactor);
+				    ball.speed = ball.speed + 0.001;
+				    for (var i = 1; i <= no; i++) {
+			        // male
+			        new_angle = div_angle * i;
+			        //Starting positions for ball 1 at different points on the ellipse
+			        circle.angle = (new_angle * (0.0174532925)) + ball.speed;
+			        //elliptical x position and y position for animation for the first ball
+			        //xx and yy records the first balls coordinates
+			        xx = ball.x = circle.centerX - (a * Math.cos(circle.angle)) * (circle.radius);
+			        yy = ball.y = circle.centerY + (b * Math.sin(circle.angle)) * (circle.radius);
+			        //Draw the first ball with position x and y
+			        context.fillStyle = "#000000";
+			        context.beginPath();
+			        context.arc(ball.x, ball.y, 10, 0, Math.PI * 2, true);
+			        context.fill();
+			        context.closePath();
+				        //alert("male Positions "+"X:  "+ball.x+ " Y: "+ball.y);
+				        // female
+			        new_angle = div_angle * i + 4;
+			        //Starting positions for ball 2 at different points on the ellipse
+			        circle.angle = (new_angle * (0.0174532925)) + ball.speed;
+			        //elliptical x position and y position for animation for the second ball
+			        //ball.x and ball.y record the second balls positions
+			        ball.x = circle.centerX - (a * Math.cos(circle.angle)) * (circle.radius);
+			        ball.y = circle.centerY + (b * Math.sin(circle.angle)) * (circle.radius);
+			        context.fillStyle = "#000000";
+			        context.beginPath();
+			        context.arc(ball.x, ball.y, 10, 0, Math.PI * 2, true);
+			        context.fill();
+			        context.closePath();
+				        //alert("female Positions "+"X:  "+ball.x+ " Y: "+ball.y);
+				        //Record the ball positions in elements array for locating positions with mouse coordinates.
+			        elements[i] = {
+			            id: i,
+			            femaleX: ball.x,
+			            femaleY: ball.y,
+			            maleX: xx,
+			            maleY: yy,
+			            w: 10 //radius of the ball to draw while locating the positions
+			        };
+			        //Text Numbering
+			        context.beginPath();
+			        context.fillStyle = "blue";
+			        context.font = "bold 16px Arial";
+			        context.fillText(elements[i].id, ball.x - 20, ball.y + 20);
+			        context.closePath();
+			        // line drawing--Connecting lines to the balls from the center.
+			        context.moveTo(mainX, mainY);
+			        context.lineTo((ball.x + xx) / 2, (ball.y + yy) / 2);
+			        //Draw line till the middle point between ball1 and ball2
+			        context.stroke();
+			        context.fill();
+			        context.closePath();
+			    }
+			    // center point
+			    context.fillStyle = "#000000";
+			    context.beginPath();
+			    context.arc(mainX, mainY, 15, 0, Math.PI * 2, true);
+			    context.fill();
+			    context.closePath();
+				    context.restore();
+			}
+				// Event Listeners
+			// Mouse move event to alert the position of the ball on screen
+				//According to markE's method from http://stackoverflow.com/questions/21717001/html5-canvas-get-coordinates-after-zoom-and-translate
+			document.getElementById("plus").addEventListener("click", function () {
+			    scaleFactor *= 1.1;
+			    drawScreen();
+			}, false);
+				document.getElementById("minus").addEventListener("click", function () {
+			    scaleFactor /= 1.1;
+			    drawScreen();
+			}, false);
+				// Event listeners to handle screen panning
+			// translatePos == cameraOffset
+			// startDragOffset = dragStart
+			// isDragging == mouseDown
+			context.canvas.addEventListener("mousedown", function (evt) {
+			    mouseDown = true;
+			    startDragOffset.x = evt.clientX - translatePos.x; 
+			    startDragOffset.y = evt.clientY - translatePos.y;
+			});
+				context.canvas.addEventListener("mouseup", function (evt) {
+			    mouseDown = false;
+			});
+				context.canvas.addEventListener("mouseover", function (evt) {
+			    mouseDown = false;
+			});
+				context.canvas.addEventListener("mouseout", function (evt) {
+			    mouseDown = false;
+			});
+				context.canvas.addEventListener("mousemove", function (evt) {
+			    if (mouseDown) {
+			        translatePos.x = evt.clientX - startDragOffset.x;
+			        translatePos.y = evt.clientY - startDragOffset.y;
+				        panX = translatePos.x;
+			        panY = translatePos.y;
+				        drawScreen();
+			    }
+				    evt.preventDefault();
+			    evt.stopPropagation();
+				    var mouseX = parseInt(evt.clientX - offsetX);
+			    var mouseY = parseInt(evt.clientY - offsetY);
+				    var mouseXT = parseInt((mouseX - panX) / scaleFactor);
+			    var mouseYT = parseInt((mouseY - panY) / scaleFactor);
+				    status.innerHTML = mouseXT + " | " + mouseYT;
+				    for (var i = 1; i < elements.length; i++) {
+			        var b = elements[i];
+			        context.closePath();
+			        context.beginPath();
+			        context.arc(b.femaleX, b.femaleY, 10, 0, Math.PI * 2);
+			        context.arc(b.maleX, b.maleY, 10, 0, Math.PI * 2);
+				        if (context.isPointInPath(mouseXT, mouseYT)) {
+			            theCanvas.style.cursor = 'pointer';
+			            console.log(b.id + " female.x: " + b.femaleX + " female.y: " + b.femaleY + " ball.x: " + ball.x + " ball.y: " + ball.y);
+			            return;
+			        } else theCanvas.style.cursor = 'default';
+			        context.closePath();
+			    }
+				});
+		*/
 
-var translatePos = {
-  x: 1,
-  y: 1
-};
-var startDragOffset = {};
-var mouseDown = false;
-var elements = [{}];
+// canvas related variables
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var cw = canvas.width;
+var ch = canvas.height;
+var offsetX, offsetY;
+// mouse drag related variables
+var isDown = false;
+var startX, startY;
 
-// Animate
-var animateInterval = setInterval(drawScreen, 1);
+// the accumulated horizontal(X) & vertical(Y) panning the user has done in total
+var netPanningX = 0;
+var netPanningY = 0;
 
-//Animation
-function drawScreen() {
-  context.clearRect(0, 0, cw, ch);
-  // Background box
-  context.beginPath();
-  context.fillStyle = '#EEEEEE';
-  context.fillRect(0, 0, theCanvas.width, theCanvas.height);
-  context.strokeRect(1, 1, theCanvas.width - 2, theCanvas.height - 2);
-  context.closePath();
-  context.save();
-  context.translate(panX, panY);
-  context.scale(scaleFactor, scaleFactor);
-  ball.speed = ball.speed + 0.001;
-  for (var i = 1; i <= no; i++) {
-    // male
-    new_angle = div_angle * i;
-    //Starting positions for ball 1 at different points on the ellipse
-    circle.angle = new_angle * 0.0174532925 + ball.speed;
-    //elliptical x position and y position for animation for the first ball
-    //xx and yy records the first balls coordinates
-    xx = ball.x = circle.centerX - a * Math.cos(circle.angle) * circle.radius;
-    yy = ball.y = circle.centerY + b * Math.sin(circle.angle) * circle.radius;
-    //Draw the first ball with position x and y
-    context.fillStyle = "#000000";
-    context.beginPath();
-    context.arc(ball.x, ball.y, 10, 0, Math.PI * 2, true);
-    context.fill();
-    context.closePath();
+// account for scrolling
+function reOffset() {
+  var BB = canvas.getBoundingClientRect();
+  offsetX = BB.left;
+  offsetY = BB.top;
+}
+reOffset();
 
-    //alert("male Positions "+"X:  "+ball.x+ " Y: "+ball.y);
+// just for demo: display the accumulated panning
+var $results = $('#results');
 
-    // female
-    new_angle = div_angle * i + 4;
-    //Starting positions for ball 2 at different points on the ellipse
-    circle.angle = new_angle * 0.0174532925 + ball.speed;
-    //elliptical x position and y position for animation for the second ball
-    //ball.x and ball.y record the second balls positions
-    ball.x = circle.centerX - a * Math.cos(circle.angle) * circle.radius;
-    ball.y = circle.centerY + b * Math.sin(circle.angle) * circle.radius;
-    context.fillStyle = "#000000";
-    context.beginPath();
-    context.arc(ball.x, ball.y, 10, 0, Math.PI * 2, true);
-    context.fill();
-    context.closePath();
-
-    //alert("female Positions "+"X:  "+ball.x+ " Y: "+ball.y);
-
-    //Record the ball positions in elements array for locating positions with mouse coordinates.
-    elements[i] = {
-      id: i,
-      femaleX: ball.x,
-      femaleY: ball.y,
-      maleX: xx,
-      maleY: yy,
-      w: 10 //radius of the ball to draw while locating the positions
-    };
-    //Text Numbering
-    context.beginPath();
-    context.fillStyle = "blue";
-    context.font = "bold 16px Arial";
-    context.fillText(elements[i].id, ball.x - 20, ball.y + 20);
-    context.closePath();
-    // line drawing--Connecting lines to the balls from the center.
-    context.moveTo(mainX, mainY);
-    context.lineTo((ball.x + xx) / 2, (ball.y + yy) / 2);
-    //Draw line till the middle point between ball1 and ball2
-    context.stroke();
-    context.fill();
-    context.closePath();
-  }
-  // center point
-  context.fillStyle = "#000000";
-  context.beginPath();
-  context.arc(mainX, mainY, 15, 0, Math.PI * 2, true);
-  context.fill();
-  context.closePath();
-  context.restore();
+// draw the numbered horizontal & vertical reference lines
+for (var x = 0; x < 100; x++) {
+  ctx.fillText(x, x * 20, ch / 2);
+}
+for (var y = -50; y < 50; y++) {
+  ctx.fillText(y, cw / 2, y * 20);
 }
 
-// Event Listeners
-// Mouse move event to alert the position of the ball on screen
+// listen for mouse events
+$("#canvas").mousedown(function (e) {
+  handleMouseDown(e);
+});
+$("#canvas").mousemove(function (e) {
+  handleMouseMove(e);
+});
+$("#canvas").mouseup(function (e) {
+  handleMouseUp(e);
+});
+$("#canvas").mouseout(function (e) {
+  handleMouseOut(e);
+});
+function handleMouseDown(e) {
+  // tell the browser we're handling this event
+  e.preventDefault();
+  e.stopPropagation();
 
-//According to markE's method from http://stackoverflow.com/questions/21717001/html5-canvas-get-coordinates-after-zoom-and-translate
-document.getElementById("plus").addEventListener("click", function () {
-  scaleFactor *= 1.1;
-  drawScreen();
-}, false);
-document.getElementById("minus").addEventListener("click", function () {
-  scaleFactor /= 1.1;
-  drawScreen();
-}, false);
+  // calc the starting mouse X,Y for the drag
+  startX = parseInt(e.clientX - offsetX);
+  startY = parseInt(e.clientY - offsetY);
 
-// Event listeners to handle screen panning
-// translatePos == cameraOffset
-// startDragOffset = dragStart
-// isDragging == mouseDown
-context.canvas.addEventListener("mousedown", function (evt) {
-  mouseDown = true;
-  startDragOffset.x = evt.clientX - translatePos.x;
-  startDragOffset.y = evt.clientY - translatePos.y;
-});
-context.canvas.addEventListener("mouseup", function (evt) {
-  mouseDown = false;
-});
-context.canvas.addEventListener("mouseover", function (evt) {
-  mouseDown = false;
-});
-context.canvas.addEventListener("mouseout", function (evt) {
-  mouseDown = false;
-});
-context.canvas.addEventListener("mousemove", function (evt) {
-  if (mouseDown) {
-    translatePos.x = evt.clientX - startDragOffset.x;
-    translatePos.y = evt.clientY - startDragOffset.y;
-    panX = translatePos.x;
-    panY = translatePos.y;
-    drawScreen();
+  // set the isDragging flag
+  isDown = true;
+}
+function handleMouseUp(e) {
+  // tell the browser we're handling this event
+  e.preventDefault();
+  e.stopPropagation();
+
+  // clear the isDragging flag
+  isDown = false;
+}
+function handleMouseOut(e) {
+  // tell the browser we're handling this event
+  e.preventDefault();
+  e.stopPropagation();
+
+  // clear the isDragging flag
+  isDown = false;
+}
+function handleMouseMove(e) {
+  // only do this code if the mouse is being dragged
+  if (!isDown) {
+    return;
   }
-  evt.preventDefault();
-  evt.stopPropagation();
-  var mouseX = parseInt(evt.clientX - offsetX);
-  var mouseY = parseInt(evt.clientY - offsetY);
-  var mouseXT = parseInt((mouseX - panX) / scaleFactor);
-  var mouseYT = parseInt((mouseY - panY) / scaleFactor);
-  status.innerHTML = mouseXT + " | " + mouseYT;
-  for (var i = 1; i < elements.length; i++) {
-    var b = elements[i];
-    context.closePath();
-    context.beginPath();
-    context.arc(b.femaleX, b.femaleY, 10, 0, Math.PI * 2);
-    context.arc(b.maleX, b.maleY, 10, 0, Math.PI * 2);
-    if (context.isPointInPath(mouseXT, mouseYT)) {
-      theCanvas.style.cursor = 'pointer';
-      console.log(b.id + " female.x: " + b.femaleX + " female.y: " + b.femaleY + " ball.x: " + ball.x + " ball.y: " + ball.y);
-      return;
-    } else theCanvas.style.cursor = 'default';
-    context.closePath();
+
+  // tell the browser we're handling this event
+  e.preventDefault();
+  e.stopPropagation();
+
+  // get the current mouse position
+  mouseX = parseInt(e.clientX - offsetX);
+  mouseY = parseInt(e.clientY - offsetY);
+
+  // dx & dy are the distance the mouse has moved since
+  // the last mousemove event
+  var dx = mouseX - startX;
+  var dy = mouseY - startY;
+
+  // reset the vars for next mousemove
+  startX = mouseX;
+  startY = mouseY;
+
+  // accumulate the net panning done
+  netPanningX += dx;
+  netPanningY += dy;
+  console.log(" startX: " + startX);
+  console.log(" startY: " + startY);
+  console.log("mouseX: " + mouseX);
+  console.log("mouseY: " + mouseY);
+  console.log("dx: " + dx);
+  console.log("dy: " + dy);
+  $results.text('Net change in panning: x:' + netPanningX + 'px, y:' + netPanningY + 'px');
+
+  // display the horizontal & vertical reference lines
+  // The horizontal line is offset leftward or rightward by netPanningX
+  // The vertical line is offset upward or downward by netPanningY
+  ctx.clearRect(0, 0, cw, ch);
+  for (var x = -50; x < 50; x++) {
+    ctx.fillText(x, x * 20 + netPanningX, ch / 2);
   }
-});
+  for (var y = -50; y < 50; y++) {
+    ctx.fillText(y, cw / 2, y * 20 + netPanningY);
+  }
+}
 /******/ })()
 ;
 //# sourceMappingURL=sample.js.map
