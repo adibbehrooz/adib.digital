@@ -41,7 +41,7 @@ class Pan {
 		this.currentY = 0;
 
 		//Zoom
-		this.cameraZoom = 1.1;
+		this.cameraZoom = 3.1;
 		this.maxZoom = 5;
 		this.minZoom = 0.1;
 		this.scrollSensitivity = 0.000 * 3.55;
@@ -66,7 +66,7 @@ class Pan {
 		this.minMaxRadius = { minRadius: 1, maxRadius : 2.7 };
 		this.radiusChange = 0.15;
 		this.redStarColor = 'rgba(255, 194, 184, 1)';
-		this.shadowBlur = 1;
+		this.shadowBlur = 0;
 		this.srp = this.shapeRelatedPosition();
 
 	};
@@ -83,10 +83,11 @@ class Pan {
 
 	draw() {
 		const animate = () => {
+			// requestAnimationFrame(animate);
 			this.initDraw();
 			this.lines();
 			this.shape();
-			// requestAnimationFrame(animate);
+			
 		};
 		// animate();
 		setInterval( animate, 200 / this.fps);
@@ -106,7 +107,7 @@ class Pan {
 		this.ctx.save();
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 		this.ctx.restore();
-		// this.ctx.clearRect(0, 0, this.panCanvas.width, this.panCanvas.height);
+		this.ctx.clearRect(0, 0, this.panCanvas.width, this.panCanvas.height);
 
 	};
 
@@ -201,17 +202,6 @@ class Pan {
 		return position;
 	};
 
-	translate(shape) {
-		switch(shape) {
-			case 'css':
-				this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
-			break;
-			case 'webpack':
-				this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
-			break;
-		}
-	}
-
 	shape() {
 		this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
 		for (let key of Object.keys( this.srp )) {
@@ -221,13 +211,13 @@ class Pan {
 	};
 
 	shapeStars(shapeName) {
-		
+		let lineType = 'inline';
 		// 1. Start
 		let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius; 
 
 		// 2. Update
 		const update = () => {
-			for (let i = 0; i < positions.css.inline.length; i++ ) {
+			for (let i = 0; i < positions[shapeName][lineType].length; i++ ) {
 				if (randomRadius > 2.2 || randomRadius < 1 ) {
 					this.radiusChange = - this.radiusChange;
 				}
@@ -237,9 +227,9 @@ class Pan {
 
 		// 3. Render Stars
 		const render = () => {
-			for (let i = 0; i < positions.css.inline.length; i++ ) {
+			for (let i = 0; i < positions[shapeName][lineType].length; i++ ) {
 				this.ctx.beginPath();
-				this.ctx.arc( this.srp[shapeName]['relation']['x'] + positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['inline'][i]['y'] * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
+				this.ctx.arc( this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
 				this.ctx.shadowBlur = this.shadowBlur;
 				this.ctx.shadowColor = this.starColor;
 				this.ctx.fillStyle = this.redStarColor;
@@ -285,25 +275,31 @@ class Pan {
 
 					default:
 						this.ctx.lineTo( this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize );
-					break;
 				}
 			}
 
 			// III. Line Features
-			if ( lineType == 'inline') {
-				this.ctx.lineWidth = 1;
-				this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';		
-				this.ctx.closePath();
-			} else {
-				this.ctx.lineWidth = 0.01;
-				this.ctx.fillStyle = 'rgba(255, 255, 255, 0.005)'; // Final : rgba(255, 255, 255, 1);	
-				this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';	
+			if ( lineType === 'outline') {
+				// Stroke
+				this.ctx.lineWidth = 2;
+				this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.001)';
+				this.ctx.stroke();	
+
+				// Fill
+				this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
 				this.ctx.shadowBlur = this.shadowBlur;	
+				this.ctx.fill();
+			} else {
+				// Stroke
+				this.ctx.lineWidth = .5;
+				this.ctx.strokeStyle = 'rgba(255, 255, 255, .5)';	
 				this.ctx.stroke();
-				this.ctx.fill(); // HIDE IN FINAL
+
+				// Fill
+				this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
 			}
-			this.ctx.stroke();
-			this.ctx.closePath();
+			
+
 		}); // [END] Loop for Line Types
 	};
 
@@ -318,18 +314,25 @@ class Pan {
 			
 		}
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
-			this.ctx.lineWidth = 1;
-			this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; 	console.log(" TRUE "+" Shape Name :"+shapeName); 	// Final: rgba(255, 255, 255, 1)
-			this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+			// Stroke
+			this.ctx.lineWidth = 0.1;
+			this.ctx.strokeStyle = 'rgba(255, 255, 255,  0)';
+			
+			// Fill
+			this.ctx.fillStyle = 'rgba(255, 255, 255,  0)'; 	// console.log(" TRUE "+" Shape Name :"+shapeName); 	// Final: rgba(255, 255, 255, 1)
+
 			// Cursor GSAP
 			gsap.to(cursor, 0.1, {
 				opacity: 0.7,
 				scale: 3
 			});	
 		} else {
+			// Stroke
 			this.ctx.lineWidth = 0.1;
-			this.ctx.fillStyle = 'rgba(255, 255, 255, 0.005)';	console.log(" FALSE "+" Shape Name :"+shapeName); 	// Final : rgba(255, 255, 255, 0)
-			this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';	
+			this.ctx.strokeStyle = 'rgba(255, 255, 255,  0)';	
+			
+			// Fill
+			this.ctx.fillStyle = 'rgba(255, 255, 255,  0)';	// console.log(" FALSE "+" Shape Name :"+shapeName); 	// Final : rgba(255, 255, 255, 0)
 		}
 
 		// 2. Features

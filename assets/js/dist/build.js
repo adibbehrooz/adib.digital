@@ -422,7 +422,7 @@ class Pan {
     this.currentY = 0;
 
     //Zoom
-    this.cameraZoom = 1.1;
+    this.cameraZoom = 3.1;
     this.maxZoom = 5;
     this.minZoom = 0.1;
     this.scrollSensitivity = 0.000 * 3.55;
@@ -450,7 +450,7 @@ class Pan {
     };
     this.radiusChange = 0.15;
     this.redStarColor = 'rgba(255, 194, 184, 1)';
-    this.shadowBlur = 1;
+    this.shadowBlur = 0;
     this.srp = this.shapeRelatedPosition();
   }
   //_______________________________
@@ -464,10 +464,10 @@ class Pan {
   }
   draw() {
     const animate = () => {
+      // requestAnimationFrame(animate);
       this.initDraw();
       this.lines();
       this.shape();
-      // requestAnimationFrame(animate);
     };
     // animate();
     setInterval(animate, 200 / this.fps);
@@ -486,9 +486,8 @@ class Pan {
     this.ctx.save();
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.restore();
-    // this.ctx.clearRect(0, 0, this.panCanvas.width, this.panCanvas.height);
+    this.ctx.clearRect(0, 0, this.panCanvas.width, this.panCanvas.height);
   }
-
   /****************** LINES ******************/
   /*******************************************/
 
@@ -580,16 +579,6 @@ class Pan {
     };
     return position;
   }
-  translate(shape) {
-    switch (shape) {
-      case 'css':
-        this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
-        break;
-      case 'webpack':
-        this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
-        break;
-    }
-  }
   shape() {
     this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
     for (let key of Object.keys(this.srp)) {
@@ -598,12 +587,13 @@ class Pan {
     }
   }
   shapeStars(shapeName) {
+    let lineType = 'inline';
     // 1. Start
     let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius;
 
     // 2. Update
     const update = () => {
-      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline.length; i++) {
+      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType].length; i++) {
         if (randomRadius > 2.2 || randomRadius < 1) {
           this.radiusChange = -this.radiusChange;
         }
@@ -613,9 +603,9 @@ class Pan {
 
     // 3. Render Stars
     const render = () => {
-      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions.css.inline.length; i++) {
+      for (let i = 0; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType].length; i++) {
         this.ctx.beginPath();
-        this.ctx.arc(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['inline'][i]['y'] * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
+        this.ctx.arc(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['y'] * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
         this.ctx.shadowBlur = this.shadowBlur;
         this.ctx.shadowColor = this.starColor;
         this.ctx.fillStyle = this.redStarColor;
@@ -653,26 +643,29 @@ class Pan {
             break;
           default:
             this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['y'] * this.scaleSize);
-            break;
         }
       }
 
       // III. Line Features
-      if (lineType == 'inline') {
-        this.ctx.lineWidth = 1;
-        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-        this.ctx.closePath();
-      } else {
-        this.ctx.lineWidth = 0.01;
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.005)'; // Final : rgba(255, 255, 255, 1);	
-        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-        this.ctx.shadowBlur = this.shadowBlur;
+      if (lineType === 'outline') {
+        // Stroke
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.001)';
         this.ctx.stroke();
-        this.ctx.fill(); // HIDE IN FINAL
-      }
 
-      this.ctx.stroke();
-      this.ctx.closePath();
+        // Fill
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+        this.ctx.shadowBlur = this.shadowBlur;
+        this.ctx.fill();
+      } else {
+        // Stroke
+        this.ctx.lineWidth = .5;
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, .5)';
+        this.ctx.stroke();
+
+        // Fill
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+      }
     }); // [END] Loop for Line Types
   }
 
@@ -685,20 +678,25 @@ class Pan {
       shape.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName]['outline'][i]['y'] * this.scaleSize);
     }
     if (this.ctx.isPointInPath(shape, offsetX, offsetY)) {
-      this.ctx.lineWidth = 1;
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-      console.log(" TRUE " + " Shape Name :" + shapeName); // Final: rgba(255, 255, 255, 1)
-      this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+      // Stroke
+      this.ctx.lineWidth = 0.1;
+      this.ctx.strokeStyle = 'rgba(255, 255, 255,  0)';
+
+      // Fill
+      this.ctx.fillStyle = 'rgba(255, 255, 255,  0)'; // console.log(" TRUE "+" Shape Name :"+shapeName); 	// Final: rgba(255, 255, 255, 1)
+
       // Cursor GSAP
       gsap.to(cursor, 0.1, {
         opacity: 0.7,
         scale: 3
       });
     } else {
+      // Stroke
       this.ctx.lineWidth = 0.1;
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.005)';
-      console.log(" FALSE " + " Shape Name :" + shapeName); // Final : rgba(255, 255, 255, 0)
-      this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+      this.ctx.strokeStyle = 'rgba(255, 255, 255,  0)';
+
+      // Fill
+      this.ctx.fillStyle = 'rgba(255, 255, 255,  0)'; // console.log(" FALSE "+" Shape Name :"+shapeName); 	// Final : rgba(255, 255, 255, 0)
     }
 
     // 2. Features
@@ -968,28 +966,28 @@ const positions = {
       y: 21.456033,
       form: 'move'
     }, {
-      x: 13.778953000000001,
+      x: 13.778953,
       y: 27.671524
     }, {
-      x: 13.778953000000001,
+      x: 13.778953,
       y: 22.831661
     }, {
-      x: 20.624636000000002,
+      x: 20.624636,
       y: 19.064907
     }, {
       form: 'close'
     }, {
-      x: 25.518523000000002,
-      y: 20.775432000000002,
+      x: 25.518523,
+      y: 20.775432,
       form: 'move'
     }, {
-      x: 25.518523000000002,
+      x: 25.518523,
       y: 7.7790779
     }, {
-      x: 21.499695000000003,
+      x: 21.499695,
       y: 10.101786
     }, {
-      x: 21.499695000000003,
+      x: 21.499695,
       y: 18.456328
     }, {
       form: 'close'
@@ -1005,7 +1003,7 @@ const positions = {
       y: 22.831661
     }, {
       x: 5.9645745,
-      y: 19.064907
+      y: 19.06490
     }, {
       form: 'close'
     }, {
@@ -1014,13 +1012,13 @@ const positions = {
       form: 'move'
     }, {
       x: 1.0742942,
-      y: 7.7790779
+      y: 7.779077
     }, {
       x: 5.0931101,
-      y: 10.101786
+      y: 10.10178
     }, {
       x: 5.0931101,
-      y: 18.456328
+      y: 18.45632
     }, {
       form: 'close'
     }, {
@@ -1029,7 +1027,7 @@ const positions = {
       form: 'move'
     }, {
       x: 12.81386,
-      y: 0.56248086
+      y: 0.5624808
     }, {
       x: 12.81386,
       y: 5.2403071
@@ -1038,7 +1036,7 @@ const positions = {
       y: 9.212315
     }, {
       x: 5.5360347,
-      y: 9.2446886
+      y: 9.244688
     }, {
       form: 'close'
     }, {
@@ -1047,20 +1045,18 @@ const positions = {
       form: 'move'
     }, {
       x: 13.778953,
-      y: 0.56248086
+      y: 0.562480
     }, {
       x: 13.778953,
-      y: 5.2403071
+      y: 5.240307
     }, {
       x: 20.999144,
-      y: 9.2087097
+      y: 9.208709
     }, {
       x: 21.056784,
-      y: 9.2410837
+      y: 9.241083
     }, {
       form: 'close'
-    }, {
-      form: 'begin'
     }, {
       x: 12.81386,
       y: 21.729723,
@@ -1070,7 +1066,7 @@ const positions = {
       y: 18.013396
     }, {
       x: 6.058206,
-      y: 10.65636
+      y: 10.656360
     }, {
       x: 12.81386,
       y: 14.556344
@@ -1082,13 +1078,13 @@ const positions = {
       form: 'move'
     }, {
       x: 20.534603,
-      y: 18.016993
+      y: 18.01699
     }, {
       x: 20.534603,
       y: 10.65636
     }, {
-      x: 13.778953000000001,
-      y: 14.556344
+      x: 13.778953,
+      y: 14.55634
     }, {
       form: 'close'
     }, {
@@ -1103,78 +1099,62 @@ const positions = {
       form: 'move'
     }, {
       x: 13.296402,
-      y: 6.0793616
-    }, {
-      x: 20.077273,
-      y: 9.8064974
-    }, {
-      x: 13.296402,
-      y: 13.720887
-    }, {
-      form: 'close'
-    }],
-    inline: [{
-      x: 5.536035,
-      y: 9.244689
-    }, {
-      x: 25.046772,
-      y: 6.936418,
-      form: 'move'
-    }, {
-      x: 13.778953,
-      y: 0.562481
-    }, {
-      x: 13.778953,
-      y: 5.240307
-    }, {
-      x: 20.999144,
-      y: 9.208710
-    }, {
-      x: 21.056784,
-      y: 9.241084
-    }, {
-      x: 12.813860,
-      y: 21.729723,
-      form: 'move'
-    }, {
-      x: 6.058206,
-      y: 18.013396
-    }, {
-      x: 6.058206,
-      y: 10.656360
-    }, {
-      x: 12.813860,
-      y: 14.556344
-    }, {
-      x: 13.778953,
-      y: 21.729723,
-      form: 'move'
-    }, {
-      x: 20.534603,
-      y: 18.016993
-    }, {
-      x: 20.534603,
-      y: 10.656360
-    }, {
-      x: 13.778953,
-      y: 14.556344
-    }, {
-      x: 13.296402,
-      y: 14.275452,
-      form: 'move'
-    }, {
-      x: 6.515547,
-      y: 9.806497,
-      form: 'move'
-    }, {
-      x: 13.296402,
-      y: 6.079362
+      y: 6.079361
     }, {
       x: 20.077273,
       y: 9.806497
     }, {
       x: 13.296402,
-      y: 13.720887
+      y: 13.72088
+    }, {
+      form: 'close'
+    }],
+    inline: [{
+      x: 13.296402,
+      y: 0.562480,
+      form: 'move'
+    }, {
+      x: 13.296402,
+      y: 5.590307
+    }, {
+      x: 5.5360347,
+      y: 9.806497
+    }, {
+      x: 5.6360347,
+      y: 18.51339
+    }, {
+      x: 13.296402,
+      y: 22.63166
+    }, {
+      x: 20.934603,
+      y: 18.61339
+    }, {
+      x: 20.934603,
+      y: 9.806497
+    }, {
+      x: 13.296402,
+      y: 5.590307
+    }, {
+      x: 5.5360347,
+      y: 9.80649,
+      form: 'move'
+    }, {
+      x: 1.396402,
+      y: 7.43166
+    }, {
+      x: 5.6360347,
+      y: 18.51339,
+      form: 'move'
+    }, {
+      x: 1.5460332,
+      y: 21.129723
+    }, {
+      x: 13.296402,
+      y: 22.63166,
+      form: 'move'
+    }, {
+      x: 13.296402,
+      y: 27.671524
     }]
   }
 };
