@@ -41,7 +41,7 @@ class Pan {
 		this.currentY = 0;
 
 		//Zoom
-		this.cameraZoom = 3.1;
+		this.cameraZoom = 1.1;
 		this.maxZoom = 5;
 		this.minZoom = 0.1;
 		this.scrollSensitivity = 0.000 * 3.55;
@@ -67,13 +67,15 @@ class Pan {
 		this.radiusChange = 0.15;
 		this.redStarColor = 'rgba(255, 194, 184, 1)';
 		this.shadowBlur = 0;
-		this.srp = this.shapeRelatedPosition();
+		this.srp = this.position();
 
+		// Shape Line Types
+		this.lineTypes =  ['curve', 'inside'];
 	};
 
 	//_______________________________
 	//
-	// All 
+	// RUN! 
 	//_______________________________
 
 	init() {
@@ -83,14 +85,13 @@ class Pan {
 
 	draw() {
 		const animate = () => {
-			// requestAnimationFrame(animate);
+			requestAnimationFrame(animate);
 			this.initDraw();
-			this.lines();
-			this.shape();
-			
+			this.waves();
+			this.shapes();
 		};
-		// animate();
-		setInterval( animate, 200 / this.fps);
+		animate();
+		// setInterval( animate, 200 / this.fps);
 	};
 
 	//____________________________
@@ -108,21 +109,19 @@ class Pan {
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 		this.ctx.restore();
 		this.ctx.clearRect(0, 0, this.panCanvas.width, this.panCanvas.height);
-
 	};
 
+	/************************* WAVES *************************
+	/*********************************************************/	
 
-	/****************** LINES ******************/
-	/*******************************************/	
-
-	lines() {
+	waves() {
 		this.ctx.translate( -window.innerWidth, -window.innerHeight );
-		this.staticLines();
-		this.dynamicLines();
+		this.staticWaves();
+		this.dynamicWaves();
 	};
 
-	// Static Lines
-	staticLines() {
+	// Static Waves
+	staticWaves() {
 		for( let m = 0; m < 2; m++ ) {	
 			// Draw Lines
 			this.ctx.beginPath();
@@ -149,8 +148,8 @@ class Pan {
 		};
 	};
 
-	// Dynamic Lines
-	dynamicLines() {
+	// Dynamic Waves
+	dynamicWaves() {
 		let k = 5, opacity = [ 0, 0 ];
 		for( let m = 0; m < 13; m++ ) {	
 			if( m >= 0 && m < 7) k+=1.1; else k +=0.8;
@@ -186,32 +185,130 @@ class Pan {
 		};
 	};
 	
-	/****************** Shape ******************/
-	/*******************************************/
+	/************************* SHAPES ************************
+	/*********************************************************/	
 
-	shapeRelatedPosition() {
+	position() {
 		const position = {
 			css: {
-				relation: 	{ x: window.innerWidth / 2, y: this.cameraOffset.y / 2 },
+				relation: { x: window.innerWidth / 2, y: this.cameraOffset.y / 2 },
 			},
 			
 			webpack: {
-				relation: 	{ x: window.innerWidth / 1.1 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2) },
+				relation: { x: window.innerWidth / 1.1 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.02) },
 			},
+
+			svg: {
+				relation: { x: window.innerWidth / 1.1 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
+			}
 		};
 		return position;
 	};
 
-	shape() {
-		this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );
+	shapes() {
+		// Translate Shapes
+		this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );	
+		
+		// Loop for Draw Shapes
 		for (let key of Object.keys( this.srp )) {
-			this.shapeLines(key);
-			this.shapeStars(key);
+			this.shapeLines(key); // 1. Draw Lines
+			this.shapeStars(key); // 2. Draw Stars
+		}
+	};
+	
+	shapeLines(shapeName) {
+
+		// I. Start
+		this.ctx.beginPath();
+
+		// II. Line Types Loop
+		this.lineTypes.forEach((lineType) => { 
+
+			if(lineType == 'curve') {
+				this.curveLines(shapeName);
+			} else {
+				this.straightlines(shapeName, lineType);
+			} 
+		});
+	};
+
+	curveLines(shapeName) {
+
+		let context = this.ctx;
+		positions[shapeName].curve(context);
+	};
+
+	straightlines(shapeName, lineType) {
+		// Move to Initial Point to Draw Shape 
+		this.ctx.moveTo( 
+			this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][0]['x'] * this.scaleSize,  
+			this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][0]['y'] * this.scaleSize  
+		);
+
+		// Draw Lines
+		for( let i = 1; i < positions[shapeName][lineType].length; i++ ) {
+					
+			let form = positions[shapeName][lineType][i]['form'];
+					
+			switch(form) {
+
+				case 'move':
+				this.ctx.moveTo( 
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize,  
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize
+				);
+				break;
+
+				case 'close':
+					this.ctx.closePath();
+				break;
+
+				case 'begin':
+					this.ctx.beginPath();
+				break;
+
+				case 'restore':
+					this.ctx.restore();
+				break;
+
+				case 'save':
+					this.ctx.save();
+				break;
+
+				case 'stroke':
+					this.ctx.stroke();
+				break;	
+
+				case 'strokeStyle':
+					this.ctx.strokeStyle = positions[shapeName][lineType][i]['color'];
+				break;	
+
+				case 'fillStyle':
+					this.ctx.fillStyle = positions[shapeName][lineType][i]['color'];
+				break;	
+
+				case 'curve':
+				this.ctx.bezierCurveTo( 
+					positions[shapeName][lineType][i]['x1'],
+					positions[shapeName][lineType][i]['x2'],
+					positions[shapeName][lineType][i]['x3'],
+					positions[shapeName][lineType][i]['x4'],
+					positions[shapeName][lineType][i]['x5'],
+					positions[shapeName][lineType][i]['x6'],
+				);
+				break;
+						
+				default:
+				this.ctx.lineTo( 
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize,   
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize 
+				);
+			}
 		}
 	};
 
 	shapeStars(shapeName) {
-		let lineType = 'inline';
+		let lineType = 'inside';
 		// 1. Start
 		let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius; 
 
@@ -242,76 +339,14 @@ class Pan {
 		render();
 	};
 
-	shapeLines(shapeName) {
-
-		// I. Start
-		this.ctx.beginPath();
-
-		// II. Line Types Loop
-		let lineTypes =  ['outline', 'inline'];
-		lineTypes.forEach((lineType) => { 
-
-			// 1. Draw lines	
-			/// First Line
-			this.ctx.moveTo( this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][0]['x']  * this.scaleSize,  this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][0]['y'] * this.scaleSize );
-			
-			/// Other Lines
-			for( let i = 1; i < positions[shapeName][lineType].length; i++ ) {
-				
-				let form = positions[shapeName][lineType][i]['form'];
-				
-				switch(form) {
-					case 'move':
-						this.ctx.moveTo( this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize );
-					break;
-
-					case 'close':
-						this.ctx.closePath();
-					break;
-
-					case 'begin':
-						this.ctx.beginPath();
-					break;
-
-					default:
-						this.ctx.lineTo( this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize );
-				}
-			}
-
-			// III. Line Features
-			if ( lineType === 'outline') {
-				// Stroke
-				this.ctx.lineWidth = 2;
-				this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.001)';
-				this.ctx.stroke();	
-
-				// Fill
-				this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
-				this.ctx.shadowBlur = this.shadowBlur;	
-				this.ctx.fill();
-			} else {
-				// Stroke
-				this.ctx.lineWidth = .5;
-				this.ctx.strokeStyle = 'rgba(255, 255, 255, .5)';	
-				this.ctx.stroke();
-
-				// Fill
-				this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-			}
-			
-
-		}); // [END] Loop for Line Types
-	};
-
 	shapeEvent( cursor, shapeName, offsetX, offsetY ) {
-		
+		let lineType = 'inside';
 		// 1. Draw Shape
 		const shape = new Path2D();
 		this.ctx.beginPath();
-		shape.moveTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][0]['y'] * this.scaleSize );
-		for( let i = 1; i < positions[shapeName]['outline'].length; i++ ) {
-			shape.lineTo( this.srp[shapeName]['relation']['x'] + positions[shapeName]['outline'][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName]['outline'][i]['y'] * this.scaleSize );
-			
+		shape.moveTo( this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][0]['y'] * this.scaleSize );
+		for( let i = 1; i < positions[shapeName][lineType].length; i++ ) {
+			shape.lineTo( this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize );
 		}
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
 			// Stroke
@@ -319,7 +354,7 @@ class Pan {
 			this.ctx.strokeStyle = 'rgba(255, 255, 255,  0)';
 			
 			// Fill
-			this.ctx.fillStyle = 'rgba(255, 255, 255,  0)'; 	// console.log(" TRUE "+" Shape Name :"+shapeName); 	// Final: rgba(255, 255, 255, 1)
+			this.ctx.fillStyle = 'rgba(255, 255, 255,  0)'; // console.log(" TRUE "+" Shape Name :"+shapeName); 
 
 			// Cursor GSAP
 			gsap.to(cursor, 0.1, {
@@ -332,7 +367,7 @@ class Pan {
 			this.ctx.strokeStyle = 'rgba(255, 255, 255,  0)';	
 			
 			// Fill
-			this.ctx.fillStyle = 'rgba(255, 255, 255,  0)';	// console.log(" FALSE "+" Shape Name :"+shapeName); 	// Final : rgba(255, 255, 255, 0)
+			this.ctx.fillStyle = 'rgba(255, 255, 255,  0)';	// console.log(" FALSE "+" Shape Name :"+shapeName); 
 		}
 
 		// 2. Features
@@ -373,24 +408,24 @@ class Pan {
 		}
 	};
 
-	// DOWN ↓↓↓↓
+	// Pointer: DOWN ↓↓↓↓
 	onPointerDown(event) {
 		this.isDragging = true;	
 		this.dragStart.x = event.clientX - this.cameraOffset.x;
 		this.dragStart.y = event.clientY - this.cameraOffset.y;
 	};
 
-	// UP ↑↑↑↑
+	// Pointer: UP ↑↑↑↑
 	onPointerUp() {
 		this.isDragging = false;
 	};
 
-	// OUT →→→→→
+	// Pointer: OUT →→→→→
 	onPointerMoveOut() {
 		this.isDragging = false;
 	};
 	
-	// MOVE ⇆⇆⇆⇆⇆⇆
+	// Pointer: MOVE ⇆⇆⇆⇆⇆⇆
 	onPointerMove(event) {
 		if ( this.isDragging ) {
 			this.cameraOffset.x = event.clientX - this.dragStart.x;
@@ -407,9 +442,6 @@ class Pan {
 		// Offset
 		let xPosition = parseInt(event.clientX - this.offsetX);
 		let yPosition = parseInt(event.clientY - this.offsetY);
-
-		let dx = xPosition - this.dragStart.x;
-		let dy = yPosition - this.dragStart.y;
 
 		// Shape Event Loop
 		for (let key of Object.keys( this.srp )) {
@@ -465,8 +497,7 @@ class Pan {
 	
 	_eventListeners() {
 
-
-		// 1. Resize Pan
+		// 1. Resize
 		//_____________________________________
 
 		this._resize();
