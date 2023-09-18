@@ -578,7 +578,7 @@ class Pan {
       css: {
         relation: {
           x: window.innerWidth / 2,
-          y: this.cameraOffset.y / 2
+          y: this.cameraOffset.y / 1.72
         }
       },
       webpack: {
@@ -598,7 +598,7 @@ class Pan {
   }
   shapes() {
     // Translate Shapes
-    this.ctx.translate(-(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y);
+    this.ctx.translate(-(window.innerWidth / 2) + this.cameraOffset.x, -(window.innerHeight / 2) + this.cameraOffset.y);
 
     // Loop for Draw Shapes
     for (let key of Object.keys(this.srp)) {
@@ -914,8 +914,58 @@ const positions = {
     x: 4,
     y: 4
   },
+  //____________________ CSS ____________________
+
   css: {
-    curve: function (ctx) {},
+    curve: function (ctx) {
+      ctx.save();
+      ctx.strokeStyle = "rgba(0,0,0,0)";
+      ctx.miterLimit = 4;
+      ctx.scale(0.27, 0.27);
+      ctx.translate(window.innerWidth * 1.8, window.innerHeight * 1);
+      ctx.save();
+      ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+      ctx.moveTo(124.46, 208.59);
+      ctx.lineTo(129.525, 265.107);
+      ctx.lineTo(256, 265.107);
+      ctx.lineTo(256, 208.59);
+      ctx.moveTo(119.419, 150.715);
+      ctx.lineTo(256, 150.715);
+      ctx.lineTo(256, 94.197);
+      ctx.lineTo(114.281, 94.197);
+      ctx.moveTo(256, 355.372);
+      ctx.lineTo(255.752, 355.438);
+      ctx.lineTo(192.808, 338.442);
+      ctx.lineTo(188.785, 293.366);
+      ctx.lineTo(132.049, 293.366);
+      ctx.lineTo(139.96800000000002, 382.10699999999997);
+      ctx.lineTo(255.74, 414.24699999999996);
+      ctx.lineTo(256, 414.174);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+      ctx.save();
+      ctx.fillStyle = "rgba(255, 255, 255, 0)";
+      ctx.moveTo(255.805, 208.59);
+      ctx.lineTo(255.805, 265.107);
+      ctx.lineTo(325.4, 265.107);
+      ctx.lineTo(318.84, 338.40600000000006);
+      ctx.lineTo(255.80499999999998, 355.41900000000004);
+      ctx.lineTo(255.80499999999998, 414.21900000000005);
+      ctx.lineTo(371.669, 382.107);
+      ctx.lineTo(372.519, 372.55800000000005);
+      ctx.lineTo(385.799, 223.76600000000005);
+      ctx.lineTo(387.179, 208.59000000000006);
+      ctx.lineTo(397.38199999999995, 94.19700000000006);
+      ctx.lineTo(255.805, 94.19700000000006);
+      ctx.lineTo(255.805, 150.71500000000006);
+      ctx.lineTo(335.444, 150.71500000000006);
+      ctx.lineTo(330.3, 208.59);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+      ctx.restore();
+    },
     outside: [{
       form: 'begin'
     }, {
@@ -1025,6 +1075,8 @@ const positions = {
       form: 'restore'
     }]
   },
+  //____________________ WEBPACK ____________________
+
   webpack: {
     curve: function (ctx) {
       ctx.save();
@@ -1189,6 +1241,8 @@ const positions = {
       form: 'stroke'
     }]
   },
+  //____________________ SVG ____________________
+
   svg: {
     curve: function (ctx) {
       ctx.save();

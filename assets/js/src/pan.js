@@ -191,7 +191,7 @@ class Pan {
 	position() {
 		const position = {
 			css: {
-				relation: { x: window.innerWidth / 2, y: this.cameraOffset.y / 2 },
+				relation: { x: window.innerWidth / 2, y: this.cameraOffset.y / 1.72 },
 			},
 			
 			webpack: {
@@ -207,7 +207,7 @@ class Pan {
 
 	shapes() {
 		// Translate Shapes
-		this.ctx.translate( -(window.innerWidth / 1.9) + this.cameraOffset.x, -(window.innerHeight / 2.1) + this.cameraOffset.y );	
+		this.ctx.translate( -(window.innerWidth / 2 ) + this.cameraOffset.x, -(window.innerHeight / 2 ) + this.cameraOffset.y );	
 		
 		// Loop for Draw Shapes
 		for (let key of Object.keys( this.srp )) {
