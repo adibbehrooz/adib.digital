@@ -461,7 +461,7 @@ class Pan {
     this.srp = this.position();
 
     // Shape Line Types
-    this.lineTypes = ['curve', 'inside'];
+    this.lineTypes = ['curve', 'inside', 'arc'];
   }
   //_______________________________
   //
@@ -589,7 +589,13 @@ class Pan {
       },
       svg: {
         relation: {
-          x: window.innerWidth / 1.1 - window.innerWidth / 2,
+          x: window.innerWidth / 1.076 - window.innerWidth / 2,
+          y: this.cameraOffset.y - window.innerHeight / 2.94
+        }
+      },
+      framework: {
+        relation: {
+          x: window.innerWidth / 1.5 - window.innerWidth / 2,
           y: this.cameraOffset.y - window.innerHeight / 3
         }
       }
@@ -615,6 +621,8 @@ class Pan {
     this.lineTypes.forEach(lineType => {
       if (lineType == 'curve') {
         this.curveLines(shapeName);
+      } else if (lineType == 'arc') {
+        this.shapeStars(shapeName);
       } else {
         this.straightlines(shapeName, lineType);
       }
@@ -626,14 +634,20 @@ class Pan {
   }
   straightlines(shapeName, lineType) {
     // Move to Initial Point to Draw Shape 
-    this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][0]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][0]['y'] * this.scaleSize);
+    this.ctx.moveTo(_positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][0]['x'], _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][0]['y']);
 
     // Draw Lines
     for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType].length; i++) {
       let form = _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['form'];
       switch (form) {
+        case 'scale':
+          this.ctx.scale(_positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x'], _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['y']);
+          break;
         case 'move':
-          this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['y'] * this.scaleSize);
+          this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x'], this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['y']);
+          break;
+        case "transform":
+          this.ctx.translate(_positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x'], _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['y']);
           break;
         case 'close':
           this.ctx.closePath();
@@ -660,12 +674,15 @@ class Pan {
           this.ctx.bezierCurveTo(_positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x1'], _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x2'], _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x3'], _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x4'], _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x5'], _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x6']);
           break;
         default:
-          this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['y'] * this.scaleSize);
+          this.ctx.lineTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['x'], this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][i]['y']);
       }
+      ; // [END] Switch
     }
+    ; // [END] For
   }
+
   shapeStars(shapeName) {
-    let lineType = 'inside';
+    let lineType = 'arc';
     // 1. Start
     let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius;
 
@@ -696,7 +713,7 @@ class Pan {
     render();
   }
   shapeEvent(cursor, shapeName, offsetX, offsetY) {
-    let lineType = 'inside';
+    let lineType = 'arc';
     // 1. Draw Shape
     const shape = new Path2D();
     this.ctx.beginPath();
@@ -919,7 +936,7 @@ const positions = {
   css: {
     curve: function (ctx) {
       ctx.save();
-      ctx.strokeStyle = "rgba(0,0,0,0)";
+      ctx.strokeStyle = "rgba( 255, 255, 255, 0.5)";
       ctx.miterLimit = 4;
       ctx.scale(0.27, 0.27);
       ctx.translate(window.innerWidth * 1.8, window.innerHeight * 1);
@@ -966,103 +983,36 @@ const positions = {
       ctx.restore();
       ctx.restore();
     },
-    outside: [{
-      form: 'begin'
-    }, {
-      x: 0.000,
-      y: 19.232
-    }, {
-      x: 9.635,
-      y: 23.250
-    }, {
-      x: 20.800,
-      y: 19.232
-    }, {
-      x: 24.000,
-      y: 0.750
-    }, {
-      x: 3.630,
-      y: 0.750
-    }, {
-      x: 2.815,
-      y: 4.868
-    }, {
-      x: 19.485,
-      y: 4.868
-    }, {
-      x: 18.960,
-      y: 7.515
-    }, {
-      x: 2.2750,
-      y: 7.515
-    }, {
-      x: 1.4750,
-      y: 11.633
-    }, {
-      x: 18.145,
-      y: 11.633
-    }, {
-      x: 17.205,
-      y: 16.510
-    }, {
-      x: 10.500,
-      y: 18.739
-    }, {
-      x: 4.6800,
-      y: 16.510
-    }, {
-      x: 5.0800,
-      y: 14.471
-    }, {
-      x: 1.4750,
-      y: 14.471
-    }, {
-      x: 0.0000,
-      y: 19.142
-    }, {
-      size: '0.1',
-      form: 'width'
-    }, {
-      color: 'rgba(255, 255, 255, .0)',
-      form: 'strokeStyle'
-    }, {
-      color: 'rgba(255, 255, 255, 0)',
-      form: 'fillStyle'
-    }, {
-      form: 'fill'
-    }, {
-      form: 'stroke'
-    }, {
-      form: 'restore'
-    }, {
+    inside: [{
       form: 'save'
     }, {
-      form: 'restore'
-    }],
-    inside: [{
+      form: 'begin'
+    }, {
       x: 3.175,
       y: 2.750
     }, {
-      x: 21.500,
+      x: 17.500,
       y: 2.750
     }, {
-      x: 18.700,
+      x: 15.900,
       y: 17.900
     }, {
       x: 9.700,
-      y: 21.000
+      y: 20.700
     }, {
-      x: 1.700,
+      x: 2.500,
       y: 17.500
     }, {
       x: 2.175,
-      y: 9.750,
+      y: 10.750,
       form: 'move'
     }, {
-      x: 20.175,
-      y: 9.750
+      x: 17.075,
+      y: 10.750
     }, {
-      size: '.1',
+      form: 'close'
+    }, {
+      size: '1',
       form: 'width'
     }, {
       color: 'rgba(255, 255, 255, .3)',
@@ -1071,8 +1021,28 @@ const positions = {
       form: 'stroke'
     }, {
       form: 'restore'
+    }],
+    arc: [{
+      x: 3.175,
+      y: 2.750
     }, {
-      form: 'restore'
+      x: 17.500,
+      y: 2.750
+    }, {
+      x: 15.900,
+      y: 17.900
+    }, {
+      x: 9.700,
+      y: 20.700
+    }, {
+      x: 2.500,
+      y: 17.500
+    }, {
+      x: 2.175,
+      y: 10.750
+    }, {
+      x: 17.075,
+      y: 10.750
     }]
   },
   //____________________ WEBPACK ____________________
@@ -1080,11 +1050,11 @@ const positions = {
   webpack: {
     curve: function (ctx) {
       ctx.save();
-      ctx.strokeStyle = "rgba(255, 255, 255, 1)";
+      ctx.strokeStyle = "rgba( 255, 255, 255, 0.5)";
       ctx.miterLimit = 4;
       ctx.scale(0.1007936507936508, 0.1007936507936508);
-      ctx.scale(positions.scaleSize.x * 9, positions.scaleSize.y * 9);
-      ctx.translate(window.innerWidth / 1.63 - window.innerWidth / 2, positions.cameraOffset.y - window.innerHeight / 2.01);
+      ctx.scale(36, 36);
+      ctx.translate(window.innerWidth / 1.63 - window.innerWidth / 2, window.innerHeight / 2 - window.innerHeight / 2.01);
       ctx.save();
       ctx.restore();
       ctx.save();
@@ -1154,7 +1124,13 @@ const positions = {
       ctx.restore();
       ctx.restore();
     },
-    inside: [{
+    inside: [
+    // { form: 'transform', x: window.innerWidth / 1 - window.innerWidth / 2, y: ( window.innerHeight / 1) - (window.innerHeight / 2.01)  },  
+    {
+      form: 'save'
+    }, {
+      form: 'begin'
+    }, {
       x: 13.296402,
       y: 0.562480,
       form: 'move'
@@ -1232,13 +1208,87 @@ const positions = {
       x: 13.296402,
       y: 22.63166
     }, {
-      size: '.1',
+      form: 'close'
+    }, {
+      size: '0.1',
       form: 'width'
     }, {
-      color: 'rgba(255, 255, 255, .3)',
+      color: 'rgba(255, 255, 255, 0)',
       form: 'strokeStyle'
     }, {
       form: 'stroke'
+    }, {
+      form: 'restore'
+    }],
+    arc: [{
+      x: 13.296402,
+      y: 0.562480
+    }, {
+      x: 13.296402,
+      y: 5.590307
+    }, {
+      x: 5.5360347,
+      y: 9.806497
+    }, {
+      x: 5.6360347,
+      y: 18.51339
+    }, {
+      x: 13.296402,
+      y: 22.63166
+    }, {
+      x: 20.934603,
+      y: 18.61339
+    }, {
+      x: 20.934603,
+      y: 9.806497
+    }, {
+      x: 13.296402,
+      y: 5.590307
+    }, {
+      x: 5.5360347,
+      y: 9.806490
+    }, {
+      x: 1.3964020,
+      y: 7.431660
+    }, {
+      x: 5.6360347,
+      y: 18.51339
+    }, {
+      x: 1.5460332,
+      y: 21.12972
+    }, {
+      x: 13.296402,
+      y: 22.63166
+    }, {
+      x: 13.296402,
+      y: 27.67152
+    }, {
+      x: 20.934603,
+      y: 18.61339
+    }, {
+      x: 25.046772,
+      y: 20.83166
+    }, {
+      x: 20.934603,
+      y: 9.806497
+    }, {
+      x: 25.018523,
+      y: 7.431660
+    }, {
+      x: 20.934603,
+      y: 9.806497
+    }, {
+      x: 13.296402,
+      y: 14.10649
+    }, {
+      x: 5.5360347,
+      y: 9.806497
+    }, {
+      x: 13.296402,
+      y: 14.10649
+    }, {
+      x: 13.296402,
+      y: 22.63166
     }]
   },
   //____________________ SVG ____________________
@@ -1246,15 +1296,13 @@ const positions = {
   svg: {
     curve: function (ctx) {
       ctx.save();
-      ctx.strokeStyle = "rgba(255, 255, 255, 1)";
-      ctx.fillStyle = "rgba(255, 255, 255, .1)";
+      ctx.strokeStyle = "rgba( 255, 255, 255, 0.5)";
+      ctx.fillStyle = "rgba(255, 255, 255, .05)";
       ctx.miterLimit = 4;
-      ctx.scale(0.1007936507936508, 0.1007936507936508);
-      ctx.scale(positions.scaleSize.x * 1.2, positions.scaleSize.y * 1.2);
+      ctx.scale(0.43, 0.43);
       ctx.save();
       ctx.save();
-      ctx.transform(0.79724742, 0, 0, 0.8203404, 2.5782194, 39.006769);
-      ctx.translate(window.innerWidth / 1.1 - window.innerWidth / 2, positions.cameraOffset.y - window.innerHeight / 3);
+      ctx.translate(window.innerWidth / 1.1 - window.innerWidth / 2, window.innerHeight / 2 - window.innerHeight / 3);
       ctx.save();
       ctx.beginPath();
       ctx.moveTo(245.23538, 153.52383);
@@ -1293,7 +1341,7 @@ const positions = {
       ctx.stroke();
       ctx.restore();
       ctx.save();
-      ctx.fillStyle = "rgba(255, 255, 255, .15)";
+      ctx.fillStyle = "rgba(255, 255, 255, .01)";
       ctx.beginPath();
       ctx.moveTo(234.39144, 113.53825);
       ctx.bezierCurveTo(226.34231, 105.48958, 213.29217, 105.48958, 205.24303999999998, 113.53825);
@@ -1339,17 +1387,175 @@ const positions = {
       ctx.fill();
       ctx.stroke();
       ctx.restore();
+      ctx.save();
+
+      // ctx.moveTo(234.39144,113.53825);
+      // ctx.lineTo(92.688225,113.53825);
+      // ctx.fill();
+      // ctx.stroke();
+      // ctx.restore();
+      // ctx.save();
+
+      ctx.restore();
       ctx.restore();
       ctx.restore();
       ctx.restore();
     },
     inside: [{
-      x: 245.23538,
-      y: 153.52383,
+      form: 'save'
+    }, {
+      form: 'begin'
+    }, {
+      x: -130.23538,
+      y: -9.52383,
       form: 'move'
     }, {
-      x: 225.23538,
-      y: 133.52383
+      x: -112.23538,
+      y: -9.52383
+    }, {
+      x: -121.23538,
+      y: -1.52383,
+      form: 'move'
+    }, {
+      x: -121.23538,
+      y: -18.52383
+    }, {
+      x: -115.23538,
+      y: -15.52383,
+      form: 'move'
+    }, {
+      x: -128.33538,
+      y: -2.72383
+    }, {
+      x: -121.23538,
+      y: -9.62383,
+      form: 'move'
+    }, {
+      x: -127.83538,
+      y: -15.82383
+    }, {
+      x: -121.23538,
+      y: -9.62383,
+      form: 'move'
+    }, {
+      x: -114.83538,
+      y: -3.12383
+    }, {
+      form: 'close'
+    }, {
+      size: '.1',
+      form: 'width'
+    }, {
+      color: 'rgba(255, 255, 255, 0)',
+      form: 'strokeStyle'
+    }, {
+      form: 'stroke'
+    }, {
+      form: 'restore'
+    }],
+    arc: [{
+      x: -130.23538,
+      y: -9.52383
+    }, {
+      x: -112.23538,
+      y: -9.52383
+    }, {
+      x: -121.23538,
+      y: -1.52383
+    }, {
+      x: -121.23538,
+      y: -18.5238
+    }, {
+      x: -115.23538,
+      y: -15.5238
+    }, {
+      x: -128.33538,
+      y: -2.72383
+    }, {
+      x: -121.23538,
+      y: -9.62383
+    }, {
+      x: -127.83538,
+      y: -15.8238
+    }, {
+      x: -121.23538,
+      y: -9.62383
+    }, {
+      x: -114.83538,
+      y: -3.12383
+    }]
+  },
+  //____________________ Framework ____________________
+
+  framework: {
+    curve: function (ctx) {
+      ctx.save();
+      ctx.strokeStyle = "rgba( 255, 255, 255, 0.5)";
+      ctx.miterLimit = 4;
+      ctx.scale(0.5, 0.5);
+      ctx.save();
+      ctx.save();
+      ctx.fillStyle = "rgba(255, 255, 255, .01)";
+      // ctx.translate( window.innerWidth / 0.9 - window.innerWidth / 2,  ( window.innerHeight / 2)  - (window.innerHeight / 3) );
+      ctx.save();
+      ctx.save();
+      ctx.fillStyle = "rgba(255, 255, 255, .01)";
+      ctx.beginPath();
+      ctx.moveTo(168.461, 87.041);
+      ctx.bezierCurveTo(154.945, 79.199, 142.947, 73.032, 127.251, 73.304);
+      ctx.bezierCurveTo(118.271, 73.46, 110.561, 78.341, 108.94, 87.274);
+      ctx.bezierCurveTo(107.431, 95.585, 114.819, 100.195, 122.505, 103.025);
+      ctx.bezierCurveTo(135.252, 107.719, 146.349, 112.675, 158.874, 117.894);
+      ctx.bezierCurveTo(181.643, 127.383, 193.318, 142.75, 191.938, 162.467);
+      ctx.bezierCurveTo(190.182, 187.554, 175.084, 205.547, 151.089, 211.479);
+      ctx.bezierCurveTo(119.735, 219.231, 89.288, 207.423, 63.563, 190.939);
+      ctx.bezierCurveTo(70.056, 181.048, 77.589, 174.296, 84.043, 164.465);
+      ctx.bezierCurveTo(98.905, 170.791, 110.581, 179.339, 126.129, 180.672);
+      ctx.bezierCurveTo(137.092, 181.612, 149.514, 181.089, 151.977, 168.212);
+      ctx.bezierCurveTo(154.197, 156.6, 144.091, 150.375, 134.234, 146.898);
+      ctx.bezierCurveTo(122.499, 142.759, 110.786, 137.696, 99.278, 132.996);
+      ctx.bezierCurveTo(78.005, 124.307, 69.349, 107.312, 70.806, 87.291);
+      ctx.bezierCurveTo(70.806, 75.552, 80.546, 51.825, 104.427, 44.445);
+      ctx.bezierCurveTo(141.119, 33.105, 161.335, 44.717, 187.942, 61.816);
+      ctx.bezierCurveTo(180.875, 71.162, 175.442, 77.807, 168.461, 87.041);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+      ctx.restore();
+      ctx.restore();
+      ctx.restore();
+      ctx.restore();
+    },
+    inside: [{
+      form: 'save'
+    }, {
+      form: 'begin'
+    }, {
+      x: -150.23538,
+      y: -19.52383,
+      form: 'move'
+    }, {
+      x: -152.23538,
+      y: -19.52383
+    }, {
+      form: 'close'
+    }, {
+      size: '.1',
+      form: 'width'
+    }, {
+      color: 'rgba(255, 255, 255, .3)',
+      form: 'strokeStyle'
+    }, {
+      form: 'stroke'
+    }, {
+      form: 'restore'
+    }],
+    arc: [{
+      x: -150.23538,
+      y: -19.52383
+    }, {
+      x: -152.23538,
+      y: -19.52383
     }]
   }
 };

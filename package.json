@@ -48,7 +48,7 @@
     "webpack-watch-external-files-plugin": "^2.0.0"
   },
   "scripts": {
-    "build": "webpack --progress --colors",
+    "build": "webpack --progress",
     "start": "webpack --open --progress --colors --profile --json=compilation-stats.json"
   },
   "keywords": [],

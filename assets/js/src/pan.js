@@ -70,7 +70,7 @@ class Pan {
 		this.srp = this.position();
 
 		// Shape Line Types
-		this.lineTypes =  ['curve', 'inside'];
+		this.lineTypes =  ['curve', 'inside', 'arc'];
 	};
 
 	//_______________________________
@@ -137,7 +137,7 @@ class Pan {
 			gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
 			gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
 			this.ctx.strokeStyle 	= gradient;
-				
+
 			this.ctx.lineWidth	 	= 1;
 			this.ctx.strokeStyle 	= "#392E49";
 			this.ctx.shadowOffsetX 	= 0;
@@ -155,13 +155,13 @@ class Pan {
 			if( m >= 0 && m < 7) k+=1.1; else k +=0.8;
 
 			let firstOpacity = opacity[0] += 0.015;
-			let secondOpacity = opacity[1] += 0.038;					
+			let secondOpacity = opacity[1] += 0.038;
 			this.frames++;
 			this.phi = this.frames / 50;	
 
 			this.ctx.beginPath();
 			this.ctx.moveTo( -window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5)  + (m * k) ) );
-				
+
 			// Sin Wave	
 			for (let x = -window.innerWidth; x < window.innerWidth; x++) {
 				let y = Math.sin(x * this.frequency + this.phi) * this.amplitude / 8 + this.amplitude / 12;
@@ -180,7 +180,7 @@ class Pan {
 			// 3. Shadow Line
 			this.ctx.shadowOffsetX = 0;
 			this.ctx.shadowOffsetY = 0;
-			this.ctx.shadowBlur	= 0;						
+			this.ctx.shadowBlur	= 0;	
 			this.ctx.stroke();	
 		};
 	};
@@ -193,13 +193,14 @@ class Pan {
 			css: {
 				relation: { x: window.innerWidth / 2, y: this.cameraOffset.y / 1.72 },
 			},
-			
 			webpack: {
 				relation: { x: window.innerWidth / 1.1 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.02) },
 			},
-
 			svg: {
-				relation: { x: window.innerWidth / 1.1 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
+				relation: { x: window.innerWidth / 1.076 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.94) },
+			},
+			framework: {
+				relation: { x: window.innerWidth / 1.5 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
 			}
 		};
 		return position;
@@ -207,7 +208,7 @@ class Pan {
 
 	shapes() {
 		// Translate Shapes
-		this.ctx.translate( -(window.innerWidth / 2 ) + this.cameraOffset.x, -(window.innerHeight / 2 ) + this.cameraOffset.y );	
+		this.ctx.translate( -(window.innerWidth / 2 ) + this.cameraOffset.x, -(window.innerHeight / 2 ) + this.cameraOffset.y );
 		
 		// Loop for Draw Shapes
 		for (let key of Object.keys( this.srp )) {
@@ -226,9 +227,11 @@ class Pan {
 
 			if(lineType == 'curve') {
 				this.curveLines(shapeName);
+			} else if (lineType == 'arc') {
+				this.shapeStars(shapeName);
 			} else {
 				this.straightlines(shapeName, lineType);
-			} 
+			}
 		});
 	};
 
@@ -239,10 +242,11 @@ class Pan {
 	};
 
 	straightlines(shapeName, lineType) {
+
 		// Move to Initial Point to Draw Shape 
 		this.ctx.moveTo( 
-			this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][0]['x'] * this.scaleSize,  
-			this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][0]['y'] * this.scaleSize  
+			positions[shapeName][lineType][0]['x'],
+			positions[shapeName][lineType][0]['y'] 
 		);
 
 		// Draw Lines
@@ -252,11 +256,19 @@ class Pan {
 					
 			switch(form) {
 
+				case 'scale':
+					this.ctx.scale( positions[shapeName][lineType][i]['x'], positions[shapeName][lineType][i]['y'] );
+				break;	
+
 				case 'move':
 				this.ctx.moveTo( 
-					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize,  
-					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'],
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y']
 				);
+				break;
+
+				case "transform":
+					this.ctx.translate( positions[shapeName][lineType][i]['x'], positions[shapeName][lineType][i]['y'] );
 				break;
 
 				case 'close':
@@ -300,15 +312,16 @@ class Pan {
 						
 				default:
 				this.ctx.lineTo( 
-					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize,   
-					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize 
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'],   
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y']
 				);
-			}
-		}
+				
+			}; // [END] Switch
+		}; // [END] For
 	};
 
 	shapeStars(shapeName) {
-		let lineType = 'inside';
+		let lineType = 'arc';
 		// 1. Start
 		let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius; 
 
@@ -326,10 +339,16 @@ class Pan {
 		const render = () => {
 			for (let i = 0; i < positions[shapeName][lineType].length; i++ ) {
 				this.ctx.beginPath();
-				this.ctx.arc( this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize, this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize, randomRadius, 0, 2 * Math.PI, false);
-				this.ctx.shadowBlur = this.shadowBlur;
-				this.ctx.shadowColor = this.starColor;
-				this.ctx.fillStyle = this.redStarColor;
+				this.ctx.arc( 
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize, 
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize, 
+					randomRadius, 
+					0, 
+					2 * Math.PI, false
+				);
+				this.ctx.shadowBlur 	= this.shadowBlur;
+				this.ctx.shadowColor 	= this.starColor;
+				this.ctx.fillStyle 		= this.redStarColor;
 				this.ctx.fill();				
 				this.ctx.stroke();
 				this.ctx.closePath();
@@ -340,7 +359,7 @@ class Pan {
 	};
 
 	shapeEvent( cursor, shapeName, offsetX, offsetY ) {
-		let lineType = 'inside';
+		let lineType = 'arc';
 		// 1. Draw Shape
 		const shape = new Path2D();
 		this.ctx.beginPath();
