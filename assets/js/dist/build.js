@@ -598,6 +598,12 @@ class Pan {
           x: window.innerWidth / 1.5 - window.innerWidth / 2,
           y: this.cameraOffset.y - window.innerHeight / 3
         }
+      },
+      javascript: {
+        relation: {
+          x: window.innerWidth / 1.8 - window.innerWidth / 2,
+          y: this.cameraOffset.y - window.innerHeight / 3
+        }
       }
     };
     return position;
@@ -936,50 +942,54 @@ const positions = {
   css: {
     curve: function (ctx) {
       ctx.save();
-      ctx.strokeStyle = "rgba( 255, 255, 255, 0.5)";
+      ctx.strokeStyle = "rgba( 255, 255, 255, 0.3)";
       ctx.miterLimit = 4;
-      ctx.scale(0.27, 0.27);
-      ctx.translate(window.innerWidth * 1.8, window.innerHeight * 1);
+      ctx.scale(0.04, 0.04);
+      ctx.translate(154.0943480195815, 0);
+      ctx.scale(14.325945705384959, 14.325945705384959);
+      ctx.translate(-14, 0);
+      ctx.translate(window.innerWidth / .737 - window.innerWidth / 2, window.innerHeight / 1.234 - window.innerHeight / 3);
       ctx.save();
-      ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
-      ctx.moveTo(124.46, 208.59);
-      ctx.lineTo(129.525, 265.107);
-      ctx.lineTo(256, 265.107);
-      ctx.lineTo(256, 208.59);
-      ctx.moveTo(119.419, 150.715);
-      ctx.lineTo(256, 150.715);
-      ctx.lineTo(256, 94.197);
-      ctx.lineTo(114.281, 94.197);
-      ctx.moveTo(256, 355.372);
-      ctx.lineTo(255.752, 355.438);
-      ctx.lineTo(192.808, 338.442);
-      ctx.lineTo(188.785, 293.366);
-      ctx.lineTo(132.049, 293.366);
-      ctx.lineTo(139.96800000000002, 382.10699999999997);
-      ctx.lineTo(255.74, 414.24699999999996);
-      ctx.lineTo(256, 414.174);
+      ctx.save();
+      ctx.moveTo(174.7, 45.2);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.09)";
+      ctx.bezierCurveTo(174.29999999999998, 47.6, 171.7, 76, 168.89999999999998, 108.5);
+      ctx.bezierCurveTo(165.99999999999997, 140.9, 163.59999999999997, 167.7, 163.39999999999998, 167.9);
+      ctx.bezierCurveTo(162.99999999999997, 168.4, 113.89999999999998, 182, 112.49999999999997, 182);
+      ctx.bezierCurveTo(111.49999999999997, 182, 84.69999999999997, 174.7, 66.39999999999998, 169.5);
+      ctx.lineTo(61.299999999999976, 168);
+      ctx.lineTo(60.09999999999997, 154.8);
+      ctx.bezierCurveTo(59.49999999999997, 147.5, 58.699999999999974, 138.70000000000002, 58.299999999999976, 135.20000000000002);
+      ctx.lineTo(57.699999999999974, 129.00000000000003);
+      ctx.lineTo(70.19999999999997, 129.00000000000003);
+      ctx.bezierCurveTo(84.29999999999997, 129.00000000000003, 83.89999999999998, 128.80000000000004, 83.99999999999997, 137.50000000000003);
+      ctx.bezierCurveTo(83.99999999999997, 139.70000000000002, 84.29999999999997, 143.10000000000002, 84.59999999999997, 145.10000000000002);
+      ctx.lineTo(85.19999999999996, 148.70000000000002);
+      ctx.lineTo(98.89999999999996, 152.3);
+      ctx.lineTo(112.49999999999996, 155.9);
+      ctx.lineTo(125.99999999999996, 152.3);
+      ctx.bezierCurveTo(133.39999999999995, 150.3, 139.59999999999997, 148.60000000000002, 139.59999999999997, 148.60000000000002);
+      ctx.bezierCurveTo(139.69999999999996, 148.50000000000003, 140.29999999999995, 142.60000000000002, 140.89999999999998, 135.50000000000003);
+      ctx.bezierCurveTo(141.49999999999997, 128.30000000000004, 142.2, 121.30000000000003, 142.49999999999997, 119.70000000000003);
+      ctx.lineTo(142.99999999999997, 117.00000000000003);
+      ctx.lineTo(57.2, 117.00000000000003);
+      ctx.lineTo(56.7, 114.70000000000003);
+      ctx.bezierCurveTo(56.400000000000006, 113.50000000000003, 55.800000000000004, 107.70000000000003, 55.400000000000006, 101.70000000000003);
+      ctx.lineTo(54.7, 91);
+      ctx.lineTo(144.8, 91);
+      ctx.lineTo(145.4, 84.2);
+      ctx.bezierCurveTo(145.8, 80.5, 146.4, 74.8, 146.70000000000002, 71.60000000000001);
+      ctx.bezierCurveTo(147.10000000000002, 67.50000000000001, 147.00000000000003, 65.9, 146.20000000000002, 66.4);
+      ctx.bezierCurveTo(145.60000000000002, 66.7, 124.30000000000001, 66.7, 98.70000000000002, 66.30000000000001);
+      ctx.lineTo(52.20000000000002, 65.70000000000002);
+      ctx.lineTo(51.600000000000016, 58.600000000000016);
+      ctx.bezierCurveTo(51.20000000000002, 54.70000000000002, 50.70000000000002, 49.100000000000016, 50.40000000000001, 46.20000000000002);
+      ctx.lineTo(49.80000000000001, 41.000000000000014);
+      ctx.lineTo(175.20000000000002, 41.000000000000014);
+      ctx.closePath();
       ctx.fill();
       ctx.stroke();
       ctx.restore();
-      ctx.save();
-      ctx.fillStyle = "rgba(255, 255, 255, 0)";
-      ctx.moveTo(255.805, 208.59);
-      ctx.lineTo(255.805, 265.107);
-      ctx.lineTo(325.4, 265.107);
-      ctx.lineTo(318.84, 338.40600000000006);
-      ctx.lineTo(255.80499999999998, 355.41900000000004);
-      ctx.lineTo(255.80499999999998, 414.21900000000005);
-      ctx.lineTo(371.669, 382.107);
-      ctx.lineTo(372.519, 372.55800000000005);
-      ctx.lineTo(385.799, 223.76600000000005);
-      ctx.lineTo(387.179, 208.59000000000006);
-      ctx.lineTo(397.38199999999995, 94.19700000000006);
-      ctx.lineTo(255.805, 94.19700000000006);
-      ctx.lineTo(255.805, 150.71500000000006);
-      ctx.lineTo(335.444, 150.71500000000006);
-      ctx.lineTo(330.3, 208.59);
-      ctx.fill();
-      ctx.stroke();
       ctx.restore();
       ctx.restore();
     },
@@ -1012,10 +1022,10 @@ const positions = {
     }, {
       form: 'close'
     }, {
-      size: '1',
+      size: '0.1',
       form: 'width'
     }, {
-      color: 'rgba(255, 255, 255, .3)',
+      color: 'rgba(255, 255, 255, 0)',
       form: 'strokeStyle'
     }, {
       form: 'stroke'
@@ -1026,19 +1036,25 @@ const positions = {
       x: 3.175,
       y: 2.750
     }, {
+      x: 10.175,
+      y: 2.750
+    }, {
       x: 17.500,
       y: 2.750
     }, {
       x: 15.900,
       y: 17.900
     }, {
-      x: 9.700,
-      y: 20.700
+      x: 9.990,
+      y: 19.700
     }, {
-      x: 2.500,
+      x: 4.100,
       y: 17.500
     }, {
-      x: 2.175,
+      x: 3.175,
+      y: 10.750
+    }, {
+      x: 10.175,
       y: 10.750
     }, {
       x: 17.075,
@@ -1051,13 +1067,11 @@ const positions = {
     curve: function (ctx) {
       ctx.save();
       ctx.strokeStyle = "rgba( 255, 255, 255, 0.5)";
+      ctx.fillStyle = "rgba(255, 255, 255, .05)";
       ctx.miterLimit = 4;
       ctx.scale(0.1007936507936508, 0.1007936507936508);
       ctx.scale(36, 36);
       ctx.translate(window.innerWidth / 1.63 - window.innerWidth / 2, window.innerHeight / 2 - window.innerHeight / 2.01);
-      ctx.save();
-      ctx.restore();
-      ctx.save();
       ctx.save();
       ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
       ctx.lineWidth = 0.036011;
@@ -1096,8 +1110,6 @@ const positions = {
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
-      ctx.restore();
-      ctx.save();
       ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
       ctx.lineWidth = 0.036011;
       ctx.beginPath();
@@ -1120,7 +1132,6 @@ const positions = {
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
-      ctx.restore();
       ctx.restore();
       ctx.restore();
     },
@@ -1300,8 +1311,6 @@ const positions = {
       ctx.fillStyle = "rgba(255, 255, 255, .05)";
       ctx.miterLimit = 4;
       ctx.scale(0.43, 0.43);
-      ctx.save();
-      ctx.save();
       ctx.translate(window.innerWidth / 1.1 - window.innerWidth / 2, window.innerHeight / 2 - window.innerHeight / 3);
       ctx.save();
       ctx.beginPath();
@@ -1386,18 +1395,6 @@ const positions = {
       ctx.bezierCurveTo(242.44056, 134.63797, 242.44056, 121.58737999999998, 234.39144000000002, 113.53824999999999);
       ctx.fill();
       ctx.stroke();
-      ctx.restore();
-      ctx.save();
-
-      // ctx.moveTo(234.39144,113.53825);
-      // ctx.lineTo(92.688225,113.53825);
-      // ctx.fill();
-      // ctx.stroke();
-      // ctx.restore();
-      // ctx.save();
-
-      ctx.restore();
-      ctx.restore();
       ctx.restore();
       ctx.restore();
     },
@@ -1492,11 +1489,11 @@ const positions = {
       ctx.save();
       ctx.strokeStyle = "rgba( 255, 255, 255, 0.5)";
       ctx.miterLimit = 4;
-      ctx.scale(0.5, 0.5);
+      ctx.scale(0.53, 0.53);
       ctx.save();
       ctx.save();
       ctx.fillStyle = "rgba(255, 255, 255, .01)";
-      // ctx.translate( window.innerWidth / 0.9 - window.innerWidth / 2,  ( window.innerHeight / 2)  - (window.innerHeight / 3) );
+      ctx.translate(window.innerWidth / 0.9 - window.innerWidth / 2, window.innerHeight / 1.7 - window.innerHeight / 3);
       ctx.save();
       ctx.save();
       ctx.fillStyle = "rgba(255, 255, 255, .01)";
@@ -1518,6 +1515,108 @@ const positions = {
       ctx.bezierCurveTo(70.806, 75.552, 80.546, 51.825, 104.427, 44.445);
       ctx.bezierCurveTo(141.119, 33.105, 161.335, 44.717, 187.942, 61.816);
       ctx.bezierCurveTo(180.875, 71.162, 175.442, 77.807, 168.461, 87.041);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+      ctx.restore();
+      ctx.restore();
+      ctx.restore();
+    },
+    inside: [{
+      form: 'save'
+    }, {
+      form: 'begin'
+    }, {
+      x: -150.23538,
+      y: -19.52383,
+      form: 'move'
+    }, {
+      x: -152.23538,
+      y: -19.52383
+    }, {
+      form: 'close'
+    }, {
+      size: '.1',
+      form: 'width'
+    }, {
+      color: 'rgba(255, 255, 255, .3)',
+      form: 'strokeStyle'
+    }, {
+      form: 'stroke'
+    }, {
+      form: 'restore'
+    }],
+    arc: [{
+      x: 105.23538,
+      y: 0.02383
+    }, {
+      x: 98.23538,
+      y: -0.5000
+    }, {
+      x: 95.23538,
+      y: 2.0001
+    }, {
+      x: 95.23538,
+      y: 5.101
+    }, {
+      x: 100.23538,
+      y: 7.101
+    }, {
+      x: 100.23538,
+      y: 7.101
+    }, {
+      x: 105.23538,
+      y: 10.101
+    }, {
+      x: 105.23538,
+      y: 14.101
+    }, {
+      x: 100.23538,
+      y: 17.101
+    }, {
+      x: 95.23538,
+      y: 16.101
+    }]
+  },
+  //____________________ Javascript ____________________
+
+  javascript: {
+    curve: function (ctx) {
+      ctx.save();
+      ctx.strokeStyle = "rgba(255, 255, 255, .1)";
+      ctx.miterLimit = 4;
+      ctx.scale(0.1107936507936508, 0.1107936507936508);
+      ctx.scale(3.7795275590551185, 3.7795275590551185);
+      ctx.save();
+      ctx.save();
+      ctx.transform(3.3770776, 0, 0, -3.3770776, 174.37916, 41.651086);
+      ctx.save();
+      ctx.translate(window.innerWidth / 1.05 - window.innerWidth / 2, window.innerHeight / 3.9 - window.innerHeight / 3);
+      ctx.save();
+      ctx.fillStyle = "rgba(255, 255, 255, .1)";
+      ctx.fillStyle = "rgba(255, 255, 255, .1)";
+      ctx.strokeStyle = "rgba( 255, 255, 255, .1)";
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-40.763, 0);
+      ctx.lineTo(-43.596, -30.66);
+      ctx.lineTo(-43.535999999999994, -30.468);
+      ctx.lineTo(-8.91, -30.468);
+      ctx.lineTo(-10.04, -43.437);
+      ctx.lineTo(-21.085, -46.620999999999995);
+      ctx.lineTo(-32.299, -43.388999999999996);
+      ctx.lineTo(-32.972, -35.53999999999999);
+      ctx.lineTo(-43.152, -35.53999999999999);
+      ctx.lineTo(-41.697, -51.224999999999994);
+      ctx.lineTo(-21.085000000000004, -57.077999999999996);
+      ctx.lineTo(-0.4730000000000061, -51.224999999999994);
+      ctx.lineTo(2.363999999999994, -20.443999999999996);
+      ctx.lineTo(-34.378, -20.443999999999996);
+      ctx.lineTo(-33.91, -10.179999999999996);
+      ctx.lineTo(-8.406999999999996, -10.179999999999996);
+      ctx.lineTo(-8.031999999999996, -16.054999999999996);
+      ctx.lineTo(2.239, -16.054999999999996);
+      ctx.closePath();
       ctx.fill();
       ctx.stroke();
       ctx.restore();
@@ -1551,11 +1650,8 @@ const positions = {
       form: 'restore'
     }],
     arc: [{
-      x: -150.23538,
-      y: -19.52383
-    }, {
-      x: -152.23538,
-      y: -19.52383
+      x: 105.23538,
+      y: 0.02383
     }]
   }
 };

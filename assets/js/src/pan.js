@@ -201,6 +201,9 @@ class Pan {
 			},
 			framework: {
 				relation: { x: window.innerWidth / 1.5 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
+			},
+			javascript: {
+				relation: { x: window.innerWidth / 1.8 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
 			}
 		};
 		return position;
