@@ -44,6 +44,7 @@
 		entry: {
 			build: 	'./assets/js/src/index.js',
 			sample: './assets/js/src/sample.js',
+			converter: './assets/js/src/converter.js',
 		},
 
 		// III. MODE

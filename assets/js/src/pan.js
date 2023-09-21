@@ -70,7 +70,7 @@ class Pan {
 		this.srp = this.position();
 
 		// Shape Line Types
-		this.lineTypes =  ['curve', 'inside', 'arc'];
+		this.lineTypes =  ['curve', 'outside', 'inside', 'arc'];
 	};
 
 	//_______________________________
@@ -191,8 +191,9 @@ class Pan {
 	position() {
 		const position = {
 			css: {
-				relation: { x: window.innerWidth / 0.818 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight * 0.045 ) },
+				relation: { x: window.innerWidth / 1.1 - window.innerWidth / 2, y: this.cameraOffset.y - window.innerHeight / 3.4 },
 			},
+			/*
 			webpack: {
 				relation: { x: window.innerWidth / 1.100 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.02) },
 			},
@@ -205,6 +206,7 @@ class Pan {
 			javascript: {
 				relation: { x: window.innerWidth / 1.800 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
 			}
+			*/
 		};
 		return position;
 	};
@@ -245,18 +247,10 @@ class Pan {
 	};
 
 	straightlines(shapeName, lineType) {
-
-		// Move to Initial Point to Draw Shape 
-		this.ctx.moveTo( 
-			this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][0]['x'],
-			this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][0]['y'] 
-		);
-
 		// Draw Lines
 		for( let i = 1; i < positions[shapeName][lineType].length; i++ ) {
 					
 			let form = positions[shapeName][lineType][i]['form'];
-					
 			switch(form) {
 
 				case 'scale':
@@ -265,8 +259,8 @@ class Pan {
 
 				case 'move':
 				this.ctx.moveTo( 
-					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'],
-					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y']
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize, 
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize,  
 				);
 				break;
 
@@ -293,6 +287,10 @@ class Pan {
 				case 'stroke':
 					this.ctx.stroke();
 				break;	
+				
+				case 'width':
+					this.ctx.lineWidth = positions[shapeName][lineType][i]['width'];
+				break;	
 
 				case 'strokeStyle':
 					this.ctx.strokeStyle = positions[shapeName][lineType][i]['color'];
@@ -315,8 +313,8 @@ class Pan {
 						
 				default:
 				this.ctx.lineTo( 
-					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'],   
-					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y']
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x'] * this.scaleSize,    
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['y'] * this.scaleSize, 
 				);
 				
 			}; // [END] Switch

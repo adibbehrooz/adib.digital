@@ -43,6 +43,16 @@
 			true //run in footer
 		);
 
+		//_________ Converter _________
+
+		wp_register_script(
+			'converter', //handle
+			THEME_DIR_JS_DIST.'/converter.js', //source
+			null,
+			'1.0', //version
+			true //run in footer
+		);
+
 		//_________ GSAP _________
 
 		wp_register_script(
@@ -65,7 +75,11 @@
 			wp_enqueue_script('gsap');
 
 			// 2. Build
-			wp_enqueue_script('build');
+			if( !is_page(46) ): 
+				wp_enqueue_script('build');
+			else:
+				wp_enqueue_script('converter');
+			endif;
 
 			if( is_page(17)  && is_page('sample') ): wp_enqueue_script('sample'); endif;  //is_sample
 		endif; //!is_admin

@@ -3,7 +3,7 @@
  * @package AdibOnline
  * @subpackage adibonline_theme
  * @since AdibOnline Theme 1.0
- * Template Name: Template-Home 
+ * Template Name: Template-Converter 
  */
 ?>
 	<?php get_header(); ?><?php get_footer(); ?>

@@ -31,7 +31,7 @@
 			//_______________ II. a. Home _______________
 
 			if( is_home() || is_front_page() ):
-			$postID = 5;
+			$postID = 2;
 			else:
 
 			//_______________ II. b. Page, Post, ... _______________
@@ -50,7 +50,7 @@
 			$languageNameInEnglish			    = get_field('custom_language_name_in_english'); 
 			$languageNameInSameLanguage	        = get_field('custom_language_name_in_same_language'); 
 			$languageWritingSystem			    = get_field('custom_language_writing_system'); 
-			$languageCodeReference			    = get_field('custom_language_code_reference'); 
+			$languageCodeReference			    = get_field('custom_language_html_code_reference'); 
 			$languageHomePage				    = get_field('custom_language_home_page'); 
 		wp_reset_postdata(); 
 
