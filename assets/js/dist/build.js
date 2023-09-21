@@ -577,31 +577,31 @@ class Pan {
     const position = {
       css: {
         relation: {
-          x: window.innerWidth / 2,
-          y: this.cameraOffset.y / 1.72
+          x: window.innerWidth / 0.818 - window.innerWidth / 2,
+          y: this.cameraOffset.y - window.innerHeight * 0.045
         }
       },
       webpack: {
         relation: {
-          x: window.innerWidth / 1.1 - window.innerWidth / 2,
+          x: window.innerWidth / 1.100 - window.innerWidth / 2,
           y: this.cameraOffset.y - window.innerHeight / 2.02
         }
       },
       svg: {
         relation: {
-          x: window.innerWidth / 1.076 - window.innerWidth / 2,
+          x: window.innerWidth / 1.156 - window.innerWidth / 2,
           y: this.cameraOffset.y - window.innerHeight / 2.94
         }
       },
       framework: {
         relation: {
-          x: window.innerWidth / 1.5 - window.innerWidth / 2,
+          x: window.innerWidth / 1.500 - window.innerWidth / 2,
           y: this.cameraOffset.y - window.innerHeight / 3
         }
       },
       javascript: {
         relation: {
-          x: window.innerWidth / 1.8 - window.innerWidth / 2,
+          x: window.innerWidth / 1.800 - window.innerWidth / 2,
           y: this.cameraOffset.y - window.innerHeight / 3
         }
       }
@@ -640,7 +640,7 @@ class Pan {
   }
   straightlines(shapeName, lineType) {
     // Move to Initial Point to Draw Shape 
-    this.ctx.moveTo(_positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][0]['x'], _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][0]['y']);
+    this.ctx.moveTo(this.srp[shapeName]['relation']['x'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][0]['x'], this.srp[shapeName]['relation']['y'] + _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType][0]['y']);
 
     // Draw Lines
     for (let i = 1; i < _positions__WEBPACK_IMPORTED_MODULE_0__.positions[shapeName][lineType].length; i++) {
@@ -929,14 +929,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   positions: () => (/* binding */ positions)
 /* harmony export */ });
 const positions = {
-  cameraOffset: {
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2
-  },
-  scaleSize: {
-    x: 4,
-    y: 4
-  },
   //____________________ CSS ____________________
 
   css: {
@@ -945,11 +937,8 @@ const positions = {
       ctx.strokeStyle = "rgba( 255, 255, 255, 0.3)";
       ctx.miterLimit = 4;
       ctx.scale(0.04, 0.04);
-      ctx.translate(154.0943480195815, 0);
       ctx.scale(14.325945705384959, 14.325945705384959);
-      ctx.translate(-14, 0);
-      ctx.translate(window.innerWidth / .737 - window.innerWidth / 2, window.innerHeight / 1.234 - window.innerHeight / 3);
-      ctx.save();
+      ctx.translate(window.innerWidth / 0.8 - window.innerWidth / 2, window.innerHeight / 2 - window.innerHeight * 0.07);
       ctx.save();
       ctx.moveTo(174.7, 45.2);
       ctx.fillStyle = "rgba(255, 255, 255, 0.09)";
@@ -989,7 +978,6 @@ const positions = {
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
-      ctx.restore();
       ctx.restore();
       ctx.restore();
     },
@@ -1033,31 +1021,31 @@ const positions = {
       form: 'restore'
     }],
     arc: [{
-      x: 3.175,
+      x: 247.175,
       y: 2.750
     }, {
-      x: 10.175,
+      x: 240.175,
       y: 2.750
     }, {
-      x: 17.500,
+      x: 233.500,
       y: 2.750
     }, {
-      x: 15.900,
+      x: 235.900,
       y: 17.900
     }, {
-      x: 9.990,
+      x: 241.990,
       y: 19.700
     }, {
-      x: 4.100,
+      x: 246.100,
       y: 17.500
     }, {
-      x: 3.175,
+      x: 247.175,
       y: 10.750
     }, {
-      x: 10.175,
+      x: 240.175,
       y: 10.750
     }, {
-      x: 17.075,
+      x: 233.075,
       y: 10.750
     }]
   },
@@ -1135,9 +1123,7 @@ const positions = {
       ctx.restore();
       ctx.restore();
     },
-    inside: [
-    // { form: 'transform', x: window.innerWidth / 1 - window.innerWidth / 2, y: ( window.innerHeight / 1) - (window.innerHeight / 2.01)  },  
-    {
+    inside: [{
       form: 'save'
     }, {
       form: 'begin'
@@ -1348,8 +1334,6 @@ const positions = {
       ctx.bezierCurveTo(229.42287, 164.04958000000002, 238.44777, 160.31144000000003, 245.23538, 153.52383000000003);
       ctx.fill();
       ctx.stroke();
-      ctx.restore();
-      ctx.save();
       ctx.fillStyle = "rgba(255, 255, 255, .01)";
       ctx.beginPath();
       ctx.moveTo(234.39144, 113.53825);
@@ -1403,44 +1387,44 @@ const positions = {
     }, {
       form: 'begin'
     }, {
-      x: -130.23538,
+      x: -96.23538,
       y: -9.52383,
       form: 'move'
     }, {
-      x: -112.23538,
+      x: -78.23538,
       y: -9.52383
     }, {
-      x: -121.23538,
+      x: -87.23538,
       y: -1.52383,
       form: 'move'
     }, {
-      x: -121.23538,
-      y: -18.52383
+      x: -87.23538,
+      y: -18.5238
     }, {
-      x: -115.23538,
-      y: -15.52383,
+      x: -81.23538,
+      y: -15.5238,
       form: 'move'
     }, {
-      x: -128.33538,
+      x: -94.33538,
       y: -2.72383
     }, {
-      x: -121.23538,
+      x: -87.23538,
       y: -9.62383,
       form: 'move'
     }, {
-      x: -127.83538,
-      y: -15.82383
+      x: -93.83538,
+      y: -15.8238
     }, {
-      x: -121.23538,
+      x: -87.23538,
       y: -9.62383,
       form: 'move'
     }, {
-      x: -114.83538,
+      x: -81.83538,
       y: -3.12383
     }, {
       form: 'close'
     }, {
-      size: '.1',
+      size: '0.1',
       form: 'width'
     }, {
       color: 'rgba(255, 255, 255, 0)',
@@ -1451,34 +1435,34 @@ const positions = {
       form: 'restore'
     }],
     arc: [{
-      x: -130.23538,
+      x: -96.23538,
       y: -9.52383
     }, {
-      x: -112.23538,
+      x: -78.23538,
       y: -9.52383
     }, {
-      x: -121.23538,
+      x: -87.23538,
       y: -1.52383
     }, {
-      x: -121.23538,
+      x: -87.23538,
       y: -18.5238
     }, {
-      x: -115.23538,
+      x: -81.23538,
       y: -15.5238
     }, {
-      x: -128.33538,
+      x: -94.33538,
       y: -2.72383
     }, {
-      x: -121.23538,
+      x: -87.23538,
       y: -9.62383
     }, {
-      x: -127.83538,
+      x: -93.83538,
       y: -15.8238
     }, {
-      x: -121.23538,
+      x: -87.23538,
       y: -9.62383
     }, {
-      x: -114.83538,
+      x: -81.83538,
       y: -3.12383
     }]
   },
@@ -1490,11 +1474,8 @@ const positions = {
       ctx.strokeStyle = "rgba( 255, 255, 255, 0.5)";
       ctx.miterLimit = 4;
       ctx.scale(0.53, 0.53);
-      ctx.save();
-      ctx.save();
       ctx.fillStyle = "rgba(255, 255, 255, .01)";
       ctx.translate(window.innerWidth / 0.9 - window.innerWidth / 2, window.innerHeight / 1.7 - window.innerHeight / 3);
-      ctx.save();
       ctx.save();
       ctx.fillStyle = "rgba(255, 255, 255, .01)";
       ctx.beginPath();
@@ -1519,20 +1500,18 @@ const positions = {
       ctx.stroke();
       ctx.restore();
       ctx.restore();
-      ctx.restore();
-      ctx.restore();
     },
     inside: [{
       form: 'save'
     }, {
       form: 'begin'
     }, {
-      x: -150.23538,
-      y: -19.52383,
+      x: 100,
+      y: 100,
       form: 'move'
     }, {
-      x: -152.23538,
-      y: -19.52383
+      x: 110,
+      y: 110
     }, {
       form: 'close'
     }, {
@@ -1630,12 +1609,12 @@ const positions = {
     }, {
       form: 'begin'
     }, {
-      x: -150.23538,
-      y: -19.52383,
+      x: 100,
+      y: 100,
       form: 'move'
     }, {
-      x: -152.23538,
-      y: -19.52383
+      x: 110,
+      y: 110
     }, {
       form: 'close'
     }, {

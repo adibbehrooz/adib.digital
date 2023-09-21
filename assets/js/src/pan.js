@@ -191,19 +191,19 @@ class Pan {
 	position() {
 		const position = {
 			css: {
-				relation: { x: window.innerWidth / 2, y: this.cameraOffset.y / 1.72 },
+				relation: { x: window.innerWidth / 0.818 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight * 0.045 ) },
 			},
 			webpack: {
-				relation: { x: window.innerWidth / 1.1 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.02) },
+				relation: { x: window.innerWidth / 1.100 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.02) },
 			},
 			svg: {
-				relation: { x: window.innerWidth / 1.076 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.94) },
+				relation: { x: window.innerWidth / 1.156 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.94) },
 			},
 			framework: {
-				relation: { x: window.innerWidth / 1.5 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
+				relation: { x: window.innerWidth / 1.500 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
 			},
 			javascript: {
-				relation: { x: window.innerWidth / 1.8 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
+				relation: { x: window.innerWidth / 1.800 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
 			}
 		};
 		return position;
@@ -248,8 +248,8 @@ class Pan {
 
 		// Move to Initial Point to Draw Shape 
 		this.ctx.moveTo( 
-			positions[shapeName][lineType][0]['x'],
-			positions[shapeName][lineType][0]['y'] 
+			this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][0]['x'],
+			this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][0]['y'] 
 		);
 
 		// Draw Lines
