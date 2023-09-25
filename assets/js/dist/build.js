@@ -461,7 +461,7 @@ class Pan {
     this.srp = this.position();
 
     // Shape Line Types
-    this.lineTypes = ['curve', 'outside', 'inside', 'arc'];
+    this.lineTypes = ['curve', 'inside', 'outside', 'arc'];
   }
   //_______________________________
   //
@@ -710,7 +710,7 @@ class Pan {
     render();
   }
   shapeEvent(cursor, shapeName, offsetX, offsetY) {
-    let lineType = 'arc';
+    let lineType = 'outside';
     // 1. Draw Shape
     const shape = new Path2D();
     this.ctx.beginPath();
@@ -721,10 +721,10 @@ class Pan {
     if (this.ctx.isPointInPath(shape, offsetX, offsetY)) {
       // Stroke
       this.ctx.lineWidth = 0.1;
-      this.ctx.strokeStyle = 'rgba(255, 255, 255,  0)';
+      this.ctx.strokeStyle = 'rgba(255, 255, 255,  .1)';
 
       // Fill
-      this.ctx.fillStyle = 'rgba(255, 255, 255,  0)'; // console.log(" TRUE "+" Shape Name :"+shapeName); 
+      this.ctx.fillStyle = 'rgba(255, 255, 255,  .1)'; // console.log(" TRUE "+" Shape Name :"+shapeName); 
 
       // Cursor GSAP
       gsap.to(cursor, 0.1, {
@@ -1263,18 +1263,6 @@ class Sky {
 }
 
 
-/***/ }),
-
-/***/ "./assets/scss/main.scss":
-/*!*******************************!*\
-  !*** ./assets/scss/main.scss ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
 /***/ })
 
 /******/ 	});
@@ -1334,14 +1322,14 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
 (() => {
+var __webpack_exports__ = {};
 /*!********************************!*\
   !*** ./assets/js/src/index.js ***!
   \********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./assets/js/src/config.js");
-/* harmony import */ var main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! main */ "./assets/scss/main.scss");
 /*
 	Theme Name: AdibOnline Theme
 	Theme URI: http://www.adibbehrooz.com/
@@ -1371,7 +1359,18 @@ __webpack_require__.r(__webpack_exports__);
 //	II. SCSS CORE
 //_________________________
 
- // Import
+// import 'main'; // Import
+// import 'convert'; // Import
+})();
+
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
+(() => {
+/*!*******************************!*\
+  !*** ./assets/scss/main.scss ***!
+  \*******************************/
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
 })();
 
 /******/ })()

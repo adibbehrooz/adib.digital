@@ -421,6 +421,28 @@ video {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.fc-flex {
+  display: flex;
+}
+.fc-h-1\/2 {
+  height: 50%;
+}
+.fc-max-w-screen-2xl {
+  max-width: 1536px;
+}
+.fc-items-center {
+  align-items: center;
+}
+.fc-justify-center {
+  justify-content: center;
+}
+.fc-font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.fc-text-2xl {
+  font-size: 2.441rem;
+  line-height: 4rem;
+}
 @tailwind variants;
 /******************************************* TOOLS *****************************************
 /*******************************************************************************************/

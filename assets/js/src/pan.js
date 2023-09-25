@@ -70,7 +70,7 @@ class Pan {
 		this.srp = this.position();
 
 		// Shape Line Types
-		this.lineTypes =  ['curve', 'outside', 'inside', 'arc'];
+		this.lineTypes =  ['curve', 'inside', 'outside', 'arc'];
 	};
 
 	//_______________________________
@@ -360,7 +360,7 @@ class Pan {
 	};
 
 	shapeEvent( cursor, shapeName, offsetX, offsetY ) {
-		let lineType = 'arc';
+		let lineType = 'outside';
 		// 1. Draw Shape
 		const shape = new Path2D();
 		this.ctx.beginPath();
@@ -371,10 +371,10 @@ class Pan {
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
 			// Stroke
 			this.ctx.lineWidth = 0.1;
-			this.ctx.strokeStyle = 'rgba(255, 255, 255,  0)';
+			this.ctx.strokeStyle = 'rgba(255, 255, 255,  .1)';
 			
 			// Fill
-			this.ctx.fillStyle = 'rgba(255, 255, 255,  0)'; // console.log(" TRUE "+" Shape Name :"+shapeName); 
+			this.ctx.fillStyle = 'rgba(255, 255, 255,  .1)'; // console.log(" TRUE "+" Shape Name :"+shapeName); 
 
 			// Cursor GSAP
 			gsap.to(cursor, 0.1, {

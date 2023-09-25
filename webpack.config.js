@@ -42,9 +42,14 @@
 
 		// II. ENTERY
 		entry: {
-			build: 	'./assets/js/src/index.js',
+			// JS
+			build: 	['./assets/js/src/index.js', './assets/scss/main.scss' ],
+			change: ['./assets/js/src/converter.js', './assets/scss/convert.scss'],
 			sample: './assets/js/src/sample.js',
-			converter: './assets/js/src/converter.js',
+
+			// SCSS
+			// main: 	'./assets/scss/main.scss', // Import
+			// convert: './assets/scss/convert.scss' // Import			
 		},
 
 		// III. MODE
@@ -64,7 +69,7 @@
 
 			// MiniCssExtractPlugin
 			new MiniCssExtractPlugin({
-				filename: '../../css/main.min.css',
+				filename: '../../css/[name].min.css',
 				chunkFilename: '[id].css',
 			}),
 
@@ -192,6 +197,26 @@
 			chunkIds: 'named',
 			emitOnErrors: true,
 			minimize: false, // "True" After Final Version, Default is "false" !IMPORTANT
+			splitChunks: {
+				cacheGroups: {
+					build: {
+					  type: "css/mini-extract",
+					  name: "build",
+					  chunks: (chunk) => {
+						return chunk.name === "build";
+					  },
+					  enforce: true,
+					},
+					change: {
+					  type: "css/mini-extract",
+					  name: "change",
+					  chunks: (chunk) => {
+						return chunk.name === "change";
+					  },
+					  enforce: true,
+					},
+				  },
+			},
 			minimizer: [
 				new TerserPlugin({
 					test: /\.js(\?.*)?$/i,
@@ -222,7 +247,8 @@
 			alias: {
 
 				// 1. SCSS & CSS For Wordpress Core
-				main: 			path.resolve(__dirname,'./assets/scss/main.scss'), // Import
+				// main: 			path.resolve(__dirname,'./assets/scss/main.scss'), // Import
+				// convert: 		path.resolve(__dirname,'./assets/scss/convert.scss'), // Import
 				slick: 			path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
 				slickTheme: 	path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
 				

@@ -117,8 +117,8 @@
 		//_________ I. Main ____________
 
 		wp_register_style(
-			'main', //handle
-			THEME_DIR_CSS.'/main.min.css', //source
+			'build', //handle
+			THEME_DIR_CSS.'/build.min.css', //source
 			null, //dependencies
 			'1.0' //version
 		);
@@ -147,7 +147,7 @@
 
 		if (!is_admin()):
 			// wp_enqueue_style('dynamic-css', admin_url('admin-ajax.php').'?action=dynamic_css', $deps, $ver, $media);
-			wp_enqueue_style('main');
+			wp_enqueue_style('build');
 			if( is_page(17) && is_page('sample') ): wp_enqueue_style('sample'); endif;
 		else:
 			wp_enqueue_style('dashboard');
