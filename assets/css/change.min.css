@@ -421,29 +421,66 @@ video {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.fc-mb-\[-20px\] {
+  margin-bottom: -20px;
+}
 .fc-flex {
   display: flex;
 }
-.fc-h-1\/2 {
-  height: 50%;
+.fc-h-\[30vh\] {
+  height: 30vh;
 }
-.fc-max-w-screen-2xl {
-  max-width: 1536px;
+.fc-flex-row {
+  flex-direction: row;
 }
-.fc-items-center {
-  align-items: center;
+.fc-items-end {
+  align-items: flex-end;
 }
 .fc-justify-center {
   justify-content: center;
 }
+.fc-border-b {
+  border-bottom-width: 1px;
+}
+.fc-border-stone-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(87 83 78 / var(--tw-border-opacity));
+}
+.fc-bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity));
+}
+.fc-bg-slate-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(71 85 105 / var(--tw-bg-opacity));
+}
 .fc-font-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
-.fc-text-2xl {
-  font-size: 2.441rem;
-  line-height: 4rem;
+.fc-font-Cutive {
+  font-family: Cutive Mono, monospace;
+}
+.fc-text-xl {
+  font-size: 1.953rem;
+  line-height: 3.5rem;
+}
+.fc-font-thin {
+  font-weight: 100;
+}
+.fc-tracking-widest {
+  letter-spacing: 0.1em;
+}
+.fc-text-yellow-50 {
+  --tw-text-opacity: 1;
+  color: rgb(254 252 232 / var(--tw-text-opacity));
 }
 @tailwind variants;
+@media (min-width: 1024px) {
+  .lg\:fc-text-3xl {
+    font-size: 3.052rem;
+    line-height: 4.5rem;
+  }
+}
 /******************************************* TOOLS *****************************************
 /*******************************************************************************************/
 [dir=rtl] .direction-sample {
@@ -453,6 +490,12 @@ video {
 /**********************************************************************************************/
 /****************************************** ELEMENTS ******************************************
 /************************************** Unstyled Elements**************************************/
+body {
+  background-color: #242424;
+  opacity: 0.9;
+  background-image: linear-gradient(#2d2d2d 1.2px, transparent 1.2px), linear-gradient(to right, #2d2d2d 1.2px, #242424 1.2px);
+  background-size: 24px 24px;
+}
 table tfoot td, table tfoot th, table thead td, table thead th {
   font-weight: normal;
 }

@@ -33,27 +33,27 @@
 	add_action('init', 'theme_register_scripts');
 	function theme_register_scripts() {
 
-		//_________ Build _________
+		//_________ I. Build _________
 
 		wp_register_script(
 			'build', //handle
-			THEME_DIR_JS_DIST.'/build.js', //source
+			THEME_DIR_JS_DIST.'/build.min.js', //source
 			null,
 			'1.0', //version
 			true //run in footer
 		);
 
-		//_________ Converter _________
+		//_________ II. Converter _________
 
 		wp_register_script(
-			'converter', //handle
-			THEME_DIR_JS_DIST.'/converter.js', //source
+			'change', //handle
+			THEME_DIR_JS_DIST.'/change.min.js', //source
 			null,
 			'1.0', //version
 			true //run in footer
 		);
 
-		//_________ GSAP _________
+		//_________ III. GSAP _________
 
 		wp_register_script(
 			'gsap', //handle
@@ -74,13 +74,15 @@
 			// 1. GSAP
 			wp_enqueue_script('gsap');
 
-			// 2. Build
-			if( !is_page(46) ): 
-				wp_enqueue_script('build');
+			// 2. Build or Converter
+			if( is_page('converter') ): 
+				wp_enqueue_script('change');
+				
 			else:
-				wp_enqueue_script('converter');
+				wp_enqueue_script('build');
 			endif;
 
+			// 3 . Sample
 			if( is_page(17)  && is_page('sample') ): wp_enqueue_script('sample'); endif;  //is_sample
 		endif; //!is_admin
 
@@ -112,7 +114,7 @@
 	//__________________________________________________________________
 
 	add_action('init', 'theme_register_styles');
-	function theme_register_styles(){
+	function theme_register_styles() {
 
 		//_________ I. Main ____________
 
@@ -123,7 +125,16 @@
 			'1.0' //version
 		);
 
-		//_________ II. Sample ____________
+		//_________ II. Converter ____________
+
+		wp_register_style(
+			'change', //handle
+			THEME_DIR_CSS.'/change.min.css', //source
+			null, //dependencies
+			'1.0' //version
+		);
+
+		//_________ III. Sample ____________
 
 		wp_register_style(
 			'sample', //handle
@@ -132,7 +143,7 @@
 			'1.0' //version
 		);
 
-		//_________ III. Dashboard [Admin] _________
+		//_________ IV. Dashboard [Admin] _________
 
 		wp_register_style(
 			'dashboard', //handle
@@ -146,8 +157,18 @@
 	function theme_enqueue_styles() {
 
 		if (!is_admin()):
+
+			// 1. Dynamic CSS (Php in CSS)
 			// wp_enqueue_style('dynamic-css', admin_url('admin-ajax.php').'?action=dynamic_css', $deps, $ver, $media);
-			wp_enqueue_style('build');
+			
+			// 2. Build or Converter
+			if( is_page('converter') ): 
+				wp_enqueue_style('change');
+			else:
+				wp_enqueue_style('build');
+			endif;
+
+			// 3. Sample
 			if( is_page(17) && is_page('sample') ): wp_enqueue_style('sample'); endif;
 		else:
 			wp_enqueue_style('dashboard');

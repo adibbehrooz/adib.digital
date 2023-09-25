@@ -7,9 +7,15 @@
  */
 ?>
 	<?php get_header(); ?>
-		<div class="fc-flex fc-justify-center">
-			<div class="[ c-header ] [ fc-flex fc-justify-center fc-items-center fc-max-w-screen-2xl fc-h-1/2 ]">
-				<h1 class="fc-font-mono fc-text-2xl">Canvas 2 JSON</h1>
-			</div>
+		
+		<div class="[ c-header ] [ fc-flex fc-justify-center fc-items-end fc-h-[30vh] fc-border-b fc-border-stone-600 ]">
+			<h1 class="fc-font-Cutive fc-text-xl lg:fc-text-3xl fc-tracking-widest fc-text-yellow-50 fc-font-thin fc-mb-[-20px]">CANVAS 2 JSON</h1>	
 		</div>
+		
+		<div class="fc-flex fc-flex-row fc-justify-center">
+			<div class="fc-bg-slate-50">LEFT</div>
+			<div class="fc-bg-slate-600">RIGHT</div>
+
+		</div>
+
 	<?php get_footer(); ?>

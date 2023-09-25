@@ -193,12 +193,12 @@ class Pan {
 			css: {
 				relation: { x: window.innerWidth / 1.1 - window.innerWidth / 2, y: this.cameraOffset.y - window.innerHeight / 3.4 },
 			},
+			svg: {
+				relation: { x: window.innerWidth / 1.2 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3.1) },
+			},
 			/*
 			webpack: {
 				relation: { x: window.innerWidth / 1.100 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.02) },
-			},
-			svg: {
-				relation: { x: window.innerWidth / 1.156 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.94) },
 			},
 			framework: {
 				relation: { x: window.innerWidth / 1.500 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },

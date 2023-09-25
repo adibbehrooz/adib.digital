@@ -42,12 +42,12 @@
 
 		// II. ENTERY
 		entry: {
-			// JS
-			build: 	['./assets/js/src/index.js', './assets/scss/main.scss' ],
-			change: ['./assets/js/src/converter.js', './assets/scss/convert.scss'],
-			sample: './assets/js/src/sample.js',
+			build: 	['./assets/js/src/index.js', './assets/scss/main.scss' ], // Main
+			change: ['./assets/js/src/converter.js', './assets/scss/convert.scss'], // Conveter
+			sample: ['./assets/js/src/sample.js'],
 
 			// SCSS
+			// Beacuse of Split SCSS to two files, Comment SCSS Entry
 			// main: 	'./assets/scss/main.scss', // Import
 			// convert: './assets/scss/convert.scss' // Import			
 		},
@@ -59,7 +59,7 @@
 		output: {
 			path: path.resolve(__dirname, './assets/js/dist'),
 			publicPath: '/',
-			filename: '[name].js',
+			filename: '[name].min.js',
 			chunkFilename: '[name].[chunkhash].chunk.js',
 			clean: true, // Clean the output directory before emit.
 		},
@@ -247,6 +247,7 @@
 			alias: {
 
 				// 1. SCSS & CSS For Wordpress Core
+				// Beacuse of Split SCSS to two files, Comment SCSS aliases
 				// main: 			path.resolve(__dirname,'./assets/scss/main.scss'), // Import
 				// convert: 		path.resolve(__dirname,'./assets/scss/convert.scss'), // Import
 				slick: 			path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),

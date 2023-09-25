@@ -63,6 +63,38 @@ const positions = {
 		],
 	},
 
+	//____________________ SVG ____________________
+
+	svg: {
+		curve: function(ctx) {
+			ctx.save();
+			ctx.restore();
+		},
+		outside: [
+			{ form: 'scale', x: 4, y: 4 },
+			{ form: 'save' },
+			{ x: 0.000,   	y: 0.0000, form: 'move' }, 
+			{ form: 'width', size: '0.1' },
+			{ form: 'strokeStyle',	color: 'rgba(255, 255, 255, .2)' },
+			{ form: 'fillStyle', 	color: 'rgba(255, 255, 255, .2)' },
+			{ form: 'fill' },
+			{ form: 'stroke'}, 
+			{ form: 'close' },
+			{ form: 'restore'},
+		],
+		inside: [
+			{form: 'scale', x: 4, y: 4},
+			{ form: 'save' },
+			{ x: 0.000,   	y: 0.0000, form: 'move' }, 	
+		],
+		arc: [
+			{ form: 'save' },
+			{ x: 0.0000,   	y: 0.000  },  
+			{ form: 'restore'},
+		],
+	},
+
+
 };
 
 export { positions };

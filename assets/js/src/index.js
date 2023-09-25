@@ -30,5 +30,6 @@
 	//	II. SCSS CORE
 	//_________________________
 
+	// Beacuse of Split SCSS to two files, Comment SCSS Import
 	// import 'main'; // Import
 	// import 'convert'; // Import
