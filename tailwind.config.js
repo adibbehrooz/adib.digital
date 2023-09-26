@@ -20,7 +20,7 @@ module.exports = {
 		],
 	},	
 	darkMode: true, // or 'media' or 'class'
-	prefix: 'fc-', // Framework Class
+	// prefix: 'fc-', // Framework Class
 	theme: {
 		screens: {
 
