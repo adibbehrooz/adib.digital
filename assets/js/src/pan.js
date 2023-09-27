@@ -241,7 +241,6 @@ class Pan {
 	};
 
 	curveLines(shapeName) {
-
 		let context = this.ctx;
 		positions[shapeName].curve(context);
 	};

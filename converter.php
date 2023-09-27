@@ -48,7 +48,7 @@
 							</button>
 						</div> <?php // [!Input Header] ?>
 
-						<textarea id="inputCanvas" name="inputCanvas" rows="18" cols="40" class="[ c-convert__textarea ] [ F: resize-none border-0 border-slate-800 bg-neutral-900 active:border-0 active:border-slate-800 hover:border-slate-800 focus:border-slate-800 focus:outline-none text-slate-400 font-Cutive text-md rounded-lg shadow-md ]"></textarea>
+						<textarea id="inputCanvas" name="inputCanvas" rows="24" cols="40" spellcheck="false" class="[ c-convert__textarea ] [ F: p-3 text-left resize-none border-0 border-slate-800 bg-neutral-900 active:border-0 active:border-slate-800 hover:border-slate-800 focus:border-slate-800 focus:outline-none text-slate-400 font-Cutive text-base rounded-lg shadow-md ]"></textarea>
 					
 					</div> <?php // [!Input] ?>
 				</div><?php // [!LEFT] ?>
@@ -60,7 +60,7 @@
 					<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700 mb-10">
 						<div class="[F: bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full ]" style="width: 45%"> 45%</div>
 					</div>
-					<button type="button" class="[ F: text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-0 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ]">Convert</button>
+					<button type="button" id="convertButton" class="[ F: text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-0 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ]">Convert</button>
 				</div>
 
 				<?php // RIGHT SECTION: Centerlize ?>
@@ -95,7 +95,7 @@
 						</div> <?php // [!Input Header] ?>
 
 						<div class="[ F: flex justify-end bg-neutral-900 rounded-t-lg h-[28px] ]">
-							<svg width="28px" height="28px" viewBox="0 0 32 32" id="outputCopy" class="[ F: pt-2 pr-2 cursor-pointer ]" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+							<svg width="28px" height="28px" viewBox="0 0 32 32" id="copyToClipboard" class="[ F: pt-2 pr-2 cursor-pointer ]" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 								<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
 									<g id="Icon-Set" sketch:type="MSLayerGroup" transform="translate(-204.000000, -931.000000)" fill="rgba(255, 255, 255, 1)">
 										<path d="M234,951 C234,952.104 233.104,953 232,953 L216,953 C214.896,953 214,952.104 214,951 L214,935 C214,933.896 214.896,933 216,933 L232,933 C233.104,933 234,933.896 234,935 L234,951 L234,951 Z M232,931 L216,931 C213.791,931 212,932.791 212,935 L212,951 C212,953.209 213.791,955 216,955 L232,955 C234.209,955 236,953.209 236,951 L236,935 C236,932.791 234.209,931 232,931 L232,931 Z M226,959 C226,960.104 225.104,961 224,961 L208,961 C206.896,961 206,960.104 206,959 L206,943 C206,941.896 206.896,941 208,941 L210,941 L210,939 L208,939 C205.791,939 204,940.791 204,943 L204,959 C204,961.209 205.791,963 208,963 L224,963 C226.209,963 228,961.209 228,959 L228,957 L226,957 L226,959 L226,959 Z" id="duplicate" sketch:type="MSShapeGroup"></path>
@@ -104,8 +104,8 @@
 							</svg>								
 						</div>
 
-						<textarea id="outputCanvas" name="outputCanvas" rows="18" cols="40" class="[ c-convert__textarea ] [ F: relative resize-none border-0 border-slate-800 bg-neutral-900 active:border-0 active:border-slate-800 hover:border-slate-800 focus:border-slate-800 focus:outline-none text-slate-400 font-Cutive text-md rounded-b-lg shadow-md ]"></textarea>
-					
+						<textarea id="outputJSON" name="outputJSON" rows="23" cols="40" spellcheck="false" class="[ c-convert__textarea ] [ F: p-3 text-left resize-none border-0 border-slate-800 bg-neutral-900 active:border-0 active:border-slate-800 hover:border-slate-800 focus:border-slate-800 focus:outline-none text-slate-400 font-Cutive text-base rounded-lg shadow-md ]"></textarea>
+
 					</div> <?php // [!Input] ?>
 				</div><?php // [!LEFT] ?>
 
