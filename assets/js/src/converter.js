@@ -42,7 +42,7 @@
 				],
 				// " () "
 				parenthesis : [
-					'save', 'beginPath', 'scale', 'translate', 'transform', 'moveTo', 'lineTo', 'bezierCurveTo', 'fill', 'stroke', 'restore'
+					'save', 'closePath', 'beginPath', 'scale', 'translate', 'transform', 'restore', 'moveTo', 'lineTo', 'bezierCurveTo', 'fill', 'stroke'
 				]
 			};
 			return functionName;
@@ -56,6 +56,13 @@
 			navigator.clipboard.writeText(clipboardValue);
 		};
 
+		pastePlainText(event) {
+			event.preventDefault();
+			let getData = (event.clipboardData || window.clipboardData).getData("text");
+			let paste = getData.toString().replace(/\t/g, '');
+			this.inputCanvas.value = paste;
+		};
+
 		exportCanvas() {
 
 			// Canvas Functions
@@ -66,25 +73,46 @@
 
 			let regexFuncName = /\.([^\.]+)\(/; // Regex: Match Exeryting Between Dot and First Open Parenthesis
 			let regexParenthesis = /\(([^\)]+)\)/; // Regex: Match Exeryting Between Parenthesis
-			
+	
 			let output = [];
 			for (let i = 0; i < input.length; i++) {
 				let format = input[i].split( regexFuncName )[1]; // Split Function Name
+				console.log("FROMAT: "+format);
 				if( canvasFunctions.parenthesis.includes(format) ) {
-					let numbers = input[i].split( regexParenthesis )[1].split(",");  // Split Numbers Between Parenthesis
-					output[i] = ``;
-					for ( let j = 0; j <= numbers.length; j++ ) {
-						if( j == 0 ) { output[i] += `{`; }
-						if( j == numbers.length ) { output[i] += ` form: '${format}' },`; }
-						if( j >= 0 && j < numbers.length ) { output[i] += ` x${j}:${numbers[j]}, `};
+					console.log("Format is parenthesis and value is: "+format);
+					let numbers = input[i].split( regexParenthesis )[1];  // Split Numbers Between Parenthesis
+					// we have numbers inside Parenthesis
+					if( numbers ) {
+						numbers = numbers.split(",");
+						output[i] = ``;
+						for ( let j = 0; j <= numbers.length; j++ ) {
+							if( j == 0 ) { output[i] += `{`; }
+							if( j == numbers.length ) { output[i] += ` form: '${format}' },`; };
+							if( j >= 0 && j < numbers.length ) { output[i] += ` x${j}:${numbers[j]}, `};
+						}
+					} else { // we don't have numbers inside Parenthesis
+						output[i] = ``;
+						output[i] += `{`;
+						output[i] += ` form: '${format}'`;
+						output[i] += ` }, `; 
 					}
-				} else if( canvasFunctions.equal.includes(format) ) {
-					console.log("This Function is in equal");
+
+				} else {
+					console.log("Format is Equal and value is: "+format);
+					let regexEqualValue =  /\=\s*([\S\s]+)/; // Regex: Match Exeryting After Equal Sign
+					let regexEqualFuncName = /\.([^\.]+)\=/; // Regex: Match Exeryting Between Dot and First Equal " = " Sign
+					
+					let equalVlaue = input[i].split( regexEqualValue )[1].replace(/;/g, '');  // Split Numbers Between Parenthesis Without dot, semicolon
+					let equalKey = input[i].split( regexEqualFuncName )[1];  // Split Numbers Between Parenthesis
+					output[i] = ``;
+					output[i] += `{`; 
+					output[i] += ` form: '${equalKey}',`; 
+					output[i] += ` value: ${equalVlaue}`; 
+					output[i] += ` }, `; 
 				}
 			}
 			this.outputJSON.value = output.join('\n');
 		};
-
 
 		importJSON() {
 			let exportCanvas = this.exportCanvas();
@@ -110,6 +138,10 @@
 
 			this.convertButton.addEventListener( "click", () => { 
 				this.exportCanvas();
+			});
+
+			this.inputCanvas.addEventListener( "paste", (event) => { 
+				this.pastePlainText(event);
 			});
 		};
 	};
