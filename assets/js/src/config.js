@@ -37,12 +37,3 @@
 	import { Sky } from './sky';
 	const nightSky = new Sky();
 	nightSky.init();
-
-	//______________
-	//	
-	//	UNPAN
-	//______________
-	
-	// import { UNPANS } from './unpan';
-	// const unpans = new UNPANS();
-	// unpans.init();
