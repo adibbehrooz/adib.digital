@@ -16,7 +16,6 @@
 		// 	Constructor
 		//____________________________
 		
-
 		constructor() {	
 			//Required canvas variables
 			this.skyCanvas = document.getElementById('canvas__sky');
@@ -39,7 +38,6 @@
 			this.numParticles = 1100;
 		};
 
-
 		render() {
 			let wHeight = window.innerHeight;
 			let wWidth = window.innerWidth;
@@ -48,7 +46,6 @@
 			this.skyCanvas.height = wHeight;
 		};
 
-		
 		//_______________________________
 		//
 		// All Objects in Night Sky
@@ -59,7 +56,6 @@
 			this.meteorShower(); // 2. Meteor Shower 
 		};			
 
-		
 		//____________________________
 		//
 		// Stars
@@ -70,11 +66,9 @@
 			this.createCircle();
 		};
 
-
 		_rand(min, max) {
 			return Math.random() * (max - min) + min;
 		};
-
 
 		createCircle() {
 			let particle = [];
@@ -97,7 +91,6 @@
 			this.animateCircle(particle);
 		};
 
-
 		drawParticles(particle, i) {
 
 			this.ctx.fillStyle = particle[i].color;
@@ -105,7 +98,6 @@
 			this.ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 6 * Math.PI, false);
 			this.ctx.fill();
 		};
-
 
 		animateCircle(particle) {
 			
@@ -127,7 +119,6 @@
 			setInterval(animate, 200/this.fps); 	
 		};
 		
-		
 		resetParticle(particle, i) {
 
 			let random = this._rand(0, 1);
@@ -144,7 +135,6 @@
 			//redraw particle with new values
 			this.drawParticles(particle, i);
 		};
-		
 		
 		clearCanvas() {
 			this.ctx.clearRect(0, 0, this.skyCanvas.width, this.skyCanvas.height);

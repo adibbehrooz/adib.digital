@@ -190,20 +190,55 @@ class Pan {
 
 	position() {
 		const position = {
+			/*
 			css: {
 				relation: { x: window.innerWidth / 1.1 - window.innerWidth / 2, y: this.cameraOffset.y - window.innerHeight / 3.4 },
 			},
-			
+			*/
+			/*
 			webpack: {
-				relation: { x: window.innerWidth / 1.200 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.02) },
+				relation: { x: window.innerWidth / 1.2 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.02) },
 			},
+			*/
 			/*
 			svg: {
 				relation: { x: window.innerWidth / 1.2 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3.1) },
 			},
-			framework: {
-				relation: { x: window.innerWidth / 1.500 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
+			*/
+
+			//____________________ Webpack ____________________
+			
+			webpack: {
+				relation: { 
+					x: window.innerWidth / 1.2 - window.innerWidth / 2, 
+					y: this.cameraOffset.y - window.innerHeight / 2.02 
+				},
+				size: { 
+					outside: 2, 
+					inside: 4.5 
+				},
+				width: { 
+					outside: .1, 
+					inside: .1 
+				},
 			},
+			//____________________ Framework ____________________
+
+			framework: {
+				relation: { 
+					x: window.innerWidth / 1.2 - window.innerWidth / 2, 
+					y: this.cameraOffset.y - window.innerHeight / 3.4
+				},
+				size: { 
+					outside: .6, 
+					inside: 4.5 
+				},
+				width: { 
+					outside: .1, 
+					inside: .1 
+				},
+			},
+			/*
 			javascript: {
 				relation: { x: window.innerWidth / 1.800 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
 			}
@@ -224,9 +259,6 @@ class Pan {
 	};
 	
 	shapeLines(shapeName) {
-
-		// I. Start
-		this.ctx.beginPath();
 
 		// II. Line Types Loop
 		this.lineTypes.forEach((lineType) => { 
@@ -256,7 +288,8 @@ class Pan {
 				case 'scale':
 				this.ctx.scale( 
 					positions[shapeName][lineType][i]['x0'], 
-					positions[shapeName][lineType][i]['x1'] );
+					positions[shapeName][lineType][i]['x1'] 
+				);
 				break;	
 
 				case 'miterLimit':
@@ -265,15 +298,15 @@ class Pan {
 
 				case 'moveTo':
 				this.ctx.moveTo( 
-					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x0'] * this.scaleSize, 
-					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['x1'] * this.scaleSize,  
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x0'] * this.srp[shapeName]['size'][lineType], 
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['x1'] * this.srp[shapeName]['size'][lineType], 
 				);
 				break;
 		
 				case 'lineTo':
 				this.ctx.lineTo( 
-					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x0'] * this.scaleSize,    
-					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['x1'] * this.scaleSize, 
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x0'] * this.srp[shapeName]['size'][lineType],
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['x1'] * this.srp[shapeName]['size'][lineType],
 				);
 				break;
 				case "translate":
@@ -296,12 +329,12 @@ class Pan {
 
 				case 'bezierCurveTo':
 				this.ctx.bezierCurveTo( 
-					positions[shapeName][lineType][i]['x1'],
-					positions[shapeName][lineType][i]['x2'],
-					positions[shapeName][lineType][i]['x3'],
-					positions[shapeName][lineType][i]['x4'],
-					positions[shapeName][lineType][i]['x5'],
-					positions[shapeName][lineType][i]['x6'],
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x0'] * this.srp[shapeName]['size'][lineType], 
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['x1'] * this.srp[shapeName]['size'][lineType], 
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x2'] * this.srp[shapeName]['size'][lineType], 
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['x3'] * this.srp[shapeName]['size'][lineType], 
+					this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x4'] * this.srp[shapeName]['size'][lineType], 
+					this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['x5'] * this.srp[shapeName]['size'][lineType], 
 				);
 				break;
 
@@ -351,7 +384,7 @@ class Pan {
 				break;
 
 				case 'lineWidth':
-					this.ctx.lineWidth = positions[shapeName][lineType][i]['value'];
+					this.ctx.lineWidth = positions[shapeName][lineType][i]['value']; // this.ctx.lineWidth = this.srp[shapeName]['width'][lineType]; 
 				break;	
 
 				case 'stroke':
@@ -370,12 +403,13 @@ class Pan {
 					this.ctx.fillStyle = positions[shapeName][lineType][i]['value'];
 				break;	
 				
-			}; // [END] Switch
-		}; // [END] For
+			}; // [END] SWITCH
+		}; // [END] FOR
 	};
 
 	shapeStars(shapeName) {
 		let lineType = 'arc';
+
 		// 1. Start
 		let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius; 
 
@@ -414,17 +448,18 @@ class Pan {
 
 	shapeEvent( cursor, shapeName, offsetX, offsetY ) {
 		let lineType = 'outside';
+		let scaleShape = 4.5;
 		// 1. Draw Shape
 		const shape = new Path2D();
 		this.ctx.beginPath();
 		shape.moveTo( 
-			this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][0]['x0'] * this.scaleSize, 
-			this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][0]['x1'] * this.scaleSize 
+			this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][0]['x0'] * this.srp[shapeName]['size'][lineType], 
+			this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][0]['x1'] * this.srp[shapeName]['size'][lineType], 
 		);
 		for( let i = 1; i < positions[shapeName][lineType].length; i++ ) {
 			shape.lineTo( 
-				this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x0'] * this.scaleSize,
-				this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['x1'] * this.scaleSize 
+				this.srp[shapeName]['relation']['x'] + positions[shapeName][lineType][i]['x0'] * this.srp[shapeName]['size'][lineType], 
+				this.srp[shapeName]['relation']['y'] + positions[shapeName][lineType][i]['x1'] * this.srp[shapeName]['size'][lineType], 
 			);
 		}
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
@@ -623,7 +658,11 @@ class Pan {
 			this.adjustZoom( event.deltaY * this.scrollSensitivity );
 		});
 	};
-
+	
+	//_______________________________
+	//
+	//  END
+	//_______________________________
 };
 
 export { Pan };
