@@ -190,31 +190,50 @@ class Pan {
 
 	position() {
 		const position = {
-			/*
+		
+			//____________________ CSS ____________________
+
 			css: {
-				relation: { x: window.innerWidth / 1.1 - window.innerWidth / 2, y: this.cameraOffset.y - window.innerHeight / 3.4 },
+				relation: { 
+					x: window.innerWidth / 1.1 - window.innerWidth / 2, 
+					y: this.cameraOffset.y - window.innerHeight / 3.4 
+				},
+				size: { 
+					outside: 4, 
+					inside: 4 
+				},
+				width: { 
+					outside: .1, 
+					inside: .1 
+				},
 			},
-			*/
-			/*
-			webpack: {
-				relation: { x: window.innerWidth / 1.2 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 2.02) },
-			},
-			*/
-			/*
+
+			//____________________ SVG ____________________
+
 			svg: {
-				relation: { x: window.innerWidth / 1.2 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3.1) },
+				relation: { 
+					x: window.innerWidth / 1.7 - window.innerWidth / 2, 
+					y: this.cameraOffset.y - (window.innerHeight / 3.1) 
+				},
+				size: { 
+					outside: .45, 
+					inside: 6 
+				},
+				width: { 
+					outside: .1, 
+					inside: .1 
+				},
 			},
-			*/
 
 			//____________________ Webpack ____________________
 			
 			webpack: {
 				relation: { 
-					x: window.innerWidth / 1.2 - window.innerWidth / 2, 
+					x: window.innerWidth / 1.21 - window.innerWidth / 2, 
 					y: this.cameraOffset.y - window.innerHeight / 2.02 
 				},
 				size: { 
-					outside: 2, 
+					outside: 4.1, 
 					inside: 4.5 
 				},
 				width: { 
@@ -222,12 +241,13 @@ class Pan {
 					inside: .1 
 				},
 			},
+
 			//____________________ Framework ____________________
 
 			framework: {
 				relation: { 
-					x: window.innerWidth / 1.2 - window.innerWidth / 2, 
-					y: this.cameraOffset.y - window.innerHeight / 3.4
+					x: window.innerWidth / .9 - window.innerWidth / 2, 
+					y: this.cameraOffset.y - window.innerHeight / 3.9
 				},
 				size: { 
 					outside: .6, 
@@ -238,11 +258,23 @@ class Pan {
 					inside: .1 
 				},
 			},
-			/*
+
+			//____________________ Javascript ____________________
+
 			javascript: {
-				relation: { x: window.innerWidth / 1.800 - window.innerWidth / 2, y: this.cameraOffset.y - (window.innerHeight / 3) },
-			}
-			*/
+				relation: { 
+					x: window.innerWidth / 1.8 - window.innerWidth / 2, 
+					y: this.cameraOffset.y - (window.innerHeight / 3) 
+				},
+				size: { 
+					outside: 4, 
+					inside: 4 
+				},
+				width: { 
+					outside: .1, 
+					inside: .1 
+				},
+			},
 		};
 		return position;
 	};
@@ -385,6 +417,7 @@ class Pan {
 
 				case 'lineWidth':
 					this.ctx.lineWidth = positions[shapeName][lineType][i]['value']; // this.ctx.lineWidth = this.srp[shapeName]['width'][lineType]; 
+					// this.ctx.lineWidth = this.srp[shapeName]['width'][lineType]; 
 				break;	
 
 				case 'stroke':
