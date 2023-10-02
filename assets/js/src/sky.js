@@ -31,11 +31,11 @@
 			this.maxOpacity = 1;
 			//particle speed min/max
 			this.minSpeed = .005;
-			this.maxSpeed = .19;
+			this.maxSpeed = .1;
 			//frames per second
 			this.fps = 4;
 			//number of particles
-			this.numParticles = 1100;
+			this.numParticles = 1500;
 		};
 
 		render() {

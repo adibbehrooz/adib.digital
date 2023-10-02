@@ -97,7 +97,7 @@
 		$postTitle	=	$post->post_title;
 
 		wp_localize_script(
-			'vendor',
+			'build',
 			'ajax_custom',
 			array(
 				'ajaxurl'		=> admin_url( 'admin-ajax.php' ),

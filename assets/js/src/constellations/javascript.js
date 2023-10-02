@@ -6,35 +6,33 @@
 	Version: 1.0
 */
 
-/******************************** CONSTELLATION :: CSS ********************************
-/**************************************************************************************/
+/******************************** CONSTELLATION :: JAVASCRIPT ********************************
+/*********************************************************************************************/
 
-const cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-
-const css = {
+const javascript = {
 
 	//____________________ I. DATA ____________________
 
 	data: {
 		// WordPress
 		backend : {
-			ID: 61,
+			ID: 0,
 			postType: 'post', // Page or Post
 			coverDirection: 'ltr',
 		},
 		// Camera Offset Positon
 		relation: { 
-			x: window.innerWidth / 1.1 - window.innerWidth / 2, 
-			y: cameraOffset.y - window.innerHeight / 3.4 
+            x: window.innerWidth / 1.3 - window.innerWidth / 2, 
+            y: this.cameraOffset.y - ( (window.innerHeight * 2) * .06 )
 		},
 		// Constellation Scale 
 		scale: { 
-			outside: 4, 
-			inside: 4 
+            outside: 1.5, 
+            inside: 2 
 		},
 		lineWidth: { 
-			outside: .1, 
-			inside: .1 
+            outside: .1, 
+            inside: .1 
 		},
 	},
 
@@ -106,4 +104,4 @@ const css = {
 	},
 };
 
-export default { css };
+export { javascript };

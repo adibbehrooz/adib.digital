@@ -23,7 +23,7 @@
 		<meta property="og:image" content="">
 
 		<link rel="shortcut icon" href="<?php bloginfo('template_directory'); ?>/assets/images/favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/assets/css/main.min.css" />
+		<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/assets/css/build.min.css" />
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Flip.min.js"></script>
@@ -40,10 +40,9 @@
 	</head>
 
 	<body>
-		<h4 id=results>Drag the mouse to see net panning in x,y directions</h4>
-		<canvas id="canvas" width=600 height=300></canvas>
+
 	</body>
 
-	<script type="text/javascript" src="<?php bloginfo('template_directory'); ?>/assets/js/dist/sample.js"></script>
+	<script type="text/javascript" src="<?php bloginfo('template_directory'); ?>/assets/js/dist/sample.min.js"></script>
 
 </html>
