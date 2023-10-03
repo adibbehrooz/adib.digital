@@ -9,6 +9,8 @@
 /******************************** CONSTELLATION :: JAVASCRIPT ********************************
 /*********************************************************************************************/
 
+const cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
 const javascript = {
 
 	//____________________ I. DATA ____________________
@@ -23,7 +25,7 @@ const javascript = {
 		// Camera Offset Positon
 		relation: { 
             x: window.innerWidth / 1.3 - window.innerWidth / 2, 
-            y: this.cameraOffset.y - ( (window.innerHeight * 2) * .06 )
+            y: cameraOffset.y - ( (window.innerHeight * 2) * .06 )
 		},
 		// Constellation Scale 
 		scale: { 
@@ -45,43 +47,42 @@ const javascript = {
 		},
 		outside: [
 			{ form: 'save' },
+				{ form: 'miterLimit', value: 4 }, 
+				{ form: 'fillStyle', value: "rgba(255, 255, 255, .1)" }, 
 				{ form: 'beginPath' }, 
-					{ x0: 0.000,   	x1: 19.232, form: 'moveTo' }, 
-					{ x0: 9.635,   	x1: 23.250, form: 'lineTo' }, 
-					{ x0: 20.800,   x1: 19.232, form: 'lineTo' },   
-					{ x0: 24.000,   x1: 0.7500, form: 'lineTo' },   
-					{ x0: 3.630,   	x1: 0.7500, form: 'lineTo' },  
-					{ x0: 2.815,   	x1: 4.8680, form: 'lineTo' }, 
-					{ x0: 19.485,   x1: 4.8680, form: 'lineTo' }, 
-					{ x0: 18.960,   x1: 7.5150, form: 'lineTo' }, 
-					{ x0: 2.2750,   x1: 7.5150, form: 'lineTo' }, 
-					{ x0: 1.4750,   x1: 11.633, form: 'lineTo' }, 
-					{ x0: 18.145,   x1: 11.633, form: 'lineTo' }, 
-					{ x0: 17.205,   x1: 16.510, form: 'lineTo' }, 
-					{ x0: 10.500,   x1: 18.739, form: 'lineTo' },  
-					{ x0: 4.6800,   x1: 16.510, form: 'lineTo' }, 
-					{ x0: 5.0800,   x1: 14.471, form: 'lineTo' }, 
-					{ x0: 1.4750,   x1: 14.471, form: 'lineTo' }, 
-					{ x0: 0.0000,   x1: 19.142, form: 'lineTo' }, 
-				{ form: 'closePath' },
-				// Stroke
-				{ form: 'lineWidth', value: '1' },
-				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .2)' },
-				{ form: 'stroke'}, 
-				// Fill
-				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, .1)' },
+					{ x0: 0, x1: 0,  form: 'moveTo' },
+					{ x0: -40.763, x1: 0,  form: 'lineTo' },
+					{ x0: -43.596, x1: -30.66,  form: 'lineTo' },
+					{ x0: -43.535999999999994, x1: -30.468,  form: 'lineTo' },
+					{ x0: -8.91, x1: -30.468,  form: 'lineTo' },
+					{ x0: -10.04, x1: -43.437,  form: 'lineTo' },
+					{ x0: -21.085, x1: -46.620999999999995,  form: 'lineTo' },
+					{ x0: -32.299, x1: -43.388999999999996,  form: 'lineTo' },
+					{ x0: -32.972, x1: -35.53999999999999,  form: 'lineTo' },
+					{ x0: -43.152, x1: -35.53999999999999,  form: 'lineTo' },
+					{ x0: -41.697, x1: -51.224999999999994,  form: 'lineTo' },
+					{ x0: -21.085000000000004, x1: -57.077999999999996,  form: 'lineTo' },
+					{ x0: -0.4730000000000061, x1: -51.224999999999994,  form: 'lineTo' },
+					{ x0: 2.363999999999994, x1: -20.443999999999996,  form: 'lineTo' },
+					{ x0: -34.378, x1: -20.443999999999996,  form: 'lineTo' },
+					{ x0: -33.91, x1: -10.179999999999996,  form: 'lineTo' },
+					{ x0: -8.406999999999996, x1: -10.179999999999996,  form: 'lineTo' },
+					{ x0: -8.031999999999996, x1: -16.054999999999996,  form: 'lineTo' },
+					{ x0: 2.239, x1: -16.054999999999996,  form: 'lineTo' },
+				{ form: 'closePath' }, 
 				{ form: 'fill' },
-			{ form: 'restore'}, // Restore [!Save]
+				{ form: 'stroke' }, 
+			{ form: 'restore' }, 
 		],
 		inside: [
 			{ form: 'save' },
-				{ x0: 3.175,   	x1: 2.750, form: 'moveTo' }, 
-				{ x0: 21.500,   x1: 2.750, form: 'lineTo' }, 
-				{ x0: 18.700,   x1: 17.900, form: 'lineTo' }, 
-				{ x0: 9.700,   	x1: 21.000, form: 'lineTo' }, 
-				{ x0: 1.700,   	x1: 17.500, form: 'lineTo' }, 
-				{ x0: 20.175,  	x1: 9.750, form: 'moveTo' },  
-				{ x0: 2.175,  	x1: 9.750, form: 'lineTo' }, 
+				{ x0: -28.596, x1: -33.66, form: 'moveTo' },
+				{ x0: -14.596, x1: -39.66,	form: 'lineTo' },
+				{ x0: -3.5960, x1: -33.66,	form: 'lineTo' },
+				{ x0: -2.9960, x1: -19.66,	form: 'lineTo' },
+				{ x0: -28.5960, x1: -19.66,	form: 'lineTo' },
+				{ x0: -27.2960, x1: -3.66,	form: 'lineTo' },
+				{ x0: -4.2960, x1: -3.66,	form: 'lineTo' },
 				// Stroke
 				{ form: 'lineWidth', value: '0.1' },
 				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .5)' },
@@ -91,17 +92,17 @@ const javascript = {
 			{ form: 'restore'},
 		],
 		arc: [
-			{ form: 'save' },
-				{ x0: 3.175,   	x1: 2.750  },  
-				{ x0: 21.500,   x1: 2.750  },  
-				{ x0: 18.700,   x1: 17.900 },  
-				{ x0: 9.700,   	x1: 21.000 },  
-				{ x0: 1.700,   	x1: 17.500 },  
-				{ x0: 2.175,  	x1: 9.7500 },  
-				{ x0: 20.175,  	x1: 9.750  },  
-			{ form: 'restore'},
+			{ form: 'save' }, 
+				{ x0: -14.596, x1: -16.66 },
+				{ x0: -7.596, x1: -19.66 },
+				{ x0: -1.596, x1: -16.66 },
+				{ x0: -1.196, x1: -9.66 },
+				{ x0: -14.196, x1: -9.66 },
+				{ x0: -13.896, x1: -1.96 },
+				{ x0: -1.200, x1: -1.96  },
+			{ form: 'restore' },	
 		],
 	},
 };
 
-export { javascript };
+export default { javascript };

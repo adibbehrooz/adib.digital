@@ -71,7 +71,6 @@ class Pan {
 		this.radiusChange = 0.15;
 		this.redStarColor = 'rgba(255, 194, 184, 1)';
 		this.shadowBlur = 0;
-		this.srp = this.positioning();
 
 		// Shape Line Types
 		this.lineTypes =  ['curve', 'inside', 'outside', 'arc'];
@@ -192,238 +191,163 @@ class Pan {
 	/************************* SHAPES ************************
 	/*********************************************************/	
 
-	positioning() {
-		const positioning = {
-		
-			//____________________ CSS ____________________
-
-			css: {
-				ID: 61,
-				backendType: 'post',
-				coverDirection: 'ltr',
-				relation: { 
-					x: window.innerWidth / 1.1 - window.innerWidth / 2, 
-					y: this.cameraOffset.y - window.innerHeight / 3.4 
-				},
-				size: { 
-					outside: 4, 
-					inside: 4 
-				},
-				width: { 
-					outside: .1, 
-					inside: .1 
-				},
-			},
-
-			//____________________ SVG ____________________
-
-			svg: {
-				relation: { 
-					x: window.innerWidth / 1.7 - window.innerWidth / 2, 
-					y: this.cameraOffset.y - (window.innerHeight / 3.1) 
-				},
-				size: { 
-					outside: .45, 
-					inside: 6 
-				},
-				width: { 
-					outside: .1, 
-					inside: .1 
-				},
-			},
-
-			//____________________ Webpack ____________________
-			
-			webpack: {
-				ID: 55,
-				backendType: 'post',
-				coverDirection: 'ltr',
-				relation: { 
-					x: window.innerWidth / 1.21 - window.innerWidth / 2, 
-					y: this.cameraOffset.y - window.innerHeight / 2.02 
-				},
-				size: { 
-					outside: 4.1, 
-					inside: 4.5 
-				},
-				width: { 
-					outside: .1, 
-					inside: .1 
-				},
-			},
-
-			//____________________ Framework ____________________
-
-			framework: {
-				relation: { 
-					x: window.innerWidth / .9 - window.innerWidth / 2, 
-					y: this.cameraOffset.y - window.innerHeight / 3.9
-				},
-				size: { 
-					outside: .6, 
-					inside: 4.5 
-				},
-				width: { 
-					outside: .1, 
-					inside: .1 
-				},
-			},
-
-			//____________________ Javascript ____________________
-
-			javascript: {
-				relation: { 
-					x: window.innerWidth / 1.3 - window.innerWidth / 2, 
-					y: this.cameraOffset.y - ( (window.innerHeight * 2) * .06 )  
-				},
-				size: { 
-					outside: 1.5, 
-					inside: 2 
-				},
-				width: { 
-					outside: .1, 
-					inside: .1 
-				},
-			},
-
-			//____________________ Iceberg ____________________
-
-			iceberg: {
-				relation: { 
-					x: window.innerWidth / 1.2 - window.innerWidth / 2, 
-					y: this.cameraOffset.y * 1.06 -  (window.innerHeight * .1 )  
-				},
-				size: { 
-					outside: 5, 
-					inside: 2 
-				},
-				width: { 
-					outside: .1, 
-					inside: .1 
-				},
-			},
-		};
-		return positioning;
-	};
-
 	shapes() {
 		// Translate Shapes
 		this.ctx.translate( -(window.innerWidth / 2 ) + this.cameraOffset.x, -(window.innerHeight / 2 ) + this.cameraOffset.y );
 		
-		// Loop for Draw Shapes
-		for (let key of Object.keys( this.srp )) {
-			this.shapeLines(key); // 1. Draw Lines
-			this.shapeStars(key); // 2. Draw Stars
-		}
+		Object.entries(constellations).forEach( (entry, index) => {
+			const [key, value] = entry;
+			this.shapeLines(key, value); // 1. Draw Lines
+			this.shapeStars(key, value); // 2. Draw Stars
+		});
+	
 	};
 	
-	shapeLines(shapeName) {
+	shapeLines(key, value) {
 
 		// II. Line Types Loop
 		this.lineTypes.forEach((lineType) => { 
 
 			if(lineType == 'curve') {
-				this.curveLines(shapeName);
+				this.curveLines(key, value);
 			} else if (lineType == 'arc') {
-				this.shapeStars(shapeName);
+				this.shapeStars(key, value);
 			} else {
-				this.straightlines(shapeName, lineType);
+				this.straightlines(lineType, key, value );
 			}
 		});
 	};
 
-	curveLines(shapeName) {
+	curveLines(name, constellation) {
 		let context = this.ctx;
-		constellations[shapeName].curve(context);
+		constellation[name].coordination.curve(context);
 	};
 
-	straightlines(shapeName, lineType) {
+	straightlines(lineType, name, constellation ) {
+
 		// Draw Lines
-		for( let i = 1; i < constellations[shapeName][lineType].length; i++ ) {
+		for( let i = 0; i < constellation[name].coordination[lineType].length; i++ ) {
 					
-			let form = constellations[shapeName][lineType][i]['form'];
+			let form = constellation[name].coordination[lineType][i].form;
+
 			switch(form) {
 
 				case 'scale':
 				this.ctx.scale( 
-					constellations[shapeName][lineType][i]['x0'], 
-					constellations[shapeName][lineType][i]['x1'] 
+					constellation[name].coordination[lineType][i]['x0'], 
+					constellation[name].coordination[lineType][i]['x1'] 
 				);
 				break;	
 
 				case 'miterLimit':
-					this.ctx.miterLimit = constellations[shapeName][lineType][i]['value'];
+					this.ctx.miterLimit = constellation[name].coordination[lineType][i]['value'];
 				break;	
 
 				case 'moveTo':
 				this.ctx.moveTo( 
-					this.srp[shapeName]['relation']['x'] + constellations[shapeName][lineType][i]['x0'] * this.srp[shapeName]['size'][lineType], 
-					this.srp[shapeName]['relation']['y'] + constellations[shapeName][lineType][i]['x1'] * this.srp[shapeName]['size'][lineType], 
+					// X
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[lineType][i]['x0'] * 
+					constellation[name].data.scale[lineType],
+					// Y
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[lineType][i]['x1'] * 
+					constellation[name].data.scale[lineType],
 				);
 				break;
 		
 				case 'lineTo':
 				this.ctx.lineTo( 
-					this.srp[shapeName]['relation']['x'] + constellations[shapeName][lineType][i]['x0'] * this.srp[shapeName]['size'][lineType],
-					this.srp[shapeName]['relation']['y'] + constellations[shapeName][lineType][i]['x1'] * this.srp[shapeName]['size'][lineType],
+					// X
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[lineType][i]['x0'] * 
+					constellation[name].data.scale[lineType],
+
+					// Y
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[lineType][i]['x1'] * 
+					constellation[name].data.scale[lineType],
 				);
 				break;
 
 				case "translate":
 				this.ctx.translate( 
-					constellations[shapeName][lineType][i]['x0'], 
-					constellations[shapeName][lineType][i]['x1'] 
+					constellation[name].coordination[lineType][i]['x0'], 
+					constellation[name].coordination[lineType][i]['x1'] 
 				);
 				break;
 
 				case 'transform':
 				this.ctx.transform( 
-					constellations[shapeName][lineType][i]['x0'],
-					constellations[shapeName][lineType][i]['x1'],
-					constellations[shapeName][lineType][i]['x2'],
-					constellations[shapeName][lineType][i]['x3'],
-					constellations[shapeName][lineType][i]['x4'],
-					constellations[shapeName][lineType][i]['x5'],
+					constellation[name].coordination[lineType][i]['x0'],
+					constellation[name].coordination[lineType][i]['x1'],
+					constellation[name].coordination[lineType][i]['x2'],
+					constellation[name].coordination[lineType][i]['x3'],
+					constellation[name].coordination[lineType][i]['x4'],
+					constellation[name].coordination[lineType][i]['x5'],
 				);
 				break;
 
 				case 'bezierCurveTo':
 				this.ctx.bezierCurveTo( 
-					this.srp[shapeName]['relation']['x'] + constellations[shapeName][lineType][i]['x0'] * this.srp[shapeName]['size'][lineType], 
-					this.srp[shapeName]['relation']['y'] + constellations[shapeName][lineType][i]['x1'] * this.srp[shapeName]['size'][lineType], 
-					this.srp[shapeName]['relation']['x'] + constellations[shapeName][lineType][i]['x2'] * this.srp[shapeName]['size'][lineType], 
-					this.srp[shapeName]['relation']['y'] + constellations[shapeName][lineType][i]['x3'] * this.srp[shapeName]['size'][lineType], 
-					this.srp[shapeName]['relation']['x'] + constellations[shapeName][lineType][i]['x4'] * this.srp[shapeName]['size'][lineType], 
-					this.srp[shapeName]['relation']['y'] + constellations[shapeName][lineType][i]['x5'] * this.srp[shapeName]['size'][lineType], 
+					// x1
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[lineType][i]['x0'] *
+					constellation[name].data.scale[lineType],
+
+					// X2
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[lineType][i]['x1'] * 
+					constellation[name].data.scale[lineType],
+
+					// x2
+					constellation[name].data.relation.x +
+					constellation[name].coordination[lineType][i]['x2'] *
+					constellation[name].data.scale[lineType],
+
+					// x3
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[lineType][i]['x3'] * 
+					constellation[name].data.scale[lineType],
+
+					// x4
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[lineType][i]['x4'] *
+					constellation[name].data.scale[lineType],
+
+					// x5
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[lineType][i]['x5'] * 
+					constellation[name].data.scale[lineType],
 				);
 				break;
 
 				case 'fillRect':
 				this.ctx.fillRect( 
-					constellations[shapeName][lineType][i]['x0'],
-					constellations[shapeName][lineType][i]['x1'],
-					constellations[shapeName][lineType][i]['x2'],
-					constellations[shapeName][lineType][i]['x3'],
+					constellation[name].coordination[lineType][i]['x0'],
+					constellation[name].coordination[lineType][i]['x1'],
+					constellation[name].coordination[lineType][i]['x2'],
+					constellation[name].coordination[lineType][i]['x3'],
 				);				
 				break;	
 
 				case 'fillText':
 				this.ctx.fillText( 
-					constellations[shapeName][lineType][i]['x0'],
-					constellations[shapeName][lineType][i]['x1'],
-					constellations[shapeName][lineType][i]['x2'],
-					constellations[shapeName][lineType][i]['x3'],
+					constellation[name].coordination[lineType][i]['x0'],
+					constellation[name].coordination[lineType][i]['x1'],
+					constellation[name].coordination[lineType][i]['x2'],
+					constellation[name].coordination[lineType][i]['x3'],
 				);				
 				break;	
 
 				case 'arc':
 				this.ctx.arc( 
-					constellations[shapeName][lineType][i]['x0'],
-					constellations[shapeName][lineType][i]['x1'],
-					constellations[shapeName][lineType][i]['x2'],
-					constellations[shapeName][lineType][i]['x3'],
-					constellations[shapeName][lineType][i]['x4'],
-					constellations[shapeName][lineType][i]['x5'],
+					constellation[name].coordination[lineType][i]['x0'],
+					constellation[name].coordination[lineType][i]['x1'],
+					constellation[name].coordination[lineType][i]['x2'],
+					constellation[name].coordination[lineType][i]['x3'],
+					constellation[name].coordination[lineType][i]['x4'],
+					constellation[name].coordination[lineType][i]['x5'],
 				);				
 				break;	
 
@@ -444,8 +368,7 @@ class Pan {
 				break;
 
 				case 'lineWidth':
-					this.ctx.lineWidth = constellations[shapeName][lineType][i]['value']; // this.ctx.lineWidth = this.srp[shapeName]['width'][lineType]; 
-					// this.ctx.lineWidth = this.srp[shapeName]['width'][lineType]; 
+					this.ctx.lineWidth = constellation[name].coordination[lineType][i]['value']; 
 				break;	
 
 				case 'stroke':
@@ -454,16 +377,17 @@ class Pan {
 				
 				case 'strokeStyle':
 					// For Gradient
-					if(  constellations[shapeName][lineType][i]['type']  == 'gradient' ) {
-						if( constellations[shapeName][lineType][i]['key'] == 'addColorStop' ) {
-							constellations[shapeName][lineType][i]['name']+'.addColorStop'+(constellations[shapeName][lineType][i]['value']);							
+					if(  constellation[name].coordination[lineType][i]['type']  == 'gradient' ) {
+						if( constellation[name].coordination[lineType][i]['key'] == 'addColorStop' ) {
+							constellation[name].coordination[lineType][i]['name']
+							+'.addColorStop'+(constellation[name].coordination[lineType][i]['value']);							
 						}
-						this.ctx.strokeStyle = constellations[shapeName][lineType][i]['name'];
+						this.ctx.strokeStyle = constellation[name].coordination[lineType][i]['name'];
 						
 					}
 					// For Numbers
 					else {
-						this.ctx.strokeStyle = constellations[shapeName][lineType][i]['value'];
+						this.ctx.strokeStyle = constellation[name].coordination[lineType][i]['value'];
 					}
 				break;	
 
@@ -473,16 +397,17 @@ class Pan {
 				
 				case 'fillStyle':
 					// For Gradient
-					if(  constellations[shapeName][lineType][i]['type']  == 'gradient' ) {
-						if( constellations[shapeName][lineType][i]['key'] == 'addColorStop' ) {
-							constellations[shapeName][lineType][i]['name']+'.addColorStop'+(constellations[shapeName][lineType][i]['value']);							
+					if(  constellation[name].coordination[lineType][i]['type']  == 'gradient' ) {
+						if( constellation[name].coordination[lineType][i]['key'] == 'addColorStop' ) {
+							constellation[name].coordination[lineType][i]['name']
+							+'.addColorStop'+(constellation[name].coordination[lineType][i]['value']);							
 						}
-						this.ctx.fillStyle = constellations[shapeName][lineType][i]['name'];
+						this.ctx.fillStyle = constellation[name].coordination[lineType][i]['name'];
 						
 					}
 					// For Numbers
 					else {
-						this.ctx.fillStyle = constellations[shapeName][lineType][i]['value'];
+						this.ctx.fillStyle = constellation[name].coordination[lineType][i]['value'];
 					}
 				break;	
 				
@@ -490,15 +415,15 @@ class Pan {
 		}; // [END] FOR
 	};
 
-	shapeStars(shapeName) {
-		let lineType = 'arc';
+	shapeStars(name, constellation) {
+		let linetype = 'arc';
 
 		// 1. Start
 		let randomRadius = Math.random() * (this.minMaxRadius.maxRadius - this.minMaxRadius.minRadius) + this.minMaxRadius.minRadius; 
 
 		// 2. Update
 		const update = () => {
-			for (let i = 0; i < constellations[shapeName][lineType].length; i++ ) {
+			for (let i = 0; i < constellation[name].coordination[linetype].length; i++ ) {
 				if (randomRadius > 2.2 || randomRadius < 1 ) {
 					this.radiusChange = - this.radiusChange;
 				}
@@ -508,13 +433,25 @@ class Pan {
 
 		// 3. Render Stars
 		const render = () => {
-			for (let i = 0; i < constellations[shapeName][lineType].length; i++ ) {
+			for (let i = 0; i < constellation[name].coordination[linetype].length; i++ ) {
 				this.ctx.beginPath();
 				this.ctx.arc( 
-					this.srp[shapeName]['relation']['x'] + constellations[shapeName][lineType][i]['x0'] * this.scaleSize, 
-					this.srp[shapeName]['relation']['y'] + constellations[shapeName][lineType][i]['x1'] * this.scaleSize, 
+
+					// X
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[linetype][i]['x0'] * 
+					this.scaleSize, 
+
+					// Y
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[linetype][i]['x1'] * 
+					this.scaleSize, 
+
+					// Radius Size
 					randomRadius, 
+
 					0, 
+					// 360 Degree
 					2 * Math.PI, false
 				);
 				this.ctx.shadowBlur 	= this.shadowBlur;
@@ -529,21 +466,38 @@ class Pan {
 		render();
 	};
 
-	shapeEvent( cursor, shapeName, offsetX, offsetY, eventName ) {
-		let lineType = 'outside';
+	shapeEvent( cursor, name, constellation, offsetX, offsetY, eventName ) {
+		let linetype = 'outside';
 		// 1. Draw Shape
 		const shape = new Path2D();
 		this.ctx.beginPath();
+		
 		shape.moveTo( 
-			this.srp[shapeName]['relation']['x'] + constellations[shapeName][lineType][0]['x0'] * this.srp[shapeName]['size'][lineType], 
-			this.srp[shapeName]['relation']['y'] + constellations[shapeName][lineType][0]['x1'] * this.srp[shapeName]['size'][lineType], 
+			// X
+			constellation[name].data.relation.x + 
+			constellation[name].coordination[linetype][0]['x0'] * 
+			constellation[name].data.scale.outside,
+			
+			// Y
+			constellation[name].data.relation.y + 
+			constellation[name].coordination[linetype][0]['x1'] * 
+			constellation[name].data.scale.outside,
 		);
-		for( let i = 1; i < constellations[shapeName][lineType].length; i++ ) {
-			shape.lineTo( 
-				this.srp[shapeName]['relation']['x'] + constellations[shapeName][lineType][i]['x0'] * this.srp[shapeName]['size'][lineType], 
-				this.srp[shapeName]['relation']['y'] + constellations[shapeName][lineType][i]['x1'] * this.srp[shapeName]['size'][lineType], 
+
+		for( let i = 1; i < constellation[name].coordination[linetype].length; i++ ) {
+			shape.lineTo(
+				// X
+				constellation[name].data.relation.x + 
+				constellation[name].coordination[linetype][i]['x0'] * 
+				constellation[name].data.scale.outside,
+				
+				// Y
+				constellation[name].data.relation.y + 
+				constellation[name].coordination[linetype][i]['x1'] * 
+				constellation[name].data.scale.outside,
 			);
 		}
+
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
 			// Stroke
 			this.ctx.lineWidth = 1;
@@ -559,9 +513,9 @@ class Pan {
 			});
 
 			if(eventName == 'click') { 
-				let shapeID = this.srp[shapeName]['ID']; 
-				let backendType = this.srp[shapeName]['backendType']; 
-				let coverDirection = this.srp[shapeName]['coverDirection']; 
+				let shapeID 		= constellation[name].data.backend.ID; 
+				let backendType 	= constellation[name].data.backend.postType; 
+				let coverDirection 	= constellation[name].data.backend.coverDirection; 
 				ajax.openModalClickEvent(shapeID, backendType, coverDirection);
 			}
 
@@ -629,7 +583,7 @@ class Pan {
 		this.isDragging = false;
 	};
 	
-	// Pointer: MOVE ⇆⇆⇆⇆⇆⇆
+	// Pointer: MOVE AND CLICK ⇆⇆⇆⇆⇆⇆
 	onPointerMove(event, eventName) {
 		if ( this.isDragging ) {
 			this.cameraOffset.x = event.clientX - this.dragStart.x;
@@ -647,13 +601,10 @@ class Pan {
 		let xPosition = parseInt(event.clientX - this.offsetX);
 		let yPosition = parseInt(event.clientY - this.offsetY);
 
-		// Shape Event Loop
-		for (let key of Object.keys( this.srp )) {
-			// 1. followCircle :: GSAP Cursor Animation
-			// 2. key : Name of Shape
-			// 3. xPosition, yPosition indicate current position of Cursor
-			this.shapeEvent( followCircle, key, xPosition, yPosition, eventName );
-		}
+		Object.entries(constellations).forEach( (entry, index) => {
+			const [key, value] = entry;
+			this.shapeEvent( followCircle, key, value, xPosition, yPosition, eventName );
+		});
 	};
 
 	handleTouch(event, singleTouchHandler) {

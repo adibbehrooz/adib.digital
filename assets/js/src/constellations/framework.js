@@ -9,6 +9,8 @@
 /******************************** CONSTELLATION :: FRAMEWORK ********************************
 /********************************************************************************************/
 
+const cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
 const framework = {
 
 	//____________________ I. DATA ____________________
@@ -23,7 +25,7 @@ const framework = {
 		// Camera Offset Positon
 		relation: { 
             x: window.innerWidth / .9 - window.innerWidth / 2, 
-            y: this.cameraOffset.y - window.innerHeight / 3.9
+            y: cameraOffset.y - window.innerHeight / 3.9
 		},
 		// Constellation Scale 
         scale: { 
@@ -45,9 +47,9 @@ const framework = {
 		},
 		outside: [
 			{ form: 'save' }, 
-				{ form: 'strokeStyle', value: "rgba( 255, 255, 255, 1)" }, 
+				{ form: 'strokeStyle', value: "rgba( 255, 255, 255, 0.5)" }, 
+				{ form: 'fillStyle', value: "rgba(255, 255, 255, .1)" },  
 				{ form: 'miterLimit', value: 4 }, 
-				{ form: 'fillStyle', value: "rgba(255, 255, 255, .1)" }, 
 				{ form: 'save' }, 
 					{ form: 'fillStyle', value: "rgba(255, 255, 255, .1)" }, 
 					{ form: 'beginPath' }, 
@@ -88,7 +90,7 @@ const framework = {
 				// Stroke
 				{ form: 'lineWidth', value: '0.1' },
 				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .5)' },
-				{ form: 'stroke'}, 
+				{ form: 'stroke'},
 				// Fill
 				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, .2)' },
 			{ form: 'restore'},
@@ -109,4 +111,4 @@ const framework = {
 	},
 };
 
-export { framework };
+export default { framework };

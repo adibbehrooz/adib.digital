@@ -9,6 +9,8 @@
 /******************************** CONSTELLATION :: SVG ********************************
 /**************************************************************************************/
 
+const cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
 const svg = {
 
 	//____________________ I. DATA ____________________
@@ -23,7 +25,7 @@ const svg = {
 		// Camera Offset Positon
 		relation: { 
             x: window.innerWidth / 1.7 - window.innerWidth / 2, 
-            y: this.cameraOffset.y - (window.innerHeight / 3.1) 
+            y: cameraOffset.y - window.innerHeight / 3.1 
 		},
 		// Constellation Scale 
         scale: { 
@@ -38,7 +40,7 @@ const svg = {
 
 	//____________________ II. COORDINATION ____________________
 
-	coordianation: {
+	coordination: {
 		curve: function(ctx) {
 			ctx.save();
 			ctx.restore();
@@ -173,4 +175,4 @@ const svg = {
 	},
 };
 
-export { svg };
+export default { svg };
