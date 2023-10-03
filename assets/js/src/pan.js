@@ -6,8 +6,13 @@
 	Version: 1.0
 */
 
-/******************************** SKY ********************************
+/******************************** PAN ********************************
 /*********************************************************************/
+
+// Line Module
+import { Lines } from './lines';
+const lines = new Lines();
+
 // Positions Module
 import { constellations } from './constellations';
 
@@ -119,18 +124,21 @@ class Pan {
 
 	waves() {
 		this.ctx.translate( -window.innerWidth, -window.innerHeight );
+		this.aurora();
 		this.staticWaves();
 		this.dynamicWaves();
 	};
 
 	// Static Waves
 	staticWaves() {
+		// this.ctx.save();
 		for( let m = 0; m < 2; m++ ) {	
+
 			// Draw Lines
 			this.ctx.beginPath();
 			this.ctx.moveTo( -window.innerWidth, (this.cameraOffset.y / 2) * 2.5  + (m * 10) );
 			this.ctx.lineTo( window.innerWidth,  (this.cameraOffset.y / 2) * 2.5 +  (m * 10) );
-
+			
 			// Width
 			this.ctx.lineWidth = 1;
 
@@ -149,18 +157,55 @@ class Pan {
 			this.ctx.shadowColor   	= "rgba(255, 255, 255, 1)";
 			this.ctx.stroke();
 		};
+		// this.ctx.restore();
+	};
+
+	aurora() {
+		let k = 5;
+		this.phi = this.frames / 10;
+		//this.ctx.save();
+		for( let m = 0; m < 2; m++ ) {	
+			// Draw Lines
+			this.ctx.beginPath();
+			this.ctx.moveTo( -window.innerWidth, (this.cameraOffset.y / 2) * .5  + (m * 1) );
+			this.ctx.lineTo( window.innerWidth,  (this.cameraOffset.y / 2) * .5 +  (m * 1) );
+			for (let x = -window.innerWidth; x < window.innerWidth; x++) {
+				let x = -window.innerWidth;
+				let y = Math.sin(x * this.frequency + this.phi) * this.amplitude / 10 + this.amplitude / 10;
+				this.ctx.lineTo(x, ((this.cameraOffset.y / 2) * .5) + y +  (m * k) );
+			}			
+			// Width
+			this.ctx.lineWidth = 1;
+
+			// Gradient Line
+			let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
+			gradient.addColorStop(0,"rgba(33,123,71, .1)");
+			gradient.addColorStop(0.5,"rgba(33,123,71, .9)");
+			gradient.addColorStop(1,"rgba(33,123,71, .1)");
+			this.ctx.strokeStyle 	= gradient;
+
+			this.ctx.lineWidth	 	= 50;
+			this.ctx.strokeStyle 	= "rgba(33,123,71, .1)";
+			this.ctx.shadowOffsetX 	= 0;
+			this.ctx.shadowOffsetY 	= -10;
+			this.ctx.shadowBlur		= 55;
+			this.ctx.shadowColor   	= "rgba(33,123,71, 1)";
+			this.ctx.stroke();
+		}	
+		//this.ctx.restore();
 	};
 
 	// Dynamic Waves
 	dynamicWaves() {
 		let k = 5, opacity = [ 0, 0 ];
+		//this.ctx.save();
 		for( let m = 0; m < 13; m++ ) {	
 			if( m >= 0 && m < 7) k+=1.1; else k +=0.8;
 
 			let firstOpacity = opacity[0] += 0.015;
 			let secondOpacity = opacity[1] += 0.038;
 			this.frames++;
-			this.phi = this.frames / 50;	
+			this.phi = this.frames / 50;
 
 			this.ctx.beginPath();
 			this.ctx.moveTo( -window.innerWidth, ( ((this.cameraOffset.y / 2) * 2.5)  + (m * k) ) );
@@ -186,6 +231,7 @@ class Pan {
 			this.ctx.shadowBlur	= 0;	
 			this.ctx.stroke();	
 		};
+		//this.ctx.restore();
 	};
 	
 	/************************* SHAPES ************************
@@ -223,196 +269,9 @@ class Pan {
 		constellation[name].coordination.curve(context);
 	};
 
-	straightlines(lineType, name, constellation ) {
-
-		// Draw Lines
-		for( let i = 0; i < constellation[name].coordination[lineType].length; i++ ) {
-					
-			let form = constellation[name].coordination[lineType][i].form;
-
-			switch(form) {
-
-				case 'scale':
-				this.ctx.scale( 
-					constellation[name].coordination[lineType][i]['x0'], 
-					constellation[name].coordination[lineType][i]['x1'] 
-				);
-				break;	
-
-				case 'miterLimit':
-					this.ctx.miterLimit = constellation[name].coordination[lineType][i]['value'];
-				break;	
-
-				case 'moveTo':
-				this.ctx.moveTo( 
-					// X
-					constellation[name].data.relation.x + 
-					constellation[name].coordination[lineType][i]['x0'] * 
-					constellation[name].data.scale[lineType],
-					// Y
-					constellation[name].data.relation.y + 
-					constellation[name].coordination[lineType][i]['x1'] * 
-					constellation[name].data.scale[lineType],
-				);
-				break;
-		
-				case 'lineTo':
-				this.ctx.lineTo( 
-					// X
-					constellation[name].data.relation.x + 
-					constellation[name].coordination[lineType][i]['x0'] * 
-					constellation[name].data.scale[lineType],
-
-					// Y
-					constellation[name].data.relation.y + 
-					constellation[name].coordination[lineType][i]['x1'] * 
-					constellation[name].data.scale[lineType],
-				);
-				break;
-
-				case "translate":
-				this.ctx.translate( 
-					constellation[name].coordination[lineType][i]['x0'], 
-					constellation[name].coordination[lineType][i]['x1'] 
-				);
-				break;
-
-				case 'transform':
-				this.ctx.transform( 
-					constellation[name].coordination[lineType][i]['x0'],
-					constellation[name].coordination[lineType][i]['x1'],
-					constellation[name].coordination[lineType][i]['x2'],
-					constellation[name].coordination[lineType][i]['x3'],
-					constellation[name].coordination[lineType][i]['x4'],
-					constellation[name].coordination[lineType][i]['x5'],
-				);
-				break;
-
-				case 'bezierCurveTo':
-				this.ctx.bezierCurveTo( 
-					// x1
-					constellation[name].data.relation.x + 
-					constellation[name].coordination[lineType][i]['x0'] *
-					constellation[name].data.scale[lineType],
-
-					// X2
-					constellation[name].data.relation.y + 
-					constellation[name].coordination[lineType][i]['x1'] * 
-					constellation[name].data.scale[lineType],
-
-					// x2
-					constellation[name].data.relation.x +
-					constellation[name].coordination[lineType][i]['x2'] *
-					constellation[name].data.scale[lineType],
-
-					// x3
-					constellation[name].data.relation.y + 
-					constellation[name].coordination[lineType][i]['x3'] * 
-					constellation[name].data.scale[lineType],
-
-					// x4
-					constellation[name].data.relation.x + 
-					constellation[name].coordination[lineType][i]['x4'] *
-					constellation[name].data.scale[lineType],
-
-					// x5
-					constellation[name].data.relation.y + 
-					constellation[name].coordination[lineType][i]['x5'] * 
-					constellation[name].data.scale[lineType],
-				);
-				break;
-
-				case 'fillRect':
-				this.ctx.fillRect( 
-					constellation[name].coordination[lineType][i]['x0'],
-					constellation[name].coordination[lineType][i]['x1'],
-					constellation[name].coordination[lineType][i]['x2'],
-					constellation[name].coordination[lineType][i]['x3'],
-				);				
-				break;	
-
-				case 'fillText':
-				this.ctx.fillText( 
-					constellation[name].coordination[lineType][i]['x0'],
-					constellation[name].coordination[lineType][i]['x1'],
-					constellation[name].coordination[lineType][i]['x2'],
-					constellation[name].coordination[lineType][i]['x3'],
-				);				
-				break;	
-
-				case 'arc':
-				this.ctx.arc( 
-					constellation[name].coordination[lineType][i]['x0'],
-					constellation[name].coordination[lineType][i]['x1'],
-					constellation[name].coordination[lineType][i]['x2'],
-					constellation[name].coordination[lineType][i]['x3'],
-					constellation[name].coordination[lineType][i]['x4'],
-					constellation[name].coordination[lineType][i]['x5'],
-				);				
-				break;	
-
-				case 'closePath':
-					this.ctx.closePath();
-				break;
-
-				case 'beginPath':
-					this.ctx.beginPath();
-				break;
-
-				case 'restore':
-					this.ctx.restore();
-				break;
-
-				case 'save':
-					this.ctx.save();
-				break;
-
-				case 'lineWidth':
-					this.ctx.lineWidth = constellation[name].coordination[lineType][i]['value']; 
-				break;	
-
-				case 'stroke':
-					this.ctx.stroke();
-				break;	
-				
-				case 'strokeStyle':
-					// For Gradient
-					if(  constellation[name].coordination[lineType][i]['type']  == 'gradient' ) {
-						if( constellation[name].coordination[lineType][i]['key'] == 'addColorStop' ) {
-							constellation[name].coordination[lineType][i]['name']
-							+'.addColorStop'+(constellation[name].coordination[lineType][i]['value']);							
-						}
-						this.ctx.strokeStyle = constellation[name].coordination[lineType][i]['name'];
-						
-					}
-					// For Numbers
-					else {
-						this.ctx.strokeStyle = constellation[name].coordination[lineType][i]['value'];
-					}
-				break;	
-
-				case 'fill':
-					this.ctx.fill();
-				break;
-				
-				case 'fillStyle':
-					// For Gradient
-					if(  constellation[name].coordination[lineType][i]['type']  == 'gradient' ) {
-						if( constellation[name].coordination[lineType][i]['key'] == 'addColorStop' ) {
-							constellation[name].coordination[lineType][i]['name']
-							+'.addColorStop'+(constellation[name].coordination[lineType][i]['value']);							
-						}
-						this.ctx.fillStyle = constellation[name].coordination[lineType][i]['name'];
-						
-					}
-					// For Numbers
-					else {
-						this.ctx.fillStyle = constellation[name].coordination[lineType][i]['value'];
-					}
-				break;	
-				
-			}; // [END] SWITCH
-		}; // [END] FOR
+	straightlines(lineType, name, constellation) {
+		let context = this.ctx;
+		lines.drawLines(lineType, name, constellation, context);
 	};
 
 	shapeStars(name, constellation) {
@@ -424,7 +283,7 @@ class Pan {
 		// 2. Update
 		const update = () => {
 			for (let i = 0; i < constellation[name].coordination[linetype].length; i++ ) {
-				if (randomRadius > 2.2 || randomRadius < 1 ) {
+				if (randomRadius > 2.1 || randomRadius < 1 ) {
 					this.radiusChange = - this.radiusChange;
 				}
 				randomRadius += this.radiusChange;
@@ -499,12 +358,27 @@ class Pan {
 		}
 
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
-			// Stroke
-			this.ctx.lineWidth = 1;
-			this.ctx.strokeStyle = 'rgba(255, 255, 255,  1)';
-			
-			// Fill
-			this.ctx.fillStyle = 'rgba(255, 255, 255,  1)'; // console.log(" TRUE "+" Shape Name :"+shapeName); 
+			this.ctx.save();
+				// Stroke
+				this.ctx.lineWidth = 1;
+				this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+				// Gradient Stroke
+				let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
+				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
+				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
+				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
+				this.ctx.strokeStyle 	= gradient;
+				// Shadow Stroke
+				this.ctx.shadowOffsetX 	= 0;
+				this.ctx.shadowOffsetY 	= -10;
+				this.ctx.shadowBlur		= 55;
+				this.ctx.shadowColor   	= "rgba(255, 255, 255, 1)";
+				this.ctx.stroke();
+
+				// Fill
+				this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+				this.ctx.fill(shape);
+			this.ctx.restore();
 
 			// Cursor GSAP
 			gsap.to(cursor, 0.1, {
@@ -518,18 +392,19 @@ class Pan {
 				let coverDirection 	= constellation[name].data.backend.coverDirection; 
 				ajax.openModalClickEvent(shapeID, backendType, coverDirection);
 			}
-
+			cancelAnimationFrame(animate);
 		} else {
-			// Stroke
-			this.ctx.lineWidth = 0.1;
-			this.ctx.strokeStyle = 'rgba(255, 255, 255,  0)';	
-			
-			// Fill
-			this.ctx.fillStyle = 'rgba(255, 255, 255,  0)';	// console.log(" FALSE "+" Shape Name :"+shapeName); 
+			this.ctx.save();
+				// Stroke
+				this.ctx.lineWidth = .2;
+				this.ctx.strokeStyle = 'rgba(255, 255, 255,  .5)';
+				this.ctx.stroke();
+				// Fill
+				this.ctx.fillStyle = 'rgba(255, 255, 255,  0)';	
+			this.ctx.restore();
 		}
 
 		// 2. Features
-		this.ctx.fill(shape);
 		this.ctx.closePath();
 	};
 

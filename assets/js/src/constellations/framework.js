@@ -47,11 +47,12 @@ const framework = {
 		},
 		outside: [
 			{ form: 'save' }, 
-				{ form: 'strokeStyle', value: "rgba( 255, 255, 255, 0.5)" }, 
-				{ form: 'fillStyle', value: "rgba(255, 255, 255, .1)" },  
+				// Stroke
+				{ form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, 
+				// Fill
+				{ form: 'fillStyle', value: "rgba(255, 255, 255, 0)" },  
 				{ form: 'miterLimit', value: 4 }, 
 				{ form: 'save' }, 
-					{ form: 'fillStyle', value: "rgba(255, 255, 255, .1)" }, 
 					{ form: 'beginPath' }, 
 						{ x0: 154.945, x1: 79.199, x2: 142.947, x3: 73.032, x4: 127.251, x5: 73.304,  form: 'bezierCurveTo' },
 						{ x0: 118.271, x1: 73.46, x2: 110.561, x3: 78.341, x4: 108.94, x5: 87.274,  form: 'bezierCurveTo' },
@@ -88,11 +89,11 @@ const framework = {
 				{ x0: 18.43538, x1: 25.901,	form: 'lineTo' },
 				{ x0: 11.13538, x1: 24.501,	form: 'lineTo' },
 				// Stroke
-				{ form: 'lineWidth', value: '0.1' },
+				{ form: 'lineWidth', value: '.2' },
 				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .5)' },
 				{ form: 'stroke'},
 				// Fill
-				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, .2)' },
+				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },
 			{ form: 'restore'},
 		],
 		arc: [

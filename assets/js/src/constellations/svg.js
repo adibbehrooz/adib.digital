@@ -47,8 +47,10 @@ const svg = {
 		},
 		outside: [
 			{ form: 'save' }, 
-				{ form: 'strokeStyle', value: "rgba( 255, 255, 255, 0.5)" }, 
-				{ form: 'fillStyle', value: "rgba(255, 255, 255, .05)" }, 
+				// Stroke
+				{ form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, 
+				// Fill
+				{ form: 'fillStyle', value: "rgba(255, 255, 255, 0)" }, 
 				{ form: 'miterLimit', value: 4 }, 
 				{ form: 'save' }, 
 					{ form: 'beginPath' }, 
@@ -87,8 +89,10 @@ const svg = {
 					{ form: 'closePath' }, 
 					{ form: 'fill' }, 
 					{ form: 'stroke' }, 
-					{ form: 'strokeStyle', value: "rgba( 255, 255, 255, .1)" }, 
-					{ form: 'fillStyle', value: "rgba(255, 255, 255, .1)" }, 
+					// Stroke
+					{ form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, 
+					// Fill
+					{ form: 'fillStyle', value: "rgba(255, 255, 255, 0)" }, 
 				// { form: 'restore' }, 
 				// { form: 'save' }, 
 					{ form: 'beginPath' }, 
@@ -152,7 +156,7 @@ const svg = {
 				{ x0: 9.23538, 	x1: 9.62383, 	form: 'moveTo' },
 				{ x0: 15.83538, x1: 15.12383, 	form: 'lineTo' },
 				// Stroke
-				{ form: 'lineWidth', value: '0.1' },
+				{ form: 'lineWidth', value: '.2' },
 				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .5)' },
 				{ form: 'stroke'}, 
 				// Fill

@@ -47,11 +47,13 @@ const webpack = {
 		},
 		outside: [
 			{ form: 'save' }, 
-				{ form: 'strokeStyle', value: "rgba( 255, 255, 255, 0.5)" }, 
-				{ form: 'fillStyle', value: "rgba(255, 255, 255, .1)" }, 
+				// Stroke
+				{ form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, // 0.5
+				// Fill
+				{ form: 'fillStyle', value: "rgba(255, 255, 255, 0)" },  // .1
 				{ form: 'miterLimit', value: 4 }, 
 				{ form: 'save' }, 
-					{ form: 'fillStyle', value: "rgba(255, 255, 255, 0.1)" }, 
+					{ form: 'fillStyle', value: "rgba(255, 255, 255, 0)" },  // .1
 					{ form: 'lineWidth', value: 0.036011 }, 
 					{ form: 'beginPath' }, 
 						{ x0:24.765896,  x1:21.456033,  form: 'moveTo' },
@@ -88,7 +90,7 @@ const webpack = {
 					{ form: 'closePath' }, 
 					{ form: 'fill' }, 
 					{ form: 'stroke' }, 
-					{ form: 'fillStyle', value: "rgba(255, 255, 255, 0.2)" }, 
+					{ form: 'fillStyle', value: "rgba(255, 255, 255, 0)" }, // .2
 					{ form: 'lineWidth', value: 0.036011 }, 
 					{ form: 'beginPath' }, 
 						{ x0:12.81386,  x1:21.729723,  form: 'moveTo' },
@@ -124,7 +126,7 @@ const webpack = {
 				{ x0: 19.134603,   x1: 9.306497, form: 'lineTo' },
 				{ x0: 13.096402,   x1: 5.690307, form: 'lineTo' },
 				// Stroke
-				{ form: 'lineWidth', value: '0.1' },
+				{ form: 'lineWidth', value: '.2' },
 				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .5)' },
 				{ form: 'stroke'}, 
 				// Fill

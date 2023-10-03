@@ -46,8 +46,14 @@ const css = {
 			ctx.restore();
 		},
 		outside: [
-			{ form: 'save' },
-				{ form: 'beginPath' }, 
+			{ form: 'save' }, 
+				// Stroke
+				{ form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, 
+				// Fill
+				{ form: 'fillStyle', value: "rgba(255, 255, 255, 0)" },  
+				{ form: 'miterLimit', value: 4 }, 
+				{ form: 'save' }, 
+					{ form: 'beginPath' }, 
 					{ x0: 0.000,   	x1: 19.232, form: 'moveTo' }, 
 					{ x0: 9.635,   	x1: 23.250, form: 'lineTo' }, 
 					{ x0: 20.800,   x1: 19.232, form: 'lineTo' },   
@@ -65,15 +71,11 @@ const css = {
 					{ x0: 5.0800,   x1: 14.471, form: 'lineTo' }, 
 					{ x0: 1.4750,   x1: 14.471, form: 'lineTo' }, 
 					{ x0: 0.0000,   x1: 19.142, form: 'lineTo' }, 
-				{ form: 'closePath' },
-				// Stroke
-				{ form: 'lineWidth', value: '1' },
-				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .2)' },
-				{ form: 'stroke'}, 
-				// Fill
-				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, .1)' },
-				{ form: 'fill' },
-			{ form: 'restore'}, // Restore [!Save]
+					{ form: 'closePath'},
+					{ form: 'fill' }, 
+					{ form: 'stroke' }, 
+				{ form: 'restore' }, 
+			{ form: 'restore' }, 
 		],
 		inside: [
 			{ form: 'save' },
@@ -85,7 +87,7 @@ const css = {
 				{ x0: 20.175,  	x1: 9.750, form: 'moveTo' },  
 				{ x0: 2.175,  	x1: 9.750, form: 'lineTo' }, 
 				// Stroke
-				{ form: 'lineWidth', value: '0.1' },
+				{ form: 'lineWidth', value: '0.2' },
 				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .5)' },
 				{ form: 'stroke'}, 
 				// Fill

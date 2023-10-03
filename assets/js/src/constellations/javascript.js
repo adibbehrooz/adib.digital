@@ -48,7 +48,10 @@ const javascript = {
 		outside: [
 			{ form: 'save' },
 				{ form: 'miterLimit', value: 4 }, 
-				{ form: 'fillStyle', value: "rgba(255, 255, 255, .1)" }, 
+				// Stroke
+				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 0)' }, 				
+				// Fill
+				{ form: 'fillStyle', value: "rgba(255, 255, 255, 0)" }, 
 				{ form: 'beginPath' }, 
 					{ x0: 0, x1: 0,  form: 'moveTo' },
 					{ x0: -40.763, x1: 0,  form: 'lineTo' },
@@ -84,11 +87,11 @@ const javascript = {
 				{ x0: -27.2960, x1: -3.66,	form: 'lineTo' },
 				{ x0: -4.2960, x1: -3.66,	form: 'lineTo' },
 				// Stroke
-				{ form: 'lineWidth', value: '0.1' },
+				{ form: 'lineWidth', value: '0.2' },
 				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .5)' },
 				{ form: 'stroke'}, 
 				// Fill
-				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, .2)' },
+				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },
 			{ form: 'restore'},
 		],
 		arc: [
