@@ -15,6 +15,7 @@
 	import svg 			from './constellations/svg';
 	import javascript 	from './constellations/javascript';
 
+	import mountains 	from './landscape/mountains';
 
 	export const constellations = {
 		'css': 			css,
@@ -23,3 +24,11 @@
 		'javascript': 	javascript,
 		'svg': 			svg,
 	};
+
+	export const landscape = {
+		'mountains': 	mountains,
+		//'shore':		shore,
+		//'ocean':		ocean,
+		//'aurora':		aurora
+	};
+

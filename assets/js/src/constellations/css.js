@@ -16,6 +16,9 @@ const css = {
 	//____________________ I. DATA ____________________
 
 	data: {
+		// Type
+		type: 'constellations',
+
 		// WordPress
 		backend : {
 			ID: 61,

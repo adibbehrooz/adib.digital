@@ -15,6 +15,7 @@ const lines = new Lines();
 
 // Positions Module
 import { constellations } from './constellations';
+import { landscape } from './constellations';
 
 // Ajax Module
 import { Ajax } from './ajax';
@@ -124,21 +125,31 @@ class Pan {
 
 	waves() {
 		this.ctx.translate( -window.innerWidth, -window.innerHeight );
+		this.mountains();
 		this.aurora();
 		this.staticWaves();
 		this.dynamicWaves();
 	};
 
+	nature() {
+		let canva = this.panCanvas 
+		let context = this.ctx;
+		Object.entries(landscape).forEach( (entry, index) => {
+			const [key, value] = entry;
+			value[key].coordination.curve(canva, context);
+		});
+	};
+
 	// Static Waves
 	staticWaves() {
-		// this.ctx.save();
-		for( let m = 0; m < 2; m++ ) {	
+		let counter;
+		for( counter = 0; counter < 3; counter++ ) {	
 
 			// Draw Lines
 			this.ctx.beginPath();
-			this.ctx.moveTo( -window.innerWidth, (this.cameraOffset.y / 2) * 2.5  + (m * 10) );
-			this.ctx.lineTo( window.innerWidth,  (this.cameraOffset.y / 2) * 2.5 +  (m * 10) );
-			
+			this.ctx.moveTo( -window.innerWidth, (this.cameraOffset.y / 2) * 2.5  + (counter * 10) );
+			this.ctx.lineTo( window.innerWidth,  (this.cameraOffset.y / 2) * 2.5 +  (counter * 10) );
+
 			// Width
 			this.ctx.lineWidth = 1;
 
@@ -157,42 +168,50 @@ class Pan {
 			this.ctx.shadowColor   	= "rgba(255, 255, 255, 1)";
 			this.ctx.stroke();
 		};
-		// this.ctx.restore();
 	};
 
-	aurora() {
-		let k = 5;
-		this.phi = this.frames / 10;
-		//this.ctx.save();
-		for( let m = 0; m < 2; m++ ) {	
+	mountains() {
+		let counter;
+		for( counter = 0; counter < 1; counter++ ) {	
+
 			// Draw Lines
-			this.ctx.beginPath();
-			this.ctx.moveTo( -window.innerWidth, (this.cameraOffset.y / 2) * .5  + (m * 1) );
-			this.ctx.lineTo( window.innerWidth,  (this.cameraOffset.y / 2) * .5 +  (m * 1) );
-			for (let x = -window.innerWidth; x < window.innerWidth; x++) {
-				let x = -window.innerWidth;
-				let y = Math.sin(x * this.frequency + this.phi) * this.amplitude / 10 + this.amplitude / 10;
-				this.ctx.lineTo(x, ((this.cameraOffset.y / 2) * .5) + y +  (m * k) );
-			}			
-			// Width
-			this.ctx.lineWidth = 1;
+				this.ctx.lineJoin = 'round';
+				this.ctx.lineCap = 'butt';
+				this.ctx.beginPath();
+					this.ctx.moveTo( -window.innerWidth, (this.cameraOffset.y / 2) * 2.5  + (counter * 10) );
+					
+					// 1. Line From Start Canvas To Middle Canvas
+					this.ctx.lineTo( window.innerWidth / 2,  ( this.cameraOffset.y / 2) * 2.5 +  (counter * 10)  );
+					
+					// 2. Wave Line
+					this.ctx.lineTo( window.innerWidth / 2 - 200,  (this.cameraOffset.y / 2) * 2 +  (counter * 10)  );
+					this.ctx.lineTo( window.innerWidth / 2 - 400,  (this.cameraOffset.y / 2) * 2.5 +  (counter * 10)  );
 
-			// Gradient Line
-			let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
-			gradient.addColorStop(0,"rgba(33,123,71, .1)");
-			gradient.addColorStop(0.5,"rgba(33,123,71, .9)");
-			gradient.addColorStop(1,"rgba(33,123,71, .1)");
-			this.ctx.strokeStyle 	= gradient;
+					// 3. Line From Middle Canvas to End Canvas
+					this.ctx.lineTo( window.innerWidth,  (this.cameraOffset.y / 2) * 2.5 +  (counter * 10)  );
+				
+				// Width
+				this.ctx.lineWidth = 1;
 
-			this.ctx.lineWidth	 	= 50;
-			this.ctx.strokeStyle 	= "rgba(33,123,71, .1)";
-			this.ctx.shadowOffsetX 	= 0;
-			this.ctx.shadowOffsetY 	= -10;
-			this.ctx.shadowBlur		= 55;
-			this.ctx.shadowColor   	= "rgba(33,123,71, 1)";
-			this.ctx.stroke();
-		}	
-		//this.ctx.restore();
+				// Gradient Line
+				let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
+				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
+				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
+				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
+				this.ctx.strokeStyle 	= gradient;
+
+				this.ctx.lineWidth	 	= 1;
+				this.ctx.strokeStyle 	= "#392E49";
+				this.ctx.shadowOffsetX 	= 0;
+				this.ctx.shadowOffsetY 	= -10;
+				this.ctx.shadowBlur		= 2;
+				this.ctx.shadowColor   	= "rgba(255, 255, 255, 1)";
+				this.ctx.stroke();
+		};
+	}
+
+	aurora() {
+		// aurora.init()
 	};
 
 	// Dynamic Waves
@@ -233,7 +252,7 @@ class Pan {
 		};
 		//this.ctx.restore();
 	};
-	
+
 	/************************* SHAPES ************************
 	/*********************************************************/	
 
