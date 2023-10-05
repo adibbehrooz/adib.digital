@@ -96,7 +96,8 @@ class Pan {
 		const animate = () => {
 			requestAnimationFrame(animate);
 			this.initDraw();
-			this.waves();
+			// this.environment()
+			this.nature()
 			this.shapes();
 		};
 		animate();
@@ -120,28 +121,31 @@ class Pan {
 		this.ctx.clearRect(0, 0, this.panCanvas.width, this.panCanvas.height);
 	};
 
-	/************************* WAVES *************************
+	/************************* NATURE *************************
 	/*********************************************************/	
 
-	waves() {
+	// ACTIVE: Connect to Inside Functions
+	nature() {
 		this.ctx.translate( -window.innerWidth, -window.innerHeight );
 		this.mountains();
 		this.aurora();
-		this.staticWaves();
-		this.dynamicWaves();
+		this.shore();
+		this.ocean();
 	};
 
-	nature() {
-		let canva = this.panCanvas 
+	// INACTIVE: Connect to outside Modules
+	environment() {
+		this.ctx.translate( -(window.innerWidth / 2 ) + this.cameraOffset.x, -(window.innerHeight / 2 ) + this.cameraOffset.y );
+		let canvaWidth = this.panCanvas.width
 		let context = this.ctx;
 		Object.entries(landscape).forEach( (entry, index) => {
 			const [key, value] = entry;
-			value[key].coordination.curve(canva, context);
+			value[key].coordination.curve(canvaWidth, context);
 		});
 	};
 
-	// Static Waves
-	staticWaves() {
+	// Shore
+	shore() {
 		let counter;
 		for( counter = 0; counter < 3; counter++ ) {	
 
@@ -208,16 +212,11 @@ class Pan {
 				this.ctx.shadowColor   	= "rgba(255, 255, 255, 1)";
 				this.ctx.stroke();
 		};
-	}
-
-	aurora() {
-		// aurora.init()
 	};
 
 	// Dynamic Waves
-	dynamicWaves() {
+	ocean() {
 		let k = 5, opacity = [ 0, 0 ];
-		//this.ctx.save();
 		for( let m = 0; m < 13; m++ ) {	
 			if( m >= 0 && m < 7) k+=1.1; else k +=0.8;
 
@@ -250,7 +249,10 @@ class Pan {
 			this.ctx.shadowBlur	= 0;	
 			this.ctx.stroke();	
 		};
-		//this.ctx.restore();
+	};
+
+	aurora() {
+		// aurora.init()
 	};
 
 	/************************* SHAPES ************************
