@@ -96,8 +96,7 @@ class Pan {
 		const animate = () => {
 			requestAnimationFrame(animate);
 			this.initDraw();
-			// this.environment()
-			this.nature()
+			this.nature();
 			this.shapes();
 		};
 		animate();
@@ -114,107 +113,32 @@ class Pan {
 		this.panCanvas.height = window.innerHeight;
 		this.ctx.scale(this.cameraZoom, this.cameraZoom);
 		this.ctx.translate( window.innerWidth , window.innerHeight ); // Full Pan	
-
 		this.ctx.save();
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-		this.ctx.restore();
 		this.ctx.clearRect(0, 0, this.panCanvas.width, this.panCanvas.height);
+		this.ctx.restore();
 	};
 
 	/************************* NATURE *************************
 	/*********************************************************/	
 
-	// ACTIVE: Connect to Inside Functions
 	nature() {
 		this.ctx.translate( -window.innerWidth, -window.innerHeight );
-		this.mountains();
-		this.aurora();
-		this.shore();
-		this.ocean();
-	};
-
-	// INACTIVE: Connect to outside Modules
-	environment() {
-		this.ctx.translate( -(window.innerWidth / 2 ) + this.cameraOffset.x, -(window.innerHeight / 2 ) + this.cameraOffset.y );
 		let canvaWidth = this.panCanvas.width
-		let context = this.ctx;
+		let context = this.ctx;		
+		let cameraOffset = this.cameraOffset;
+
+		// I. Mountain, II. Shore
 		Object.entries(landscape).forEach( (entry, index) => {
 			const [key, value] = entry;
-			value[key].coordination.curve(canvaWidth, context);
+			value[key].coordination.curve(canvaWidth, context, cameraOffset);
 		});
+
+		// III. Ocean
+		this.ocean();		
 	};
 
-	// Shore
-	shore() {
-		let counter;
-		for( counter = 0; counter < 3; counter++ ) {	
-
-			// Draw Lines
-			this.ctx.beginPath();
-			this.ctx.moveTo( -window.innerWidth, (this.cameraOffset.y / 2) * 2.5  + (counter * 10) );
-			this.ctx.lineTo( window.innerWidth,  (this.cameraOffset.y / 2) * 2.5 +  (counter * 10) );
-
-			// Width
-			this.ctx.lineWidth = 1;
-
-			// Gradient Line
-			let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
-			gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-			gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-			gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-			this.ctx.strokeStyle 	= gradient;
-
-			this.ctx.lineWidth	 	= 1;
-			this.ctx.strokeStyle 	= "#392E49";
-			this.ctx.shadowOffsetX 	= 0;
-			this.ctx.shadowOffsetY 	= -10;
-			this.ctx.shadowBlur		= 55;
-			this.ctx.shadowColor   	= "rgba(255, 255, 255, 1)";
-			this.ctx.stroke();
-		};
-	};
-
-	mountains() {
-		let counter;
-		for( counter = 0; counter < 1; counter++ ) {	
-
-			// Draw Lines
-				this.ctx.lineJoin = 'round';
-				this.ctx.lineCap = 'butt';
-				this.ctx.beginPath();
-					this.ctx.moveTo( -window.innerWidth, (this.cameraOffset.y / 2) * 2.5  + (counter * 10) );
-					
-					// 1. Line From Start Canvas To Middle Canvas
-					this.ctx.lineTo( window.innerWidth / 2,  ( this.cameraOffset.y / 2) * 2.5 +  (counter * 10)  );
-					
-					// 2. Wave Line
-					this.ctx.lineTo( window.innerWidth / 2 - 200,  (this.cameraOffset.y / 2) * 2 +  (counter * 10)  );
-					this.ctx.lineTo( window.innerWidth / 2 - 400,  (this.cameraOffset.y / 2) * 2.5 +  (counter * 10)  );
-
-					// 3. Line From Middle Canvas to End Canvas
-					this.ctx.lineTo( window.innerWidth,  (this.cameraOffset.y / 2) * 2.5 +  (counter * 10)  );
-				
-				// Width
-				this.ctx.lineWidth = 1;
-
-				// Gradient Line
-				let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
-				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-				this.ctx.strokeStyle 	= gradient;
-
-				this.ctx.lineWidth	 	= 1;
-				this.ctx.strokeStyle 	= "#392E49";
-				this.ctx.shadowOffsetX 	= 0;
-				this.ctx.shadowOffsetY 	= -10;
-				this.ctx.shadowBlur		= 2;
-				this.ctx.shadowColor   	= "rgba(255, 255, 255, 1)";
-				this.ctx.stroke();
-		};
-	};
-
-	// Dynamic Waves
+	// III. Ocean :: Dynamic Waves
 	ocean() {
 		let k = 5, opacity = [ 0, 0 ];
 		for( let m = 0; m < 13; m++ ) {	
@@ -249,10 +173,6 @@ class Pan {
 			this.ctx.shadowBlur	= 0;	
 			this.ctx.stroke();	
 		};
-	};
-
-	aurora() {
-		// aurora.init()
 	};
 
 	/************************* SHAPES ************************
@@ -413,7 +333,6 @@ class Pan {
 				let coverDirection 	= constellation[name].data.backend.coverDirection; 
 				ajax.openModalClickEvent(shapeID, backendType, coverDirection);
 			}
-			cancelAnimationFrame(animate);
 		} else {
 			this.ctx.save();
 				// Stroke
@@ -448,15 +367,14 @@ class Pan {
 	//____________________________	
 
 	geteLocation(event) {
-
 		if (event.touches && event.touches.length == 1) {
 			return { 
-				x: event.touches[0].clientX, 
+				x: event.touches[0].clientX,
 				y: event.touches[0].clientY 
 			};
 		} else if (event.clientX && event.clientY) {
 			return { 
-				x: event.clientX, 
+				x: event.clientX,
 				y: event.clientY
 			}
 		}
@@ -479,13 +397,8 @@ class Pan {
 		this.isDragging = false;
 	};
 	
-	// Pointer: MOVE AND CLICK ⇆⇆⇆⇆⇆⇆
-	onPointerMove(event, eventName) {
-		if ( this.isDragging ) {
-			this.cameraOffset.x = event.clientX - this.dragStart.x;
-			this.cameraOffset.y = event.clientY - this.dragStart.y;
-		}
-
+	// Pointer: MOVE AND CLICK (Shape) ⇆⇆⇆⇆⇆⇆
+	onPointerMoveShape(event, eventName) {
 		// Cursor
 		const followCircle = document.getElementById('followCircle');
 		gsap.to(followCircle, 0.1, {
@@ -494,13 +407,45 @@ class Pan {
 		});
 		
 		// Offset
-		let xPosition = parseInt(event.clientX - this.offsetX);
-		let yPosition = parseInt(event.clientY - this.offsetY);
-
+		let xPosition = event.clientX - this.offsetX;
+		let yPosition = event.clientY - this.offsetY;
+		
+		// Shape Event
 		Object.entries(constellations).forEach( (entry, index) => {
 			const [key, value] = entry;
 			this.shapeEvent( followCircle, key, value, xPosition, yPosition, eventName );
 		});
+	};
+
+	onPointerMoveText(event) {
+		
+		// Offset
+		let xPosition = event.clientX - this.offsetX;
+		let yPosition = event.clientY - this.offsetY;
+		
+		// Witout Drag
+		let oceanHorizontalLine = (this.cameraOffset.y / 2) * 2.5 + 50;
+		if( yPosition > oceanHorizontalLine ) {
+			console.log( "Down Middle" );
+		} else {
+			console.log( "UP Middle" );	
+		}
+
+		// With Drag
+		if ( this.isDragging ) {
+			this.cameraOffset.x = event.clientX - this.dragStart.x;
+			this.cameraOffset.y = event.clientY - this.dragStart.y;
+
+			let oceanVerticalLine = this.cameraOffset.x;
+			let oceanHorizontalLine = (this.cameraOffset.y / 2) * 2.5 + 50;
+	
+			// TextEvent
+			if( yPosition > oceanHorizontalLine ) {
+				console.log( "Down Middle :: WITH DRAG" );
+			} else {
+				console.log( "UP Middle :: WITH DRAG" );
+			}
+		}
 	};
 
 	handleTouch(event, singleTouchHandler) {
@@ -575,7 +520,8 @@ class Pan {
 		});
 		this.panCanvas.addEventListener( "mousemove", event => { 
 			let eventName = "mousemove";
-			this.onPointerMove(event, eventName);
+			this.onPointerMoveShape(event, eventName);
+			this.onPointerMoveText(event);
 		});
 
 		// 3. Click
@@ -583,7 +529,7 @@ class Pan {
 		
 		this.panCanvas.addEventListener( "click", event => { 
 			let eventName = "click";
-			this.onPointerMove(event, eventName);			
+			this.onPointerMoveShape(event, eventName);			
 		});
 
 

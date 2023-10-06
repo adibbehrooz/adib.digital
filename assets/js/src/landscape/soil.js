@@ -12,7 +12,7 @@
 
 const cameraOffset = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
-const shore = {
+const soil = {
 
 	//____________________ I. DATA ____________________
 
@@ -46,31 +46,24 @@ const shore = {
 
 	coordination: {
 		curve: function(canvaWidth, ctx, cameraOffset) {
-            let counter;
-            for( counter = 0; counter < 3; counter++ ) {	
-    
-                // Draw Lines
-                ctx.beginPath();
-                ctx.moveTo( -window.innerWidth, (cameraOffset.y / 2) * 2.5  + (counter * 1) );
-                ctx.lineTo( window.innerWidth,  (cameraOffset.y / 2) * 2.5 +  (counter * 1) );
-    
-                // Width
-                ctx.lineWidth = 1;
-    
-                // Gradient Line
-                let gradient = ctx.createLinearGradient(0, 0, canvaWidth, 0);
-                gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-                gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-                gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-                ctx.strokeStyle 	= gradient;
-    
-                ctx.strokeStyle 	= "#392E49";
-                ctx.shadowOffsetX 	= 0;
-                ctx.shadowOffsetY 	= -10;
-                ctx.shadowBlur		= 55;
-                ctx.shadowColor   	= "rgba(255, 255, 255, 1)";
-                ctx.stroke();
-            }
+			// Draw Lines
+			ctx.beginPath();
+			ctx.moveTo( -window.innerWidth, (cameraOffset.y / 2) * 2.7 );
+			ctx.lineTo( window.innerWidth,  (cameraOffset.y / 2) * 2.7 );
+		
+			// Width
+			ctx.lineWidth = 100;
+		
+			// Gradient Line
+			let gradient = ctx.createLinearGradient(0, 0, canvaWidth, 0);
+			gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
+			gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
+			gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
+			ctx.strokeStyle 	= gradient;
+		
+			ctx.strokeStyle 	= "rgba(23, 210, 168, .01)";
+			ctx.shadowBlur		= 10;
+			ctx.stroke();
 		},
 		outside: [
 			{ form: 'save' }, 
@@ -87,4 +80,4 @@ const shore = {
 	},
 };
 
-export default { shore };
+export default { soil };
