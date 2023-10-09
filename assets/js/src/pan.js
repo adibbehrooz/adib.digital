@@ -14,8 +14,8 @@ import { Lines } from './lines';
 const lines = new Lines();
 
 // Positions Module
-import { constellations } from './constellations';
-import { landscape } from './constellations';
+import { constellations } from './shapes';
+import { landscape } from './shapes';
 
 // Ajax Module
 import { Ajax } from './ajax';
@@ -123,18 +123,20 @@ class Pan {
 	/*********************************************************/	
 
 	nature() {
+
+		// 1. Canvas
 		this.ctx.translate( -window.innerWidth, -window.innerHeight );
 		let canvaWidth = this.panCanvas.width
 		let context = this.ctx;		
 		let cameraOffset = this.cameraOffset;
 
-		// I. Mountain, II. Shore
+		// Without Drag
 		Object.entries(landscape).forEach( (entry, index) => {
 			const [key, value] = entry;
 			value[key].coordination.curve(canvaWidth, context, cameraOffset);
 		});
 
-		// III. Ocean
+		// Draw Ocean
 		this.ocean();		
 	};
 
@@ -298,6 +300,7 @@ class Pan {
 			);
 		}
 
+		// Is PointIn Path
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
 			this.ctx.save();
 				// Stroke
@@ -342,7 +345,7 @@ class Pan {
 				// Fill
 				this.ctx.fillStyle = 'rgba(255, 255, 255,  0)';	
 			this.ctx.restore();
-		}
+		} // Is PointIn Path
 
 		// 2. Features
 		this.ctx.closePath();
@@ -379,6 +382,9 @@ class Pan {
 			}
 		}
 	};
+	
+	// 1. Pointer Event
+	//____________________________	
 
 	// Pointer: DOWN ↓↓↓↓
 	onPointerDown(event) {
@@ -397,7 +403,9 @@ class Pan {
 		this.isDragging = false;
 	};
 	
-	// Pointer: MOVE AND CLICK (Shape) ⇆⇆⇆⇆⇆⇆
+	// Pointer: MOVE AND CLICK ⇆⇆⇆⇆⇆⇆
+	
+	// I. Shape
 	onPointerMoveShape(event, eventName) {
 		// Cursor
 		const followCircle = document.getElementById('followCircle');
@@ -417,13 +425,14 @@ class Pan {
 		});
 	};
 
+	// II. Text
 	onPointerMoveText(event) {
 		
 		// Offset
 		let xPosition = event.clientX - this.offsetX;
 		let yPosition = event.clientY - this.offsetY;
 		
-		// Witout Drag
+		// Horizontal Line Witout Drag
 		let oceanHorizontalLine = (this.cameraOffset.y / 2) * 2.5 + 50;
 		if( yPosition > oceanHorizontalLine ) {
 			console.log( "Down Middle" );
@@ -431,10 +440,14 @@ class Pan {
 			console.log( "UP Middle" );	
 		}
 
-		// With Drag
+		// Horizontal Line With Drag
 		if ( this.isDragging ) {
 			this.cameraOffset.x = event.clientX - this.dragStart.x;
 			this.cameraOffset.y = event.clientY - this.dragStart.y;
+
+			// 	Upper Ocean Horizontal Line
+			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ <--- This is Ocean Horizontal Line
+			// 	Lower Ocean Horizontal Line
 
 			let oceanVerticalLine = this.cameraOffset.x;
 			let oceanHorizontalLine = (this.cameraOffset.y / 2) * 2.5 + 50;
@@ -447,6 +460,9 @@ class Pan {
 			}
 		}
 	};
+
+	// 2. Touch Event 
+	//____________________________	
 
 	handleTouch(event, singleTouchHandler) {
 		if ( event.touches.length == 1 ) {
@@ -520,8 +536,8 @@ class Pan {
 		});
 		this.panCanvas.addEventListener( "mousemove", event => { 
 			let eventName = "mousemove";
-			this.onPointerMoveShape(event, eventName);
-			this.onPointerMoveText(event);
+			this.onPointerMoveShape(event, eventName); // Shape
+			this.onPointerMoveText(event); // Text
 		});
 
 		// 3. Click

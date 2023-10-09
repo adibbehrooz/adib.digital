@@ -72,12 +72,35 @@ class Lines {
 
 				case 'transform':
 				context.transform( 
-					constellation[name].coordination[lineType][i]['x0'],
-					constellation[name].coordination[lineType][i]['x1'],
-					constellation[name].coordination[lineType][i]['x2'],
-					constellation[name].coordination[lineType][i]['x3'],
-					constellation[name].coordination[lineType][i]['x4'],
-					constellation[name].coordination[lineType][i]['x5'],
+					// X0
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[lineType][i]['x0'] *
+					constellation[name].data.scale[lineType],
+
+					// X1
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[lineType][i]['x1'] *
+					constellation[name].data.scale[lineType],
+
+					// X2
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[lineType][i]['x2'] *
+					constellation[name].data.scale[lineType],
+
+					// X3
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[lineType][i]['x3'] *
+					constellation[name].data.scale[lineType],
+
+					// x4
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[lineType][i]['x4'] *
+					constellation[name].data.scale[lineType],
+
+					// X5
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[lineType][i]['x5'] *
+					constellation[name].data.scale[lineType],
 				);
 				break;
 
@@ -117,10 +140,25 @@ class Lines {
 
 				case 'fillRect':
 				context.fillRect( 
-					constellation[name].coordination[lineType][i]['x0'],
-					constellation[name].coordination[lineType][i]['x1'],
-					constellation[name].coordination[lineType][i]['x2'],
+					// X0
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[lineType][i]['x0'] *
+					constellation[name].data.scale[lineType],
+
+					// X1
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[lineType][i]['x1'] *
+					constellation[name].data.scale[lineType],
+
+					// X2
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[lineType][i]['x2'] *
+					constellation[name].data.scale[lineType],
+
+					// X3
+					constellation[name].data.relation.y + 
 					constellation[name].coordination[lineType][i]['x3'],
+					constellation[name].data.scale[lineType],
 				);				
 				break;	
 
@@ -135,12 +173,30 @@ class Lines {
 
 				case 'arc':
 				context.arc( 
+
+					// X0
+					constellation[name].data.relation.x + 
 					constellation[name].coordination[lineType][i]['x0'],
+
+					// X1
+					constellation[name].data.relation.y + 
 					constellation[name].coordination[lineType][i]['x1'],
+
+					// X2
+					constellation[name].data.relation.x + 
 					constellation[name].coordination[lineType][i]['x2'],
+
+					// X3
+					constellation[name].data.relation.y + 
 					constellation[name].coordination[lineType][i]['x3'],
+
+					// X4
+					constellation[name].data.relation.x + 
 					constellation[name].coordination[lineType][i]['x4'],
-					constellation[name].coordination[lineType][i]['x5'],
+
+					// X5
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[lineType][i]['x5'],				
 				);				
 				break;	
 
