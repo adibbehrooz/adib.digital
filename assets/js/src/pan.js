@@ -147,21 +147,30 @@ class Pan {
 
 		// Draw Ocean
 		this.ocean();	
-		// this.text();	
+		this.sillText();	
 	};
 
-	text() {
-		this.ctx.font = "20px Georgia";
-		// Create gradient
-		const gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
-		gradient.addColorStop("0", "magenta");
-		gradient.addColorStop("0.5", "blue");
-		gradient.addColorStop("1.0", "red");
-		
-		// Fill with gradient
+	sillText() {
+		let opacity = [ 0, 0 ];
+		let firstOpacity = opacity[0] += 0.4;
+		let secondOpacity = opacity[1] += 0.1;
+
+		this.ctx.font = "36px Inconsolata";
+		// this.ctx.fillStyle = "rgba(255, 255, 255, .3)";
+		let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
+		gradient.addColorStop(0,"rgba(23, 210, 168, "+ firstOpacity +")");
+		gradient.addColorStop(0.5,"rgba(255, 255, 255, "+ secondOpacity +")");
+		gradient.addColorStop(1,"rgba(23, 210, 168, "+ firstOpacity +")");
 		this.ctx.fillStyle = gradient;
-		this.ctx.fillText("Back-End Developr!", 10, 90);
-		console.log("WITH DRAG :: Back-End Developr");		
+
+		this.ctx.fillText("FRONT-END DEVELOPER", 
+			window.innerWidth - window.innerWidth / 1.06, 
+			this.cameraOffset.y - window.innerHeight / 2.4 
+		);
+		this.ctx.fillText("BACK-END DEVELOPER", 
+			window.innerWidth - window.innerWidth / 1.06, 
+			this.cameraOffset.y + window.innerHeight * .37
+		);
 	};
 
 	// III. Ocean :: Dynamic Waves
@@ -433,6 +442,10 @@ class Pan {
 	
 	// I. Shape
 	onPointerMoveShape(event, eventName) {
+		if ( this.isDragging ) {
+			this.cameraOffset.x = event.clientX - this.dragStart.x;
+			this.cameraOffset.y = event.clientY - this.dragStart.y;
+		}
 		// Cursor
 		const followCircle = document.getElementById('followCircle');
 		gsap.to(followCircle, 0.1, {
@@ -453,7 +466,7 @@ class Pan {
 
 	// II. Text
 	onPointerMoveText(event) {
-
+		
 		// 	Upper Ocean Horizontal Line
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ <--- This is Ocean Horizontal Line
 		// 	Lower Ocean Horizontal Line
@@ -461,7 +474,8 @@ class Pan {
 		// Offset
 		let xPosition = event.clientX - this.offsetX;
 		let yPosition = event.clientY - this.offsetY;
-
+		
+		
 		// I. Horizontal Line "Witout" Drag
 		let oceanHorizontalLine = (this.cameraOffset.y / 2) * 2.5 + 50;
 		if( yPosition > oceanHorizontalLine ) {	
@@ -485,6 +499,7 @@ class Pan {
 				console.log("WITH DRAG :: Front-End Developr");
 			}
 		}
+		
 	};
 
 	// 2. Touch Event 
@@ -563,7 +578,7 @@ class Pan {
 		this.panCanvas.addEventListener( "mousemove", event => { 
 			let eventName = "mousemove";
 			this.onPointerMoveShape(event, eventName); // Shape
-			this.onPointerMoveText(event); // Text
+			// this.onPointerMoveText(event); // Text
 		});
 
 		// 3. Click

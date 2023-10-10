@@ -133,7 +133,7 @@ module.exports = {
 				'roboto'		: ['Roboto'],
 				'Imbue'			: ['"Imbue"', 'serif'],	
 				'robotoMono'	: ['"Roboto Mono"', 'monospace'],
-				'Cutive'		: ['Cutive Mono', 'monospace'], 
+				'Inconsolata'	: ['Inconsolata', 'monospace'], 
 			},
 		},
 	},

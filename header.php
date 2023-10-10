@@ -47,7 +47,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet"> 
 	<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;600&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400&display=swap" rel="stylesheet">
 
 	<?php //___________ Misc ___________ ?>
 	<?php //____________________________ ?>
