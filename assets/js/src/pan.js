@@ -21,6 +21,11 @@ import { landscape } from './shapes';
 import { Ajax } from './ajax';
 const ajax = new Ajax();
 
+
+// Text Module
+// import { Text } from './canvas';
+// const text = new Text();
+
 class Pan {
 	
 	//____________________________
@@ -80,6 +85,10 @@ class Pan {
 
 		// Shape Line Types
 		this.lineTypes =  ['curve', 'inside', 'outside', 'arc'];
+
+		// Skill Texts
+		this.activeTextClass 	= '--active';
+		this.deactiveTextClass 	= '--deactive';
 	};
 
 	//_______________________________
@@ -137,7 +146,22 @@ class Pan {
 		});
 
 		// Draw Ocean
-		this.ocean();		
+		this.ocean();	
+		// this.text();	
+	};
+
+	text() {
+		this.ctx.font = "20px Georgia";
+		// Create gradient
+		const gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
+		gradient.addColorStop("0", "magenta");
+		gradient.addColorStop("0.5", "blue");
+		gradient.addColorStop("1.0", "red");
+		
+		// Fill with gradient
+		this.ctx.fillStyle = gradient;
+		this.ctx.fillText("Back-End Developr!", 10, 90);
+		console.log("WITH DRAG :: Back-End Developr");		
 	};
 
 	// III. Ocean :: Dynamic Waves
@@ -306,17 +330,19 @@ class Pan {
 				// Stroke
 				this.ctx.lineWidth = 1;
 				this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+
 				// Gradient Stroke
 				let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
 				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
 				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
 				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
 				this.ctx.strokeStyle 	= gradient;
+
 				// Shadow Stroke
 				this.ctx.shadowOffsetX 	= 0;
 				this.ctx.shadowOffsetY 	= -10;
-				this.ctx.shadowBlur		= 55;
-				this.ctx.shadowColor   	= "rgba(255, 255, 255, 1)";
+				this.ctx.shadowBlur	= 55;
+				this.ctx.shadowColor = "rgba(255, 255, 255, 1)";
 				this.ctx.stroke();
 
 				// Fill
@@ -340,10 +366,10 @@ class Pan {
 			this.ctx.save();
 				// Stroke
 				this.ctx.lineWidth = .2;
-				this.ctx.strokeStyle = 'rgba(255, 255, 255,  .5)';
+				this.ctx.strokeStyle = 'rgba(255, 255, 255, .5)';
 				this.ctx.stroke();
 				// Fill
-				this.ctx.fillStyle = 'rgba(255, 255, 255,  0)';	
+				this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';	
 			this.ctx.restore();
 		} // Is PointIn Path
 
@@ -427,36 +453,36 @@ class Pan {
 
 	// II. Text
 	onPointerMoveText(event) {
-		
+
+		// 	Upper Ocean Horizontal Line
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ <--- This is Ocean Horizontal Line
+		// 	Lower Ocean Horizontal Line
+
 		// Offset
 		let xPosition = event.clientX - this.offsetX;
 		let yPosition = event.clientY - this.offsetY;
-		
-		// Horizontal Line Witout Drag
+
+		// I. Horizontal Line "Witout" Drag
 		let oceanHorizontalLine = (this.cameraOffset.y / 2) * 2.5 + 50;
-		if( yPosition > oceanHorizontalLine ) {
-			console.log( "Down Middle" );
-		} else {
-			console.log( "UP Middle" );	
+		if( yPosition > oceanHorizontalLine ) {	
+			console.log("WITHOUT DRAG :: Back-End Developr");
+		} else {		
+			console.log("WITHOUT DRAG :: Front-End Developr");
 		}
 
-		// Horizontal Line With Drag
+		// II. Horizontal Line "With" Drag
 		if ( this.isDragging ) {
 			this.cameraOffset.x = event.clientX - this.dragStart.x;
 			this.cameraOffset.y = event.clientY - this.dragStart.y;
 
-			// 	Upper Ocean Horizontal Line
-			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ <--- This is Ocean Horizontal Line
-			// 	Lower Ocean Horizontal Line
-
 			let oceanVerticalLine = this.cameraOffset.x;
 			let oceanHorizontalLine = (this.cameraOffset.y / 2) * 2.5 + 50;
 	
-			// TextEvent
+			// TextEvent With Drug
 			if( yPosition > oceanHorizontalLine ) {
-				console.log( "Down Middle :: WITH DRAG" );
+				console.log("WITH DRAG :: Back-End Developr");
 			} else {
-				console.log( "UP Middle :: WITH DRAG" );
+				console.log("WITH DRAG :: Front-End Developr");
 			}
 		}
 	};

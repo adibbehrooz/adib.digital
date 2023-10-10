@@ -51,7 +51,7 @@ const linux = {
 		outside: [
             { form: 'save' }, 
                 // Stroke
-                { form: 'strokeStyle', value: "rgba( 255, 255, 255, .1)" }, // 0.5
+                { form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, // 0.5
                 { form: 'miterLimit', value: 4 }, 
                 
                 { form: 'save' }, 
@@ -61,17 +61,17 @@ const linux = {
                     
                     { form: 'save' }, 
                         // Fill
-                        { form: 'fillStyle', value: "rgba(255, 255, 255, .1)" }, 
+                        { form: 'fillStyle', value: "rgba(255, 255, 255, 0)" }, 
                         // Stroke
-                        { form: 'strokeStyle', value: "rgba( 255, 255, 255, .1)" }, // 0.5
-                        { form: 'strokeStyle', value: "rgba( 255, 255, 255, .1)" }, // 0.5
+                        { form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, // 0.5
+                        { form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, // 0.5
                     { form: 'restore' }, 
                    
                     { form: 'save' }, 
                         // Fill
-                        { form: 'fillStyle', value: "rgba( 255, 255, 255, .1)" }, // 0.5
+                        { form: 'fillStyle', value: "rgba( 255, 255, 255, 0)" }, // 0.5
                         // Stroke
-                        { form: 'strokeStyle', value: "rgba( 255, 255, 255, .1)" }, // 0.5
+                        { form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, // 0.5
                         { form: 'lineWidth', value: 0.001 }, 
                         { form: 'beginPath' }, 
                             { x0: 58.000005, x1: 63.000005,  form: 'moveTo' },
@@ -107,24 +107,31 @@ const linux = {
                 
                 { form: 'save' }, 
                     // Fill
-                    { form: 'fillStyle', value: "rgba( 255, 255, 255, .1)" }, // 0.5
+                    { form: 'fillStyle', value: "rgba( 255, 255, 255, 0)" }, // 0.5
                     // Stroke
-                    { form: 'strokeStyle', value: "rgba( 255, 255, 255, .1)" }, // 0.5
-                    { form: 'strokeStyle', value: "rgba( 255, 255, 255, .1)" }, // 0.5
+                    { form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, // 0.5
+                    { form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, // 0.5
                 { form: 'restore' }, 
             { form: 'restore' }, 
 		],
 		inside: [
 			{ form: 'save' },
-				{ x0: 3.175,   	x1: 2.750, form: 'moveTo' }, 
-				{ x0: 21.500,   x1: 2.750, form: 'lineTo' }, 
-				{ x0: 18.700,   x1: 17.900, form: 'lineTo' }, 
-				{ x0: 9.700,   	x1: 21.000, form: 'lineTo' }, 
-				{ x0: 1.700,   	x1: 17.500, form: 'lineTo' }, 
-				{ x0: 20.175,  	x1: 9.750, form: 'moveTo' },  
-				{ x0: 2.175,  	x1: 9.750, form: 'lineTo' }, 
+				{ x0: 9.975,   x1: 10.750, form: 'moveTo' }, 
+				{ x0: 9.975,   x1: 24.750, form: 'lineTo' },  
+				{ x0: 14.975,   x1: 27.750, form: 'lineTo' },  
+				{ x0: 24.975,   x1: 27.750, form: 'lineTo' },  
+				{ x0: 28.575,   x1: 23.750, form: 'lineTo' },  
+				{ x0: 28.575,   x1: 14.750, form: 'lineTo' },   
+				{ x0: 24.575,   x1: 12.750, form: 'lineTo' },   
+				{ x0: 17.575,   x1: 12.750, form: 'lineTo' },   
+				{ x0: 15.775,   x1: 14.750, form: 'lineTo' },   
+				{ x0: 15.775,   x1: 21.750, form: 'lineTo' },   
+
+				{ x0: 22.175,   x1: 12.750, form: 'moveTo' }, 
+				{ x0: 22.175,   x1: 21.750, form: 'lineTo' },  
+
 				// Stroke
-				{ form: 'lineWidth', value: '0.2' },
+				{ form: 'lineWidth', value: '.2' },
 				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .5)' },
 				{ form: 'stroke'}, 
 				// Fill
@@ -133,13 +140,18 @@ const linux = {
 		],
 		arc: [
 			{ form: 'save' },
-				{ x0: 3.175,   	x1: 2.750  },  
-				{ x0: 21.500,   x1: 2.750  },  
-				{ x0: 18.700,   x1: 17.900 },  
-				{ x0: 9.700,   	x1: 21.000 },  
-				{ x0: 1.700,   	x1: 17.500 },  
-				{ x0: 2.175,  	x1: 9.7500 },  
-				{ x0: 20.175,  	x1: 9.750  },  
+			{ x0: 9.975,   x1: 10.750  },  
+			{ x0: 9.975,   x1: 24.750  },  
+			{ x0: 14.975,   x1: 27.750 },  
+			{ x0: 24.975,   x1: 27.750 },  
+			{ x0: 28.575,   x1: 23.750 },  
+			{ x0: 28.575,   x1: 14.750 },  
+			{ x0: 24.575,   x1: 12.750 },  
+			{ x0: 17.575,   x1: 12.750  },  
+			{ x0: 15.775,   x1: 14.750  },  
+			{ x0: 15.775,   x1: 21.750  },  
+			{ x0: 22.175,   x1: 12.750  },  
+			{ x0: 22.175,   x1: 21.750  },  
 			{ form: 'restore'},
 		],
 	},
