@@ -64,12 +64,12 @@ const pyramids = {
 				ctx.fill();
 
 				// Stroke
-				ctx.strokeStyle 	= "#392E49";
-					// width
-					ctx.lineWidth	 	= 1;
-					// Blure
-					ctx.shadowBlur		= 2;
-					ctx.shadowColor   	= "rgba(255, 255, 255, 1)";
+				ctx.strokeStyle = "#392E49";
+				// width
+				ctx.lineWidth = 1;
+				// Blure
+				ctx.shadowBlur = 2;
+				ctx.shadowColor = "rgba(255, 255, 255, 1)";
 				ctx.stroke();
 			};
 

@@ -129,7 +129,7 @@ module.exports = {
 			// Font Family
 			fontFamily: {
 				'montserrat'	: ['Montserrat'],
-				'jetbrains'		: ['JetBrains'],
+				'Jetbrains'		: ['JetBrains Mono', 'monospace'],
 				'roboto'		: ['Roboto'],
 				'Imbue'			: ['"Imbue"', 'serif'],	
 				'robotoMono'	: ['"Roboto Mono"', 'monospace'],

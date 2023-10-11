@@ -21,10 +21,9 @@ import { landscape } from './shapes';
 import { Ajax } from './ajax';
 const ajax = new Ajax();
 
-
-// Text Module
-// import { Text } from './canvas';
-// const text = new Text();
+// Texts Module
+import { Texts } from './texts';
+const texts = new Texts();
 
 class Pan {
 	
@@ -133,47 +132,28 @@ class Pan {
 
 	nature() {
 
-		// 1. Canvas
+		// Canvas Data
 		this.ctx.translate( -window.innerWidth, -window.innerHeight );
+		let canva = this.panCanvas;
 		let canvaWidth = this.panCanvas.width
 		let context = this.ctx;		
 		let cameraOffset = this.cameraOffset;
 
-		// Without Drag
+		// 	I. Pyramids, Soil, Shore
 		Object.entries(landscape).forEach( (entry, index) => {
 			const [key, value] = entry;
 			value[key].coordination.curve(canvaWidth, context, cameraOffset);
 		});
 
-		// Draw Ocean
+		// II. Ocean
 		this.ocean();	
-		this.sillText();	
+
+		// III. Texts
+		texts.init(canva, canvaWidth, context, cameraOffset);	
+		
 	};
 
-	sillText() {
-		let opacity = [ 0, 0 ];
-		let firstOpacity = opacity[0] += 0.4;
-		let secondOpacity = opacity[1] += 0.1;
-
-		this.ctx.font = "36px Inconsolata";
-		// this.ctx.fillStyle = "rgba(255, 255, 255, .3)";
-		let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
-		gradient.addColorStop(0,"rgba(23, 210, 168, "+ firstOpacity +")");
-		gradient.addColorStop(0.5,"rgba(255, 255, 255, "+ secondOpacity +")");
-		gradient.addColorStop(1,"rgba(23, 210, 168, "+ firstOpacity +")");
-		this.ctx.fillStyle = gradient;
-
-		this.ctx.fillText("FRONT-END DEVELOPER", 
-			window.innerWidth - window.innerWidth / 1.06, 
-			this.cameraOffset.y - window.innerHeight / 2.4 
-		);
-		this.ctx.fillText("BACK-END DEVELOPER", 
-			window.innerWidth - window.innerWidth / 1.06, 
-			this.cameraOffset.y + window.innerHeight * .37
-		);
-	};
-
-	// III. Ocean :: Dynamic Waves
+	// Ocean :: Dynamic Waves
 	ocean() {
 		let k = 5, opacity = [ 0, 0 ];
 		for( let m = 0; m < 13; m++ ) {	
@@ -479,9 +459,9 @@ class Pan {
 		// I. Horizontal Line "Witout" Drag
 		let oceanHorizontalLine = (this.cameraOffset.y / 2) * 2.5 + 50;
 		if( yPosition > oceanHorizontalLine ) {	
-			console.log("WITHOUT DRAG :: Back-End Developr");
+			console.log("WITHOUT CANVAS DRAG :: Back-End Developr");
 		} else {		
-			console.log("WITHOUT DRAG :: Front-End Developr");
+			console.log("WITHOUT CANVAS DRAG :: Front-End Developr");
 		}
 
 		// II. Horizontal Line "With" Drag
@@ -494,9 +474,9 @@ class Pan {
 	
 			// TextEvent With Drug
 			if( yPosition > oceanHorizontalLine ) {
-				console.log("WITH DRAG :: Back-End Developr");
+				console.log("WITH CANVAS DRAG :: Back-End Developr");
 			} else {
-				console.log("WITH DRAG :: Front-End Developr");
+				console.log("WITH CANVAS DRAG :: Front-End Developr");
 			}
 		}
 		
@@ -577,8 +557,8 @@ class Pan {
 		});
 		this.panCanvas.addEventListener( "mousemove", event => { 
 			let eventName = "mousemove";
-			this.onPointerMoveShape(event, eventName); // Shape
-			// this.onPointerMoveText(event); // Text
+			this.onPointerMoveShape(event, eventName); // Shape Event
+			// this.onPointerMoveText(event); // Text Event (Skill Text)
 		});
 
 		// 3. Click
