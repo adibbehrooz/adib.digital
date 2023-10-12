@@ -26,7 +26,12 @@
 	import shore 		from './landscape/shore';
 	import soil 		from './landscape/soil';
 
+	//I III. Text
+	import about 		from './texts';
+	//import projects 	from './texts';
+
 	export const constellations = {
+		// Constellations
 		'css': css,
 		'webpack': webpack,
 		'framework': framework,
@@ -37,6 +42,10 @@
 		'php': php,
 		'apache': apache,
 		'linux': linux,
+
+		// Texts
+		'about': about,		
+		//'projects': projects,		
 	};
 
 	export const landscape = {

@@ -21,9 +21,9 @@ import { landscape } from './shapes';
 import { Ajax } from './ajax';
 const ajax = new Ajax();
 
-// Texts Module
-import { Texts } from './texts';
-const texts = new Texts();
+// Menu Module
+import { Menu } from './texts';
+const menu = new Menu();
 
 class Pan {
 	
@@ -138,6 +138,8 @@ class Pan {
 		let canvaWidth = this.panCanvas.width
 		let context = this.ctx;		
 		let cameraOffset = this.cameraOffset;
+		let offsetX = this.panCanvas.offsetLeft;
+		let offsetY = this.panCanvas.offsetTop;
 
 		// 	I. Pyramids, Soil, Shore
 		Object.entries(landscape).forEach( (entry, index) => {
@@ -149,7 +151,7 @@ class Pan {
 		this.ocean();	
 
 		// III. Texts
-		texts.init(canva, canvaWidth, context, cameraOffset);	
+		menu.init(canvaWidth, context, cameraOffset);	
 		
 	};
 
@@ -202,7 +204,7 @@ class Pan {
 			this.shapeLines(key, value); // 1. Draw Lines
 			this.shapeStars(key, value); // 2. Draw Stars
 		});
-	
+
 	};
 	
 	shapeLines(key, value) {
@@ -315,17 +317,10 @@ class Pan {
 
 		// Is PointIn Path
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
-			this.ctx.save();
+			this.ctx.save(); // SAVE
 				// Stroke
 				this.ctx.lineWidth = 1;
 				this.ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
-
-				// Gradient Stroke
-				let gradient = this.ctx.createLinearGradient(0, 0, this.panCanvas.width, 0);
-				gradient.addColorStop(0,"rgba(23, 210, 168, 0.2)");
-				gradient.addColorStop(0.5,"rgba(255, 255, 255, 0.5)");
-				gradient.addColorStop(1,"rgba(23, 210, 168, 0.2)");
-				this.ctx.strokeStyle 	= gradient;
 
 				// Shadow Stroke
 				this.ctx.shadowOffsetX 	= 0;
@@ -337,7 +332,8 @@ class Pan {
 				// Fill
 				this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
 				this.ctx.fill(shape);
-			this.ctx.restore();
+
+			this.ctx.restore(); // RESTORE
 
 			// Cursor GSAP
 			gsap.to(cursor, 0.1, {
@@ -360,7 +356,7 @@ class Pan {
 				// Fill
 				this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';	
 			this.ctx.restore();
-		} // Is PointIn Path
+		} // !Is PointIn Path
 
 		// 2. Features
 		this.ctx.closePath();

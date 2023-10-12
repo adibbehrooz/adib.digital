@@ -6,10 +6,10 @@
 	Version: 1.0
 */
 
-/******************************** TEXTS ********************************
-/***********************************************************************/
+/******************************** MENU ********************************
+/**********************************************************************/
 
-class Texts {
+class Menu {
 
 	//____________________________
 	//
@@ -20,24 +20,23 @@ class Texts {
 		this.opacity = [ 0, 0 ];
 		this.firstOpacity = this.opacity[0] += 0.4;
 		this.secondOpacity = this.opacity[1] += 0.1;	
-        this.monoFont = 'Jetbrains Mono';
-        this.monosize = '36px';
-        this.monoLittleSize = '13px';
+		this.monoFont = 'Jetbrains Mono';
+		this.monosize = '36px';
+		this.monoLittleSize = '13px';
 	};
 
-    init(canva, width, context, camera) {
-        this.skillText(width, context, camera);
-        this.lineLeft(width, context);
-        this.lineRight(width, context);
-        this.menuText(context);
-        this._eventListeners(canva)
-    };
+	init(width, context, camera) {
+		this.skillText(width, context, camera);
+		this.lineLeft(width, context);
+		this.lineRight(width, context);
+		this.menuText(context);
+	};
 
 	skillText(canvaWidth, ctx, cameraOffset) {
-        // Font Size
+		// Font Size
 		ctx.font = `${this.monosize} ${this.monoFont}`;
 
-        // Gradient
+		// Gradient
 		let gradient = ctx.createLinearGradient(0, 0, canvaWidth, 0);
 		gradient.addColorStop(0,"rgba(23, 210, 168, "+ this.firstOpacity +")");
 		gradient.addColorStop(0.5,"rgba(255, 255, 255, "+ this.secondOpacity +")");
@@ -92,69 +91,107 @@ class Texts {
 
 	menuText(ctx) {
 
-        // Font Size
+		// Font Size
 		ctx.font = `${this.monoLittleSize} ${this.monoFont}`;
 		ctx.fillStyle = "rgba(255, 255, 255, 1)";
-        let x = 140;
-        let y = 100;
-        ctx.save();
-            ctx.translate(x, y);
-            ctx.rotate(-Math.PI / -2);
-            ctx.textAlign = "center";
-
-            // About
-            ctx.fillText("About", 
-                -40, 
-                125
-            );
-            
-
-           // Projects
-           ctx.fillText("Projects", 
-                100, 
-                125
-            ); 
-
-            // Contact
-            ctx.fillText("Contact", 
-                270, //400, 
-                125 //-window.innerHeight * 1.62
-            );
-
-        ctx.restore();
-
-        const textPosition = {
-            'About': { x1: 150, y1: 150, x2: 250, y2: 250 },
-        };
-
-        return textPosition;
+		let x = 140;
+		let y = 100;
+		ctx.save();
+			ctx.translate(x, y);
+			ctx.rotate(-Math.PI / -2);
+			ctx.textAlign = "center";
+			// I. About
+			ctx.fillText("About", -40, 125);
+            // II. Projects
+            ctx.fillText("Projects", 100, 125); 
+			// III. Contact
+			ctx.fillText("Contact", 270, 125);
+		ctx.restore();
 	};
-
-    onPointerMove(event, eventName) {
-
-		// const shape = new Path2D();
-		// this.ctx.beginPath();
-
-        // shape.moveTo( x1, y1);
-        // shape.moveTo( x1, y1);
-
-        if(eventName == 'click') {
-            console.log("Hi");
-        }
-    };
-    
-    _eventListeners(canva) {
-		canva.addEventListener( "mousemove", event => { 
-			let eventName = "mousemove";
-			this.onPointerMove(event, eventName); // Shape
-		});   
-
-		canva.addEventListener( "click", event => { 
-			let eventName = "click";
-			this.onPointerMove(event, eventName); // Shape
-		});       
-    }
-
 };
 
-export { Texts };
+export { Menu };
+
+/******************************** ABOUT *******************************
+/**********************************************************************/
+
+const about = {
+
+	//____________________ I. DATA ____________________
+
+	data: {
+		// Type
+		type: 'text',
+
+		// WordPress
+		backend : {
+			ID: 71,
+			postType: 'post', // Page or Post
+			coverDirection: 'ltr',
+		},
+		// Camera Offset Positon
+		relation: { 
+			x: 0, 
+			y: 0 
+		},
+		// Constellation Scale 
+		scale: { 
+			outside: 1, 
+			inside: 1 
+		},
+		lineWidth: { 
+			outside: 1, 
+			inside: 1 
+		},
+	},
+
+	//____________________ II. COORDINATION ____________________
+
+	coordination: {
+		curve: function(ctx) {
+			ctx.save();
+			ctx.restore();
+		},
+		outside: [
+			{ form: 'save' }, 
+				// Stroke
+				{ form: 'strokeStyle', value: "rgba( 255, 255, 255, .1)" }, 
+				// Fill
+				{ form: 'fillStyle', value: "rgba(255, 255, 255, 0)" },  
+				{ form: 'miterLimit', value: 4 }, 
+				{ form: 'save' }, 
+                    // Absolute Size: 5, 35, 35, 50
+					{ form: 'beginPath' }, 
+					{ x0: 5.000,   	x1: 35.000, form: 'moveTo' }, 
+					{ x0: 40.00,   	x1: 35.000, form: 'lineTo' }, 
+					{ x0: 40.00,    x1: 85.000, form: 'lineTo' },   
+					{ x0: 5.000,    x1: 85.000, form: 'lineTo' },   
+					{ x0: 5.000,    x1: 35.000, form: 'lineTo' },
+					{ form: 'closePath'},
+					{ form: 'fill' }, 
+					{ form: 'stroke' }, 
+				{ form: 'restore' }, 
+			{ form: 'restore' }, 
+		],
+		inside: [
+			{ form: 'save' },
+                { x0: 5.000,   	x1: 35.000, form: 'moveTo' }, 
+                { x0: 70.00,   	x1: 35.000, form: 'lineTo' }, 
+                { x0: 5.000,    x1: 85.000, form: 'lineTo' },   
+                { x0: 5.000,    x1: 35.000, form: 'lineTo' },
+				// Stroke
+				{ form: 'lineWidth', value: '0' },
+				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 0)' },
+				{ form: 'stroke'}, 
+				// Fill
+				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },
+			{ form: 'restore'},
+		],
+		arc: [
+			{ form: 'save' },
+			{ form: 'restore'},
+		],
+	},
+};
+
+export default { about };

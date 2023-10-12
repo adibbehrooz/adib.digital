@@ -307,17 +307,6 @@
 	}
 	*/
 
-	@include component('landscape') {
-		@include element('texts') {
-			@include modifier(active) {
-				display: inline;
-			}
-			@include modifier(active) {
-				display: none;
-			}
-		}
-	}
-
 /****************************************** PLUGINS *************************************
 /****************************************************************************************/
 

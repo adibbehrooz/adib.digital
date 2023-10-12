@@ -29,7 +29,6 @@
 		init() {
 			this.bodyStyles();
 			this.allCanvas();
-			this.skillText();
 		};	
 
 
@@ -73,29 +72,6 @@
 			middleSection.appendChild(this.panCanvas());
 			middleSection.appendChild(this.skyCanvas());
 			middleSection.appendChild(this.constellationCanvas());
-			// middleSection.appendChild(this.skillText());
-		};
-
-		skillText() {			
-			// I. Parent DIV
-			let skillText = document.createElement("div");
-			skillText.setAttribute('id', 'skillTexts');
-
-			// II. Front-End Div
-			const frontEndText = document.createElement("div");
-			frontEndText.setAttribute ('class', 'c-landscape__texts --skill --textTop');
-			frontEndText.setAttribute ('id', 'skillTextTop');
-			frontEndText.innerHTML = "Front-End Developer";
-			skillText.appendChild(frontEndText);
-
-			// III. Back-End Div
-			const backEndText = document.createElement("div");
-			backEndText.setAttribute ('class', 'c-landscape__texts --skill --textBottom');
-			backEndText.setAttribute ('id', 'skillTextBottom');		
-			backEndText.innerHTML = "Front-End Developer";
-			skillText.appendChild(backEndText);		
-
-			return skillText;
 		};
 
 		skyCanvas() {
@@ -123,88 +99,6 @@
 	};
 	export { Canvas };
 
-/******************************** TEXT ********************************
-/**********************************************************************/
-
-	class Text {
-
-		//____________________________
-		//
-		// Constructor 
-		//____________________________
-
-		constructor() {	
-			this.activeTextClass 	= '--active';
-			this.deactiveTextClass 	= '--deactive';			
-		};
-
-		hideToShowText(classNameToShow, classNameToHide) {
-			console.log("classNameToShow :" + classNameToShow);
-			console.log("classNameToHide :" + classNameToHide);
-			let textVisible = document.querySelector(classNameToShow);
-			let textInvisible = document.querySelector(classNameToHide);
-	
-			textVisible.classList.add(this.activeTextClass);
-			textInvisible.classList.add(this.deactiveTextClass);
-	
-			if (textVisible.classList.contains(this.activeTextClass)) { // I. Text is Visible
-				
-				//______________
-				//
-				// Toggle Class
-				//______________
-	
-	
-				// 1. Vanila JS
-				//________________
-	
-				textVisible.classList.remove(this.activeTextClass);
-				textVisible.classList.add(this.deactiveTextClass);
-				
-				textInvisible.classList.add(this.activeTextClass);
-				textInvisible.classList.remove(this.deactiveTextClass);
-	
-	
-				// 2. GSAP 
-				//________
-	
-				let timeLineText1 = new TimelineMax({ yoyo:false });
-				//timeLineText1.to(classNameToHide, 0.6, {fill: "rgba(255, 255, 255, 0.5)", ease:Linear.easeNone});
-	
-				let timeLineText2 = new TimelineMax({ yoyo:false });
-				//timeLineText2.to(classNameToShow, 0.6, {fill: "none", ease:Linear.easeNone});
-	
-			} else {
-	
-				//______________
-				//
-				// Toggle Class
-				//______________
-	
-	
-				// 1. Vanila JS
-				//_____________
-	
-				textInvisible.classList.remove(this.activeTextClass);
-				textInvisible.classList.add(deactiveTextClass);
-				
-				textVisible.classList.add(this.activeTextClass);
-				textVisible.classList.remove(this.deactiveTextClass);
-	
-	
-				// 2. GSAP
-				//________
-	
-				let timeLineText3 = new TimelineMax({ yoyo:false });
-				//timeLineText3.to(classNameToHide, 0.6, {fill: "none", ease:Linear.easeNone});
-	
-				let timeLineText4 = new TimelineMax({ yoyo:false });
-				//timeLineText4.to(classNameToShow, 0.6, {fill: "rgba(255, 255, 255, 0.5)", ease:Linear.easeNone});
-			}
-		};
-	};
-
-	export { Text };
 
 /******************************** Cursor ********************************
 /************************************************************************/
