@@ -284,35 +284,53 @@ class Pan {
 	};
 
 	shapeEvent( cursor, name, constellation, offsetX, offsetY, eventName ) {
+
 		let linetype = 'outside';
 		// 1. Draw Shape
 		const shape = new Path2D();
 		this.ctx.beginPath();
 		
-		shape.moveTo( 
-			// X
-			constellation[name].data.relation.x + 
-			constellation[name].coordination[linetype][0]['x0'] * 
-			constellation[name].data.scale.outside,
-			
-			// Y
-			constellation[name].data.relation.y + 
-			constellation[name].coordination[linetype][0]['x1'] * 
-			constellation[name].data.scale.outside,
-		);
-
-		for( let i = 1; i < constellation[name].coordination[linetype].length; i++ ) {
-			shape.lineTo(
+		// Text
+		if( constellation[name].data.type == 'text ' ) {
+			shape.moveTo( 
+				constellation[name].coordination[linetype][0]['x0'],
+				constellation[name].coordination[linetype][0]['x1']
+			);
+		// Shape
+		} else {
+			shape.moveTo( 
 				// X
 				constellation[name].data.relation.x + 
-				constellation[name].coordination[linetype][i]['x0'] * 
+				constellation[name].coordination[linetype][0]['x0'] * 
 				constellation[name].data.scale.outside,
 				
 				// Y
 				constellation[name].data.relation.y + 
-				constellation[name].coordination[linetype][i]['x1'] * 
-				constellation[name].data.scale.outside,
+				constellation[name].coordination[linetype][0]['x1'] * 
+				constellation[name].data.scale.outside
 			);
+		}
+		for( let i = 1; i < constellation[name].coordination[linetype].length; i++ ) {
+			// Text
+			if( constellation[name].data.type == 'text ' ) {
+				shape.lineTo(
+					constellation[name].coordination[linetype][i]['x0'], 
+					constellation[name].coordination[linetype][i]['x1']  
+				);				
+			} else {
+				shape.lineTo(
+					// X
+					constellation[name].data.relation.x + 
+					constellation[name].coordination[linetype][i]['x0'] * 
+					constellation[name].data.scale.outside,
+					
+					// Y
+					constellation[name].data.relation.y + 
+					constellation[name].coordination[linetype][i]['x1'] * 
+					constellation[name].data.scale.outside
+				);
+			}
+
 		}
 
 		// Is PointIn Path

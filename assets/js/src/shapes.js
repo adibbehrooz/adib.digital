@@ -27,8 +27,9 @@
 	import soil 		from './landscape/soil';
 
 	//I III. Text
-	import about 		from './texts';
-	//import projects 	from './texts';
+	import about 		from './texts/about';
+	import projects 	from './texts/projects';
+	import contact 		from './texts/contact';
 
 	export const constellations = {
 		// Constellations
@@ -45,7 +46,8 @@
 
 		// Texts
 		'about': about,		
-		//'projects': projects,		
+		'projects': projects,		
+		'contact': contact,		
 	};
 
 	export const landscape = {

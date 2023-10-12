@@ -6,10 +6,10 @@
 	Version: 1.0
 */
 
-/******************************** TEXT :: About ********************************
-/*******************************************************************************/
+/******************************** TEXT :: Projects ********************************
+/**********************************************************************************/
 
-const about = {
+const projects = {
 
 	//____________________ I. DATA ____________________
 
@@ -19,7 +19,7 @@ const about = {
 
 		// WordPress
 		backend : {
-			ID: 71,
+			ID: 91,
 			postType: 'post', // Page or Post
 			coverDirection: 'ltr',
 		},
@@ -56,11 +56,11 @@ const about = {
 				{ form: 'save' }, 
                     // Absolute Size: 5, 35, 35, 50
 					{ form: 'beginPath' }, 
-					{ x0: 5.000,   	x1: 35.000, form: 'moveTo' }, 
-					{ x0: 40.00,   	x1: 35.000, form: 'lineTo' }, 
-					{ x0: 40.00,    x1: 85.000, form: 'lineTo' },   
-					{ x0: 5.000,    x1: 85.000, form: 'lineTo' },   
-					{ x0: 5.000,    x1: 35.000, form: 'lineTo' },
+					{ x0: 5.000,   	x1: 160.000, form: 'moveTo' }, 
+					{ x0: 40.00,   	x1: 160.000, form: 'lineTo' }, 
+					{ x0: 40.00,    x1: 240.000, form: 'lineTo' },   
+					{ x0: 5.000,    x1: 240.000, form: 'lineTo' },   
+					{ x0: 5.000,    x1: 160.000, form: 'lineTo' },
 					{ form: 'closePath'},
 					{ form: 'fill' }, 
 					{ form: 'stroke' }, 
@@ -69,11 +69,11 @@ const about = {
 		],
 		inside: [
 			{ form: 'save' },
-				{ x0: 5.000,   	x1: 35.000, form: 'moveTo' }, 
-				{ x0: 40.00,   	x1: 35.000, form: 'lineTo' }, 
-				{ x0: 40.00,    x1: 85.000, form: 'lineTo' },   
-				{ x0: 5.000,    x1: 85.000, form: 'lineTo' },   
-				{ x0: 5.000,    x1: 35.000, form: 'lineTo' },
+                { x0: 5.000,   	x1: 160.000, form: 'moveTo' }, 
+                { x0: 40.00,   	x1: 160.000, form: 'lineTo' }, 
+                { x0: 40.00,    x1: 240.000, form: 'lineTo' },   
+                { x0: 5.000,    x1: 240.000, form: 'lineTo' },   
+                { x0: 5.000,    x1: 160.000, form: 'lineTo' },
 				// Stroke
 				{ form: 'lineWidth', value: '0' },
 				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 0)' },
@@ -89,4 +89,4 @@ const about = {
 	},
 };
 
-export default { about };
+export default { projects };
