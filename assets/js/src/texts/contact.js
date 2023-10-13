@@ -19,9 +19,9 @@ const contact = {
 
 		// WordPress
 		backend : {
-			ID: 21,
-			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			ID: 71,
+			postType: 'page', // Page or Post
+			coverDirection: '--ttb',
 		},
 		// Camera Offset Positon
 		relation: { 

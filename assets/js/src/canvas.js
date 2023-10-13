@@ -29,6 +29,7 @@
 		init() {
 			this.bodyStyles();
 			this.allCanvas();
+			this.modal();
 		};	
 
 
@@ -95,6 +96,14 @@
 			canvasConstellation.setAttribute('class', 'o-canvas__constellation');
 			canvasConstellation.setAttribute('id', 'canvas__constellation');
 			return canvasConstellation;
+		};
+
+		modal() {
+			const modalSection = document.createElement("section");
+			modalSection.setAttribute('class', 'o-modal');
+			modalSection.setAttribute('id', 'o-modal');
+			document.body.appendChild(modalSection);
+			return modalSection;
 		};
 	};
 	export { Canvas };

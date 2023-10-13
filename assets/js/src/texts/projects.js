@@ -19,9 +19,9 @@ const projects = {
 
 		// WordPress
 		backend : {
-			ID: 91,
-			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			ID: 74,
+			postType: 'page', // Page or Post
+			coverDirection: '--ttb',
 		},
 		// Camera Offset Positon
 		relation: { 

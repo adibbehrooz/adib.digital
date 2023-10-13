@@ -19,9 +19,11 @@ const about = {
 
 		// WordPress
 		backend : {
-			ID: 71,
-			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			ID: 68,
+			postType: 'page', // Page or Post
+			postTitle: 'About', // Page or Post
+			postSlug: 'about', // Page or Post
+			coverDirection: '--ttb',
 		},
 		// Camera Offset Positon
 		relation: { 

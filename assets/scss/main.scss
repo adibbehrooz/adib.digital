@@ -292,6 +292,439 @@
 	}
 
 
+	//______________________ Cover ______________________
+	//___________________________________________________
+
+	@include object('cover') {
+
+		//________________________
+		//
+		//		Layers
+		//________________________
+
+		// First Layer 
+		//____________
+		
+		@include element('firstLayer') {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 1;
+			background-color: #16161d;
+					
+			// FL: Active
+			//___________
+
+			@include modifier('ltr') {
+				width: 0;
+				height: 100%;
+				animation: 1s ease-in-out 0.2s 1 forwards running ltrFullScreen;
+			}
+
+			@include modifier('ttb') {
+				width: 100%;
+				height: 0;
+				animation: 1s ease-in-out 0.2s 1 forwards running ttbFullScreen;
+			}
+
+			// FL: Deactive
+			//_____________
+			
+			@include modifier('deactive') {
+			
+				@include modifier('ltr') {
+					width: 100%;
+					animation: 0s ease-in-out 0.8s 1 forwards running ltrRemoveFullScreen;
+				}
+	
+				@include modifier('ttb') {
+					height: 100%;
+					animation: 0s ease-in-out 0.8s 1 forwards running ttbRemoveFullScreen;
+				}
+			}
+		}
+
+		// Second Layer 
+		//_____________
+
+		@include element('secondLayer') {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 2;
+			background-color: #3b2f4a;
+					
+			// SL: Active
+			//___________
+			
+			@include modifier('ltr') {
+				width: 0;
+				height: 100%;
+				animation: 1.3s ease-in-out 0.3s 1 forwards running ltrFullScreen;
+			}
+
+			@include modifier('ttb') {
+				width: 100%;
+				height: 0;
+				animation: 1.3s ease-in-out 0.3s 1 forwards running ttbFullScreen;
+			}
+					
+			// SL: Deactive
+			//_____________
+
+			@include modifier('deactive') {
+			
+				@include modifier('ltr') {
+					width: 100%;
+					animation: 1s ease-in-out 0.7s 1 forwards running ltrRemoveFullScreen;
+				}
+	
+				@include modifier('ttb') {
+					height: 100%;
+					animation: 1s ease-in-out 0.7s 1 forwards running ttbRemoveFullScreen;
+				}
+			}
+		}
+
+		// Third Layer 
+		//____________
+
+		@include element('thirdLayer') {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 3;
+			background: linear-gradient(#16161d,#1f1f3a,#3b2f4a);
+					
+			// TL: Active
+			//___________
+						
+			@include modifier('ltr') {
+				width: 0;
+				height: 100%;
+				animation: 1.6s ease-in-out 0.4s 1 forwards running ltrFullScreen;
+			}
+
+			@include modifier('ttb') {
+				width: 100%;
+				height: 0;
+				animation: 1.6s ease-in-out 0.4s 1 forwards running ttbFullScreen;
+			}
+					
+			// TL: Deactive
+			//_____________
+
+			@include modifier('deactive') {
+
+				@include modifier('ltr') {
+					width: 100%;
+					animation: 1s ease-in-out 0.6s 1 forwards running ltrRemoveFullScreen;
+				}
+	
+				@include modifier('ttb') {
+					height: 100%;
+					animation: 1s ease-in-out 0.6s 1 forwards running ttbRemoveFullScreen;
+				}
+			}
+		}
+
+		// Close Icon
+		//___________
+
+		@include element('close') {
+			position: absolute;
+			right: 10px;
+			top: 20px;
+			width: 50px;
+			height: 50px;
+			z-index: 3;
+			opacity: 0;
+			/* @keyframes duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name */
+			animation: 1s ease-in-out 2s 1 forwards running fadeInDown;
+
+			@include modifier('deactive') {
+				opacity: 1;
+				animation: 1s ease-in-out 0.2s 1 forwards running fadeOutUp;
+			}
+			
+			@include element('pathGroup') {
+				fill: transparent;
+				stroke: rgba(255, 255, 255, 1);
+				stroke-width: 2px;
+			}
+		}
+	}
+
+	// Animation Left To Right
+	@keyframes ltrFullScreen {
+		from {
+			width: 0; 
+		}
+		to {
+			width: 100%; 
+		}
+	}
+
+	@keyframes ltrRemoveFullScreen {
+		from {
+			width: 100%; 
+		}
+		to {
+			width: 0; 
+		}
+	}
+
+	// Animation Top To Bottom
+	@keyframes ttbFullScreen {
+		from {
+			height: 0; 
+		}
+		to {
+			height: 100%; 
+		}
+	}
+
+	@keyframes ttbRemoveFullScreen {
+		from {
+			height: 100%; 
+		}
+		to {
+			height: 0; 
+		}
+	}
+
+	@keyframes fadeInDown {
+		from {
+			opacity: 0;
+			transform: translate3d(0, -100%, 0);
+		}
+	
+		to {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+		}
+	}
+
+	@keyframes fadeOutUp {
+		from {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+		}
+	
+		to {
+			opacity: 0;
+			transform: translate3d(0, -100%, 0);
+		}
+	}
+	
+
+	//______________________ Modal ______________________
+	//___________________________________________________
+
+	@include object('modal') {
+		position: absolute;
+		width: 0%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 5;
+		opacity: 0;
+		visibility: hidden;
+		scrollbar-width: none;
+		@screen md {
+			position: fixed;
+		}
+
+		@include modifier('active') {
+			animation: 1s ease-in-out 2.5s 1 forwards running modalDisplay;
+		}
+
+		@include modifier('deactive') {
+			scrollbar-width: auto;
+			opacity: 1;
+			visibility: visible;
+			animation: 1s ease-in-out 0.4s 1 forwards running modalHide, 0s ease-in-out 0s 1 forwards running scrollHide;
+		}
+
+		//________________________
+		//
+		//	Modal Show / Hide
+		//________________________
+
+		@keyframes modalDisplay {
+			from {
+				visibility: hidden;
+				opacity: 0;
+			}
+			to {
+				visibility: visible;
+				opacity: 1;
+			}
+		}
+
+		@keyframes modalHide {
+			from {
+				position: absolute;
+				visibility: visible;
+				opacity: 1;
+			}
+			to {
+				position: fixed;
+				visibility: hidden;
+				opacity: 0;
+			}
+		}
+
+		@keyframes scrollHide {
+			from {
+				scrollbar-width: auto;
+			}
+			to {
+				scrollbar-width: none;
+			}
+		}
+
+		//_________________
+		//
+		// Modal Container
+		//_________________
+
+		@include element('container') {
+			width: 100vw;
+			// height: 50vh;
+		}
+		@screen md {
+			@include element('container') {
+				width: 100vw;
+				height: 100vh;
+				grid-template-columns: 1fr 2fr;
+			}
+		}
+		
+		//__________________________
+		//
+		// Modal Stars 
+		//__________________________
+
+		@include element('stars') {
+			opacity: 0;
+			@include modifier('active') {
+				/* @keyframes duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name */
+				animation: 1s ease-in-out 2.2s 1 forwards running starDisplay;
+			}
+			@include modifier('deactive') {
+				opacity: 1;
+				visibility: visible;
+				animation: 1s ease-in-out 0.25s 1 forwards running starHide;
+			}
+		}
+		
+		//__________________________
+		//
+		// Modal Multimedia 
+		//__________________________
+
+		@include element('multimedia') {
+			display: grid;
+			background-color: black;
+			box-shadow: 0 0 25px 30px black;
+			@include font(1rem, $Montserrat);
+			color: white;
+			opacity: 0;
+
+			@include modifier('active') {
+				/* @keyframes duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name */
+				animation: 1s ease-in-out 2.2s 1 forwards running starDisplay;
+			}
+			
+			@include modifier('deactive') {
+				opacity: 1;
+				visibility: visible;
+				animation: 1s ease-in-out 0.2s 1 forwards running starHide;
+			}
+
+			// CONTENT
+			@include element('content') {
+				
+				// 1. Container
+				justify-self: start;
+				align-self: center;
+				padding: 0 3vw;
+				@screen md {
+					height: 100vh;
+				}
+
+				.smallContainer {			
+					width: 80vw !important;
+				}
+
+				// 2. Image
+				.responsiveImage {
+					margin-top: 20px;
+					margin-bottom: 20px;
+					width: 50%;
+					@screen md {
+						width: 100%;
+					}
+				}
+
+				// 3. Links
+				a {
+					cursor: none;
+					
+					&.zoom {
+						position: relative;
+						cursor: none;
+						padding: 0 0 3px;
+	
+						&:after {
+							position: absolute;
+							top: 100%;
+							left: 0;
+							width: 100%;
+							height: 2px;
+							background: #fff;
+							content: '';
+							opacity: 1;
+							transition: height 0.3s, opacity 0.3s, transform 0.3s;
+							transform: translateY(0px);
+						}
+	
+						&:hover::after, &:focus::after {
+							height: 2px;
+							opacity: 0;
+							transform: translateY(-10px);
+						}
+					}
+				}
+			}
+		}
+
+		//___________________________________
+		//
+		// Modal Star & Multimedia Animation
+		//___________________________________
+
+		@keyframes starDisplay {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+
+		@keyframes starHide {
+			from {
+				opacity: 1;
+			}
+			to {
+				opacity: 0;
+			}
+		}
+	}
+
+
 /****************************************** COMPONENTS *************************************
 /*******************************************************************************************/
 
