@@ -44,11 +44,11 @@
 		<div class="[ Display: grid md:grid-cols-2 sm:grid-cols-1 ][ Tailwind: content ][ Custom: o-modal__container ]">
 
 			<?php // Star and Commet ?>
-			<div class="o-modal__stars">		
-						
+			<div id="stars" class="o-modal__stars --active">		
+					THIS IS STAR PALACE	
 			</div>
 
-			<div class="o-modal__multimedia">
+			<div id="multimedia" class="o-modal__multimedia --active">
 				
 				<div class="o-modal__multimedia__content --textResponsive">
 					
