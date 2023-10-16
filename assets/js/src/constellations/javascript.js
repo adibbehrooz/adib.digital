@@ -21,9 +21,11 @@ const javascript = {
 
 		// WordPress
 		backend : {
-			ID: 0,
+			ID: 89,
 			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			postTitle: 'Javascript',
+			postSlug: 'javascript',
+			coverDirection: '--ltr',
 		},
 		// Camera Offset Positon
 		relation: { 

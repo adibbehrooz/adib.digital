@@ -21,9 +21,11 @@ const webpack = {
 		
 		// WordPress
 		backend : {
-            ID: 55,
+			ID: 55,
 			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			postTitle: 'Webpack',
+			postSlug: 'webpack',
+			coverDirection: '--ltr',
 		},
 		// Camera Offset Positon
 		relation: { 

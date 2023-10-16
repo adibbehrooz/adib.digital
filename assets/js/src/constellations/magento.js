@@ -21,9 +21,11 @@ const magento = {
 
 		// WordPress
 		backend : {
-			ID: 61,
+			ID: 97,
 			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			postTitle: 'Magento',
+			postSlug: 'magento',
+			coverDirection: '--ltr',
 		},
 		// Camera Offset Positon
 		relation: { 

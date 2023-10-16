@@ -334,12 +334,12 @@
 			
 				@include modifier('ltr') {
 					width: 100%;
-					animation: 0s ease-in-out 0.8s 1 forwards running ltrRemoveFullScreen;
+					animation: 0s ease-in-out 2s 1 forwards running ltrRemoveFullScreen;
 				}
 	
 				@include modifier('ttb') {
 					height: 100%;
-					animation: 0s ease-in-out 0.8s 1 forwards running ttbRemoveFullScreen;
+					animation: 0s ease-in-out 2s 1 forwards running ttbRemoveFullScreen;
 				}
 			}
 		}
@@ -376,12 +376,12 @@
 			
 				@include modifier('ltr') {
 					width: 100%;
-					animation: 1s ease-in-out 0.7s 1 forwards running ltrRemoveFullScreen;
+					animation: 1s ease-in-out 1.7s 1 forwards running ltrRemoveFullScreen;
 				}
 	
 				@include modifier('ttb') {
 					height: 100%;
-					animation: 1s ease-in-out 0.7s 1 forwards running ttbRemoveFullScreen;
+					animation: 1s ease-in-out 1.7s 1 forwards running ttbRemoveFullScreen;
 				}
 			}
 		}
@@ -418,12 +418,12 @@
 
 				@include modifier('ltr') {
 					width: 100%;
-					animation: 1s ease-in-out 0.6s 1 forwards running ltrRemoveFullScreen;
+					animation: 1s ease-in-out 1.4s 1 forwards running ltrRemoveFullScreen;
 				}
 	
 				@include modifier('ttb') {
 					height: 100%;
-					animation: 1s ease-in-out 0.6s 1 forwards running ttbRemoveFullScreen;
+					animation: 1s ease-in-out 1.4s 1 forwards running ttbRemoveFullScreen;
 				}
 			}
 		}
@@ -543,7 +543,7 @@
 			scrollbar-width: auto;
 			opacity: 1;
 			visibility: visible;
-			animation: 1s ease-in-out 0.4s 1 forwards running modalHide, 0s ease-in-out 0s 1 forwards running scrollHide;
+			animation: 1s ease-in-out 1.2s 1 forwards running modalHide, 0s ease-in-out 0s 1 forwards running scrollHide;
 		}
 
 		//________________________

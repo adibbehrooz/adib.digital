@@ -421,6 +421,39 @@ video {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.container {
+  width: 100%;
+}
+@media (min-width: 475px) {
+  .container {
+    max-width: 475px;
+  }
+}
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
 .mb-10 {
   margin-bottom: 2.5rem;
 }
@@ -882,11 +915,11 @@ video {
 }
 .o-cover__firstLayer.--deactive.--ltr {
   width: 100%;
-  animation: 0s ease-in-out 0.8s 1 forwards running ltrRemoveFullScreen;
+  animation: 0s ease-in-out 2s 1 forwards running ltrRemoveFullScreen;
 }
 .o-cover__firstLayer.--deactive.--ttb {
   height: 100%;
-  animation: 0s ease-in-out 0.8s 1 forwards running ttbRemoveFullScreen;
+  animation: 0s ease-in-out 2s 1 forwards running ttbRemoveFullScreen;
 }
 .o-cover__secondLayer {
   position: absolute;
@@ -907,11 +940,11 @@ video {
 }
 .o-cover__secondLayer.--deactive.--ltr {
   width: 100%;
-  animation: 1s ease-in-out 0.7s 1 forwards running ltrRemoveFullScreen;
+  animation: 1s ease-in-out 1.7s 1 forwards running ltrRemoveFullScreen;
 }
 .o-cover__secondLayer.--deactive.--ttb {
   height: 100%;
-  animation: 1s ease-in-out 0.7s 1 forwards running ttbRemoveFullScreen;
+  animation: 1s ease-in-out 1.7s 1 forwards running ttbRemoveFullScreen;
 }
 .o-cover__thirdLayer {
   position: absolute;
@@ -932,11 +965,11 @@ video {
 }
 .o-cover__thirdLayer.--deactive.--ltr {
   width: 100%;
-  animation: 1s ease-in-out 0.6s 1 forwards running ltrRemoveFullScreen;
+  animation: 1s ease-in-out 1.4s 1 forwards running ltrRemoveFullScreen;
 }
 .o-cover__thirdLayer.--deactive.--ttb {
   height: 100%;
-  animation: 1s ease-in-out 0.6s 1 forwards running ttbRemoveFullScreen;
+  animation: 1s ease-in-out 1.4s 1 forwards running ttbRemoveFullScreen;
 }
 .o-cover__close {
   position: absolute;
@@ -1033,7 +1066,7 @@ video {
   scrollbar-width: auto;
   opacity: 1;
   visibility: visible;
-  animation: 1s ease-in-out 0.4s 1 forwards running modalHide, 0s ease-in-out 0s 1 forwards running scrollHide;
+  animation: 1s ease-in-out 1.2s 1 forwards running modalHide, 0s ease-in-out 0s 1 forwards running scrollHide;
 }
 @keyframes modalDisplay {
   from {

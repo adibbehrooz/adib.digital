@@ -23,7 +23,9 @@ const css = {
 		backend : {
 			ID: 61,
 			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			postTitle: 'CSS',
+			postSlug: 'css',
+			coverDirection: '--ltr',
 		},
 		// Camera Offset Positon
 		relation: { 

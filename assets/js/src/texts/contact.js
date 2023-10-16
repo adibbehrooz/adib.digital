@@ -21,6 +21,8 @@ const contact = {
 		backend : {
 			ID: 71,
 			postType: 'page', // Page or Post
+			postTitle: 'Contact', // Page or Post
+			postSlug: 'contact', // Page or Post
 			coverDirection: '--ttb',
 		},
 		// Camera Offset Positon

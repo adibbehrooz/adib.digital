@@ -21,9 +21,11 @@ const apache = {
 
 		// WordPress
 		backend : {
-			ID: 61,
+			ID: 86,
 			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			postTitle: 'Apache',
+			postSlug: 'apache',
+			coverDirection: '--ltr',
 		},
 		// Camera Offset Positon
 		relation: { 

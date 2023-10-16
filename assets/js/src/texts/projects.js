@@ -21,6 +21,8 @@ const projects = {
 		backend : {
 			ID: 74,
 			postType: 'page', // Page or Post
+			postTitle: 'Projects', // Page or Post
+			postSlug: 'projects', // Page or Post
 			coverDirection: '--ttb',
 		},
 		// Camera Offset Positon

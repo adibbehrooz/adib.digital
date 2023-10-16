@@ -21,9 +21,11 @@ const framework = {
 		
 		// WordPress
 		backend : {
-            ID: 0,
+			ID: 78,
 			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			postTitle: 'Framework',
+			postSlug: 'framework',
+			coverDirection: '--ltr',
 		},
 		// Camera Offset Positon
 		relation: { 

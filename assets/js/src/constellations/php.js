@@ -21,9 +21,11 @@ const php = {
 
 		// WordPress
 		backend : {
-			ID: 71,
+			ID: 101,
 			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			postTitle: 'Php',
+			postSlug: 'php',
+			coverDirection: '--ltr',
 		},
 		// Camera Offset Positon
 		relation: { 

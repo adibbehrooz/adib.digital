@@ -42,6 +42,8 @@ class Ajax {
 		this.activeClass 	= '--active';
 		this.deactiveClass = '--deactive';
 
+		this.container	= '.o-modal__container';
+		this.containerID = 'container';
 
 		// 4.Stars
 		this.modalStars 	= '.o-modal__stars';
@@ -74,17 +76,17 @@ class Ajax {
 	// Create or Destroy Modal Container
 	modalContainer(postID, postType, coverDirection, modalClass, activeClass, deactiveClass) {
 
-		modalClass = document.querySelector(modalClass);
+		const modal = document.querySelector(modalClass);
 
-		if (modalClass.classList.contains(activeClass)) { // I. Modal is open
+		if (modal.classList.contains(activeClass)) { // I. Modal is open
 
 			//_________________________
 			//
 			// Hide Modal Container
 			//_________________________
 
-			modalClass.classList.remove(activeClass);
-			modalClass.classList.add(deactiveClass);
+			modal.classList.remove(activeClass);
+			modal.classList.add(deactiveClass);
 
 
 		} else { // II. Modal is close
@@ -101,8 +103,8 @@ class Ajax {
 			// 2. Show Modal Container
 			//__________________________
 
-			modalClass.classList.add(activeClass);
-			modalClass.classList.remove(deactiveClass);
+			modal.classList.add(activeClass);
+			modal.classList.remove(deactiveClass);
 		}
 	};
 
@@ -157,7 +159,7 @@ class Ajax {
 						if(indexKey == 0) {
 							setTimeout(function() {
 								itemKey.remove();
-							}, 2500);
+							}, 4500);
 						}
 						if( indexKey != 0 ) {
 							itemKey.classList.remove(activeClass);
@@ -170,17 +172,30 @@ class Ajax {
 	};
 
 	// Create Or Destroy Modal Content Animation
-	modalContentAnimationFadeIn(stars, multimedia, activeClass, deactiveClass, data) {
+	modalContentAnimationFadeIn(container, stars, multimedia, activeClass, deactiveClass, data) {
 
-		// Convert String to HTML
-		const parser = new DOMParser();
-		const html = parser.parseFromString(data, 'text/html');
+		// Normal Cursor in Modal Page
+		const modalDocument = document.querySelector(container);
+		const followCircle = document.getElementById('followCircle');
+		modalDocument.addEventListener('mouseover', () => {
+			gsap.to(followCircle, 0.1, {
+				opacity: 1,
+				scale: 1
+			});		
+		});
 
-		const modalStars = html.querySelectorAll(stars);
-		const modalMultimedias = html.querySelectorAll(multimedia);
+		// Big Cursor in Modal Page (Close Icon)
+		const closeIcon = document.querySelector('.o-cover__close');
+		closeIcon.addEventListener('mouseover', () => {
+			// GSAP
+			gsap.to(followCircle, 0.1, {
+				opacity: 0.7,
+				scale: 3
+			});			
+		});	
 
-		const modalStar = modalStars[0];
-		const modalMultimedia = modalMultimedias[0];
+		const modalStar = document.querySelector(stars);
+		const modalMultimedia = document.querySelector(multimedia);
 
 		if (modalStar.classList.contains(activeClass)) { // I. Modal is open
 
@@ -214,10 +229,12 @@ class Ajax {
 		}
 	};
 
-	modalCloseClickEvent(coverDirection) {
-		closeIcon = document.querySelector('.o-cover__close');
+	modalCloseClickEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass) {
+		const closeIcon = document.querySelector('.o-cover__close');
 		closeIcon.addEventListener('click', () => {
-			this.modalContainer(postID, postType, coverDirection, modalClass, activeClass, deactiveClass),
+			// document.querySelector('.o-modal__container').add('--fade');
+			// document.getElementById(this.modalID).innerHTML = '';
+			this.modalContainer(postID, postType, coverDirection, modalClass, activeClass, deactiveClass);
 			this.removeModalCover(activeClass, deactiveClass);
 		});
 	}
@@ -233,6 +250,7 @@ class Ajax {
 		let activeClass = this.activeClass;
 		let deactiveClass = this.deactiveClass;
 
+		let container = this.container;
 		let modalStars = this.modalStars;
 		let modalMultimedia = this.modalMultimedia;
 		
@@ -260,9 +278,11 @@ class Ajax {
 		)
 		.then((data) => {
 			document.getElementById(this.modalID).innerHTML = data;
-			this.modalContentAnimationFadeIn(modalStars, modalMultimedia, activeClass, deactiveClass, data);
-			this.modalCloseClickEvent(coverDirection);	
-		})		
+			this.modalContentAnimationFadeIn(container, modalStars, modalMultimedia, activeClass, deactiveClass, data);
+		})
+		.then( 
+			this.modalCloseClickEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass),
+		)
 		.catch( err => console.log( err ) );
 	};
     

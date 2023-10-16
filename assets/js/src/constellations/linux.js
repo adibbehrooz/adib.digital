@@ -21,9 +21,11 @@ const linux = {
 
 		// WordPress
 		backend : {
-			ID: 61,
+			ID: 93,
 			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			postTitle: 'Linux',
+			postSlug: 'linux',
+			coverDirection: '--ltr',
 		},
 		// Camera Offset Positon
 		relation: { 

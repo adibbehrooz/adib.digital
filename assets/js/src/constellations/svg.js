@@ -21,9 +21,11 @@ const svg = {
 		
 		// WordPress
 		backend : {
-            ID: 0,
+			ID: 104,
 			postType: 'post', // Page or Post
-			coverDirection: 'ltr',
+			postTitle: 'SVG',
+			postSlug: 'svg',
+			coverDirection: '--ltr',
 		},
 		// Camera Offset Positon
 		relation: { 

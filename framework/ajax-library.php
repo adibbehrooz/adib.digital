@@ -41,18 +41,18 @@
 		if ( $modalQyery->have_posts() ) : while ($modalQyery->have_posts() ) : $modalQyery->the_post();
 	?>
 		<?php // Container ?>
-		<div class="[ Display: grid md:grid-cols-2 sm:grid-cols-1 ][ Tailwind: content ][ Custom: o-modal__container ]">
+		<div id="container" class="[ Display: grid md:grid-cols-2 sm:grid-cols-1 ][ Tailwind: content ][ Custom: o-modal__container ]">
 
 			<?php // Star and Commet ?>
-			<div id="stars" class="o-modal__stars --active">		
-					THIS IS STAR PALACE	
+			<div id="stars" class="o-modal__stars">		
+					
 			</div>
 
-			<div id="multimedia" class="o-modal__multimedia --active">
+			<div id="multimedia" class="o-modal__multimedia">
 				
 				<div class="o-modal__multimedia__content --textResponsive">
 					
-					<h1 class="pt-32"><?php echo get_the_title(); ?></h1>
+					<h1 class="[ pt-32 ]"><?php echo get_the_title(); ?></h1>
 
 					<?php the_content(); ?>
 					
