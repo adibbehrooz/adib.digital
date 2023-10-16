@@ -101,9 +101,17 @@
 		modal() {
 			const modalSection = document.createElement("section");
 			modalSection.setAttribute('class', 'o-modal');
-			modalSection.setAttribute('id', 'o-modal');
+			modalSection.setAttribute('id', 'modal');
 			document.body.appendChild(modalSection);
 			return modalSection;
+		};
+
+		cover() {
+			const coverSection = document.createElement("section");
+			coverSection.setAttribute('class', 'o-cover');
+			coverSection.setAttribute('id', 'cover');
+			document.body.appendChild(coverSection);
+			return coverSection;
 		};
 	};
 	export { Canvas };

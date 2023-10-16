@@ -52,7 +52,7 @@
 				
 				<div class="o-modal__multimedia__content --textResponsive">
 					
-					<h1 class="[ pt-32 ]"><?php echo get_the_title(); ?></h1>
+					<h1 class="[ font-robotoMono text-2xl pt-32 ]"><?php echo get_the_title(); ?></h1>
 
 					<?php the_content(); ?>
 					
