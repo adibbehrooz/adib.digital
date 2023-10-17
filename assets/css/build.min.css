@@ -864,6 +864,22 @@ video {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.7rem;
 }
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 20px;
+}
+.scrollbar::-webkit-scrollbar-track {
+  border-radius: 0vh;
+  background: #16161d;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #1f1f3a;
+  border-radius: 100vh;
+  border: 3px solid #f6f7ed;
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #3b2f4a;
+}
 .o-meteorShower {
   position: absolute;
   top: calc(var(--y) * 1vh);
@@ -1116,6 +1132,7 @@ video {
   }
 }
 .o-modal__stars {
+  background: linear-gradient(rgb(22, 22, 29), rgb(31, 31, 58), rgb(59, 47, 74)) no-repeat;
   opacity: 0;
 }
 .o-modal__stars.--active {
@@ -1221,6 +1238,291 @@ video {
 	}
 }
 */
+.c-landscape {
+  width: 99.9vw;
+  height: 99.82vh;
+}
+.c-landscape.--modal {
+  width: 100vw;
+  height: 50vh;
+}
+@media (min-width: 768px) {
+  .c-landscape.--modal {
+    width: 32vw;
+    height: 100vh;
+  }
+}
+.c-landscape__pathGroup {
+  fill: transparent;
+  stroke: rgba(255, 255, 255, 0.5);
+}
+.c-landscape__pathGroup.--fill {
+  fill: rgb(255, 255, 255);
+}
+.c-landscape__pathGroup.--cover {
+  fill: transparent;
+  stroke-width: 0;
+}
+.c-landscape__pathGroup.--stable.--mountain {
+  stroke-width: 2px;
+  stroke-opacity: 0.6;
+}
+.c-landscape__pathGroup.--change {
+  fill: transparent;
+  stroke-width: 3%;
+  stroke-opacity: 0;
+  transition: all 0.4s ease-in-out;
+}
+.c-landscape__pathGroup.--change.--fill {
+  fill: rgba(255, 255, 255, 0.9);
+  stroke-width: 2px;
+  stroke-opacity: 1;
+}
+.c-landscape__pathGroup.--transparent {
+  fill: transparent;
+}
+.c-landscape__pathGroup.--transparent.--fill {
+  fill: black;
+}
+.c-landscape__wave {
+  fill: transparent;
+  stroke: white;
+  stroke-opacity: 0.5;
+  stroke-width: 0.5px;
+}
+.c-landscape__standaloneLogo__fill {
+  fill: white;
+  stroke: white;
+  stroke-opacity: 0.5;
+  stroke-width: 0.5px;
+}
+.c-landscape__standaloneLogo__fill.--unfill {
+  fill: transparent;
+  stroke: none;
+  stroke-opacity: 0;
+  stroke-width: 0;
+}
+.c-landscape__stars {
+  animation: twinkle 4s ease infinite;
+}
+.c-landscape__stars.--off {
+  fill: none;
+  stroke: transparent;
+  stroke-opacity: 0;
+  stroke-width: 0;
+}
+.c-landscape__stars.--one {
+  animation: animateStars 800s ease infinite;
+}
+.c-landscape__stars.--two {
+  animation: animateStars 1200s ease infinite;
+}
+.c-landscape__stars.--three {
+  animation: animateStars 1500s ease infinite;
+}
+.c-landscape__stars:nth-child(2) {
+  animation-delay: calc(4s * -0.33);
+}
+.c-landscape__stars:nth-child(3) {
+  animation-delay: calc(4s * -0.66);
+}
+.c-landscape__stars:nth-child(4) {
+  animation-delay: calc(4s * -0.99);
+}
+.c-landscape__stars:nth-child(5) {
+  animation-delay: calc(4s * -1.32);
+}
+.c-landscape__stars:nth-child(6) {
+  animation-delay: calc(4s * -1.65);
+}
+.c-landscape__star {
+  fill: white;
+}
+.c-landscape__star:nth-child(3n) {
+  opacity: 0.8;
+}
+.c-landscape__star:nth-child(7n) {
+  opacity: 0.6;
+}
+.c-landscape__star:nth-child(13n) {
+  opacity: 0.4;
+}
+.c-landscape__star:nth-child(19n) {
+  opacity: 0.2;
+}
+.c-landscape__star.--blur {
+  stroke-width: 9px;
+  stroke: #ffc2b8;
+  filter: blur(5px);
+}
+.c-landscape__star.--blur.--off {
+  opacity: 0;
+  stroke: none;
+}
+@keyframes twinkle {
+  25% {
+    opacity: 0;
+  }
+}
+@keyframes animateStars {
+  0% {
+    transform: rotate3d(1, 1, 0, -30deg);
+  }
+  25% {
+    transform: rotate3d(1, 1, 0, 60deg);
+  }
+  50% {
+    transform: rotate3d(1, 1, 0, -30deg);
+  }
+  75% {
+    transform: rotate3d(1, 1, 0, -120deg);
+  }
+  100% {
+    transform: rotate3d(1, 1, 0, -30deg);
+  }
+}
+.c-landscape__comet {
+  transform-origin: center center;
+  animation: comet 9s linear infinite;
+  font-size: randomNumber(-3, -10);
+}
+.c-landscape__comet.--type-1 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-2 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-3 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-4 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-5 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-6 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-7 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-8 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-9 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-10 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-11 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-12 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-13 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-14 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-15 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-16 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-17 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-18 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-19 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-20 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-21 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-22 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-23 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-24 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+.c-landscape__comet.--type-25 {
+  animation-delay: decimalRound(randomNumber(-3, -10), 2)s;
+}
+@keyframes comet {
+  0%, 40% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  60%, 100% {
+    transform: translateX(-100vmax);
+    opacity: 0;
+  }
+}
+.c-landscape__texts.--skill {
+  font: normal normal normal 1.5rem "JetBrains Mono", sans-serif;
+  fill: none;
+}
+@media (min-width: 768px) {
+  .c-landscape__texts.--skill {
+    font: normal normal normal 2rem "JetBrains Mono", sans-serif;
+  }
+}
+.c-landscape__texts.--page {
+  font: normal normal normal 1rem "JetBrains Mono", sans-serif;
+  fill: white;
+}
+.c-landscape__circles {
+  display: none;
+}
+.c-landscape__circle {
+  fill: white;
+}
+.c-landscape__pulse {
+  fill: white;
+  fill-opacity: 0;
+  stroke: white;
+  transform-origin: 608.49px 234px;
+  animation-duration: 2s;
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+}
+@keyframes pulse {
+  from {
+    stroke-width: 3px;
+    stroke-opacity: 1;
+    transform: scale(0.3);
+  }
+  to {
+    stroke-width: 0;
+    stroke-opacity: 0;
+    transform: scale(2);
+  }
+}
+.c-landscape.--gsap {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.c-landscape.--gsap__background {
+  fill: none;
+  stroke: none;
+}
 /****************************************** PLUGINS *************************************
 /****************************************************************************************/
 /****************************************** MISC ****************************************

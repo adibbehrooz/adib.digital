@@ -67,13 +67,13 @@
 		// V. Plugins
 		plugins: [
 
-			// MiniCssExtractPlugin
+			// I. MiniCssExtractPlugin
 			new MiniCssExtractPlugin({
 				filename: '../../css/[name].min.css',
 				chunkFilename: '[id].css',
 			}),
 
-			// Browser Sync
+			// II. Browser Sync
 			new BrowserSyncPlugin({
 				browser: ['google-chrome'],
 				ghostMode: {
@@ -117,6 +117,9 @@
 				}],
 				proxy: 'http://adib.server.com:8000/website',
 			}),
+
+			// III. Tailwind Scrollbar
+			require('tailwind-scrollbar'),
 		],
 
 		// VI. DEVELOPMENT TOOLS

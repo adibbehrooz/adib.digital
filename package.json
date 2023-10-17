@@ -43,6 +43,7 @@
     "browser-sync-webpack-plugin": "^2.3.0",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "cssnano-preset-advanced": "^6.0.1",
+    "tailwind-scrollbar": "^3.0.5",
     "webpack": "^5.88.2",
     "webpack-dev-server": "^4.15.1",
     "webpack-watch-external-files-plugin": "^2.0.0"

@@ -196,7 +196,6 @@
 	}
 	*/
 
-
 	//______________________ Cursor ______________________
 	//____________________________________________________
 
@@ -244,6 +243,30 @@
 		font-size: 0.7rem;
 	}
 
+
+	//______________________ Scrollbar ______________________
+	//_______________________________________________________
+
+	.scrollbar::-webkit-scrollbar {
+		width: 5px;
+		height: 20px;
+	}
+		
+	.scrollbar::-webkit-scrollbar-track {
+		border-radius: 0vh;
+		background: #16161d;
+	}
+		
+	.scrollbar::-webkit-scrollbar-thumb {
+		background: #1f1f3a;
+		border-radius: 100vh;
+		border: 3px solid #f6f7ed;
+	}
+		
+	.scrollbar::-webkit-scrollbar-thumb:hover {
+		background: #3b2f4a;
+	}
+	
 
 	//______________________ Meteor Shower ______________________
 	//___________________________________________________________
@@ -591,7 +614,6 @@
 
 		@include element('container') {
 			width: 100vw;
-			// height: 50vh;
 		}
 		@screen md {
 			@include element('container') {
@@ -607,6 +629,7 @@
 		//__________________________
 
 		@include element('stars') {
+			background: linear-gradient(rgb(22, 22, 29), rgb(31, 31, 58), rgb(59, 47, 74)) no-repeat;
 			opacity: 0;
 			@include modifier('active') {
 				/* @keyframes duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name */
@@ -743,6 +766,279 @@
 		}
 	}
 	*/
+
+	//______________________ SVG Landcape ______________________
+	//__________________________________________________________
+
+	@include component('landscape') {
+		width: 99.9vw;
+		height: 99.82vh;
+
+		@include modifier('modal') { 
+			width: 100vw;
+			height: 50vh;
+		}
+		@screen md {
+			@include modifier('modal') { 
+				width: 32vw;
+				height: 100vh;
+			}
+		}
+
+		// Path Group
+		//___________
+
+		@include element('pathGroup') {
+			fill: transparent;
+			stroke: rgba(255, 255, 255, 0.5);
+			
+			@include modifier('fill') {
+				fill: rgba(255, 255, 255, 1);
+			}
+
+			@include modifier('cover') {
+				fill: transparent;
+				stroke-width: 0;
+			}
+
+			@include modifier('stable') {
+
+				@include modifier('mountain') { stroke-width: 2px; stroke-opacity: 0.6; }
+			}
+
+			@include modifier('change') {
+				fill: transparent;
+				stroke-width: 3%;
+				stroke-opacity: 0;
+				transition: all .4s ease-in-out;
+
+				@include modifier('fill') {
+					fill: rgba(255, 255, 255, 0.9);
+					stroke-width: 2px;
+					stroke-opacity: 1;
+				}
+			}
+
+			@include modifier('transparent') {
+				fill: transparent;
+
+				@include modifier('fill') {
+					fill: black;
+				}
+			}
+		}
+
+		// Wave
+		@include element('wave') {
+			fill: transparent;
+			stroke: white;
+			stroke-opacity: 0.5;
+			stroke-width: 0.5px;
+		}
+
+		@include element('standaloneLogo') {
+
+			@include element('fill') {
+				fill: white;
+				stroke: white;
+				stroke-opacity: 0.5;
+				stroke-width: 0.5px;
+
+				@include modifier('unfill') {
+					fill: transparent;
+					stroke: none;
+					stroke-opacity: 0;
+					stroke-width: 0;
+				}
+			}			
+		}
+
+		// Night Sky Stars
+		//________________
+
+		// 1. Stars Group
+		$twinkle-duration: 4s;	
+		$twinkleNumber: -0.33;
+
+		@include element('stars') {
+			
+			@include modifier('off') {
+				fill: none;
+				stroke: transparent;
+				stroke-opacity: 0;
+				stroke-width: 0;
+			}			
+
+			@include modifier('one') {
+				animation : animateStars 800s ease infinite;
+			}
+
+			@include modifier('two') {
+				animation : animateStars 1200s ease infinite;
+			}
+
+			@include modifier('three') {
+				animation : animateStars 1500s ease infinite;
+			}
+
+			animation: twinkle $twinkle-duration ease infinite;
+			
+			@for $i from 1 through 5 {
+				$result: $twinkleNumber * $i;
+				&:nth-child(#{$i+1}) {
+					animation-delay: calc(#{$twinkle-duration} * #{$result});
+				}
+			}
+		}
+
+		// 2. Single Star
+		@include element('star') {
+			fill: white;
+			&:nth-child(3n) { opacity: .8; }
+			&:nth-child(7n) { opacity: .6; }
+			&:nth-child(13n) { opacity: .4; }
+			&:nth-child(19n) { opacity: .2; }
+			
+			@include modifier('blur') { 
+				stroke-width: 9px;
+				stroke: #ffc2b8; 
+				filter: blur(5px); 
+				
+				@include modifier('off') { 
+					opacity: 0;
+					stroke: none; 
+				}					
+			}
+		}
+
+		// 3. Star Animations
+		@keyframes twinkle {
+			25% { opacity: 0 }
+		}
+
+		// 4. Night Sky 3D
+		@keyframes animateStars {
+			0%	 { transform: rotate3d(1, 1, 0, -30deg); }
+			25%	{ transform: rotate3d(1, 1, 0, 60deg); 	}
+			50%	{ transform: rotate3d(1, 1, 0, -30deg);	}
+			75%	{ transform: rotate3d(1, 1, 0, -120deg); }
+			100% { transform: rotate3d(1, 1, 0, -30deg); }
+		}
+	
+		// Night Comet
+		//____________
+
+		// 1. Comets
+		@include element('comet') {
+			transform-origin: center center;
+			animation: comet 9s linear infinite;
+
+			@for $i from 1 through 25 {
+				$randomNumber: #{randomNumber(-3, -10)};
+				font-size: $randomNumber;
+				@include modifier('type-#{$i}') {
+					animation-delay: #{decimalRound($randomNumber,2)}s; 
+				}
+			}
+		}
+
+		// 2. Comets Animation
+		@keyframes comet {
+			0%,
+			40% {
+				transform: translateX(0);
+				opacity: 0
+			}
+			50% {
+				opacity: 1
+			}
+			60%,
+			100% {
+				transform: translateX(-100vmax);
+				opacity: 0
+			}
+		}
+
+		// Text
+		//_____
+
+		@include element('texts'){
+
+			@include modifier('skill') {
+				@include font(1.5rem, $JetBrains);
+				fill: none;
+				// transform: translateX(-220px);
+				@screen md {
+					@include font(2rem, $JetBrains);
+					// transform: translateX(-170px);
+				}
+			}
+			
+			@include modifier('page') {
+				@include font(1rem, $JetBrains);
+				fill: white;
+			}
+		}
+
+		// circles
+		//________
+
+		@include element('circles'){
+			display: none;
+		}
+		
+		// Single circle
+		//______________
+
+		@include element('circle'){
+			fill: white;
+		}
+		
+		// Pulse
+		//______
+
+		// 1. Define pulse
+		@include element('pulse'){
+			fill: white;
+			fill-opacity: 0;
+			stroke: white;
+			transform-origin: 608.49px 234px;
+			animation-duration: 2s;
+			animation-name: pulse;
+			animation-iteration-count: infinite;
+		}
+
+		// 2. Pulse Animation
+		@keyframes pulse {
+			from {
+				stroke-width: 3px;
+				stroke-opacity: 1;
+				transform: scale(0.3);
+			}
+			to {
+				stroke-width: 0;
+				stroke-opacity: 0;
+				transform: scale(2);
+			}
+		}
+
+		//_____________________________________
+		//
+		// "GSAP" Zoom Library [Infinite zoom!]
+		//_____________________________________
+
+		@include modifier('gsap') {
+			position: fixed;
+			top: 0;
+			left: 0;
+
+			@include element('background') {
+				fill: none;
+				stroke: none;
+			}
+		}
+	}
+
 
 /****************************************** PLUGINS *************************************
 /****************************************************************************************/

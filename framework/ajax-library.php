@@ -41,12 +41,70 @@
 		if ( $modalQyery->have_posts() ) : while ($modalQyery->have_posts() ) : $modalQyery->the_post();
 	?>
 		<?php // Container ?>
-		<div id="container" class="[ Display: grid md:grid-cols-2 sm:grid-cols-1 ][ Tailwind: content ][ Custom: o-modal__container ]">
+		<div  id="container" class="[ Display: grid md:grid-cols-2 sm:grid-cols-1 ][ Tailwind: content ][ Custom: o-modal__container ]">
 
-			<?php // Star and Commet ?>
+			<?php 
+			//____________________________________________________________________________//
+			//
+			//						        I. Star and Commet
+			//____________________________________________________________________________//
+			?>
+
 			<div id="stars" class="o-modal__stars">		
-					
+			<svg class="[ c-landscape --modal ]" id="landscape" data-idgsap="landscapeGsap" version="1.1" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+				
+				<?php // Object SVG ?>
+
+				<?php // Coordinations ?>
+				<?php // ______________ ?>
+
+				<g 
+					id="<?php echo $postID; ?>" 
+					class="[ c-landscape__object ]" 
+					data-type="fill"
+					data-type="<?php echo $postType; ?>" 
+					data-cover="--ltr"
+					transform="matrix(
+						<?php if( have_rows('custom_matrix_coordinations_group', $postID) ): while( have_rows('custom_matrix_coordinations_group', $postID) ): the_row(); ?>
+							<?php
+							for($matrix = 1; $matrix <= 6; $matrix++ ):
+								if($matrix <= 5 ):
+								echo get_sub_field('custom_coordination_'.$matrix)." "; 
+								else:
+								echo get_sub_field('custom_coordination_'.$matrix); 
+								endif;
+							endfor;
+							?>
+						<?php endwhile; endif; wp_reset_postdata(); ?>
+						)
+
+						scale(
+						<?php if( have_rows('custom_scale_group', $postID) ): while( have_rows('custom_scale_group', $postID) ): the_row(); ?>
+							<?php
+								for($scale = 1; $scale <= 2; $scale++ ):
+								if( $scale == 1 ):
+									echo get_sub_field('custom_scale_'.$scale)." ";
+								else:
+									echo get_sub_field('custom_scale_'.$scale);
+								endif;
+								endfor;
+							?>
+						<?php $scale++; endwhile; endif; wp_reset_postdata(); ?>
+						)
+					">
+
+					<?php echo get_field('custom_object_svg_code', $postID); ?>
+				</g>
+
+				</svg>					
 			</div>
+
+			<?php 
+			//____________________________________________________________________________//
+			//
+			//					II. Multimedia (Text, Image, PDF, Video, ....)
+			//____________________________________________________________________________//
+			?>
 
 			<div id="multimedia" class="o-modal__multimedia">
 				
