@@ -251,8 +251,8 @@
 
 				// 1. SCSS & CSS For Wordpress Core
 				// Beacuse of Split SCSS to two files, Comment SCSS aliases
-				// main: 			path.resolve(__dirname,'./assets/scss/main.scss'), // Import
-				// convert: 		path.resolve(__dirname,'./assets/scss/convert.scss'), // Import
+				// main: 		path.resolve(__dirname,'./assets/scss/main.scss'), // Import
+				// convert: 	path.resolve(__dirname,'./assets/scss/convert.scss'), // Import
 				slick: 			path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
 				slickTheme: 	path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
 				

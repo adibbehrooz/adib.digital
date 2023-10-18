@@ -182,23 +182,35 @@ class Ajax {
 		document.getElementById(multimediaID).style = cssMultimediaResult;
 	};
 
+	modalImages() {
+		const images = document.querySelectorAll('img');
+		Object.entries(images).forEach(([key, value]) => {
+			value.dataset.type = "modal-image-link";
+			value.parentElement.classList.add('--imageLink');
+			value.parentElement.dataset.type = "modal-image";
+		});
+	};
+	
 	modalCursor() {
 
 		// Contorol Cursor Behaviour in Open Modal
 		const container = this.container;
 		const followCircle = document.getElementById('followCircle');
-		const modalDocument = document.querySelector(container);
 
 		// Cursor "Default" Behaviour on Open Modal
+		/*
+		const modalDocument = document.querySelector(container);
 		modalDocument.addEventListener('mouseover', () => {
 			gsap.to(followCircle, 0.1, {
 				opacity: 1,
 				scale: 1
 			});		
 		});
+		*/
 
 		// Big Cursor in Modal Page (Mouse Over Close Icon & Links)
 		const links = document.querySelectorAll('a');
+		
 		const closeIcon = document.querySelectorAll('.o-cover__close');
 		const gsapCursor = {
 			'links' 	: links,
@@ -207,7 +219,6 @@ class Ajax {
 
 		Object.keys(gsapCursor).forEach(key => {
 			gsapCursor[key].forEach((value, index) => {
-				value.classList.add('zoom');
 				value.addEventListener('mouseover', () => {
 					value.classList.add('zoom');
 					// GSAP
@@ -228,17 +239,16 @@ class Ajax {
 	};
 
 	modalscrollbBar() {
+		const multimediaID = this.multimediaID;
 		setTimeout(function() { // start a delay
 			document.body.style.overflowY = "scroll";
-		}, 1000); // wait to run after 3 seconds  
+		}, 1000);
 		document.body.classList.add(
-			'scrollbar',
-			'scrollbar-w-[2px]',
-			'scrollbar-rounded-0',
-			'scrollbar-thumb-[#16161d]',
-			'scrollbar-track-[#1f1f3a]',
-			'scrollbar-corner-[#3b2f4a]'
+			'externalScrollbar',
 		);	
+		multimediaID.classList.add(
+			'internalScrollbar',		
+		);
 	};
 
 	// Create Or Destroy Modal Content Animation
@@ -275,14 +285,18 @@ class Ajax {
 			modalMultimedia.classList.add(activeClass);
 			modalMultimedia.classList.remove(deactiveClass);
 
+			// VI. Contorol Modal Images
+			this.modalImages();
+
 			// III. Style Multimedia Div (Add Internal Scroll)
 			this.addMultimediaStyle();
 
 			// IV. Contorol Modal Cursor Behaviour over links
 			this.modalCursor();
 
-			// IV. Contorol Scroll Bar
-			this.modalscrollbBar();		
+			// V. Contorol Scroll Bar
+			this.modalscrollbBar();	
+
 		}
 	};
 

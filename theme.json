@@ -1,0 +1,121 @@
+{
+    "version": 2,
+    "settings": {
+        "appearanceTools": false,
+        "border": {
+            "color": false,
+            "radius": false,
+            "style": false,
+            "width": false
+        },
+        "color": {
+            "background": true,
+            "custom": true,
+            "customDuotone": true,
+            "customGradient": true,
+            "defaultGradients": true,
+            "defaultPalette": true,
+            "duotone": [],
+            "gradients": [],
+            "link": false,
+            "palette": [],
+            "text": true
+        },
+        "custom": {},
+        "layout": {
+            "contentSize": "800px",
+            "wideSize": "1000px"
+        },
+        "spacing": {
+            "blockGap": null,
+            "margin": true,
+            "padding": true,
+            "customSpacingSize": true,
+            "units": [ "px", "em", "rem", "vh", "vw" ],
+            "spacingScale": {
+                "operator": "*",
+                "increment": 1.5,
+                "steps": 7,
+                "mediumStep": 1.5,
+                "unit": "rem"
+            },
+            "spacingSizes": []
+        },
+        "typography": {
+            "customFontSize": true,
+            "lineHeight": true,
+            "dropCap": true,
+            "fontStyle": true,
+            "fontWeight": true,
+            "letterSpacing": true,
+            "textDecoration": true,
+            "textTransform": true,
+            "fontSizes": [
+                 {
+                    "slug": "extra-small",
+                    "size": "1rem",
+                    "name": "Extra small"
+                },
+                 {
+                    "slug": "small",
+                    "size": "1.125rem",
+                    "name": "Small"
+                },
+                {
+                    "slug": "medium",
+                    "size": "1.25rem",
+                    "name": "Medium"
+                },
+                {
+                    "slug": "large",
+                    "size": "1.5rem",
+                    "name": "Large"
+                },
+                {
+                    "slug": "extra-large",
+                    "size": "2.5rem",
+                    "name": "Extra large"
+                }
+            ],
+            "fontFamilies": [
+				{
+					"fontFamily": "Exo 2",
+					"slug": "exo-2",
+					"name": "Exo 2"
+				},
+				{
+					"fontFamily": "Imbue",
+					"slug": "imbue",
+					"name": "Imbue"
+				},
+				{
+					"fontFamily": "JetBrains Mono",
+					"slug": "JetBrains-Mono",
+					"name": "JetBrains Mono"
+				},
+				{
+					"fontFamily": "Oswald",
+					"slug": "oswald",
+					"name": "Oswald"
+				},
+				{
+					"fontFamily": "Roboto",
+					"slug": "roboto",
+					"name": "Roboto"
+				}                
+			]
+        },
+        "blocks": {
+            "core/paragraph": {
+                "border": {},
+                "color": {},
+                "custom": {},
+                "layout": {},
+                "spacing": {},
+                "typography": {}
+            },
+            "core/heading": {},
+            "etc": {}
+        }
+    }
+}

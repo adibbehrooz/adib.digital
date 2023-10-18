@@ -16,13 +16,18 @@
 		$postType	= $_POST['postType'];
 
 		// Modal Post Argument
+		//____________________
+
 		$modalPostArgs = array(
 			'post_type'     => 'technology',
 			'post_status'   => 'publish',
 			'p'				=> $postID
 		);
 
+
 		// Modal Page Argument
+		//____________________
+
 		$modalPageArgs = array(
 			'post_type'     => 'page',
 			'post_status'   => 'publish',
@@ -40,14 +45,20 @@
 
 		if ( $modalQyery->have_posts() ) : while ($modalQyery->have_posts() ) : $modalQyery->the_post();
 	?>
-		<?php // Container ?>
-		<div  id="container" class="[ Display: grid md:grid-cols-2 sm:grid-cols-1 ][ Tailwind: content ][ Custom: o-modal__container ]">
 
+		<?php // Container ?>
+		<div  
+			id="container" 
+			class="
+				[ Display: grid md:grid-cols-2 sm:grid-cols-1 ]
+				[ Tailwind: content ]
+				[ Custom: o-modal__container ]
+			">
 			<?php 
-			//____________________________________________________________________________//
+			//____________________________________________________________________________
 			//
 			//						        I. Star and Commet
-			//____________________________________________________________________________//
+			//____________________________________________________________________________
 			?>
 
 			<div id="stars" class="o-modal__stars">		
@@ -100,25 +111,27 @@
 			</div>
 
 			<?php 
-			//____________________________________________________________________________//
+			//____________________________________________________________________________
 			//
 			//					II. Multimedia (Text, Image, PDF, Video, ....)
-			//____________________________________________________________________________//
+			//____________________________________________________________________________
 			?>
 
 			<div id="multimedia" class="o-modal__multimedia">
-				
-				<div class="o-modal__multimedia__content --textResponsive">
-					
-					<h1 class="[ font-robotoMono text-2xl pt-32 ]"><?php echo get_the_title(); ?></h1>
 
-					<?php the_content(); ?>
-					
-					<?php // Correct ajax.js Modal Responsive Text ?>
-					<p class="text-base sm:text-sm md:text-base lg:text-base"></p>
+				<div id="multimedia" class="[ md:h-auto md:overflow-y-scroll md:w-[97%] md:mt-32 mb-32 internalScrollbar ]">
+					<div class="o-modal__multimedia__content --textResponsive">
+						
+						<h1 class="[ font-robotoMono text-2xl ]"><?php echo get_the_title(); ?></h1>
 
+						<?php the_content(); ?>
+						
+						<?php // Correct ajax.js Modal Responsive Text ?>
+						<p class="text-base sm:text-sm md:text-base lg:text-base"></p>
+
+					</div>
 				</div>
-
+				
 			</div>
 
 		</div>

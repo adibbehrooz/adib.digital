@@ -247,26 +247,48 @@
 	//______________________ Scrollbar ______________________
 	//_______________________________________________________
 
-	.scrollbar::-webkit-scrollbar {
+	// Scroll Bar
+	.externalScrollbar::-webkit-scrollbar {
 		width: 5px;
 		height: 20px;
+		@screen md {
+			width: 0;
+			display: none;
+			visibility: hidden;
+		}
 	}
-		
-	.scrollbar::-webkit-scrollbar-track {
+
+	.internalScrollbar::-webkit-scrollbar {
+		width: 5px;
+		height: 20px;
+		display: none;
+		@screen md {
+			display: inline-block;			
+		}
+	}	
+
+	// Track
+	.externalScrollbar::-webkit-scrollbar-track,
+	.internalScrollbar::-webkit-scrollbar-track {
 		border-radius: 0vh;
 		background: #16161d;
 	}
-		
-	.scrollbar::-webkit-scrollbar-thumb {
+	
+	// Thumb
+	.externalScrollbar::-webkit-scrollbar-thumb,
+	.internalScrollbar::-webkit-scrollbar-thumb {
 		background: #1f1f3a;
 		border-radius: 100vh;
 		border: 3px solid #f6f7ed;
 	}
 		
-	.scrollbar::-webkit-scrollbar-thumb:hover {
+	.externalScrollbar::-webkit-scrollbar-thumb:hover,
+	.internalScrollbar::-webkit-scrollbar-thumb:hover {
 		background: #3b2f4a;
 	}
 	
+
+
 
 	//______________________ Meteor Shower ______________________
 	//___________________________________________________________
@@ -576,10 +598,12 @@
 
 		@keyframes modalDisplay {
 			from {
+				width: 0%;
 				visibility: hidden;
 				opacity: 0;
 			}
 			to {
+				width: 100%;
 				visibility: visible;
 				opacity: 1;
 			}
@@ -717,6 +741,18 @@
 							height: 2px;
 							opacity: 0;
 							transform: translateY(-10px);
+						}
+
+						@include modifier('imageLink') {
+							&:after, &:hover::after, &:focus::after {
+								position: absolute;
+								top: 100%;
+								left: 0;
+								width: 100%;
+								height: 2px;
+								opacity: 0;
+								transform: translateY(-10px);								
+							}
 						}
 					}
 				}
@@ -1042,6 +1078,10 @@
 
 /****************************************** PLUGINS *************************************
 /****************************************************************************************/
+
+
+	//______________________ Sticky Sidebar ______________________
+	//____________________________________________________________
 
 
 /****************************************** MISC ****************************************
