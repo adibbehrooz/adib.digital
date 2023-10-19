@@ -6,25 +6,29 @@
 	Version: 1.0
 */
 
-/******************************** TEXT :: Contact ********************************
-/*********************************************************************************/
+/******************************** TEXT :: Source ********************************
+/*******************************************************************************/
 
-const contact = {
+const source = {
 
 	//____________________ I. DATA ____________________
 
 	data: {
 		// Type
-		type: 'text',
-
-		// WordPress
+		type: 'link',
+		
+        // WordPress
 		backend : {
-			ID: 71,
-			postType: 'page', // Page or Post
-			postTitle: 'Contact', // Page or Post
-			postSlug: 'contact', // Page or Post
-			coverDirection: '--ttb',
+			ID: 0,
+			postType: 'link', // Page or Post
+			postTitle: '', // Page or Post
+			postSlug: '', // Page or Post
+			coverDirection: '',
 		},
+
+        // URL
+        url: 'https://github.com/adibbehrooz/adib.online',
+
 		// Camera Offset Positon
 		relation: { 
 			x: 0, 
@@ -56,12 +60,13 @@ const contact = {
 				{ form: 'fillStyle', value: "rgba(255, 255, 255, 0)" },  
 				{ form: 'miterLimit', value: 4 }, 
 				{ form: 'save' }, 
+                    // Absolute Size: 5, 35, 35, 50
 					{ form: 'beginPath' }, 
-					{ x0: 5.000,   	x1: 330.000, form: 'moveTo' }, 
-					{ x0: 40.00,   	x1: 330.000, form: 'lineTo' }, 
-					{ x0: 40.00,    x1: 410.000, form: 'lineTo' },   
-					{ x0: 5.000,    x1: 410.000, form: 'lineTo' },   
-					{ x0: 5.000,    x1: 330.000, form: 'lineTo' },
+					{ x0: 5.000,   	x1: 500.000, form: 'moveTo' }, 
+					{ x0: 40.00,   	x1: 500.000, form: 'lineTo' }, 
+					{ x0: 40.00,    x1: 580.000, form: 'lineTo' },   
+					{ x0: 5.000,    x1: 580.000, form: 'lineTo' },   
+					{ x0: 5.000,    x1: 500.000, form: 'lineTo' },
 					{ form: 'closePath'},
 					{ form: 'fill' }, 
 					{ form: 'stroke' }, 
@@ -70,11 +75,11 @@ const contact = {
 		],
 		inside: [
 			{ form: 'save' },
-				{ x0: 5.000,   	x1: 330.000, form: 'moveTo' }, 
-				{ x0: 40.00,   	x1: 330.000, form: 'lineTo' }, 
-				{ x0: 40.00,    x1: 410.000, form: 'lineTo' },   
-				{ x0: 5.000,    x1: 410.000, form: 'lineTo' },   
-				{ x0: 5.000,    x1: 330.000, form: 'lineTo' },
+                { x0: 5.000,   	x1: 500.000, form: 'moveTo' }, 
+                { x0: 40.00,   	x1: 500.000, form: 'lineTo' }, 
+                { x0: 40.00,    x1: 580.000, form: 'lineTo' },   
+                { x0: 5.000,    x1: 580.000, form: 'lineTo' },   
+                { x0: 5.000,    x1: 500.000, form: 'lineTo' },
 				// Stroke
 				{ form: 'lineWidth', value: '0' },
 				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 0)' },
@@ -90,4 +95,4 @@ const contact = {
 	},
 };
 
-export default { contact };
+export default { source };

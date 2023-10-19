@@ -361,9 +361,17 @@ class Pan {
 
 			if(eventName == 'click') { 
 				let shapeID 		= constellation[name].data.backend.ID; 
-				let backendType 	= constellation[name].data.backend.postType; 
+				let shapeType 		= constellation[name].data.type; // Types: Constellations OR Texts OR Links
+				let shapeURL 		= constellation[name].data.url; // Types: Constellations OR Texts OR Links
+
+				let postType 	= constellation[name].data.backend.postType; // WordPress Post Type :: Post OR Page
 				let coverDirection 	= constellation[name].data.backend.coverDirection; 
-				ajax.openModalClickEvent(shapeID, backendType, coverDirection);
+				
+				if(shapeType == 'link') {
+					window.open(shapeURL, '_blank');
+				} else {
+					ajax.openModalClickEvent(shapeID, postType, coverDirection);
+				}
 			}
 		} else {
 			this.ctx.save();

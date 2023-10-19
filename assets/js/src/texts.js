@@ -100,12 +100,18 @@ class Menu {
 			ctx.translate(x, y);
 			ctx.rotate(-Math.PI / -2);
 			ctx.textAlign = "center";
+
 			// I. About
 			ctx.fillText("About", -40, 125);
-            // II. Projects
+           
+			// II. Projects
             ctx.fillText("Projects", 100, 125); 
+			
 			// III. Contact
 			ctx.fillText("Contact", 270, 125);
+			
+			// IV. Source
+			ctx.fillText("Source", 440, 125);
 		ctx.restore();
 	};
 };

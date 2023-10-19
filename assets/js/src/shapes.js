@@ -30,6 +30,7 @@
 	import about 		from './texts/about';
 	import projects 	from './texts/projects';
 	import contact 		from './texts/contact';
+	import source 		from './texts/source';
 
 	export const constellations = {
 		// Constellations
@@ -48,6 +49,7 @@
 		'about': about,		
 		'projects': projects,		
 		'contact': contact,		
+		'source': source,		
 	};
 
 	export const landscape = {

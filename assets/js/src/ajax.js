@@ -62,13 +62,13 @@ class Ajax {
 	//
 	// RUN! 
 	//____________________________   
-
-    init() {
-        this.openModalClickEvent();
-    };
-
-    openModalClickEvent(ID, type, coverDir) {
-        this.ajaxify(ID, type, coverDir);
+	/**
+	I. shapeID :: ID of Shape
+	II. postType :: WordPress Post OR Page
+	III. coverDirection :: Top To Bottom OR Left To Right
+	**/
+    openModalClickEvent(ID, postType, coverDir) {
+        this.ajaxify(ID, postType, coverDir); 
     };
 
 	// Create or Destroy Modal Container
@@ -219,6 +219,7 @@ class Ajax {
 
 		Object.keys(gsapCursor).forEach(key => {
 			gsapCursor[key].forEach((value, index) => {
+				value.classList.add('zoom');
 				value.addEventListener('mouseover', () => {
 					value.classList.add('zoom');
 					// GSAP
@@ -375,8 +376,7 @@ class Ajax {
 			this.modalCloseButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass),
 		)
 		.catch( err => console.log( err ) );
-	};
-    
+	}; 
 };
 
 
