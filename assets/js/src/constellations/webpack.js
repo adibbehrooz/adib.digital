@@ -21,7 +21,7 @@ const webpack = {
 		
 		// WordPress
 		backend : {
-			ID: 55,
+			ID: 109,
 			postType: 'post', // Page or Post
 			postTitle: 'Webpack',
 			postSlug: 'webpack',

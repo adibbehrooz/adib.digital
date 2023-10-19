@@ -238,17 +238,13 @@ class Ajax {
 		});	
 	};
 
-	modalscrollbBar() {
-		const multimediaID = this.multimediaID;
+	modalExternalScrollbBar() {
 		setTimeout(function() { // start a delay
 			document.body.style.overflowY = "scroll";
 		}, 1000);
 		document.body.classList.add(
 			'externalScrollbar',
 		);	
-		multimediaID.classList.add(
-			'internalScrollbar',		
-		);
 	};
 
 	// Create Or Destroy Modal Content Animation
@@ -270,6 +266,10 @@ class Ajax {
 			// II. Deactive Multimedia
 			modalMultimedia.classList.remove(activeClass);
 			modalMultimedia.classList.add(deactiveClass);
+
+			// III. Deactive internal Scroll Bar
+			if (modalMultimedia.classList.contains('internalScrollbar')) 
+			modalMultimedia.classList.remove('internalScrollbar');
 
 		} else { 
 			//___________________
@@ -294,8 +294,11 @@ class Ajax {
 			// IV. Contorol Modal Cursor Behaviour over links
 			this.modalCursor();
 
-			// V. Contorol Scroll Bar
-			this.modalscrollbBar();	
+			// V. Contorol External Scroll Bar
+			this.modalExternalScrollbBar();	
+
+			// VI. Add Internal Scroll Bar
+			modalMultimedia.classList.add('internalScrollbar');
 
 		}
 	};
@@ -340,7 +343,8 @@ class Ajax {
 		let container = this.container;
 		let modalStars = this.modalStars;
 		let modalMultimedia = this.modalMultimedia;
-		
+		let multimediaID = this.multimediaID;
+
 		let formData = new FormData();
 
 		formData.append( 'action', 'ajaxModal' );
