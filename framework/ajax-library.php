@@ -122,12 +122,12 @@
 				<div id="multimedia" class="[ md:h-auto md:overflow-y-scroll md:w-[97%] md:mt-32 mb-32 internalScrollbar ]">
 					<div class="o-modal__multimedia__content --textResponsive">
 						
-						<h1 class="[ font-robotoMono text-2xl ]"><?php echo get_the_title(); ?></h1>
+						<h1 class="[ font-robotoMono text-2xl mb-8 md:mb-16 ]"><?php echo get_the_title(); ?></h1>
 
 						<?php the_content(); ?>
 						
 						<?php // Correct ajax.js Modal Responsive Text ?>
-						<p class="text-base sm:text-sm md:text-base lg:text-base"></p>
+						<p class="text-base sm:text-sm md:text-base lg:text-base min-h-[300px]"></p>
 
 					</div>
 				</div>

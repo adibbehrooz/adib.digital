@@ -155,6 +155,14 @@
 /****************************************** TAILWIND ******************************************
 /**********************************************************************************************/
 
+@include object('border') {
+	@include element('title') {
+		@include modifier('subtitle') {
+			@apply border-y border-y-[#888888];
+		}
+	}
+}
+
 
 /****************************************** ELEMENTS ******************************************
 /************************************** Unstyled Elements**************************************/
@@ -265,7 +273,7 @@
 		@screen md {
 			display: inline-block;			
 		}
-	}	
+	}
 
 	// Track
 	.externalScrollbar::-webkit-scrollbar-track,
@@ -744,6 +752,20 @@
 						}
 
 						@include modifier('imageLink') {
+							&:after, &:hover::after, &:focus::after {
+								position: absolute;
+								top: 100%;
+								left: 0;
+								width: 100%;
+								height: 2px;
+								opacity: 0;
+								transform: translateY(-10px);								
+							}
+						}
+
+						@include modifier('button') {
+							margin: 20px 0;
+							padding: 20px;
 							&:after, &:hover::after, &:focus::after {
 								position: absolute;
 								top: 100%;
