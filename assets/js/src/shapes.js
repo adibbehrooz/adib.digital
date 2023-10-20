@@ -33,7 +33,8 @@
 	import source 		from './texts/source';
 
 	export const constellations = {
-		// Constellations
+		
+		// I. Constellations
 		'css': css,
 		'webpack': webpack,
 		'framework': framework,
@@ -44,14 +45,16 @@
 		'php': php,
 		'apache': apache,
 		'linux': linux,
+		// 'github': github
 
-		// Texts
+		// II. Texts
 		'about': about,		
 		'projects': projects,		
 		'contact': contact,		
 		'source': source,		
 	};
 
+	// III. Landcape
 	export const landscape = {
 		'pyramids': pyramids,
 		'soil':	soil,

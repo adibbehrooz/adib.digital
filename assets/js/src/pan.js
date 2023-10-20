@@ -209,7 +209,7 @@ class Pan {
 	
 	shapeLines(key, value) {
 
-		// II. Line Types Loop
+		// Line Types Loop
 		this.lineTypes.forEach((lineType) => { 
 
 			if(lineType == 'curve') {
@@ -290,8 +290,8 @@ class Pan {
 		const shape = new Path2D();
 		this.ctx.beginPath();
 		
-		// Text
-		if( constellation[name].data.type == 'text ' ) {
+		// Is 'Text' Type?
+		if( constellation[name].data.type == 'text' ) {
 			shape.moveTo( 
 				constellation[name].coordination[linetype][0]['x0'],
 				constellation[name].coordination[linetype][0]['x1']
@@ -311,7 +311,7 @@ class Pan {
 			);
 		}
 		for( let i = 1; i < constellation[name].coordination[linetype].length; i++ ) {
-			// Text
+			// Is 'Text' Type?
 			if( constellation[name].data.type == 'text ' ) {
 				shape.lineTo(
 					constellation[name].coordination[linetype][i]['x0'], 
@@ -333,7 +333,7 @@ class Pan {
 
 		}
 
-		// Is PointIn Path
+		// Is PointIn Path?
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
 			this.ctx.save(); // SAVE
 				// Stroke
@@ -361,10 +361,9 @@ class Pan {
 
 			if(eventName == 'click') { 
 				let shapeID 		= constellation[name].data.backend.ID; 
-				let shapeType 		= constellation[name].data.type; // Types: Constellations OR Texts OR Links
-				let shapeURL 		= constellation[name].data.url; // Types: Constellations OR Texts OR Links
-
-				let postType 	= constellation[name].data.backend.postType; // WordPress Post Type :: Post OR Page
+				let shapeType 		= constellation[name].data.type; // Shape Types: 'Constellations' OR 'Texts' OR 'Links'
+				let shapeURL 		= constellation[name].data.url; // URL to External Page
+				let postType 		= constellation[name].data.backend.postType; // WordPress Post Type :: Post OR Page
 				let coverDirection 	= constellation[name].data.backend.coverDirection; 
 				
 				if(shapeType == 'link') {
