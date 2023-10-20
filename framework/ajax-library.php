@@ -127,7 +127,7 @@
 						<?php the_content(); ?>
 						
 						<?php // Correct ajax.js Modal Responsive Text ?>
-						<p class="text-base sm:text-sm md:text-base lg:text-base min-h-[300px]"></p>
+						<p class="text-base sm:text-sm md:text-base lg:text-base min-h-[200px]"></p>
 
 					</div>
 				</div>

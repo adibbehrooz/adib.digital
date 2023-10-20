@@ -72,7 +72,7 @@
 			// Canvas
 			middleSection.appendChild(this.panCanvas());
 			middleSection.appendChild(this.skyCanvas());
-			middleSection.appendChild(this.constellationCanvas());
+			// middleSection.appendChild(this.constellationCanvas());
 		};
 
 		skyCanvas() {
