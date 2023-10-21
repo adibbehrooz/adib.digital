@@ -40,7 +40,7 @@
 			//number of particles
 			this.numParticles = 1500;
 
-			// MatchMedia
+			// matchMedia
 			this.customScreens = require('./../../../tailwind.config.js').variants.theme.screens;
 			this.sreensKeys = Object.keys(this.customScreens);
 			this.screensValues = Object.values(this.customScreens);	
@@ -61,14 +61,16 @@
 		//____________________________	
 
 		init() {
-			
-			// I. Meteor Shower 
 			this.meteorShower(); 
+			this.particles(); 
+			// this._eventListeners();
+		};
 
-			// II. Stars [mathMedia]
+		particles() {
+			// I. matchMedia Particles
 			let sreensKeys = this.sreensKeys;
 			let screensValues = this.screensValues;
-			const matchMediaStars = () => {
+			const matchMediaParticles = () => {
 				let i = 0;
 				for ( const property in sreensKeys ) {
 					const breakpoint = sreensKeys[i];
@@ -85,16 +87,29 @@
 				i++;
 				}
 			};
-			// matchMediaStars();
+			// matchMediaParticles();
 
-			// II. Stars [Normal]
-			const normalStars = () => {
+			// II. Normal Particles
+			const normalParticles = () => {
 				let mediaQuery = ''
 				let breakpoint = ''
 				this.stars(mediaQuery, breakpoint);
 			};
-			normalStars();
-		};		
+			normalParticles();
+		};
+		
+		switchMatchMedia(breakPoint) {
+			let data;
+			switch(breakPoint) {
+				case '2xlarge': data = { 'particleNumbers': 1500, 'maxRadius': 2 }; 	break;
+				case 'xlarge': 	data = { 'particleNumbers': 1200, 'maxRadius': 2 };		break;
+				case 'large':	data = { 'particleNumbers': 1000, 'maxRadius': 1.9 };	break;
+				case 'medium':	data = { 'particleNumbers': 800, 'maxRadius': 1.8 };	break;	
+				case 'small':	data = { 'particleNumbers': 500, 'maxRadius': 1.7 };	break;
+				case 'xsmall':	data = { 'particleNumbers': 400, 'maxRadius': 1.7 };	break;
+			};	// Switch
+			return data;
+		};
 
 		//____________________________
 		//
@@ -138,7 +153,7 @@
 				//_______________ I. Clear Canvas _______________
 				//_______________________________________________
 
-				 this.clearCanvas();
+				this.clearCanvas();
 
 				//_______________ II. Load Stars First Time [matchMedia] _______________
 				//______________________________________________________________________
@@ -146,19 +161,11 @@
 				// First Time Load Media Query
 				const loadMediaQuery = () => {
 					if( window.matchMedia(query).matches ) {
-						// Event listener
+
 						window.addEventListener('load', function () {
-							let data;
-							switch(breakPoint) {
-								case '2xlarge': data = { 'particleNumbers': 1500, 'maxRadius': 2 }; 	break;
-								case 'xlarge': 	data = { 'particleNumbers': 1200, 'maxRadius': 2 };		break;
-								case 'large':	data = { 'particleNumbers': 1000, 'maxRadius': 1.9 };	break;
-								case 'medium':	data = { 'particleNumbers': 800, 'maxRadius': 1.8 };	break;	
-								case 'small':	data = { 'particleNumbers': 500, 'maxRadius': 1.7 };	break;
-								case 'xsmall':	data = { 'particleNumbers': 400, 'maxRadius': 1.7 };	break;
-							};	// Switch
-							console.log(breakPoint);
-							console.log(data.particleNumbers);
+							
+							let data = this.switchMatchMedia(breakPoint);
+
 							for (let i = 0; i < data.particleNumbers; i++) {
 								particle[i].xPos += particle[i].xVelocity; // Stars Move to Right
 								particle[i].yPos -= particle[i].yVelocity; // Stars Move to Top
@@ -171,8 +178,9 @@
 								}
 							}
 						});	// [END] Event Listener
-					} // matchMedia Query
+					} // [END] loadMediaQuery
 				}
+				// setInterval(loadMediaQuery, 200/this.fps); // animate
 				// loadMediaQuery();
 
 				//_______________ III. Resize Stars Numbers [matchMedia] _______________
@@ -182,17 +190,9 @@
 				const resizeMediaQuery = () => {
 					
 					if( window.matchMedia(query).matches ) {	
-						let data;
-						switch(breakPoint) {
-							case '2xlarge': data = { 'particleNumbers': 1500, 'maxRadius': 2 }; 	break;
-							case 'xlarge': 	data = { 'particleNumbers': 1200, 'maxRadius': 2 };		break;
-							case 'large':	data = { 'particleNumbers': 1000, 'maxRadius': 1.9 };	break;
-							case 'medium':	data = { 'particleNumbers': 800, 'maxRadius': 1.8 };	break;	
-							case 'small':	data = { 'particleNumbers': 500, 'maxRadius': 1.7 };	break;
-							case 'xsmall':	data = { 'particleNumbers': 400, 'maxRadius': 1.7 };	break;
-						};	// Switch
-						console.log(breakPoint);
-						console.log(data.particleNumbers);
+						
+						let data = this.switchMatchMedia(breakPoint);
+
 						for (let i = 0; i < data.particleNumbers; i++) {
 							particle[i].xPos += particle[i].xVelocity; // Stars Move to Right
 							particle[i].yPos -= particle[i].yVelocity; // Stars Move to Top
@@ -204,9 +204,10 @@
 								this.drawParticles(particle, i);
 							}
 						}
-					} // matchMedia					
+					}			
 				};
-				// window.addEventListener('resize', resizeMediaQuery);
+				// window.addEventListener("resize", () => { setInterval(resizeMediaQuery, 200/this.fps); });
+				// resizeMediaQuery();
 
 				//_______________ IV. Normal Load Stars _______________
 				//_____________________________________________________
@@ -224,9 +225,11 @@
 						}
 					}
 				};
+				// setInterval(loadStars, 200/this.fps);
 				loadStars();
 			};
-			setInterval(animate, 200/this.fps); // animate
+			setInterval(animate, 200/this.fps);
+			// animate();
 		};
 
 		drawParticles(particle, i) {
@@ -310,6 +313,17 @@
 				// Connect Father to <sectopn> tag
 				cLandscapeFrame.appendChild(meteorShowerParentDiv);
 			}
+		};
+
+		_eventListeners() {
+			let mediaQuery = '', breakpoint = ''			
+			window.addEventListener("resize", () => { 
+				const reShape = () => {
+					// this.render();
+					// this.createCircle(mediaQuery, breakpoint);
+				};
+				reShape(); 
+			});
 		};
 	};
 	

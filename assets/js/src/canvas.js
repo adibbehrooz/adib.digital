@@ -419,8 +419,8 @@
 								data = { 'particleNumbers': 400, 'maxRadius': 1.7 };	
 							break;
 						};	// Switch
-						console.log(pNumbers);
-						console.log(mRadius);
+						console.log(data.particleNumbers);
+						console.log(data.maxRadius);
 					});	// Event Listener
 				} // IF					
 			};
@@ -431,72 +431,39 @@
 			const resizeQuery = () => {
 				if( window.matchMedia(query).matches ) {
 					let data;
-					let pNumbers;
-					let mRadius;
-
 					switch(breakpoint) {
 						// 2xlarge
 						case '2xlarge': 
-							data = {
-								'particleNumbers': 1500,
-								'maxRadius': 2
-							};	
-							pNumbers = data.particleNumbers;
-							mRadius = data.maxRadius;
+							data = { 'particleNumbers': 1500, 'maxRadius': 2 };
 						break;
-
+						
 						// xlarge
 						case '2xlarge': 
-							data = {
-								'particleNumbers': 1200,
-								'maxRadius': 2
-							};	
-							pNumbers = data.particleNumbers;
-							mRadius = data.maxRadius;
+							data = {'particleNumbers': 1200, 'maxRadius': 2 };	
 						break;
 				
 						// Large
 						case 'large': 
-							data = {
-								'particleNumbers': 1000,
-								'maxRadius': 1.9
-							};	
-							pNumbers = data.particleNumbers;
-							mRadius = data.maxRadius;
+							data = { 'particleNumbers': 1000, 'maxRadius': 1.9 };
 						break;
 					
 						// Medium
 						case 'medium': 
-							data = {
-								'particleNumbers': 800,
-								'maxRadius': 1.8
-							};	
-							pNumbers = data.particleNumbers;
-							mRadius = data.maxRadius;
+							data = { 'particleNumbers': 800, 'maxRadius': 1.8 };	
 						break;	
 
 						// Small
 						case 'small': 
-							data = {
-								'particleNumbers': 500,
-								'maxRadius': 1.7
-							};	
-							pNumbers = data.particleNumbers;
-							mRadius = data.maxRadius;
+							data = { 'particleNumbers': 500, 'maxRadius': 1.7 };	
 						break;
 
 						// xsmall
 						case 'xsmall': 
-							data = {
-								'particleNumbers': 400,
-								'maxRadius': 1.7
-							};	
-							pNumbers = data.particleNumbers;
-							mRadius = data.maxRadius;
+							data = { 'particleNumbers': 400, 'maxRadius': 1.7 };	
 						break;
 					};	// Switch
-					console.log(pNumbers);
-					console.log(mRadius);
+					console.log(data.particleNumbers);
+					console.log(data.maxRadius);
 				} // IF							
 			};
 			window.addEventListener('resize', resizeQuery);
