@@ -360,70 +360,148 @@
 			
 			let sreensKeys = this.sreensKeys;
 			let screensValues = this.screensValues;
-			
-			// Using array methods
-			let mediaQuery = [];
-			Object.entries(screensValues).forEach(([key, screensValue]) => {
-				Object.entries(screensValue).forEach(([value, index]) => {
-					console.log(`${key} ${index} ${value}`);
-				});
-			});
-
-			/*
-			let sreensKeys = this.sreensKeys;
-			let screensValues = this.screensValues;
 
 			let i = 0;
 			for ( const property in sreensKeys ) {
 				const breakpoint = sreensKeys[i];
-				module.exports = { breakpoint };
 				let j = 0;
+				let keys;
 				for(  keys in screensValues ) {
 					if (i == j) { 
-						size = screensValues[keys];
+						let size = screensValues[keys];
 						const mediaQuery = `( (min-width: ${size['min']}) and (max-width: ${size['max']}) )`;
-						module.exports = { mediaQuery };
-		
-						if( window.matchMedia(mediaQuery).matches ) {
-							window.addEventListener('load', function () {
-								addBreakpointElement(breakpoint);
-								console.log(breakpoint);
-							});
-						}
 						
-						function windowResize() {
-							if( window.matchMedia(mediaQuery).matches ) {
-								addBreakpointElement(breakpoint);
-								console.log(breakpoint);
-							}
-						}
-						window.addEventListener('resize', windowResize);
-		
+						// Load First Time Screen
+						this.loadMediaQuery(mediaQuery, breakpoint);
+
+						// Resize Screen
+						this.resizeQuery(mediaQuery, breakpoint);
 					}
 					j++;
 				}
 			i++;
 			}
-			*/
-			
 		};
+		
+		loadMediaQuery(query, breakpoint) {
+			const loadMediaQuery = () => {
+				if( window.matchMedia(query).matches ) {
+					window.addEventListener('load', function () {
+						let data;
+						switch(breakpoint) {
+							// 2xlarge
+							case '2xlarge': 
+								data = { 'particleNumbers': 1500, 'maxRadius': 2 };
+							break;
+							
+							// xlarge
+							case '2xlarge': 
+								data = {'particleNumbers': 1200, 'maxRadius': 2 };	
+							break;
+					
+							// Large
+							case 'large': 
+								data = { 'particleNumbers': 1000, 'maxRadius': 1.9 };
+							break;
+						
+							// Medium
+							case 'medium': 
+								data = { 'particleNumbers': 800, 'maxRadius': 1.8 };	
+							break;	
+	
+							// Small
+							case 'small': 
+								data = { 'particleNumbers': 500, 'maxRadius': 1.7 };	
+							break;
+	
+							// xsmall
+							case 'xsmall': 
+								data = { 'particleNumbers': 400, 'maxRadius': 1.7 };	
+							break;
+						};	// Switch
+						console.log(pNumbers);
+						console.log(mRadius);
+					});	// Event Listener
+				} // IF					
+			};
+			loadMediaQuery();
+		}
 
-		addBreakpointElement(breakpointName) {
+		resizeQuery(query, breakpoint) {
+			const resizeQuery = () => {
+				if( window.matchMedia(query).matches ) {
+					let data;
+					let pNumbers;
+					let mRadius;
 
-			// create a new div element
-			const breakpointDiv = document.createElement("div");
-			breakpointDiv.className = "breakpointClass";
-			breakpointDiv.style.cssText = 'position:fixed;bottom:5px;left:5px;padding:5px;width:100px;height:35px;text-align:center;border-radius:5px;background:black;color:white;border:1px solid #ddd;box-shadow: 0px 0px 8px  #fff;';
-			
-			// add the newly created element and its content into the DOM
-			document.body.appendChild(breakpointDiv);
-			
-			// and give it some content
-			const breakpointNameDiv = document.createTextNode(breakpointName);
-			
-			// add the text node to the newly created div
-			breakpointDiv.appendChild(breakpointNameDiv);
-		};
+					switch(breakpoint) {
+						// 2xlarge
+						case '2xlarge': 
+							data = {
+								'particleNumbers': 1500,
+								'maxRadius': 2
+							};	
+							pNumbers = data.particleNumbers;
+							mRadius = data.maxRadius;
+						break;
+
+						// xlarge
+						case '2xlarge': 
+							data = {
+								'particleNumbers': 1200,
+								'maxRadius': 2
+							};	
+							pNumbers = data.particleNumbers;
+							mRadius = data.maxRadius;
+						break;
+				
+						// Large
+						case 'large': 
+							data = {
+								'particleNumbers': 1000,
+								'maxRadius': 1.9
+							};	
+							pNumbers = data.particleNumbers;
+							mRadius = data.maxRadius;
+						break;
+					
+						// Medium
+						case 'medium': 
+							data = {
+								'particleNumbers': 800,
+								'maxRadius': 1.8
+							};	
+							pNumbers = data.particleNumbers;
+							mRadius = data.maxRadius;
+						break;	
+
+						// Small
+						case 'small': 
+							data = {
+								'particleNumbers': 500,
+								'maxRadius': 1.7
+							};	
+							pNumbers = data.particleNumbers;
+							mRadius = data.maxRadius;
+						break;
+
+						// xsmall
+						case 'xsmall': 
+							data = {
+								'particleNumbers': 400,
+								'maxRadius': 1.7
+							};	
+							pNumbers = data.particleNumbers;
+							mRadius = data.maxRadius;
+						break;
+					};	// Switch
+					console.log(pNumbers);
+					console.log(mRadius);
+				} // IF							
+			};
+			window.addEventListener('resize', resizeQuery);
+		}
+
 	};
 
 	export { Screens };

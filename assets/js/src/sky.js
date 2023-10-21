@@ -9,11 +9,6 @@
 /******************************** SKY ********************************
 /*********************************************************************/
 		
-// Line Module
-import { Screens } from './canvas';
-const screens = new Screens();
-screens.matchMediaScreens();
-
 	class Sky {
 	
 		//____________________________
@@ -25,6 +20,8 @@ screens.matchMediaScreens();
 			//Required canvas variables
 			this.skyCanvas = document.getElementById('canvas__sky');
 			this.ctx = this.skyCanvas.getContext('2d');
+			this.skyCanvasWidth = this.skyCanvas.width
+			this.skyCanvasHeight = this.skyCanvas.height
 					
 			//particle colors
 			this.colors = [ '255, 255, 255' ];
@@ -39,8 +36,14 @@ screens.matchMediaScreens();
 			this.maxSpeed = .1;
 			//frames per second
 			this.fps = 4;
+			
 			//number of particles
 			this.numParticles = 1500;
+
+			// MatchMedia
+			this.customScreens = require('./../../../tailwind.config.js').variants.theme.screens;
+			this.sreensKeys = Object.keys(this.customScreens);
+			this.screensValues = Object.values(this.customScreens);	
 		};
 
 		render() {
@@ -51,31 +54,63 @@ screens.matchMediaScreens();
 			this.skyCanvas.height = wHeight;
 		};
 
-		//_______________________________
+
+		//____________________________
 		//
-		// All Objects in Night Sky
-		//_______________________________
-								
+		// init [Matchmedia]
+		//____________________________	
+
 		init() {
-			this.stars(); // 1. Stars
-			this.meteorShower(); // 2. Meteor Shower 
-		};			
+			
+			// I. Meteor Shower 
+			this.meteorShower(); 
+
+			// II. Stars [mathMedia]
+			let sreensKeys = this.sreensKeys;
+			let screensValues = this.screensValues;
+			const matchMediaStars = () => {
+				let i = 0;
+				for ( const property in sreensKeys ) {
+					const breakpoint = sreensKeys[i];
+					let j = 0;
+					let keys;
+					for(  keys in screensValues ) {
+						if (i == j) { 
+							let size = screensValues[keys];
+							const mediaQuery = `( (min-width: ${size['min']}) and (max-width: ${size['max']}) )`;
+							this.stars(mediaQuery, breakpoint);
+						}
+						j++;
+					}
+				i++;
+				}
+			};
+			// matchMediaStars();
+
+			// II. Stars [Normal]
+			const normalStars = () => {
+				let mediaQuery = ''
+				let breakpoint = ''
+				this.stars(mediaQuery, breakpoint);
+			};
+			normalStars();
+		};		
 
 		//____________________________
 		//
 		// Stars
 		//____________________________
 								
-		stars() {
+		stars(query, breakPoint) {
 			this.render();
-			this.createCircle();
+			this.createCircle(query, breakPoint);
 		};
 
 		_rand(min, max) {
 			return Math.random() * (max - min) + min;
 		};
 
-		createCircle() {
+		createCircle(query, breakPoint) {
 			let particle = [];
 
 			for (let i = 0; i < this.numParticles; i++) {
@@ -93,35 +128,112 @@ screens.matchMediaScreens();
 				this.drawParticles(particle, i);
 			}
 			//...and once drawn, animateCircle the particle
-			this.animateCircle(particle);
+			this.animateCircle(particle, query, breakPoint);
+		};
+
+		animateCircle(particle, query, breakPoint) {
+			
+			const animate = () => {
+
+				//_______________ I. Clear Canvas _______________
+				//_______________________________________________
+
+				 this.clearCanvas();
+
+				//_______________ II. Load Stars First Time [matchMedia] _______________
+				//______________________________________________________________________
+
+				// First Time Load Media Query
+				const loadMediaQuery = () => {
+					if( window.matchMedia(query).matches ) {
+						// Event listener
+						window.addEventListener('load', function () {
+							let data;
+							switch(breakPoint) {
+								case '2xlarge': data = { 'particleNumbers': 1500, 'maxRadius': 2 }; 	break;
+								case 'xlarge': 	data = { 'particleNumbers': 1200, 'maxRadius': 2 };		break;
+								case 'large':	data = { 'particleNumbers': 1000, 'maxRadius': 1.9 };	break;
+								case 'medium':	data = { 'particleNumbers': 800, 'maxRadius': 1.8 };	break;	
+								case 'small':	data = { 'particleNumbers': 500, 'maxRadius': 1.7 };	break;
+								case 'xsmall':	data = { 'particleNumbers': 400, 'maxRadius': 1.7 };	break;
+							};	// Switch
+							console.log(breakPoint);
+							console.log(data.particleNumbers);
+							for (let i = 0; i < data.particleNumbers; i++) {
+								particle[i].xPos += particle[i].xVelocity; // Stars Move to Right
+								particle[i].yPos -= particle[i].yVelocity; // Stars Move to Top
+			
+								//if particle goes off screen call reset method to place it offscreen to the left/bottom
+								if (particle[i].xPos > this.skyCanvasWidth + particle[i].radius || particle[i].yPos > this.skyCanvasHeight + particle[i].radius) {
+									this.resetParticle(particle, i);
+								} else {								
+									this.drawParticles(particle, i);
+								}
+							}
+						});	// [END] Event Listener
+					} // matchMedia Query
+				}
+				// loadMediaQuery();
+
+				//_______________ III. Resize Stars Numbers [matchMedia] _______________
+				//______________________________________________________________________
+
+				// Resize Media Query
+				const resizeMediaQuery = () => {
+					
+					if( window.matchMedia(query).matches ) {	
+						let data;
+						switch(breakPoint) {
+							case '2xlarge': data = { 'particleNumbers': 1500, 'maxRadius': 2 }; 	break;
+							case 'xlarge': 	data = { 'particleNumbers': 1200, 'maxRadius': 2 };		break;
+							case 'large':	data = { 'particleNumbers': 1000, 'maxRadius': 1.9 };	break;
+							case 'medium':	data = { 'particleNumbers': 800, 'maxRadius': 1.8 };	break;	
+							case 'small':	data = { 'particleNumbers': 500, 'maxRadius': 1.7 };	break;
+							case 'xsmall':	data = { 'particleNumbers': 400, 'maxRadius': 1.7 };	break;
+						};	// Switch
+						console.log(breakPoint);
+						console.log(data.particleNumbers);
+						for (let i = 0; i < data.particleNumbers; i++) {
+							particle[i].xPos += particle[i].xVelocity; // Stars Move to Right
+							particle[i].yPos -= particle[i].yVelocity; // Stars Move to Top
+		
+							//if particle goes off screen call reset method to place it offscreen to the left/bottom
+							if (particle[i].xPos > this.skyCanvasWidth + particle[i].radius || particle[i].yPos > this.skyCanvasHeight + particle[i].radius) {
+								this.resetParticle(particle, i);
+							} else {
+								this.drawParticles(particle, i);
+							}
+						}
+					} // matchMedia					
+				};
+				// window.addEventListener('resize', resizeMediaQuery);
+
+				//_______________ IV. Normal Load Stars _______________
+				//_____________________________________________________
+				
+				const loadStars = () => {
+					for (let i = 0; i < this.numParticles; i++) {
+						particle[i].xPos += particle[i].xVelocity; // Stars Move to Right
+						particle[i].yPos -= particle[i].yVelocity; // Stars Move to Top
+
+						//if particle goes off screen call reset method to place it offscreen to the left/bottom
+						if (particle[i].xPos > this.skyCanvasWidth + particle[i].radius || particle[i].yPos > this.skyCanvasHeight + particle[i].radius) {
+							this.resetParticle(particle, i);
+						} else {
+							this.drawParticles(particle, i);
+						}
+					}
+				};
+				loadStars();
+			};
+			setInterval(animate, 200/this.fps); // animate
 		};
 
 		drawParticles(particle, i) {
-
 			this.ctx.fillStyle = particle[i].color;
 			this.ctx.beginPath();
 			this.ctx.arc(particle[i].xPos, particle[i].yPos, particle[i].radius, 0, 6 * Math.PI, false);
 			this.ctx.fill();
-		};
-
-		animateCircle(particle) {
-			
-			const animate = () => {
-				this.clearCanvas();
-				for (let i = 0; i < this.numParticles; i++) {
-					particle[i].xPos += particle[i].xVelocity; // Stars Move to Right
-					particle[i].yPos -= particle[i].yVelocity; // Stars Move to Top
-
-					//if particle goes off screen call reset method to place it offscreen to the left/bottom
-					if (particle[i].xPos > this.skyCanvas.width + particle[i].radius || particle[i].yPos > this.skyCanvas.height + particle[i].radius) {
-						this.resetParticle(particle, i);
-					} else {
-						this.drawParticles(particle, i);
-					}
-				}
-			};
-			// animate();
-			setInterval(animate, 200/this.fps); 	
 		};
 		
 		resetParticle(particle, i) {
@@ -165,8 +277,8 @@ screens.matchMediaScreens();
 					"angle"	:	Math.floor(Math.random() * (95 - 45 + 1) + 45),
 					"speed"	:	Math.floor(Math.random() * (20 - 8 + 1) + 8),
 					"delay"	:	Math.floor(Math.random() * (25 - 1 + 1) + 1),
-					"x"	:	Math.floor(Math.random() * (80 - 0 + 1) + 0),
-					"y"	:	Math.floor(Math.random() * (25 - 0 + 1) + 0),
+					"x"	:		Math.floor(Math.random() * (80 - 0 + 1) + 0),
+					"y"	:		Math.floor(Math.random() * (25 - 0 + 1) + 0),
 					"travel":	Math.floor(Math.random() * (50 - 10 + 1) + 10),
 					"trail":	Math.floor(Math.random() * (5 - 1 + 1) + 1),
 				};	
@@ -195,11 +307,10 @@ screens.matchMediaScreens();
 				// Connect Grandchild To Child
 				meteorShowerChildDiv.appendChild(meteorShowerGrandchildDiv);	
 				
-				
 				// Connect Father to <sectopn> tag
 				cLandscapeFrame.appendChild(meteorShowerParentDiv);
 			}
 		};
-	}
+	};
 	
 	export { Sky };

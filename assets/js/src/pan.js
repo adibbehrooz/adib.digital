@@ -290,13 +290,13 @@ class Pan {
 		const shape = new Path2D();
 		this.ctx.beginPath();
 		
-		// Is 'Text' Type?
+		// Is 'Text' Type
 		if( constellation[name].data.type == 'text' ) {
 			shape.moveTo( 
 				constellation[name].coordination[linetype][0]['x0'],
 				constellation[name].coordination[linetype][0]['x1']
 			);
-		// Shape
+		// Is Shape Type
 		} else {
 			shape.moveTo( 
 				// X
@@ -311,12 +311,13 @@ class Pan {
 			);
 		}
 		for( let i = 1; i < constellation[name].coordination[linetype].length; i++ ) {
-			// Is 'Text' Type?
+			// Is 'Text' Type
 			if( constellation[name].data.type == 'text ' ) {
 				shape.lineTo(
 					constellation[name].coordination[linetype][i]['x0'], 
 					constellation[name].coordination[linetype][i]['x1']  
-				);				
+				);	
+			// Is Shape Type			
 			} else {
 				shape.lineTo(
 					// X
@@ -333,8 +334,11 @@ class Pan {
 
 		}
 
-		// Is PointIn Path?
+		// Is PointIn Path
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
+			
+			//Styling
+			// I. Style Shape [Fill & Blure]
 			this.ctx.save(); // SAVE
 				// Stroke
 				this.ctx.lineWidth = 1;
@@ -353,12 +357,13 @@ class Pan {
 
 			this.ctx.restore(); // RESTORE
 
-			// Cursor GSAP
+			// II. Style Cursor
 			gsap.to(cursor, 0.1, {
 				opacity: 0.7,
 				scale: 3
 			});
 
+			// III. Click Shape
 			if(eventName == 'click') { 
 				let shapeID 		= constellation[name].data.backend.ID; 
 				let shapeType 		= constellation[name].data.type; // Shape Types: 'Constellations' OR 'Texts' OR 'Links'
@@ -380,6 +385,7 @@ class Pan {
 				this.ctx.stroke();
 				// Fill
 				this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';	
+				this.ctx.fill(shape);
 			this.ctx.restore();
 		} // !Is PointIn Path
 
@@ -392,7 +398,7 @@ class Pan {
 	// Responsive 
 	//____________________________
 
-	_resize() {
+	resizePan() {
 		let windowWidth = window.innerWidth;
 		let windowHeight = window.innerHeight;
 
@@ -557,9 +563,9 @@ class Pan {
 		// 1. Resize
 		//_____________________________________
 
-		this._resize();
+		this.resizePan();
 		window.addEventListener("resize", () => {
-			this._resize();
+			this.resizePan();
 		});
 
 	
