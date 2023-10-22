@@ -35,11 +35,13 @@ const php = {
 		// Constellation Scale 
 		scale: { 
 			outside: 1.4, 
-			inside: 1.4 
+			inside: 1.4,
+            boundary: 1
 		},
 		lineWidth: { 
 			outside: .1, 
-			inside: .1 
+			inside: .1,
+            boundary: 1
 		},
 	},
 
@@ -172,6 +174,23 @@ const php = {
 				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, .2)' },
 			{ form: 'restore'},
 		],
+        boundary: [
+			{ form: 'save' },
+                { form: 'beginPath' }, 
+				{ x0: -10.000,      x1: -10.000, form: 'moveTo' }, 
+				{ x0: 140.000,     x1: -10.000, form: 'lineTo' }, 
+				{ x0: 140.000,      x1: 85.000, form: 'lineTo' }, 
+				{ x0: -10.000,      x1: 85.000, form: 'lineTo' }, 
+				{ x0: -10.000,      x1: -10.000, form: 'lineTo' }, 
+                { form: 'closePath' },
+				// Stroke
+				{ form: 'lineWidth', value: '2' },
+				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 1)' },
+				{ form: 'stroke'}, 
+				// Fill
+				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },
+			{ form: 'restore'},
+        ],
 		arc: [
 			{ form: 'save' },
 				{ x0: 4.175,   	x1: 4.850 }, 

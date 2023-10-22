@@ -35,11 +35,13 @@ const wordpress = {
 		// Constellation Scale 
 		scale: { 
 			outside: .8, 
-			inside: 1 
+			inside: 1,
+            boundary: 1
 		},
 		lineWidth: { 
 			outside: .1, 
-			inside: .1 
+			inside: .1,
+            boundary: 1
 		},
 	},
 
@@ -160,6 +162,23 @@ const wordpress = {
 				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, .2)' },
 			{ form: 'restore'},
 		],
+        boundary: [
+			{ form: 'save' },
+                { form: 'beginPath' }, 
+				{ x0: -5.000,      x1: 0.000, form: 'moveTo' }, 
+				{ x0: 100.000,     x1: 0.000, form: 'lineTo' }, 
+				{ x0: 100.000,      x1: 95.000, form: 'lineTo' }, 
+				{ x0: -5.000,      x1: 95.000, form: 'lineTo' }, 
+				{ x0: -5.000,      x1: 0.000, form: 'lineTo' }, 
+                { form: 'closePath' },
+				// Stroke
+				{ form: 'lineWidth', value: '2' },
+				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 1)' },
+				{ form: 'stroke'}, 
+				// Fill
+				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },
+			{ form: 'restore'},
+        ],
 		arc: [
 			{ form: 'save' },
 				{ x0: 4.275,   x1: 7.750  },  

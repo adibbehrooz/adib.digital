@@ -35,11 +35,13 @@ const magento = {
 		// Constellation Scale 
 		scale: { 
 			outside: .3, 
-			inside: .3 
+			inside: .3,
+			boundary: 1
 		},
 		lineWidth: { 
 			outside: .1, 
-			inside: .1 
+			inside: .1,
+			boundary: 1
 		},
 	},
 
@@ -114,6 +116,23 @@ const magento = {
 				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, .2)' },
 			{ form: 'restore'},
 		],
+        boundary: [
+			{ form: 'save' },
+                { form: 'beginPath' }, 
+				{ x0: -15.000,      x1: -10.000, form: 'moveTo' }, 
+				{ x0: 90.000,     x1: -10.000, form: 'lineTo' }, 
+				{ x0: 90.000,      x1: 95.000, form: 'lineTo' }, 
+				{ x0: -15.000,      x1: 95.000, form: 'lineTo' }, 
+				{ x0: -15.000,      x1: -10.000, form: 'lineTo' }, 
+                { form: 'closePath' },
+				// Stroke
+				{ form: 'lineWidth', value: '2' },
+				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 1)' },
+				{ form: 'stroke'}, 
+				// Fill
+				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },
+			{ form: 'restore'},
+        ],
 		arc: [
 			{ form: 'save' },
                 { x0: 18.175,   x1: 16.750 },

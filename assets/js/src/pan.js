@@ -83,7 +83,7 @@ class Pan {
 		this.shadowBlur = 0;
 
 		// Shape Line Types
-		this.lineTypes =  ['curve', 'inside', 'outside', 'arc'];
+		this.lineTypes =  ['curve', 'inside', 'outside', 'boundary', 'arc'];
 
 		// Skill Texts
 		this.activeTextClass 	= '--active';
@@ -102,10 +102,10 @@ class Pan {
 
 	draw() {
 		const animate = () => {
-			requestAnimationFrame(animate);
 			this.initDraw();
 			this.nature();
 			this.shapes();
+			requestAnimationFrame(() => { animate() });
 		};
 		animate();
 		// setInterval( animate, 200 / this.fps);
@@ -203,6 +203,7 @@ class Pan {
 			const [key, value] = entry;
 			this.shapeLines(key, value); // 1. Draw Lines
 			this.shapeStars(key, value); // 2. Draw Stars
+			// this.shapeTitle(key, value); // 2. Draw Title
 		});
 
 	};
@@ -283,61 +284,80 @@ class Pan {
 		render();
 	};
 
+	shapeTitle(name, constellation) {
+		let title = constellation[name].data.backend.postTitle;
+		// Font Size
+		this.ctx.font = `${this.monoLittleSize} ${this.monoFont}`;
+		this.ctx.fillStyle = "rgba(255, 255, 255, 1)";
+		let x = 140;
+		let y = 100;
+		this.ctx.save();
+			this.ctx.translate(x, y);
+			this.ctx.textAlign = "center";
+			this.ctx.fillText(title, 0, 0);
+		this.ctx.restore();
+		// console.log(title)
+	};
+
 	shapeEvent( cursor, name, constellation, offsetX, offsetY, eventName ) {
 
-		let linetype = 'outside';
+		let linetype = 'boundary';
+		
 		// 1. Draw Shape
 		const shape = new Path2D();
 		this.ctx.beginPath();
 		
-		// Is 'Text' Type
+		// 'Text' Type
 		if( constellation[name].data.type == 'text' ) {
 			shape.moveTo( 
 				constellation[name].coordination[linetype][0]['x0'],
 				constellation[name].coordination[linetype][0]['x1']
 			);
-		// Is Shape Type
+		// 'Shape' Type
 		} else {
 			shape.moveTo( 
 				// X
 				constellation[name].data.relation.x + 
 				constellation[name].coordination[linetype][0]['x0'] * 
-				constellation[name].data.scale.outside,
+				constellation[name].data.scale.boundary,
 				
 				// Y
 				constellation[name].data.relation.y + 
 				constellation[name].coordination[linetype][0]['x1'] * 
-				constellation[name].data.scale.outside
+				constellation[name].data.scale.boundary
 			);
 		}
 		for( let i = 1; i < constellation[name].coordination[linetype].length; i++ ) {
-			// Is 'Text' Type
-			if( constellation[name].data.type == 'text ' ) {
+
+			// 'Text' Type
+			if( constellation[name].data.type == 'text' ) {
 				shape.lineTo(
 					constellation[name].coordination[linetype][i]['x0'], 
 					constellation[name].coordination[linetype][i]['x1']  
 				);	
-			// Is Shape Type			
+			// 'Shape' Type			
 			} else {
 				shape.lineTo(
 					// X
 					constellation[name].data.relation.x + 
 					constellation[name].coordination[linetype][i]['x0'] * 
-					constellation[name].data.scale.outside,
+					constellation[name].data.scale.boundary,
 					
 					// Y
 					constellation[name].data.relation.y + 
 					constellation[name].coordination[linetype][i]['x1'] * 
-					constellation[name].data.scale.outside
+					constellation[name].data.scale.boundary
 				);
 			}
-
 		}
-
 		// Is PointIn Path
+
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
-			
-			//Styling
+
+			// 			STYLE
+			//_______________________________
+			//_______________________________
+
 			// I. Style Shape [Fill & Blure]
 			this.ctx.save(); // SAVE
 				// Stroke
@@ -449,10 +469,12 @@ class Pan {
 	
 	// I. Shape
 	onPointerMoveShape(event, eventName) {
+		// Dragable
 		if ( this.isDragging ) {
 			this.cameraOffset.x = event.clientX - this.dragStart.x;
 			this.cameraOffset.y = event.clientY - this.dragStart.y;
 		}
+
 		// Cursor
 		const followCircle = document.getElementById('followCircle');
 		gsap.to(followCircle, 0.1, {
@@ -460,19 +482,29 @@ class Pan {
 			scale: 1
 		});
 		
-		// Offset
-		let xPosition = event.clientX - this.offsetX;
-		let yPosition = event.clientY - this.offsetY;
-		
+		// Offset Shape
+		let xShapePosition = event.clientX - this.offsetX;
+		let yShapePosition = event.clientY - this.offsetY;
+
+		// Offset Text
+		let xTextPosition = event.clientX;
+		let yTextPosition = event.clientY;
+
 		// Shape Event
 		Object.entries(constellations).forEach( (entry, index) => {
 			const [key, value] = entry;
-			this.shapeEvent( followCircle, key, value, xPosition, yPosition, eventName );
+			// Text
+			if ( value[key].data.type == 'text' ) {	
+				this.shapeEvent( followCircle, key, value, xTextPosition, yTextPosition, eventName );	
+			// Shape
+			} else {
+				this.shapeEvent( followCircle, key, value, xShapePosition, yShapePosition, eventName );	
+			};
 		});
 	};
 
 	// II. Text
-	onPointerMoveText(event) {
+	onPointerMoveSkill(event) {
 		
 		// 	Upper Ocean Horizontal Line
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ <--- This is Ocean Horizontal Line
@@ -585,7 +617,7 @@ class Pan {
 		this.panCanvas.addEventListener( "mousemove", event => { 
 			let eventName = "mousemove";
 			this.onPointerMoveShape(event, eventName); // Shape Event
-			// this.onPointerMoveText(event); // Text Event (Skill Text)
+			// this.onPointerMoveSkill(event); // Text Event (Skill Text)
 		});
 
 		// 3. Click

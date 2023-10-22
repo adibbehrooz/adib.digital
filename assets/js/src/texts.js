@@ -88,7 +88,6 @@ class Menu {
 		ctx.stroke();
 	};  
 
-
 	menuText(ctx) {
 
 		// Font Size

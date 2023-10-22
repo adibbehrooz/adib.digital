@@ -21,12 +21,12 @@
 	import apache 		from './constellations/apache';
 	import linux 		from './constellations/linux';
 
-	// II. Landscape
+	// // II. Landscape
 	import pyramids 	from './landscape/pyramids';
 	import shore 		from './landscape/shore';
 	import soil 		from './landscape/soil';
 
-	//I III. Text
+	// //I III. Text
 	import about 		from './texts/about';
 	import projects 	from './texts/projects';
 	import contact 		from './texts/contact';

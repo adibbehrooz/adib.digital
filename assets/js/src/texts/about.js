@@ -33,11 +33,13 @@ const about = {
 		// Constellation Scale 
 		scale: { 
 			outside: 1, 
-			inside: 1 
+			inside: 1,
+			boundary: 1 
 		},
 		lineWidth: { 
 			outside: 1, 
-			inside: 1 
+			inside: 1,
+			boundary: 1 
 		},
 	},
 
@@ -84,6 +86,23 @@ const about = {
 				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },
 			{ form: 'restore'},
 		],
+        boundary: [
+			{ form: 'save' },
+                { form: 'beginPath' }, 
+				{ x0: 5.000,   	x1: 35.000, form: 'moveTo' }, 
+				{ x0: 40.00,   	x1: 35.000, form: 'lineTo' }, 
+				{ x0: 40.00,    x1: 85.000, form: 'lineTo' },   
+				{ x0: 5.000,    x1: 85.000, form: 'lineTo' },   
+				{ x0: 5.000,    x1: 35.000, form: 'lineTo' },
+                { form: 'closePath' },
+				// Stroke
+				{ form: 'lineWidth', value: '2' },
+				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 1)' },
+				{ form: 'stroke'}, 
+				// Fill
+				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },
+			{ form: 'restore'},
+        ],
 		arc: [
 			{ form: 'save' },
 			{ form: 'restore'},
