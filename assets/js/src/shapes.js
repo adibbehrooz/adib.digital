@@ -31,6 +31,7 @@
 	import projects 	from './texts/projects';
 	import contact 		from './texts/contact';
 	import source 		from './texts/source';
+	import github 		from './texts/github';
 
 	export const constellations = {
 		
@@ -45,13 +46,13 @@
 		'php': php,
 		'apache': apache,
 		'linux': linux,
-		// 'github': github
 
 		// II. Texts
-		'about': about,		
-		'projects': projects,		
-		'contact': contact,		
-		'source': source,		
+		// 'about': about,		
+		// 'projects': projects,		
+		// 'contact': contact,		
+		// 'source': source,		
+		'github': github
 	};
 
 	// III. Landcape

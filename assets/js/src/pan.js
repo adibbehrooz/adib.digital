@@ -148,7 +148,7 @@ class Pan {
 		});
 
 		// II. Ocean
-		this.ocean();	
+		this.ocean();
 
 		// III. Texts
 		menu.init(canvaWidth, context, cameraOffset);	

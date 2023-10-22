@@ -18,23 +18,35 @@ const github = {
 	data: {
 		// Type
 		type: 'link',
+		
+        // WordPress
+		backend : {
+			ID: 0,
+			postType: 'link', // Page or Post
+			postTitle: '', // Page or Post
+			postSlug: '', // Page or Post
+			coverDirection: '',
+		},
 
         // URL
         url: 'https://github.com/adibbehrooz/adib.online',
 
 		// Camera Offset Positon
 		relation: { 
-			x: 0, 
-			y: 0 
+			x: 5, 
+			y: 400 
 		},
+		
 		// Constellation Scale 
 		scale: { 
-			outside: 1, 
-			inside: 1 
+			outside: 1.2, 
+			inside: 1.2,
+			boundary: 1
 		},
 		lineWidth: { 
 			outside: 1, 
-			inside: 1 
+			inside: 1,
+			boundary: 1 
 		},
 	},
 
@@ -47,7 +59,7 @@ const github = {
 		},
 		outside: [
             { form: 'save' }, 
-            { form: 'strokeStyle', value: "rgba(0,0,0,0)" }, 
+            { form: 'strokeStyle', value: "rgba( 255, 255, 255, 0)" }, 
             { form: 'miterLimit', value: 4 }, 
             { form: 'save' }, 
             { form: 'beginPath' }, 
@@ -88,30 +100,33 @@ const github = {
 		],
 		inside: [
 			{ form: 'save' },
-				{ x0: 1.000,      x1: 50.7500, form: 'moveTo' }, 
-				{ x0: 4.000,      x1: 40.7500, form: 'lineTo' }, 
-				{ x0: 8.000,      x1: 30.7500, form: 'lineTo' }, 
-				{ x0: 12.500,      x1: 20.7500, form: 'lineTo' }, 
-				{ x0: 15.500,      x1: 14.7500, form: 'lineTo' }, 
-				{ x0: 17.500,      x1: 10.7500, form: 'lineTo' }, 
-				{ x0: 21.500,      x1: 3.7500, form: 'lineTo' }, 
 				// Stroke
-				{ form: 'lineWidth', value: '.2' },
-				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, .5)' },
+				{ form: 'lineWidth', value: '0' },
+				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 0)' },
 				{ form: 'stroke'}, 
 				// Fill
-				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, .2)' },
+				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },
 			{ form: 'restore'},
 		],
+        boundary: [
+			{ form: 'save' },
+                { form: 'beginPath' }, 
+				{ x0: -5.000,  x1: -5.000, form: 'moveTo' }, 
+				{ x0: 35.000,  x1: -5.000, form: 'lineTo' }, 
+				{ x0: 35.000,  x1: 35.000, form: 'lineTo' }, 
+				{ x0: -5.000,  x1: 35.000, form: 'lineTo' }, 
+				{ x0: -5.000,  x1: -5.000, form: 'lineTo' }, 
+                { form: 'closePath' },
+				// Stroke
+				{ form: 'lineWidth', value: '2' },
+				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 1)' },
+				{ form: 'stroke'}, 
+				// Fill
+				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },
+			{ form: 'restore'},
+        ],
 		arc: [
 			{ form: 'save' },
-				{ x0: 1.000,      x1: 50.7500 },  
-				{ x0: 4.000,      x1: 40.7500 },  
-				{ x0: 8.000,      x1: 30.7500 },  
-				{ x0: 12.500,      x1: 20.7500 },  
-				{ x0: 15.500,      x1: 14.7500 },  
-				{ x0: 17.500,      x1: 10.7500 },  
-				{ x0: 21.500,      x1: 3.7500  },  
 			{ form: 'restore'},
 		],
 	},
