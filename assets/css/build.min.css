@@ -1300,6 +1300,30 @@ video {
     opacity: 0;
   }
 }
+.o-menu {
+  position: fixed;
+  height: 100vh;
+  width: 3.5rem;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.o-menu.--left {
+  left: 0px;
+  z-index: 10;
+  border-right-width: 1px;
+}
+.o-menu.--right {
+  right: 0px;
+  z-index: 10;
+  border-left-width: 1px;
+}
+.o-menu__text {
+  color: rgba(255, 255, 255, 0.7);
+  transform-origin: 10 0;
+  transform: rotate(90deg);
+  writing-mode: vertical-lr;
+  transform: scale(1, 1);
+  margin: 30px 1px0 0 0;
+}
 /****************************************** COMPONENTS *************************************
 /*******************************************************************************************/
 /*

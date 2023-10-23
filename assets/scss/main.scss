@@ -809,6 +809,30 @@
 		}
 	}
 
+	//______________________ Menu ______________________
+	//__________________________________________________
+
+	@include object('menu') {
+		@apply fixed w-14 h-screen;
+		border-color: rgba(255, 255, 255, .4);
+
+		@include modifier('left') {
+			@apply left-0 border-r z-10;	
+		}
+		@include modifier('right') {
+			@apply right-0 border-l z-10;
+		}
+
+		@include element('text') {
+			color: rgba(255, 255, 255, .7);
+			transform-origin: 10 0;
+			transform: rotate(90deg);
+			writing-mode: vertical-lr;
+			transform: scale(1, 1);
+			margin: 30px 1px0 0 0;
+		}
+	}	
+
 
 /****************************************** COMPONENTS *************************************
 /*******************************************************************************************/

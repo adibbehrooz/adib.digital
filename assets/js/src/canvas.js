@@ -29,7 +29,6 @@
 		init() {
 			this.bodyStyles();
 			this.allCanvas();
-			this.modal();
 		};	
 
 
@@ -53,6 +52,7 @@
 			document.body.style = cssBodyResult;
 		};
 
+
 		//____________________________
 		//
 		// Create Section
@@ -72,7 +72,6 @@
 			// Canvas
 			middleSection.appendChild(this.panCanvas());
 			middleSection.appendChild(this.skyCanvas());
-			// middleSection.appendChild(this.constellationCanvas());
 		};
 
 		skyCanvas() {
@@ -91,21 +90,6 @@
 			return canvasPan;
 		};
 
-		constellationCanvas() {
-			const canvasConstellation = document.createElement("canvas");
-			canvasConstellation.setAttribute('class', 'o-canvas__constellation');
-			canvasConstellation.setAttribute('id', 'canvas__constellation');
-			return canvasConstellation;
-		};
-
-		modal() {
-			const modalSection = document.createElement("section");
-			modalSection.setAttribute('class', 'o-modal');
-			modalSection.setAttribute('id', 'modal');
-			document.body.appendChild(modalSection);
-			return modalSection;
-		};
-
 		cover() {
 			const coverSection = document.createElement("section");
 			coverSection.setAttribute('class', 'o-cover');
@@ -117,10 +101,10 @@
 	export { Canvas };
 
 
-/******************************** Cursor ********************************
-/************************************************************************/
-	
-	class Cursor {
+/******************************** Sections ********************************
+/**************************************************************************/
+
+	class Sections {
 
 		//____________________________
 		//
@@ -128,216 +112,107 @@
 		//____________________________
 
 		constructor() {
-			this.radius = 50;
-			this.circleLength = 2 * Math.PI * this.radius;
-			this.angle = 2 * this.angleRad * 180 / Math.PI / 7;		
+			// Silence is Golden	
 		};
 
 
 		//____________________________
 		//
 		// RUN
-		//____________________________
-
+		//____________________________	
+		
 		init() {
-			this.cursorModules();
-			this.curveText();
-			this.animateMoveCursor();
-			this.fadeLetters(0.002);
+			this.modal();
+			this.allMenu();
+		};	
+
+		//_______
+		//
+		// MODAL
+		//_______
+
+		modal() {
+			const modalSection = document.createElement("section");
+			modalSection.setAttribute('class', 'o-modal');
+			modalSection.setAttribute('id', 'modal');
+			document.body.appendChild(modalSection);
+			return modalSection;
 		};
 
-		//____________________________
+		//_______
 		//
-		// Modules
-		//____________________________
+		// MENU
+		//_______
 
-		
-		cursorModules() {
-		
-			const circleCursor = () => {
-				const cLandscapeFrame = document.getElementById('middle');
-				const circleDiv = document.createElement("div");
-				circleDiv.setAttribute ('class', 'o-centerCircle');
-				circleDiv.setAttribute ('id', 'centerCircle');
-				cLandscapeFrame.parentNode.insertBefore(circleDiv, cLandscapeFrame);			
-			};
-			
-			const followDiv = () => {
-				const cLandscapeFrame = document.getElementById('middle');
-				const followDiv = document.createElement("div");
-				followDiv.setAttribute ('class', 'o-followCircle');
-				followDiv.setAttribute ('id', 'followCircle');
-				
-				const textDiv = document.createElement("div");
-				textDiv.setAttribute ('class', 'o-followText');
-				textDiv.setAttribute ('id', 'followText');
-				followDiv.appendChild(textDiv);
-				// textDiv.innerHTML += 'DRAG ME'; 
-								
-				cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);			
-			};
-						
-			const allmodules = () => {
-				circleCursor();
-				followDiv();
-			
-			};
-			allmodules();
-			
+		menuSection() {
+			const menuSection = document.createElement("section");
+			menuSection.setAttribute('class', 'o-menu');
+			menuSection.setAttribute('id', 'menu');
+			menuSection.setAttribute('data', "renderType: 'section'");
+			document.body.appendChild(menuSection);
+			return menuSection;
 		};
 
-		//____________________________
-		//
-		// Curve Text
-		//____________________________
+		allMenu() {
+			const menu = this.menuSection();
+			menu.appendChild(this.leftNavbar());
+			menu.appendChild(this.rightNavbar());
+		};
 
-		curveText() {
-			this.curvedText = document.getElementById('followText');			
-			let text = this.curvedText.innerText;
-			let html = "";
-			for (let i = 0; i < text.length; i++) {
-				html += `<span>${text[i]}</span>`;
-			}
-			this.curvedText.innerHTML = html;
+		leftNavbar() {
+			const leftMenu = document.createElement("div");
+			leftMenu.setAttribute('class', 'o-menu --left');
+			leftMenu.setAttribute('id', 'menuLeft');	
+			leftMenu.appendChild(this.textSections());	
+			return leftMenu;	
+		};
 
-			this.curvedText.style.minWidth = "initial";
-			this.curvedText.style.minHeight = "initial";	
-						
-			let curveWidth = this.curvedText.offsetWidth;
-			let curveHeight = this.curvedText.offsetHeight;
-	
-			let spanLetters = this.curvedText.innerHTML;
-			
-			let letters = this.curvedText.querySelectorAll("span");
-			
-			let lettersStyle = {
-				'position': 'absolute',
-				'transform-origin': 'bottom center',
-				'height': this.radius+'px',
+		rightNavbar() {
+			const rightMenu = document.createElement("div");
+			rightMenu.setAttribute('class', 'o-menu --right');
+			rightMenu.setAttribute('id', 'menuRight');		
+			rightMenu.appendChild(this.textSections());
+			return rightMenu;	
+		};
+
+		allTexts() {
+			const label = {
+				about: {
+					ajaxID: 68,
+					position: 'right',
+					className: '--about',
+					id: 'menuRightAbout',
+					title: 'About'
+				},
+				contact: {
+					ajaxID: 71,
+					position: 'right',
+					className: '--contact',
+					id: 'menuRightContact',
+					title: 'Contact'
+				},
 			};
-			let cssResult = "";
-			Object.keys(lettersStyle).forEach(function (prop, index) {
-				cssResult += prop + ": " + lettersStyle[prop] + "; ";
-				
+			Object.entries(label).forEach( (entry, index) => {
+				const [title, value] = entry;
+				let className = value.className;
+				let position = value.position;
+				let id = value.id;
+				let ajaxID = value.ajaxID;
+				this.textSections( title, className, id, ajaxID, position );	
 			});
-			
-			const curveSpanLetters = () => {
-				letters.forEach((spanLetters, index) => {
-					spanLetters.style = cssResult;
-					// 1. Default
-					// spanLetters.style.transform = "translate("+(curveWidth / 2)+"px, 0px) rotate("+index * curveWidth+"deg)";
-					
-					// 2. Optimize
-					switch(index) {
-						// D
-						case 0: 
-							spanLetters.style.top = "-20px"; 
-							spanLetters.style.left = "4px"; 
-							spanLetters.style.transform = "translate(11px, 0px) rotate(325deg)";
-						break;
-						
-						// R
-						case 1: 
-							spanLetters.style.top = "-18px";
-							 spanLetters.style.left = "0px"; 
-							 spanLetters.style.transform = "translate(10px, 0px) rotate(3deg)";
-						break;
-						
-						// A
-						case 2:
-							spanLetters.style.height = "47px";
-							 spanLetters.style.top = "-24px"; spanLetters.style.left = "-8px"; 
-							 spanLetters.style.transform = "translate(10px, 0px) rotate(47deg)";
-						break;
-						
-						// G
-						case 3: 
-							spanLetters.style.top = "-22px"; 
-							spanLetters.style.left = "-10px"; 
-							spanLetters.style.transform = "translate(10px, 0px) rotate(71deg)";
-						break;
-						
-						// Space
-						case 4: 
-							spanLetters.style.top = "-24px"; 
-							spanLetters.style.left = "-8px"; 
-							spanLetters.style.transform = "translate(10px, 0px) rotate(100deg)";
-						break;
-						
-						// M
-						case 5: 
-							spanLetters.style.bottom = "29px"; 
-							spanLetters.style.left = "3px"; 
-							spanLetters.style.transform = "translate(10px, 0px) rotate(186deg)";
-						break;
-						
-						// E
-						case 6: 
-							spanLetters.style.bottom = "25px"; 
-							spanLetters.style.left = "11px"; 
-							spanLetters.style.transform = "translate(10px, 0px) rotate(220deg)";
-						break;
-					};
-				});
-			};
-			curveSpanLetters();
 		};
-		
-		//____________________________
-		//
-		// Fade Letters
-		//____________________________
-				
-		fadeLetters(speedFade) {
-			const fade = () => {
-				const followTextSelector = document.querySelector("#followText");
-				let opacity = followTextSelector.style.opacity; 
-				if(!opacity) opacity = 1;
-				if( opacity > 0 ) {
-					opacity -= speedFade;
-					followTextSelector.style.opacity = opacity;
-				}
-				requestAnimationFrame( fade );
-			};
-			fade();		
-		}
-		
-		//____________________________
-		//
-		// Animate Cursor With GSAP
-		//____________________________
-					
-		animateMoveCursor() {
-				
-			gsap.set(".o-followCircle", {xPercent: -50, yPercent: -50});
 
-			const ball = document.querySelector(".o-followCircle");
-			const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-			const mouse = { x: pos.x, y: pos.y };
-			const speed = 0.2;
-
-			const xSet = gsap.quickSetter(ball, "x", "px");
-			const ySet = gsap.quickSetter(ball, "y", "px");
-
-			window.addEventListener("mousemove", mouseEvent => {    
-			 	mouse.x = mouseEvent.x;
-				mouse.y = mouseEvent.y;  
-			});
-
-			gsap.ticker.add(() => {
-				
-				// adjust speed for higher refresh monitors
-				const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio()); 
-				  
-				pos.x += (mouse.x - pos.x) * dt;
-				pos.y += (mouse.y - pos.y) * dt;
-				xSet(pos.x);
-				ySet(pos.y);
-			});	
+		textSections(title, className, id, ajaxID, position) {
+			const textMenu = document.createElement("span");
+			textMenu.setAttribute('class', 'o-menu__text '+className);
+			textMenu.setAttribute('id', id);		
+			textMenu.innerHTML = title;
+			textMenu.setAttribute('data', "ajax:"+ajaxID);
+			return textMenu;	
 		};
 	};
 
-	export { Cursor };
+	export { Sections };
 
 
 /******************************** Tailwind Screens ********************************
@@ -468,7 +343,6 @@
 			};
 			window.addEventListener('resize', resizeQuery);
 		}
-
 	};
 
 	export { Screens };

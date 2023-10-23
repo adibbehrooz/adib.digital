@@ -39,20 +39,21 @@
 		'css': css,
 		'webpack': webpack,
 		'framework': framework,
-		'javascript': javascript,
 		'svg': svg,
+		'javascript': javascript,
 		'wordpress': wordpress,
 		'magento': magento,
 		'php': php,
 		'apache': apache,
 		'linux': linux,
+		// 'github': github
 
 		// II. Texts
 		// 'about': about,		
 		// 'projects': projects,		
 		// 'contact': contact,		
 		// 'source': source,		
-		'github': github
+		
 	};
 
 	// III. Landcape

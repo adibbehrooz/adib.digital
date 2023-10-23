@@ -27,8 +27,8 @@ class Menu {
 
 	init(width, context, camera) {
 		this.skillText(width, context, camera);
-		this.lineLeft(width, context);
-		this.lineRight(width, context);
+		// this.lineLeft(width, context);
+		// this.lineRight(width, context);
 		// this.menuText(context);
 	};
 

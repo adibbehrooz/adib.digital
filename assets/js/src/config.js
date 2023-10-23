@@ -10,6 +10,15 @@
 /******************************** Library Configuration ********************************
 /***************************************************************************************/
 	
+	// SORT OF 'import' IS IMPORTANT HERE 
+
+	// Sections
+	//______________
+	
+	import { Sections } from './canvas';
+	const sections = new Sections();
+	sections.init();	
+
 	// Canvas
 	//______________
 	
@@ -20,17 +29,17 @@
 	// Cursor
 	//______________
 	
-	import { Cursor } from './canvas';
+	import { Cursor } from './cursor';
 	const cursor = new Cursor();
 	cursor.init();	
-		
+
 	// Pan
 	//______________
 	
 	import { Pan } from './pan';
 	const pan = new Pan();
 	pan.init();
-	
+
 	// Night Sky
 	//______________
 	
