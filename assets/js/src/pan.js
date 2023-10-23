@@ -203,9 +203,7 @@ class Pan {
 			const [key, value] = entry;
 			this.shapeLines(key, value); // 1. Draw Lines
 			this.shapeStars(key, value); // 2. Draw Stars
-			// this.shapeTitle(key, value); // 2. Draw Title
 		});
-
 	};
 	
 	shapeLines(key, value) {
@@ -282,21 +280,6 @@ class Pan {
 			}		
 		};
 		render();
-	};
-
-	shapeTitle(name, constellation) {
-		let title = constellation[name].data.backend.postTitle;
-		// Font Size
-		this.ctx.font = `${this.monoLittleSize} ${this.monoFont}`;
-		this.ctx.fillStyle = "rgba(255, 255, 255, 1)";
-		let x = 140;
-		let y = 100;
-		this.ctx.save();
-			this.ctx.translate(x, y);
-			this.ctx.textAlign = "center";
-			this.ctx.fillText(title, 0, 0);
-		this.ctx.restore();
-		// console.log(title)
 	};
 
 	shapeEvent( cursor, name, constellation, offsetX, offsetY, eventName ) {
@@ -604,7 +587,6 @@ class Pan {
 		// 2. Mouse Movement
 		//_____________________________________
 		
-		// 2.1 Mouse For "Canvas Pan"
 		this.panCanvas.addEventListener( "mousedown", event => { 
 			this.onPointerDown(event); 
 		});

@@ -115,7 +115,6 @@
 			// Silence is Golden	
 		};
 
-
 		//____________________________
 		//
 		// RUN
@@ -124,6 +123,7 @@
 		init() {
 			this.modal();
 			this.allMenu();
+			this.textCursor();
 		};	
 
 		//_______
@@ -152,6 +152,26 @@
 			document.body.appendChild(menuSection);
 			return menuSection;
 		};
+		
+		texts() {
+			const labels = {
+				about: {
+					ajaxID: 68,
+					position: 'right',
+					className: '--right --about',
+					id: 'menuRightAbout',
+					title: 'About'
+				},
+				contact: {
+					ajaxID: 71,
+					position: 'left',
+					className: '--left --contact',
+					id: 'menuRightContact',
+					title: 'Contact'
+				},
+			};
+			return labels;
+		};
 
 		allMenu() {
 			const menu = this.menuSection();
@@ -160,55 +180,87 @@
 		};
 
 		leftNavbar() {
+			// Create Div
 			const leftMenu = document.createElement("div");
 			leftMenu.setAttribute('class', 'o-menu --left');
 			leftMenu.setAttribute('id', 'menuLeft');	
-			leftMenu.appendChild(this.textSections());	
+
+			// Append <span> Child
+			const labels = this.texts();
+			Object.entries(labels).forEach( (entry, index) => {
+				const [key, value] = entry;
+				let textTitle = value.title, className = value.className, position = value.position, id = value.id, ajaxID = value.ajaxID;
+				if(position == 'left') leftMenu.appendChild(this.textSections(textTitle, className, id, ajaxID));
+			});
 			return leftMenu;	
 		};
 
 		rightNavbar() {
+			// Create Div
 			const rightMenu = document.createElement("div");
 			rightMenu.setAttribute('class', 'o-menu --right');
 			rightMenu.setAttribute('id', 'menuRight');		
-			rightMenu.appendChild(this.textSections());
+			
+			// Append <span> Child
+			const labels = this.texts();
+			Object.entries(labels).forEach( (entry, index) => {
+				const [title, value] = entry;
+				let textTitle = value.title, className = value.className, position = value.position, id = value.id, ajaxID = value.ajaxID;
+				if(position == 'right') rightMenu.appendChild(this.textSections(textTitle, className, id, ajaxID));
+			});	
 			return rightMenu;	
 		};
 
-		allTexts() {
-			const label = {
-				about: {
-					ajaxID: 68,
-					position: 'right',
-					className: '--about',
-					id: 'menuRightAbout',
-					title: 'About'
-				},
-				contact: {
-					ajaxID: 71,
-					position: 'right',
-					className: '--contact',
-					id: 'menuRightContact',
-					title: 'Contact'
-				},
-			};
-			Object.entries(label).forEach( (entry, index) => {
-				const [title, value] = entry;
-				let className = value.className;
-				let position = value.position;
-				let id = value.id;
-				let ajaxID = value.ajaxID;
-				this.textSections( title, className, id, ajaxID, position );	
-			});
-		};
-
-		textSections(title, className, id, ajaxID, position) {
+		textSections(title, className, id, ajaxID) {
 			const textMenu = document.createElement("span");
-			textMenu.setAttribute('class', 'o-menu__text '+className);
+			textMenu.setAttribute('class', 'o-menu__text '+ className);
 			textMenu.setAttribute('id', id);		
 			textMenu.innerHTML = title;
-			textMenu.setAttribute('data', "ajax:"+ajaxID);
-			return textMenu;	
+			textMenu.setAttribute("data-ajax", ajaxID);	
+			return textMenu;
+		};
+
+		textCursor() {
+			// Contorol Cursor Behaviour in Open Modal
+			const followCircle = document.getElementById('followCircle');
+
+			// Big Cursor in Modal Page (Mouse Over Close Icon & Links)
+			const links = document.querySelectorAll("[data-ajax]");
+			console.log(links);
+			const gsapCursor = {
+				'links' : links,
+			};
+
+			Object.keys(gsapCursor).forEach(key => {
+				gsapCursor[key].forEach((value, index) => {
+					console.log(value);
+					value.classList.add('zoom');
+					value.addEventListener('mouseover', () => {
+						value.classList.add('zoom');
+						// GSAP
+						gsap.to(followCircle, 0.1, {
+							opacity: 0.7,
+							scale: 3
+						});
+					});	
+					value.addEventListener('mouseout', () => {
+						// GSAP
+						gsap.to(followCircle, 0.1, {
+							opacity: 1,
+							scale: 1
+						});			
+					});	
+				});	
+			});		
+		};
+	
+		//____________________________
+		//
+		// Event Listeners
+		//____________________________	
+		
+		_eventListeners() {
+			
 		};
 	};
 
