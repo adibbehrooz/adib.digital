@@ -160,42 +160,50 @@
 		texts() {
 			const labels = {
 				about: {
-					ajaxID: 68,
-					id: 'about',
-					postType: 'page',
+					ajaxID: 68, // AjaxID (PostID)
+					id: 'about',// HTML id='about'
+					postType: 'page', // Post OR Page
+					postTitle: 'About', // Show Top of The 'About' Page
+					postSlug: 'about', // Page Slug (Manipulate in Ajax)
 					coverDirection: '--ttb',
 					navbarPosition: 'right',
 					className: '--right --about',
-					title: 'About',
+					title: 'About', // Show In Home Page
 					URL: ''
 				},
 				contact: {
-					ajaxID: 71,
-					postType: 'page',
+					ajaxID: 71, // AjaxID (PostID)
+					id: 'contact',  // HTML id='contact'
+					postType: 'page', // Post OR Page
+					postTitle: 'Contact', // Show Top of The 'Contact' Page
+					postSlug: 'contact', // Page Slug (Manipulate in Ajax)
 					coverDirection: '--ttb',
 					navbarPosition: 'left',
 					className: '--left --contact',
-					id: 'contact',
-					title: 'Contact',
+					title: 'Contact', // Show In Home Page
 					URL: ''
 				},
 				projects: {
-					ajaxID: 74,
-					postType: 'page',
+					ajaxID: 74, // AjaxID (PostID)
+					id: 'projects',  // HTML id='projects'
+					postType: 'page', // Post OR Page
+					postTitle: 'Projects', // Show Top of The 'Projects' Page
+					postSlug: 'projects', // Page Slug (Manipulate in Ajax)
 					coverDirection: '--ttb',
 					navbarPosition: 'left',
 					className: '--left --projects',
-					id: 'projects',
-					title: 'Projects',
+					title: 'Projects', // Show In Home Page
 					URL: ''
 				},
 				source: {
 					ajaxID: '',
+					id: 'source',
 					postType: 'link',
+					postTitle: '',
+					postSlug: '',		
 					coverDirection: '',
 					navbarPosition: 'right',
 					className: '--right --source',
-					id: 'source',
 					title: 'Source',
 					URL: 'https://github.com/adibbehrooz/adib.online'
 				},
@@ -219,17 +227,19 @@
 			const labels = this.texts();
 			Object.entries(labels).forEach( (entry, index) => {
 				const [key, value] = entry;
-				let textTitle = value.title, 
-					className = value.className, 
-					navbarPosition = value.navbarPosition, 
-					id = value.id, 
+				let ajaxID = value.ajaxID,
+					id = value.id,
+					postTitle = value.postTitle,
 					postType = value.postType,
+					postSlug = value.postSlug,
 					coverDirection = value.coverDirection,
-					ajaxID = value.ajaxID;
+					navbarPosition = value.navbarPosition, 
+					className = value.className, 
+					homePageTitle = value.title, 
 					URL = value.URL;
-						
+
 				if(navbarPosition == 'left') 
-				leftMenu.appendChild(this.textSections(textTitle, className, id, ajaxID, postType, coverDirection, URL));
+				leftMenu.appendChild(this.textSections(ajaxID, id, postTitle, postType, postSlug, coverDirection, className, homePageTitle, URL));
 			
 			});
 			return leftMenu;	
@@ -245,38 +255,54 @@
 			const labels = this.texts();
 			Object.entries(labels).forEach( (entry, index) => {
 				const [key, value] = entry;
-				let textTitle = value.title, 
-					className = value.className, 
-					navbarPosition = value.navbarPosition, 
-					id = value.id, 
+				let ajaxID = value.ajaxID,
+					id = value.id,
+					postTitle = value.postTitle,
 					postType = value.postType,
+					postSlug = value.postSlug,
 					coverDirection = value.coverDirection,
-					ajaxID = value.ajaxID,
+					navbarPosition = value.navbarPosition, 
+					className = value.className, 
+					homePageTitle = value.title, 
 					URL = value.URL;
-				
-				if(navbarPosition == 'right') 
-				rightMenu.appendChild(this.textSections(textTitle, className, id, ajaxID, postType, coverDirection, URL));
 
+				if(navbarPosition == 'right') 
+				rightMenu.appendChild(this.textSections(ajaxID, id, postTitle, postType, postSlug, coverDirection, className, homePageTitle, URL));
+	
 			});	
 			return rightMenu;	
 		};
 
-		textSections(title, className, id, ajaxID, postType, coverDirection, URL) {
+		textSections(ajaxID, id, postTitle, postType, postSlug, coverDirection, className, homePageTitle, URL) {
 			const textMenu = document.createElement("span");
-			textMenu.setAttribute('class', 'o-menu__text '+ className);
-			textMenu.setAttribute('id', id);		
-			textMenu.innerHTML = title;
 			
+			// Title (Home Page)
+			textMenu.innerHTML = homePageTitle;
+
 			// ajaxID
 			if(ajaxID) 
 			textMenu.setAttribute("data-ajax", ajaxID);	
+			
+			// HTML ID id='sample'
+			textMenu.setAttribute('id', id);	
+
+			// ClassName
+			textMenu.setAttribute('class', 'o-menu__text '+ className);
+
+			// postTitle
+			if(postTitle) 
+			textMenu.setAttribute("data-postTitle", postTitle);
+
+			// postSlug
+			if(postSlug) 
+			textMenu.setAttribute("data-postSlug", postSlug);
 
 			// postType
+			if(postType) 
 			textMenu.setAttribute("data-postType", postType);	
 			
 			// coverDirection
 			if(coverDirection) 
-			
 			textMenu.setAttribute("data-coverDirection", coverDirection);	
 			
 			// URL
@@ -286,7 +312,7 @@
 			return textMenu;
 		};
 
-		onPointerMove(ajaxID, postType, coverDirection, eventName) {
+		onPointerMove(ajaxID, postType, postTitle, postSlug, coverDirection, eventName) {
 			// Contorol Cursor Behaviour in Open Modal
 			const followCircle = document.getElementById('followCircle');
 			
@@ -304,7 +330,7 @@
 				});					
 			} else if(eventName == 'click') {
 				// Ajax
-				ajax.openModalClickEvent(ajaxID, postType, coverDirection);				
+				ajax.openModalClickEvent(ajaxID, postType, postTitle, postSlug, coverDirection);				
 			}
 		};
 
@@ -329,19 +355,21 @@
 					// Return data-*
 					let ajaxID = value.getAttribute('data-ajax');
 					let postType = value.getAttribute('data-posttype');
+					let postTitle = value.getAttribute('data-posttitle');
+					let postSlug = value.getAttribute('data-postslug');
 					let coverDirection = value.getAttribute('data-coverdirection');
 					let URL = value.getAttribute('data-url');
 					
 					// Mouse Over
 					value.addEventListener('mouseover', () => {
 						let eventName = 'mouseover'
-						this.onPointerMove(ajaxID, postType, coverDirection, eventName);
+						this.onPointerMove(ajaxID, postType, postTitle, postSlug, coverDirection, eventName); 
 					});	
 
 					// Mouse Out
 					value.addEventListener('mouseout', () => {
 						let eventName = 'mouseout'
-						this.onPointerMove(ajaxID, postType, coverDirection, eventName);
+						this.onPointerMove(ajaxID, postType, postTitle, postSlug, coverDirection, eventName); 
 					});	
 
 					// Click
@@ -350,7 +378,7 @@
 						if(postType == 'link') {
 							window.open(URL, '_blank');
 						} else {
-							this.onPointerMove(ajaxID, postType, coverDirection, eventName);
+							this.onPointerMove(ajaxID, postType, postTitle, postSlug, coverDirection, eventName); 
 						}
 					});	
 				});	

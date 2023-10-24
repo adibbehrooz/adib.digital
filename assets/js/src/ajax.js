@@ -9,6 +9,8 @@
 /******************************** Ajax ********************************
 /**********************************************************************/
 
+import { Shower } from './shower';
+const shower = new Shower();
 
 class Ajax {
  	
@@ -67,8 +69,8 @@ class Ajax {
 	II. postType :: WordPress Post OR Page
 	III. coverDirection :: Top To Bottom OR Left To Right
 	**/
-    openModalClickEvent(ID, postType, coverDir) {
-        this.ajaxify(ID, postType, coverDir); 
+    openModalClickEvent(ID, postType, postTitle, postSlug, coverDir) {
+        this.ajaxify(ID, postType, postTitle, postSlug, coverDir); 
     };
 
 	// Create or Destroy Modal Container
@@ -182,6 +184,11 @@ class Ajax {
 		document.getElementById(multimediaID).style = cssMultimediaResult;
 	};
 
+	addStarsStyle() {
+		shower.meteorShower(); 
+		// sky.particles();
+	};
+
 	modalImages() {
 		const images = document.querySelectorAll('img');
 		Object.entries(images).forEach(([key, value]) => {
@@ -292,6 +299,9 @@ class Ajax {
 			// III. Style Multimedia Div (Add Internal Scroll)
 			this.addMultimediaStyle();
 
+			// III. Style Stars Div (Add Star Canvas)
+			this.addStarsStyle();
+
 			// IV. Contorol Modal Cursor Behaviour over links
 			this.modalCursor();
 
@@ -334,8 +344,10 @@ class Ajax {
 	//
 	// Ajax 
 	//_______________________________
+	
+	async ajaxify(postID, postType, postTitle, postSlug, coverDirection) {
 
-	async ajaxify(postID, postType, coverDirection) {
+		const currentUrl = window.location.href;
 
 		let modalClass = this.modalClass;
 		let activeClass = this.activeClass;
@@ -371,9 +383,13 @@ class Ajax {
 		.then((data) => {
 			document.getElementById(this.modalID).innerHTML = data;
 			this.modalContentAnimation(modalStars, modalMultimedia, activeClass, deactiveClass);
+			// window.history.pushState(data, postTitle, currentUrl+postSlug);
+			// history.forward();
 		})
 		.then( 
 			this.modalCloseButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass),
+			// window.history.replaceState(),
+			// history.back()
 		)
 		.catch( err => console.log( err ) );
 	}; 

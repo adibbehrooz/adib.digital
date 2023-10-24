@@ -8,7 +8,8 @@
 
 /******************************** SKY ********************************
 /*********************************************************************/
-		
+	import { Shower } from './shower';
+	const shower = new Shower();
 	class Sky {
 	
 		//____________________________
@@ -61,7 +62,7 @@
 		//____________________________	
 
 		init() {
-			this.meteorShower(); 
+			shower.meteorShower(); 
 			this.particles(); 
 			// this._eventListeners();
 		};

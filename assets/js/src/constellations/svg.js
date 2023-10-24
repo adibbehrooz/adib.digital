@@ -180,8 +180,8 @@ const svg = {
 				{ x0: 0.000,      x1: 5.000, form: 'lineTo' }, 
                 { form: 'closePath' },
 				// Stroke
-				{ form: 'lineWidth', value: '2' },
-				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 1)' },
+				{ form: 'lineWidth', value: '1' },
+				{ form: 'strokeStyle',	value: 'rgba(255, 255, 255, 0)' },
 				{ form: 'stroke'}, 
 				// Fill
 				{ form: 'fillStyle', 	value: 'rgba(255, 255, 255, 0)' },

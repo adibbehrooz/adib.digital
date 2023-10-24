@@ -373,12 +373,14 @@ class Pan {
 				let shapeType 		= constellation[name].data.type; // Shape Types: 'Constellations' OR 'Texts' OR 'Links'
 				let shapeURL 		= constellation[name].data.url; // URL to External Page
 				let postType 		= constellation[name].data.backend.postType; // WordPress Post Type :: Post OR Page
+				let postTitle 		= constellation[name].data.backend.postTitle; // Post Title
+				let postSlug 		= constellation[name].data.backend.postSlug; // Post Title
 				let coverDirection 	= constellation[name].data.backend.coverDirection; 
 				
 				if(shapeType == 'link') {
 					window.open(shapeURL, '_blank');
 				} else {
-					ajax.openModalClickEvent(shapeID, postType, coverDirection);
+					ajax.openModalClickEvent(shapeID, postType, postTitle, postSlug, coverDirection);
 				}
 			}
 		} else {
