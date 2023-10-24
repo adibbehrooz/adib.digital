@@ -21,7 +21,7 @@ class Menu {
 		this.firstOpacity = this.opacity[0] += 0.4;
 		this.secondOpacity = this.opacity[1] += 0.1;	
 		this.monoFont = 'Jetbrains Mono';
-		this.monosize = '36px';
+		this.monosize = '33px';
 		this.monoLittleSize = '13px';
 	};
 
@@ -45,11 +45,11 @@ class Menu {
 		ctx.fillStyle = "rgba(255, 255, 255, .3)";
 
 		ctx.fillText("FRONT-END DEVELOPER", 
-			window.innerWidth - window.innerWidth / 1.06, 
+			window.innerWidth - window.innerWidth / 1.11, 
 			cameraOffset.y - window.innerHeight / 2.4 
 		);
 		ctx.fillText("BACK-END DEVELOPER", 
-			window.innerWidth - window.innerWidth / 1.06, 
+			window.innerWidth - window.innerWidth / 1.11, 
 			cameraOffset.y + window.innerHeight * .37
 		);
 	};
