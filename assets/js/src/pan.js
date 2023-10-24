@@ -37,6 +37,7 @@ class Pan {
 		// Canvas
 		this.panCanvas = document.getElementById('canvas__pan');
 		this.panCanvas.style.position = 'absolute';
+		this.panCanvas.style.zIndex = '0';
 		this.ctx = this.panCanvas.getContext('2d');
 		this.panCanvas.width = window.innerWidth;
 		this.panCanvas.height = window.innerHeight;

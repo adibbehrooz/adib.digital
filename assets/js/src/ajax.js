@@ -129,7 +129,7 @@ class Ajax {
 			<div class="[ o-cover o-cover__firstLayer `+coverDirection+ ` --active ]"></div>
 			<div class="[ o-cover o-cover__secondLayer `+coverDirection+ ` --active ]"></div>
 			<div class="[ o-cover o-cover__thirdLayer `+coverDirection+ ` --active ]"></div>
-			<div class="[ o-cover o-cover__close `+coverDirection+ ` --active ][ zoom ]" style="z-index: 6;">
+			<div class="[ o-cover o-cover__close `+coverDirection+ ` --active ][ zoom ]" style="z-index: 4;">
 				<svg class="[ c-landscape__object  o-cover__close --transform ][ zoom ]" version="1.1" viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg">
 					<g class="[ CUSTOM: o-cover__close__pathGroup ]" stroke="#000" >
 						<path transform="matrix(8 0 0 8 75.778 8)" d="m67.937 0-67.937 67.826" fill="none" stroke-linecap="round" stroke-linejoin="round"/>

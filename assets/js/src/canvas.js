@@ -9,6 +9,10 @@
 /******************************** Canvas ********************************
 /************************************************************************/
 
+	// Ajax Module
+	import { Ajax } from './ajax';
+	const ajax = new Ajax();
+
 	class Canvas {
 
 		//____________________________
@@ -62,7 +66,7 @@
 			const middleSection = document.createElement("section");
 			middleSection.setAttribute('class', 'o-canvas');
 			middleSection.setAttribute('id', 'middle');
-			middleSection.setAttribute('data', "renderType: 'canvas'");
+			middleSection.setAttribute('data-render', 'canvas');
 			document.body.appendChild(middleSection);
 			return middleSection;			
 		};
@@ -121,9 +125,9 @@
 		//____________________________	
 		
 		init() {
-			this.modal();
 			this.allMenu();
-			this.textCursor();
+			this.modal();
+			this._eventListeners();
 		};	
 
 		//_______
@@ -148,7 +152,7 @@
 			const menuSection = document.createElement("section");
 			menuSection.setAttribute('class', 'o-menu');
 			menuSection.setAttribute('id', 'menu');
-			menuSection.setAttribute('data', "renderType: 'section'");
+			menuSection.setAttribute('data-render', 'section');
 			document.body.appendChild(menuSection);
 			return menuSection;
 		};
@@ -157,17 +161,43 @@
 			const labels = {
 				about: {
 					ajaxID: 68,
-					position: 'right',
+					id: 'about',
+					postType: 'page',
+					coverDirection: '--ttb',
+					navbarPosition: 'right',
 					className: '--right --about',
-					id: 'menuRightAbout',
-					title: 'About'
+					title: 'About',
+					URL: ''
 				},
 				contact: {
 					ajaxID: 71,
-					position: 'left',
+					postType: 'page',
+					coverDirection: '--ttb',
+					navbarPosition: 'left',
 					className: '--left --contact',
-					id: 'menuRightContact',
-					title: 'Contact'
+					id: 'contact',
+					title: 'Contact',
+					URL: ''
+				},
+				projects: {
+					ajaxID: 74,
+					postType: 'page',
+					coverDirection: '--ttb',
+					navbarPosition: 'left',
+					className: '--left --projects',
+					id: 'projects',
+					title: 'Projects',
+					URL: ''
+				},
+				source: {
+					ajaxID: '',
+					postType: 'link',
+					coverDirection: '',
+					navbarPosition: 'right',
+					className: '--right --source',
+					id: 'source',
+					title: 'Source',
+					URL: 'https://github.com/adibbehrooz/adib.online'
 				},
 			};
 			return labels;
@@ -189,8 +219,18 @@
 			const labels = this.texts();
 			Object.entries(labels).forEach( (entry, index) => {
 				const [key, value] = entry;
-				let textTitle = value.title, className = value.className, position = value.position, id = value.id, ajaxID = value.ajaxID;
-				if(position == 'left') leftMenu.appendChild(this.textSections(textTitle, className, id, ajaxID));
+				let textTitle = value.title, 
+					className = value.className, 
+					navbarPosition = value.navbarPosition, 
+					id = value.id, 
+					postType = value.postType,
+					coverDirection = value.coverDirection,
+					ajaxID = value.ajaxID;
+					URL = value.URL;
+						
+				if(navbarPosition == 'left') 
+				leftMenu.appendChild(this.textSections(textTitle, className, id, ajaxID, postType, coverDirection, URL));
+			
 			});
 			return leftMenu;	
 		};
@@ -204,56 +244,70 @@
 			// Append <span> Child
 			const labels = this.texts();
 			Object.entries(labels).forEach( (entry, index) => {
-				const [title, value] = entry;
-				let textTitle = value.title, className = value.className, position = value.position, id = value.id, ajaxID = value.ajaxID;
-				if(position == 'right') rightMenu.appendChild(this.textSections(textTitle, className, id, ajaxID));
+				const [key, value] = entry;
+				let textTitle = value.title, 
+					className = value.className, 
+					navbarPosition = value.navbarPosition, 
+					id = value.id, 
+					postType = value.postType,
+					coverDirection = value.coverDirection,
+					ajaxID = value.ajaxID,
+					URL = value.URL;
+				
+				if(navbarPosition == 'right') 
+				rightMenu.appendChild(this.textSections(textTitle, className, id, ajaxID, postType, coverDirection, URL));
+
 			});	
 			return rightMenu;	
 		};
 
-		textSections(title, className, id, ajaxID) {
+		textSections(title, className, id, ajaxID, postType, coverDirection, URL) {
 			const textMenu = document.createElement("span");
 			textMenu.setAttribute('class', 'o-menu__text '+ className);
 			textMenu.setAttribute('id', id);		
 			textMenu.innerHTML = title;
+			
+			// ajaxID
+			if(ajaxID) 
 			textMenu.setAttribute("data-ajax", ajaxID);	
+
+			// postType
+			textMenu.setAttribute("data-postType", postType);	
+			
+			// coverDirection
+			if(coverDirection) 
+			
+			textMenu.setAttribute("data-coverDirection", coverDirection);	
+			
+			// URL
+			if(URL) 
+			textMenu.setAttribute("data-URL", URL);	
+
 			return textMenu;
 		};
 
-		textCursor() {
+		onPointerMove(ajaxID, postType, coverDirection, eventName) {
 			// Contorol Cursor Behaviour in Open Modal
 			const followCircle = document.getElementById('followCircle');
-
-			// Big Cursor in Modal Page (Mouse Over Close Icon & Links)
-			const links = document.querySelectorAll("[data-ajax]");
-			console.log(links);
-			const gsapCursor = {
-				'links' : links,
-			};
-
-			Object.keys(gsapCursor).forEach(key => {
-				gsapCursor[key].forEach((value, index) => {
-					console.log(value);
-					value.classList.add('zoom');
-					value.addEventListener('mouseover', () => {
-						value.classList.add('zoom');
-						// GSAP
-						gsap.to(followCircle, 0.1, {
-							opacity: 0.7,
-							scale: 3
-						});
-					});	
-					value.addEventListener('mouseout', () => {
-						// GSAP
-						gsap.to(followCircle, 0.1, {
-							opacity: 1,
-							scale: 1
-						});			
-					});	
-				});	
-			});		
+			
+			if( eventName == 'mouseover') {
+				// GSAP
+				gsap.to(followCircle, 0.1, {
+					opacity: 0.7,
+					scale: 3
+				});
+			} else if(eventName == 'mouseout') {
+				// GSAP
+				gsap.to(followCircle, 0.1, {
+					opacity: 1,
+					scale: 1
+				});					
+			} else if(eventName == 'click') {
+				// Ajax
+				ajax.openModalClickEvent(ajaxID, postType, coverDirection);				
+			}
 		};
-	
+
 		//____________________________
 		//
 		// Event Listeners
@@ -261,6 +315,46 @@
 		
 		_eventListeners() {
 			
+			const links = document.querySelectorAll(".o-menu__text");
+			const gsapCursor = {
+				'links' : links,
+			};
+
+	
+			// Mouse Movement
+			//_____________________________________
+		
+			Object.keys(gsapCursor).forEach(key => {
+				gsapCursor[key].forEach((value, index) => {
+					// Return data-*
+					let ajaxID = value.getAttribute('data-ajax');
+					let postType = value.getAttribute('data-posttype');
+					let coverDirection = value.getAttribute('data-coverdirection');
+					let URL = value.getAttribute('data-url');
+					
+					// Mouse Over
+					value.addEventListener('mouseover', () => {
+						let eventName = 'mouseover'
+						this.onPointerMove(ajaxID, postType, coverDirection, eventName);
+					});	
+
+					// Mouse Out
+					value.addEventListener('mouseout', () => {
+						let eventName = 'mouseout'
+						this.onPointerMove(ajaxID, postType, coverDirection, eventName);
+					});	
+
+					// Click
+					value.addEventListener('click', () => {
+						let eventName = 'click'
+						if(postType == 'link') {
+							window.open(URL, '_blank');
+						} else {
+							this.onPointerMove(ajaxID, postType, coverDirection, eventName);
+						}
+					});	
+				});	
+			});	
 		};
 	};
 
