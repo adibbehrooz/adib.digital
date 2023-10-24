@@ -330,7 +330,7 @@
 				});					
 			} else if(eventName == 'click') {
 				// Ajax
-				ajax.openModalClickEvent(ajaxID, postType, postTitle, postSlug, coverDirection);				
+				ajax.openAjaxModal(ajaxID, postType, postTitle, postSlug, coverDirection);				
 			}
 		};
 

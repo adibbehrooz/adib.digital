@@ -380,7 +380,7 @@ class Pan {
 				if(shapeType == 'link') {
 					window.open(shapeURL, '_blank');
 				} else {
-					ajax.openModalClickEvent(shapeID, postType, postTitle, postSlug, coverDirection);
+					ajax.openAjaxModal(shapeID, postType, postTitle, postSlug, coverDirection);
 				}
 			}
 		} else {

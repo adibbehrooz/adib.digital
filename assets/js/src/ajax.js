@@ -65,13 +65,13 @@ class Ajax {
 	// RUN! 
 	//____________________________   
 	/**
-	I. shapeID :: ID of Shape
+	I. shapeID :: ID of Shape (Equal PostID in WordPress Backend)
 	II. postType :: WordPress Post OR Page
-	III. coverDirection :: Top To Bottom OR Left To Right
+	III. coverDirection :: 'Top To Bottom' OR 'Left To Right'
 	**/
-    openModalClickEvent(ID, postType, postTitle, postSlug, coverDir) {
-        this.ajaxify(ID, postType, postTitle, postSlug, coverDir); 
-    };
+	openAjaxModal(ID, postType, postTitle, postSlug, coverDir) {
+		this.ajaxify(ID, postType, postTitle, postSlug, coverDir); 
+	};
 
 	// Create or Destroy Modal Container
 	modalContainer(postID, postType, coverDirection, modalClass, activeClass, deactiveClass) {
@@ -96,7 +96,7 @@ class Ajax {
 			// 1. Create Beautiful Cover
 			//__________________________
 
-			this.addModalCover(postID, postType, coverDirection);
+			this.addCover(postID, postType, coverDirection);
 
 			//__________________________
 			//
@@ -113,7 +113,7 @@ class Ajax {
 	// Cover 
 	//_______________________________
 
-	addModalCover(postID, postType, coverDirection) {
+	addCover(postID, postType, coverDirection) {
 		let modalID = this.modalID;
 		let coverID = this.coverID;
 		let coverClass = this.coverClass;
@@ -144,7 +144,7 @@ class Ajax {
 		document.body.insertBefore(coverSection, modalSection);
 	};
 
-	removeModalCover(activeClass, deactiveClass) {
+	removeCover(activeClass, deactiveClass) {
 
 		const modalValues 	= ['o-cover', 'o-cover__firstLayer', 'o-cover__secondLayer', 'o-cover__thirdLayer', 'o-cover__close'];
 		const modalKeys 	= ['cover', 'firstLayer', 'secondLayer', 'thirdLayer', 'close'];
@@ -170,26 +170,25 @@ class Ajax {
 		});
 	};
 
-	addMultimediaStyle() {
+	styleMultimedia() {
 		const multimediaID = this.multimediaID;
 
-		let multimediaStyle = {
+		let styleMultimedia = {
 			'background': 'black',
 			'background-repeat': 'no-repeat',
 		};
 		let cssMultimediaResult = "";
-		Object.keys(multimediaStyle).forEach(function (prop, index) {
-			cssMultimediaResult += prop + ": " + multimediaStyle[prop] + "; ";
+		Object.keys(styleMultimedia).forEach(function (prop, index) {
+			cssMultimediaResult += prop + ": " + styleMultimedia[prop] + "; ";
 		});
 		document.getElementById(multimediaID).style = cssMultimediaResult;
 	};
 
-	addStarsStyle() {
+	styleStars() {
 		shower.meteorShower(); 
-		// sky.particles();
 	};
 
-	modalImages() {
+	images() {
 		const images = document.querySelectorAll('img');
 		Object.entries(images).forEach(([key, value]) => {
 			value.dataset.type = "modal-image-link";
@@ -198,16 +197,16 @@ class Ajax {
 		});
 	};
 	
-	modalCursor() {
+	cursor() {
 
 		// Contorol Cursor Behaviour in Open Modal
-		const container = this.container;
 		const followCircle = document.getElementById('followCircle');
-
-		// Cursor "Default" Behaviour on Open Modal
+		
 		/*
-		const modalDocument = document.querySelector(container);
-		modalDocument.addEventListener('mouseover', () => {
+		// Cursor "Default" Behaviour on Open Modal
+		const container = this.container;
+		const totalDocument = document.querySelector(container);
+		totalDocument.addEventListener('mouseover', () => {
 			gsap.to(followCircle, 0.1, {
 				opacity: 1,
 				scale: 1
@@ -217,7 +216,6 @@ class Ajax {
 
 		// Big Cursor in Modal Page (Mouse Over Close Icon & Links)
 		const links = document.querySelectorAll('a');
-		
 		const closeIcon = document.querySelectorAll('.o-cover__close');
 		const gsapCursor = {
 			'links' 	: links,
@@ -246,17 +244,25 @@ class Ajax {
 		});	
 	};
 
-	modalExternalScrollbBar() {
-		setTimeout(function() { // start a delay
-			document.body.style.overflowY = "scroll";
-		}, 1000);
-		document.body.classList.add(
-			'externalScrollbar',
-		);	
+	scrollBar(scrollbBarStat) {
+		
+		if( scrollbBarStat == 'addScrollBar' ) {
+			setTimeout(function() { // start a delay
+				document.body.style.overflowY = "scroll";
+			}, 1000);
+			document.body.classList.add(
+				'externalScrollbar',
+			);	
+		} else {
+			setTimeout(function() { // start a delay
+				document.body.style.overflow = "hidden";
+			}, 1000); // wait to run after 3 seconds
+		}
+
 	};
 
 	// Create Or Destroy Modal Content Animation
-	modalContentAnimation(stars, multimedia, activeClass, deactiveClass) {
+	contentAnimation(stars, multimedia, activeClass, deactiveClass) {
 
 		const modalStar = document.querySelector(stars);
 		const modalMultimedia = document.querySelector(multimedia);
@@ -280,6 +286,7 @@ class Ajax {
 			modalMultimedia.classList.remove('internalScrollbar');
 
 		} else { 
+
 			//___________________
 			//
 			// Show Modal Content
@@ -294,33 +301,43 @@ class Ajax {
 			modalMultimedia.classList.remove(deactiveClass);
 
 			// VI. Contorol Modal Images
-			this.modalImages();
+			this.images();
 
 			// III. Style Multimedia Div (Add Internal Scroll)
-			this.addMultimediaStyle();
+			this.styleMultimedia();
 
 			// III. Style Stars Div (Add Star Canvas)
-			this.addStarsStyle();
+			this.styleStars();
 
 			// IV. Contorol Modal Cursor Behaviour over links
-			this.modalCursor();
+			this.cursor();
 
 			// V. Contorol External Scroll Bar
-			this.modalExternalScrollbBar();	
+			let scrollbBarStat = 'addScrollBar';
+			this.scrollBar(scrollbBarStat);	
 
 			// VI. Add Internal Scroll Bar
 			modalMultimedia.classList.add('internalScrollbar');
-
 		}
 	};
 
-	removeModalinnerHTML(modalID) {
+	removeInnerHTML(modalID) {
 		setTimeout(function() { // start a delay
 			document.getElementById(modalID).innerHTML = '';
 		}, 3000); // wait to run after 3 seconds  
 	};
 
-	modalCloseButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass) {
+	removeURLHash() {
+		let fullUrl = window.location.href,
+		index = fullUrl.indexOf('#');
+		if (index > 0) {
+			setTimeout(function() { // start a delay
+				window.location = fullUrl.substring(0, index);
+			}, 3000); // wait to run after 3 seconds
+		}
+	};
+
+	closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass) {
 		const modalID = this.modalID;
 		const closeIcon = document.querySelector('.o-cover__close');
 		closeIcon.addEventListener('click', () => {
@@ -328,15 +345,17 @@ class Ajax {
 			this.modalContainer(postID, postType, coverDirection, modalClass, activeClass, deactiveClass);
 
 			// II. Remove Cover
-			this.removeModalCover(activeClass, deactiveClass);
+			this.removeCover(activeClass, deactiveClass);
 
 			// III. Rmove Data
-			this.removeModalinnerHTML(modalID);
+			this.removeInnerHTML(modalID);
 
 			// IV. Remove Scroll
-			setTimeout(function() { // start a delay
-				document.body.style.overflow = "hidden";
-			}, 1000); // wait to run after 3 seconds
+			let scrollbBarStat = 'removeScrollBar';
+			this.scrollBar(scrollbBarStat)
+
+			// V. Remove #Hash From URL
+			this.removeURLHash();
 		});
 	}
 
@@ -347,16 +366,12 @@ class Ajax {
 	
 	async ajaxify(postID, postType, postTitle, postSlug, coverDirection) {
 
-		const currentUrl = window.location.href;
-
 		let modalClass = this.modalClass;
 		let activeClass = this.activeClass;
 		let deactiveClass = this.deactiveClass;
 
-		let container = this.container;
 		let modalStars = this.modalStars;
 		let modalMultimedia = this.modalMultimedia;
-		let multimediaID = this.multimediaID;
 
 		let formData = new FormData();
 
@@ -381,18 +396,24 @@ class Ajax {
 			this.modalContainer(postID, postType, coverDirection, modalClass, activeClass, deactiveClass),
 		)
 		.then((data) => {
-			document.getElementById(this.modalID).innerHTML = data;
-			this.modalContentAnimation(modalStars, modalMultimedia, activeClass, deactiveClass);
-			// window.history.pushState(data, postTitle, currentUrl+postSlug);
-			// history.forward();
+			document.getElementById(this.modalID).innerHTML = data; // Add Data to Modal Page (Remove Data with removeInnerHTML() Function)
+			this.contentAnimation(modalStars, modalMultimedia, activeClass, deactiveClass); // Active or Deactive Cover
+			window.history.pushState(data, postTitle, window.location.pathname+"#"+postSlug); // Manipulate URL
 		})
-		.then( 
-			this.modalCloseButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass),
-			// window.history.replaceState(),
-			// history.back()
-		)
+		.then(() => {
+			this.closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass); // Close Button
+		})
 		.catch( err => console.log( err ) );
-	}; 
+	};
+
+	//__________________________________________________
+	//
+	// Event Listeners (Browser Back & Forward Button)
+	//_________________________________________________	
+		
+	_eventListeners() {
+		// Silence is Golden
+	};
 };
 
 
