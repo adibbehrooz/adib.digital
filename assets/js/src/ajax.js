@@ -333,7 +333,7 @@ class Ajax {
 		}
 	};
 
-	closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass) {
+	closeButtonEventZERO(postID, postType, coverDirection, modalClass, activeClass, deactiveClass) {
 		const modalID = this.modalID;
 		const closeIcon = document.querySelector('.o-cover__close');
 		closeIcon.addEventListener('click', () => {
@@ -354,6 +354,28 @@ class Ajax {
 			this.removeURLHash();
 		});
 	};
+
+	closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass) {
+			
+			const modalID = this.modalID;
+
+			// I. Deactive Modal Container
+			this.modalContainer(postID, postType, coverDirection, modalClass, activeClass, deactiveClass);
+
+			// II. Remove Cover
+			this.removeCover(activeClass, deactiveClass);
+
+			// III. Rmove Data
+			this.removeInnerHTML(modalID);
+
+			// IV. Remove Scroll
+			let scrollbBarStat = 'removeScrollBar';
+			this.scrollBar(scrollbBarStat)
+
+			// V. Remove #Hash From URL
+			this.removeURLHash();
+	};
+
 
 	//_______________________________
 	//
@@ -397,7 +419,7 @@ class Ajax {
 			window.history.pushState(data, postTitle, window.location.pathname+"#"+postSlug); // Manipulate URL
 		})
 		.then(() => {
-			this.closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass); // Close Button
+			this._eventListeners(postID, postType, coverDirection, modalClass, activeClass, deactiveClass);
 		})
 		.catch( err => console.log( err ) );
 	};
@@ -407,8 +429,32 @@ class Ajax {
 	// Event Listeners (Browser Back & Forward Button)
 	//_________________________________________________	
 		
-	_eventListeners() {
-		// Silence is Golden
+	_eventListeners(postID, postType, coverDirection, modalClass, activeClass, deactiveClass, data) {
+		let modalStars = this.modalStars;
+		let modalMultimedia = this.modalMultimedia;
+		const closeIcon = document.querySelector('.o-cover__close');
+		
+		// Click on Close Button
+		closeIcon.addEventListener('click', () => {
+			this.closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass); // Close Button
+		});
+		
+		// Click on Browser "Back" Button
+		addEventListener("popstate", () => {
+			if(postID) {
+				console.log("BACK EVENT")
+				console.log(postID);
+				this.closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass); // Close Button	
+				postID = '';
+			} else {
+				console.log("FRORWARD EVENT")
+				console.log(postID)
+				this.modalContainer(postID, postType, coverDirection, modalClass, activeClass, deactiveClass);
+				document.getElementById(this.modalID).innerHTML = data; // Add Data to Modal Page (Remove Data with removeInnerHTML() Function)
+				this.contentAnimation(modalStars, modalMultimedia, activeClass, deactiveClass); // Active or Deactive Cover
+				window.history.pushState(data, postTitle, window.location.pathname+"#"+postSlug); // Manipulate URL
+			}	
+		});
 	};
 };
 
