@@ -16,7 +16,7 @@
         
         <?php elseif ( is_page() ) : get_template_part( 'page' ); ?>
         
-        <?php elseif ( (get_post_type() == 'product') ) : get_template_part( 'single', 'product' ); ?>	
+        <?php elseif ( (get_post_type() == 'technology') ) : get_template_part( 'technology' ); ?>	
         
         <?php endif; // is_not_home(); ?>	
         

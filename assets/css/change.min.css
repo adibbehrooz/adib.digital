@@ -502,6 +502,12 @@ video {
 .h-\[30vh\] {
   height: 30vh;
 }
+.h-auto {
+  height: auto;
+}
+.\!h-auto {
+  height: auto !important;
+}
 .min-h-\[200px\] {
   min-height: 200px;
 }
