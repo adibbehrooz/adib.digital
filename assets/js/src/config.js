@@ -29,9 +29,9 @@
 	// Cursor
 	//______________
 	
-	import { Cursor } from './cursor';
-	const cursor = new Cursor();
-	cursor.init();	
+	// import { Cursor } from './cursor';
+	// const cursor = new Cursor();
+	// cursor.dynamicCursor();	
 
 	// Pan
 	//______________

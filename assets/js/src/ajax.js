@@ -64,11 +64,7 @@ class Ajax {
 	//
 	// RUN! 
 	//____________________________   
-	/**
-	I. shapeID :: ID of Shape (Equal PostID in WordPress Backend)
-	II. postType :: WordPress Post OR Page
-	III. coverDirection :: 'Top To Bottom' OR 'Left To Right'
-	**/
+
 	openAjaxModal(ID, postType, postTitle, postSlug, coverDir) {
 		this.ajaxify(ID, postType, postTitle, postSlug, coverDir); 
 	};
@@ -357,7 +353,7 @@ class Ajax {
 			// V. Remove #Hash From URL
 			this.removeURLHash();
 		});
-	}
+	};
 
 	//_______________________________
 	//

@@ -56,7 +56,6 @@
 			document.body.style = cssBodyResult;
 		};
 
-
 		//____________________________
 		//
 		// Create Section
@@ -73,25 +72,31 @@
 
 		allCanvas() {
 			const middleSection = this.createSection();
-			// Canvas
-			middleSection.appendChild(this.panCanvas());
-			middleSection.appendChild(this.skyCanvas());
-		};
+			
+			// I. Sky Canvas
+			const skyCanvas = () => {
+				const canvasSky = document.createElement("canvas");
+				canvasSky.setAttribute('class', 'o-canvas__sky');
+				canvasSky.setAttribute('id', 'canvas__sky');
+				canvasSky.width = window.innerWidth;
+				canvasSky.height = window.innerHeight;	
+				return canvasSky;		
+			};
 
-		skyCanvas() {
-			const canvasSky = document.createElement("canvas");
-			canvasSky.setAttribute('class', 'o-canvas__sky');
-			canvasSky.setAttribute('id', 'canvas__sky');
-			canvasSky.width = window.innerWidth;
-			canvasSky.height = window.innerHeight;			
-			return canvasSky;			
-		};
+			// II. Pan Canvas
+			const panCanvas = () => {
+				const canvasPan = document.createElement("canvas");
+				canvasPan.setAttribute('class', 'o-canvas__pan');
+				canvasPan.setAttribute('id', 'canvas__pan');
+				return canvasPan;
+			};
 
-		panCanvas() {
-			const canvasPan = document.createElement("canvas");
-			canvasPan.setAttribute('class', 'o-canvas__pan');
-			canvasPan.setAttribute('id', 'canvas__pan');
-			return canvasPan;
+			// III. Append All Canvas To Middle Section
+			const totalCanvas = () => {
+				middleSection.appendChild(panCanvas());
+				middleSection.appendChild(skyCanvas());
+			};
+			totalCanvas();
 		};
 
 		cover() {
@@ -346,7 +351,6 @@
 				'links' : links,
 			};
 
-	
 			// Mouse Movement
 			//_____________________________________
 		

@@ -62,6 +62,18 @@
 			'3.12.2', //version
 			false //run in footer
 		);
+
+		//_________ III. GSAP TEXT _________
+
+		wp_register_script(
+			'text', //handle
+			'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js', //source
+			array('gsap'),
+			'3.12.2', //version
+			false //run in footer
+		);
+
+
 	}
 
 	add_action('wp_print_scripts', 'theme_enqueue_scripts');
@@ -71,8 +83,8 @@
 
 		if (!is_admin()):
 
-			// 1. GSAP
-			wp_enqueue_script('gsap');
+			// 1. GSAP & GSAP TEXT
+			wp_enqueue_script('text');
 
 			// 2. Build or Converter
 			if( is_page('converter') ): 

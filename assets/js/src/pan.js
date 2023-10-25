@@ -24,6 +24,10 @@ const ajax = new Ajax();
 // Menu Module
 import { Menu } from './texts';
 const menu = new Menu();
+	
+// Cursor
+import { Cursor } from './cursor';
+const cursor = new Cursor();
 
 class Pan {
 	
@@ -99,6 +103,7 @@ class Pan {
 	init() {
 		this._eventListeners();
 		this.draw();
+        cursor.init();
 	};
 
 	draw() {
@@ -283,21 +288,21 @@ class Pan {
 		render();
 	};
 
-	shapeEvent( cursor, name, constellation, offsetX, offsetY, eventName ) {
+	shapeEvent( followCircle, name, constellation, offsetX, offsetY, eventName ) {
 
 		let linetype = 'boundary';
-		
+
 		// 1. Draw Shape
 		const shape = new Path2D();
 		this.ctx.beginPath();
 		
-		// 'Text' Type
+		// For 'Text'
 		if( constellation[name].data.type == 'text' ) {
 			shape.moveTo( 
 				constellation[name].coordination[linetype][0]['x0'],
 				constellation[name].coordination[linetype][0]['x1']
 			);
-		// 'Shape' Type
+		// For 'Shape'
 		} else {
 			shape.moveTo( 
 				// X
@@ -313,13 +318,13 @@ class Pan {
 		}
 		for( let i = 1; i < constellation[name].coordination[linetype].length; i++ ) {
 
-			// 'Text' Type
+			// For 'Text'
 			if( constellation[name].data.type == 'text' ) {
 				shape.lineTo(
 					constellation[name].coordination[linetype][i]['x0'], 
 					constellation[name].coordination[linetype][i]['x1']  
 				);	
-			// 'Shape' Type			
+			// For 'Shape'			
 			} else {
 				shape.lineTo(
 					// X
@@ -337,12 +342,30 @@ class Pan {
 		// Is PointIn Path
 
 		if( this.ctx.isPointInPath(shape, offsetX, offsetY) ) {
+			
+			// 	I. Cursor Style
+			//_______________________________
+			//_______________________________	
 
-			// 			STYLE
+			// 1. Add Name of Shape text to Cursor
+			let postTitle = constellation[name].data.backend.postTitle; // Post Title
+			
+			// 2. Black hole Cursor
+			gsap.to(followCircle, 0.1, {
+				opacity: 0.7,
+				scale: 3,
+				text: {
+					value: postTitle,
+					newClass: "o-followCircle o-followCircle__blackHole",
+					delimiter: " ",
+				},
+			});
+
+			// 	II. Shape Style
 			//_______________________________
 			//_______________________________
 
-			// I. Style Shape [Fill & Blure]
+			// 1. Style Shape [Fill & Blure]
 			this.ctx.save(); // SAVE
 				// Stroke
 				this.ctx.lineWidth = 1;
@@ -361,22 +384,24 @@ class Pan {
 
 			this.ctx.restore(); // RESTORE
 
-			// II. Style Cursor
-			gsap.to(cursor, 0.1, {
-				opacity: 0.7,
-				scale: 3
-			});
+			// 	III. Click Shape
+			//_______________________________
+			//_______________________________
 
-			// III. Click Shape
 			if(eventName == 'click') { 
+				
+				// 	RUN AJAX MODAL
+				//_______________________________
+				//_______________________________	
+
 				let shapeID 		= constellation[name].data.backend.ID; 
 				let shapeType 		= constellation[name].data.type; // Shape Types: 'Constellations' OR 'Texts' OR 'Links'
 				let shapeURL 		= constellation[name].data.url; // URL to External Page
 				let postType 		= constellation[name].data.backend.postType; // WordPress Post Type :: Post OR Page
 				let postTitle 		= constellation[name].data.backend.postTitle; // Post Title
 				let postSlug 		= constellation[name].data.backend.postSlug; // Post Title
-				let coverDirection 	= constellation[name].data.backend.coverDirection; 
-				
+				let coverDirection 	= constellation[name].data.backend.coverDirection; // Cover Direction
+
 				if(shapeType == 'link') {
 					window.open(shapeURL, '_blank');
 				} else {
@@ -384,6 +409,19 @@ class Pan {
 				}
 			}
 		} else {
+
+			// 	I. Remove Cursor Style
+			//_______________________________
+			//_______________________________	
+
+			// Remove Name of Shape text from Cursor
+
+			
+			// 	II. Remove Shape Style
+			//_______________________________
+			//_______________________________
+
+			// 1. Remove Style Shape [Fill & Blure]
 			this.ctx.save();
 				// Stroke
 				this.ctx.lineWidth = .2;
@@ -465,7 +503,12 @@ class Pan {
 		const followCircle = document.getElementById('followCircle');
 		gsap.to(followCircle, 0.1, {
 			opacity: 1,
-			scale: 1
+			scale: 1,
+			text: {
+				value: '',
+				newClass: '',
+				delimiter: " ",
+			},
 		});
 		
 		// Offset Shape

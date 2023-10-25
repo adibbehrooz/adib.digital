@@ -33,7 +33,8 @@ class Cursor {
         this.cursorModules();
         this.curveText();
         this.animateMoveCursor();
-        this.fadeLetters(0.002);
+        this._eventListenersIndependent();
+        // this.fadeLetters(0.002);
     };
 
     //____________________________
@@ -41,7 +42,6 @@ class Cursor {
     // Modules
     //____________________________
 
-    
     cursorModules() {
     
         const circleCursor = () => {
@@ -67,12 +67,11 @@ class Cursor {
             cLandscapeFrame.parentNode.insertBefore(followDiv, cLandscapeFrame);			
         };
                     
-        const allmodules = () => {
+        const totalModules = () => {
             circleCursor();
             followDiv();
-        
         };
-        allmodules();
+        totalModules();
         
     };
 
@@ -210,7 +209,7 @@ class Cursor {
         const ySet = gsap.quickSetter(ball, "y", "px");
 
         window.addEventListener("mousemove", mouseEvent => {    
-             mouse.x = mouseEvent.x;
+            mouse.x = mouseEvent.x;
             mouse.y = mouseEvent.y;  
         });
 
@@ -225,6 +224,57 @@ class Cursor {
             ySet(pos.y);
         });	
     };
+
+    onPointerMove(eventName) {
+        const followCircle = document.getElementById('followCircle');
+        
+        if( eventName == 'mouseover') {
+            // GSAP
+            gsap.to(followCircle, 0.1, {
+                opacity: 0.7,
+                scale: 3
+            });
+        } else if(eventName == 'mouseout') {
+            // GSAP
+            gsap.to(followCircle, 0.1, {
+                opacity: 1,
+                scale: 1
+            });					
+        }
+    };
+
+	//____________________________
+	//
+	// Event Listeners
+	//____________________________	
+		
+	_eventListenersIndependent() {
+		
+		const links = document.querySelectorAll(".o-modal__multimedia.--independent a.zoom");
+		const gsapCursor = {
+		    'links' : links,
+		};
+
+		// Mouse Movement
+		//_____________________________________
+	
+		Object.keys(gsapCursor).forEach(key => {
+            gsapCursor[key].forEach((value, index) => {
+
+                // Mouse Over
+                value.addEventListener('mouseover', () => {
+                    let eventName = 'mouseover'
+                    this.onPointerMove(eventName); 
+                });	
+
+                // Mouse Out
+                value.addEventListener('mouseout', () => {
+                    let eventName = 'mouseout'
+                    this.onPointerMove(eventName); 
+                });	
+            });	
+		});	
+	};
 };
 
 export { Cursor };

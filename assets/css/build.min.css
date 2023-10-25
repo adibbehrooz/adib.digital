@@ -484,6 +484,9 @@ video {
 .mt-24 {
   margin-top: 6rem;
 }
+.mb-16 {
+  margin-bottom: 4rem;
+}
 .flex {
   display: flex;
 }
@@ -779,6 +782,12 @@ video {
   .md\:mt-32 {
     margin-top: 8rem;
   }
+  .md\:mb-32 {
+    margin-bottom: 8rem;
+  }
+  .md\:mb-12 {
+    margin-bottom: 3rem;
+  }
   .md\:h-auto {
     height: auto;
   }
@@ -886,6 +895,18 @@ video {
 .o-followCircle.active {
   transform: scale(3);
   background: red;
+}
+.o-followCircle__blackHole {
+  border: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  border-radius: initial;
+  box-shadow: none;
+  color: wheat;
+  top: 15px;
+  left: 15px;
+  opacity: 0.9;
 }
 .o-followText {
   color: white;
@@ -1194,6 +1215,9 @@ video {
   visibility: visible;
   animation: 1s ease-in-out 0.25s 1 forwards running starHide;
 }
+.o-modal__stars.--independent {
+  opacity: 1;
+}
 .o-modal__multimedia {
   display: grid;
   background-color: black;
@@ -1210,6 +1234,9 @@ video {
   opacity: 1;
   visibility: visible;
   animation: 1s ease-in-out 0.2s 1 forwards running starHide;
+}
+.o-modal__multimedia.--independent {
+  opacity: 1;
 }
 .o-modal__multimedia__content {
   justify-self: start;

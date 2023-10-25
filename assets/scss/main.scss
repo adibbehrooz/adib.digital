@@ -243,6 +243,17 @@
 			transform: scale(3);
 			background: red;
 		}
+		@include element(blackHole) {
+			border: 0;
+			width: auto;
+			height: auto;
+			border-radius: unset;
+			box-shadow: none;
+			color: wheat;
+			top: 15px;
+			left: 15px;
+			opacity: 0.9;
+		}
 	}
 	
 	@include object ('followText') {
@@ -667,10 +678,15 @@
 				/* @keyframes duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name */
 				animation: 1s ease-in-out 2.2s 1 forwards running starDisplay;
 			}
+			
 			@include modifier('deactive') {
 				opacity: 1;
 				visibility: visible;
 				animation: 1s ease-in-out 0.25s 1 forwards running starHide;
+			}
+			
+			@include modifier('independent') {
+				opacity: 1;
 			}
 		}
 		
@@ -696,6 +712,10 @@
 				opacity: 1;
 				visibility: visible;
 				animation: 1s ease-in-out 0.2s 1 forwards running starHide;
+			}
+
+			@include modifier('independent') {
+				opacity: 1;
 			}
 
 			// CONTENT
