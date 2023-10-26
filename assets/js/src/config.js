@@ -9,79 +9,40 @@
 
 /******************************** Library Configuration ********************************
 /***************************************************************************************/
-
-
-	//__________________________________________________________________________
-	//
-	//	   					1) Tailwind Screens In JS
-	//__________________________________________________________________________
-
-		const customScreens = require('../../../tailwind.config.js').variants.theme.screens;
-		const sreensKeys = Object.keys(customScreens);
-		const screensValues = Object.values(customScreens);
-
-		let i = 0;
-		for ( const property in sreensKeys ) {
-			const breakpoint = sreensKeys[i];
-			module.exports = { breakpoint };
-			let j = 0;
-			for(  keys in screensValues ) {
-				if (i == j) { 
-					size = screensValues[keys];
-					const mediaQuery = `( (min-width: ${size['min']}) and (max-width: ${size['max']}) )`;
-					module.exports = { mediaQuery };
-
-					if( window.matchMedia(mediaQuery).matches ) {
-						window.addEventListener('load', function () {
-							addBreakpointElement(breakpoint);
-							// console.log(breakpoint);
-						});
-					}
-					
-					function windowResize() {
-						if( window.matchMedia(mediaQuery).matches ) {
-							addBreakpointElement(breakpoint);
-							// console.log(breakpoint);
-						}
-					}
-					window.addEventListener('resize', windowResize);
-
-				}
-				j++;
-			}
-		i++;
-		}
-		
-		function addBreakpointElement(breakpointName) {
-
-			// create a new div element
-			const breakpointDiv = document.createElement("div");
-			breakpointDiv.className = "breakpointClass";
-			breakpointDiv.style.cssText = 'position:fixed;bottom:5px;left:5px;padding:5px;width:100px;height:35px;text-align:center;border-radius:5px;background:black;color:white;border:1px solid #ddd;box-shadow: 0px 0px 8px  #fff;';
-			
-			// add the newly created element and its content into the DOM
-			document.body.appendChild(breakpointDiv);
-			
-			// and give it some content
-			const breakpointNameDiv = document.createTextNode(breakpointName);
-			
-			// add the text node to the newly created div
-			breakpointDiv.appendChild(breakpointNameDiv);
-		}
 	
-	//__________________________________________________________________________
-	//
-	//	   					2) SVG Dynamic Viewport
-	//__________________________________________________________________________
+	// SORT OF 'import' IS IMPORTANT HERE 
 
+	// Sections
+	//______________
 	
-	landscapeSvg = document.getElementsByClassName('firstClass');
-	console.log(landscapeSvg);
+	import { Sections } from './canvas';
+	const sections = new Sections();
+	sections.init();	
 
-
-	// 					JQUERY
-	//__________________________________________
-
-	jQuery(function () {
+	// Canvas
+	//______________
 	
-	}); // [END] JQuery
+	import { Canvas } from './canvas';
+	const canvas = new Canvas();
+	canvas.init();
+	
+	// Cursor
+	//______________
+	
+	// import { Cursor } from './cursor';
+	// const cursor = new Cursor();
+	// cursor.dynamicCursor();	
+
+	// Pan
+	//______________
+	
+	import { Pan } from './pan';
+	const pan = new Pan();
+	pan.init();
+
+	// Night Sky
+	//______________
+	
+	import { Sky } from './sky';
+	const nightSky = new Sky();
+	nightSky.init();

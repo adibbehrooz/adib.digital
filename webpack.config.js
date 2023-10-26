@@ -5,79 +5,130 @@
 	Author: Mohammad Bagher Adib Behrooz
 	Version: 1.0
 */
-	//______________________
+	//___________________________________________
 	//
-	// 		I. Require
-	//______________________
+	// 				I. Require
+	//___________________________________________
 
-	const webpack 			= require('webpack');
-	const path 				= require('path');
+	const webpack				= require('webpack');
+	const path					= require('path');
+	const BrowserSyncPlugin 	= require('browser-sync-webpack-plugin');
 
 
-	//________________________
+	//___________________________________________
 	//
-	// 		II. Constants
-	//________________________
+	// 				II. Constants
+	//___________________________________________
 
-	// 1. Plugins
-	const MiniCssExtractPlugin 		= require('mini-css-extract-plugin');
-	const CssMinimizerPlugin 		= require('css-minimizer-webpack-plugin');
-	const TerserPlugin 				= require("terser-webpack-plugin");
+	const MiniCssExtractPlugin	= require('mini-css-extract-plugin');
+	const CssMinimizerPlugin 	= require('css-minimizer-webpack-plugin');
+	const TerserPlugin			= require("terser-webpack-plugin");
 
-	// 2. Misc
 
-	//______________________
+	//___________________________________________
 	//
-	// 		III. Variables
-	//______________________
-
-
-	//______________________
-	//
-	// 		IV. Exports
-	//______________________
+	// 				III. Exports
+	//___________________________________________
 
 	module.exports = {
+
+		// I. BASIC
 		watch: true,
+		watchOptions: {
+			ignored: /node_modules/
+		},	
 		target: 'web',
-		cache: false,	
-		
-		// 1. Entry
+		cache: false,
+
+		// II. ENTERY
 		entry: {
-			vendor: 	'./assets/js/src/vendor.js',
-			sample: 	'./assets/js/src/sample.js',
+			build: 	['./assets/js/src/index.js', './assets/scss/main.scss' ], // Main
+			change: ['./assets/js/src/converter.js', './assets/scss/convert.scss'], // Conveter
+			sample: ['./assets/js/src/sample.js'],
+
+			// SCSS
+			// Beacuse of Split SCSS to two files, Comment SCSS Entry
+			// main: 	'./assets/scss/main.scss', // Import
+			// convert: './assets/scss/convert.scss' // Import			
 		},
 
-		// 2. Mode
+		// III. MODE
 		mode: 'development',
 
-		// 3. Output
+		// IV. OUTPUT
 		output: {
 			path: path.resolve(__dirname, './assets/js/dist'),
+			publicPath: '/',
 			filename: '[name].min.js',
 			chunkFilename: '[name].[chunkhash].chunk.js',
-			clean: false,
+			clean: true, // Clean the output directory before emit.
 		},
 
-		// 4. Plugins
+		// V. Plugins
 		plugins: [
+
+			// I. MiniCssExtractPlugin
 			new MiniCssExtractPlugin({
 				filename: '../../css/[name].min.css',
 				chunkFilename: '[id].css',
 			}),
-			new webpack.ProvidePlugin({
-				$: 'jquery',
-				jQuery: 'jquery',
+
+			// II. Browser Sync
+			new BrowserSyncPlugin({
+				browser: ['google-chrome'],
+				ghostMode: {
+					scroll: true,
+					links: true,
+					forms: true
+				},
+				watchOptions: {
+					reloadDelay: 850,
+					debounceDelay: 850
+				},
+				host: 'localhost',
+				watchTask: true,
+				port: 3000,
+				watchEvents : [ 'change', 'add', 'unlink', 'addDir', 'unlinkDir' ],
+				files: [
+					{
+					match: [
+
+						// I. PHP
+						'../../../../../../wp-config.php', '../../../../../wp-config.php', '../../../wp-config.php', // Wordpress Root
+						'../../../*.php', '*.php' , // Wordpress Theme Root
+						'../../../woocommerce/*.php', './woocommerce/*.php', // Wordpress WooCommerce
+						'../../../framework/*.php', './framework/*.php', // Wordpress Framework
+						'!../../../node_modules',
+
+						// II. JS
+						'../src/*.js',
+						'../*.js',
+
+						// II. SCSS & CSS
+						'../../css/*.*',
+						'../../scss/*.*',
+					],
+					fn: function (event, file) {
+						this.reload()
+					},
+					options: {
+						ignored: '*.txt'
+					}
+				}],
+				proxy: 'http://adib.server.com:8000/website',
 			}),
+
+			// III. Tailwind Scrollbar
+			require('tailwind-scrollbar'),
 		],
 
-		// 5. Development Tools
+		// VI. DEVELOPMENT TOOLS
 		devtool:'source-map',
 
-		// 6. Modules
+		// VII. MODULES
 		module: {
 			rules: [{
-				// 6.1. SCSS
+				// 1. SCSS
 				test: /\.(sa|sc|c)ss$/,
 				use: [
 					{
@@ -87,47 +138,49 @@
 						},
 					},
 
-					// 6.1.1. css Loader
-					{ 	
-						loader: "css-loader", 
-						options: { 
-							import: true, 
-							sourceMap: true 
-						} 
-					},	
-
-					// 6.1.2. PostCss Loader
+					// 1.1. css Loader
 					{
-						loader: "postcss-loader", 
+						loader: "css-loader",
+						options: {
+							import: true,
+							url: true,
+							modules: false,
+							sourceMap: false
+						}
 					},
 
-					// 6.1.3. sass Loader
-					{ 	
-						loader: "sass-loader", 
-						options: { 
-							sourceMap: true, 
+					// 1.2. PostCss Loader
+					{
+						loader: "postcss-loader",
+					},
+
+					// 1.3. sass Loader
+					{
+						loader: "sass-loader",
+						options: {
+							sourceMap: true,
 							sassOptions: {
 								outputStyle: "compressed",  // "compressed" After Final Version, Default is "expanded" !IMPORTANT
 							},
-						} 
+						}
 					},
 				],
 			},{
-				// 6.2. FONTS
+				// 2. FONTS
 				test: /\.(woff|woff2|eot|ttf|otf)$/i,
 				type: 'asset/resource',
 				// generator: {
 					// filename: '[path][name].[ext]',
-				// },				
+				// },
 			},{
-				// 6.3. IMAGES
+				// 3. IMAGES
 				test: /\.(png|svg|jpg|jpeg|gif)$/i,
 				type: 'asset/resource',
 				// generator: {
 					// filename: './assets/images/[name][contenthash][ext]',
 				// },
 			}, {
-				// 6.4. Babel
+				// 4. Babel
 				test: /\.(?:js|mjs|cjs)$/,
 				exclude: /node_modules/,
 				use: {
@@ -140,12 +193,33 @@
 				}
 			}
 			],
-		}, // [END] 6. Modules
+		}, // [END]  MODULES
 
-		// 7. Optimization
+		// VIII. OPTIMIZATION
 		optimization: {
 			chunkIds: 'named',
+			emitOnErrors: true,
 			minimize: true, // "True" After Final Version, Default is "false" !IMPORTANT
+			splitChunks: {
+				cacheGroups: {
+					build: {
+					  type: "css/mini-extract",
+					  name: "build",
+					  chunks: (chunk) => {
+						return chunk.name === "build";
+					  },
+					  enforce: true,
+					},
+					change: {
+					  type: "css/mini-extract",
+					  name: "change",
+					  chunks: (chunk) => {
+						return chunk.name === "change";
+					  },
+					  enforce: true,
+					},
+				  },
+			},
 			minimizer: [
 				new TerserPlugin({
 					test: /\.js(\?.*)?$/i,
@@ -160,7 +234,7 @@
 				new CssMinimizerPlugin({
 					minimizerOptions: {
 						preset: [
-							"default",
+							"advanced",
 							{
 								discardComments: { removeAll: true },
 							},
@@ -168,20 +242,27 @@
 					},
 				}),
 			],
-		}, // [END] 7. Optimization
+		}, // [END] OPTIMIZATION
 
-		// 8. Resolve
+		// IX. RESOLVE
 		resolve: {
+			roots: [path.resolve('./assets/js/src')],
 			alias: {
 
 				// 1. SCSS & CSS For Wordpress Core
-				main: 		path.resolve(__dirname,'./assets/scss/main.scss'), // Import
-				slick: 		path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
-				slickTheme: path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
-
-				// 2. JS
+				// Beacuse of Split SCSS to two files, Comment SCSS aliases
+				// main: 		path.resolve(__dirname,'./assets/scss/main.scss'), // Import
+				// convert: 	path.resolve(__dirname,'./assets/scss/convert.scss'), // Import
+				slick: 			path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick.scss'),
+				slickTheme: 	path.resolve(__dirname,'./node_modules/slick-carousel/slick/slick-theme.css'),
 				
+				// 2. JS
+				SineWaves:		path.resolve(__dirname,'./node_modules/sine-waves/sine-waves.js'),
 			},
-			extensions: ['.js', '.jsx', '.css', '.scss']
+			extensions: ['.js', '.jsx', '.css', '.scss'],
+			extensionAlias: {
+				'.js': ['.ts', '.js'],
+				'.mjs': ['.mts', '.mjs'],
+			  },
 		},
 	};

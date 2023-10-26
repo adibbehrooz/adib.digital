@@ -7,7 +7,7 @@
 ?>
 
 	<!DOCTYPE html>
-
+	
 	<?php global $language; $language = language(); // [Language Setting] ?>
 	<?php global $redux_demo; // [Theme Options] ?>
 
@@ -27,20 +27,34 @@
 	<meta name="MobileOptimized" content="320">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+
 	<title><?php wp_title(''); ?></title>
 
 	<?php //___________ Favicon ___________ ?>
 	<?php //_______________________________ ?>
+
+	<?php get_template_part( 'favicon' ); ?>
 	
-	<link rel="shortcut icon" href="<?php bloginfo('template_directory'); ?>/assets/images/favicon.ico" />
+	<?php //___________ CSS ___________ ?>
+	<?php //___________________________ ?>
+
 	<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
+
+	<?php //___________ Google Fonts ___________ ?>
+	<?php //____________________________________ ?>
+
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet"> 
-	<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400&display=swap" rel="stylesheet">
+
+	<?php //___________ Misc ___________ ?>
+	<?php //____________________________ ?>
+
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-	
+
 	<?php wp_head(); ?>
 	
 	<?php //___________ Google Analytics ___________ ?>
@@ -49,17 +63,18 @@
 	</head>
 
 	<body <?php body_class(); ?> >
+		
     <?php 
-		/*____________________________________________________________________________*/
-		/*
-		/*						              Header
-		/*____________________________________________________________________________*/
+		//____________________________________________________________________________//
+		//
+		//						              Header
+		//____________________________________________________________________________//
 	?>
 
 
 	<?php 
-		/*____________________________________________________________________________*/
-		/*
-		/*						          Edges [Sidebar]
-		/*____________________________________________________________________________*/
+		//____________________________________________________________________________//
+		//
+		//						          Edges [Sidebar]
+		//____________________________________________________________________________//
 	?>

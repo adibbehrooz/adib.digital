@@ -9,10 +9,10 @@
 /****************************************** SETTINGS ******************************************
 /**********************************************************************************************/
 
-	/*____________________________________________________________________________*/
-	/*
-	/* 									Imports
-	/*____________________________________________________________________________*/
+	//____________________________________________________________________________//
+	//
+	// 									Imports
+	//____________________________________________________________________________//
 
 	//_______________________________
 	//
@@ -30,10 +30,10 @@
 /*******************************************************************************************/
 
 
-	/*____________________________________________________________________________*/
-	/*
-	/* 								Global Mixins
-	/*____________________________________________________________________________*/
+	//____________________________________________________________________________//
+	//
+	// 								Global Mixins
+	//____________________________________________________________________________//
 
 
 	//______________________ Mixin: BEM ______________________
@@ -54,7 +54,7 @@
 			@content;
 		}
 	}
-	
+
 	//______________________ Mixin: ITCSS ______________________
 	//__________________________________________________________
 
@@ -62,14 +62,14 @@
 	@mixin component($element) {
 		.c-#{$element} {
 			@content;
-		}	
+		}
 	}
 
 	// Object
 	@mixin object($element) {
 		.o-#{$element} {
 			@content;
-		}	
+		}
 	}
 
 	// Utility
@@ -78,7 +78,7 @@
 			@content;
 		}
 	}
-	
+
 	//______________________ Mixin: LTR ______________________
 	//________________________________________________________
 
@@ -102,14 +102,14 @@
 	// ⟵ ⟶
 	@mixin direction($direction) {
 		@if $direction == 'RTL' {
-			
+
 			[dir = "rtl"] & {
 				@content;
 			}
 		}
-		
+
 		@if $direction == 'LTR' {
-			
+
 			[dir = "rtl"] & {
 				@content;
 			}
@@ -122,10 +122,10 @@
 		}
 	}
 
-	/*____________________________________________________________________________*/
-	/*
-	/*						Mixin: Typography
-	/*____________________________________________________________________________*/
+	//____________________________________________________________________________//
+	//
+	//						Mixin: Typography
+	//____________________________________________________________________________//
 
 
 	//______________________ 1. Google Fonts ______________________
@@ -142,7 +142,7 @@
 
 	// font: font-style font-variant font-weight font-size/line-height font-family;
 	@mixin font($size, $font-name) {
-		font: normal normal normal #{$size} $font-name; 
+		font: normal normal normal #{$size} $font-name;
 	}
 
 	/*____________________________________________________________________________*/
@@ -155,21 +155,21 @@
 /****************************************** TAILWIND ******************************************
 /**********************************************************************************************/
 
-	
+@include object('border') {
+	@include element('title') {
+		@include modifier('subtitle') {
+			@apply border-y border-y-[#888888];
+		}
+	}
+}
+
+
 /****************************************** ELEMENTS ******************************************
 /************************************** Unstyled Elements**************************************/
 
 
 	//______________________ Body ______________________
 	//__________________________________________________
-
-	body {
-		background: linear-gradient(#16161d,#1f1f3a,#3b2f4a);
-		// background: linear-gradient(#C04848 10%, #480048 90%);
-		// background:rgba(0, 0, 0, .90);
-		// cursor: none;
-	}
-
 
 	//______________________ Links ______________________
 	//___________________________________________________
@@ -179,7 +179,7 @@
 	//____________________________________________________
 
 	table tfoot td, table tfoot th, table thead td, table thead th { font-weight: normal; }
-	
+
 	//______________________ Video ______________________
 	//___________________________________________________
 
@@ -191,7 +191,7 @@
 
 /****************************************** OBJECTS ****************************************
 /*******************************************************************************************/
-	
+
 	//______________________ Sample ______________________
 	//____________________________________________________
 
@@ -204,13 +204,663 @@
 	}
 	*/
 
+	//______________________ Cursor ______________________
+	//____________________________________________________
+
+	@include object('centerCircle') {
+		position: fixed;
+		background-color: transparent;
+		width: 7px;
+		height: 7px;
+		left: -10px;
+		top: -10px;
+		border-radius: 100%;
+		z-index: 6;
+		transform: scale(1);
+		transition: 1s;
+		&.active {
+			opacity: 1;
+			transform: scale(0);
+			box-shadow: 0 0 26px rgba(255, 255, 255, 0.6);
+		}
+	}
+
+	@include object('followCircle') {
+		position: fixed;
+		border: 1px solid #fff;
+		width: 30px;
+		height: 30px;
+		left: -5px;
+		top: -5px;
+		border-radius: 100%;
+		user-select: none;
+		pointer-events: none;
+		z-index: 6;
+		transform: scale(1);
+		transform: translate(2px, 2px);
+		box-shadow: 0 0 13px rgba(255, 255, 255, 0.6);
+		&.active {
+			transform: scale(3);
+			background: red;
+		}
+		@include element(blackHole) {
+			border: 0;
+			width: auto;
+			height: auto;
+			border-radius: unset;
+			box-shadow: none;
+			color: wheat;
+			top: 15px;
+			left: 15px;
+			opacity: 0.9;
+		}
+	}
+	
+	@include object ('followText') {
+		color: white;
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.7rem;
+	}
+
+
+	//______________________ Scrollbar ______________________
+	//_______________________________________________________
+
+	// Scroll Bar
+	.externalScrollbar::-webkit-scrollbar {
+		width: 5px;
+		height: 20px;
+		@screen md {
+			width: 0;
+			display: none;
+			visibility: hidden;
+		}
+	}
+
+	.internalScrollbar::-webkit-scrollbar {
+		width: 5px;
+		height: 20px;
+		display: none;
+		@screen md {
+			display: inline-block;			
+		}
+	}
+
+	// Track
+	.externalScrollbar::-webkit-scrollbar-track,
+	.internalScrollbar::-webkit-scrollbar-track {
+		border-radius: 0vh;
+		background: #16161d;
+	}
+	
+	// Thumb
+	.externalScrollbar::-webkit-scrollbar-thumb,
+	.internalScrollbar::-webkit-scrollbar-thumb {
+		background: #1f1f3a;
+		border-radius: 100vh;
+		border: 3px solid #f6f7ed;
+	}
+		
+	.externalScrollbar::-webkit-scrollbar-thumb:hover,
+	.internalScrollbar::-webkit-scrollbar-thumb:hover {
+		background: #3b2f4a;
+	}
+	
+
+
+
+	//______________________ Meteor Shower ______________________
+	//___________________________________________________________
+
+
+	@include object('meteorShower') {
+		position: absolute;
+		top: calc(var(--y) * 1vh);
+		left: calc(var(--x) * 1vw);
+		animation: shoot calc(var(--speed) * 1s) calc(var(--delay) * 1s) infinite linear both;
+
+		@include element('child') {
+			height: 1px;
+			width: 25px;
+			position: absolute;
+			background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), rgba(255,255,255,0.85));
+			border-radius: 100% 25% 25% 100%;
+			filter: blur(1px);
+			transform-origin: right;
+			filter: drop-shadow(0 0 5px #fafafa);
+			animation: spark calc(var(--speed) * 1s) calc(var(--delay) * 1s) infinite linear both;
+			@screen md {
+				height: 5px;
+				width: 50px;				
+			}
+		}
+	}
+
+	@keyframes shoot {
+		0% {
+			transform: rotate(calc(var(--angle) * 1deg));
+		}
+		5%, 100% {
+			transform: rotate(calc(var(--angle) * 1deg)) translate(calc(var(--travel) * 1vw), 0);
+		}
+	}
+	 
+
+	@keyframes spark {
+		0%, 5%, 100% {
+			transform: scaleX(0);
+		}
+		1%, 4% {
+			transform: scaleX(var(--trail));
+		}
+	}
+
+
+	//______________________ Cover ______________________
+	//___________________________________________________
+
+	@include object('cover') {
+
+		//________________________
+		//
+		//		Layers
+		//________________________
+
+		// First Layer 
+		//____________
+		
+		@include element('firstLayer') {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 1;
+			background-color: #16161d;
+					
+			// FL: Active
+			//___________
+
+			@include modifier('ltr') {
+				width: 0;
+				height: 100%;
+				animation: 1s ease-in-out 0.2s 1 forwards running ltrFullScreen;
+			}
+
+			@include modifier('ttb') {
+				width: 100%;
+				height: 0;
+				animation: 1s ease-in-out 0.2s 1 forwards running ttbFullScreen;
+			}
+
+			// FL: Deactive
+			//_____________
+			
+			@include modifier('deactive') {
+			
+				@include modifier('ltr') {
+					width: 100%;
+					animation: 0s ease-in-out 2s 1 forwards running ltrRemoveFullScreen;
+				}
+	
+				@include modifier('ttb') {
+					height: 100%;
+					animation: 0s ease-in-out 2s 1 forwards running ttbRemoveFullScreen;
+				}
+			}
+		}
+
+		// Second Layer 
+		//_____________
+
+		@include element('secondLayer') {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 2;
+			background-color: #3b2f4a;
+					
+			// SL: Active
+			//___________
+			
+			@include modifier('ltr') {
+				width: 0;
+				height: 100%;
+				animation: 1.3s ease-in-out 0.3s 1 forwards running ltrFullScreen;
+			}
+
+			@include modifier('ttb') {
+				width: 100%;
+				height: 0;
+				animation: 1.3s ease-in-out 0.3s 1 forwards running ttbFullScreen;
+			}
+					
+			// SL: Deactive
+			//_____________
+
+			@include modifier('deactive') {
+			
+				@include modifier('ltr') {
+					width: 100%;
+					animation: 1s ease-in-out 1.7s 1 forwards running ltrRemoveFullScreen;
+				}
+	
+				@include modifier('ttb') {
+					height: 100%;
+					animation: 1s ease-in-out 1.7s 1 forwards running ttbRemoveFullScreen;
+				}
+			}
+		}
+
+		// Third Layer 
+		//____________
+
+		@include element('thirdLayer') {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 3;
+			background: linear-gradient(#16161d,#1f1f3a,#3b2f4a);
+					
+			// TL: Active
+			//___________
+						
+			@include modifier('ltr') {
+				width: 0;
+				height: 100%;
+				animation: 1.6s ease-in-out 0.4s 1 forwards running ltrFullScreen;
+			}
+
+			@include modifier('ttb') {
+				width: 100%;
+				height: 0;
+				animation: 1.6s ease-in-out 0.4s 1 forwards running ttbFullScreen;
+			}
+					
+			// TL: Deactive
+			//_____________
+
+			@include modifier('deactive') {
+
+				@include modifier('ltr') {
+					width: 100%;
+					animation: 1s ease-in-out 1.4s 1 forwards running ltrRemoveFullScreen;
+				}
+	
+				@include modifier('ttb') {
+					height: 100%;
+					animation: 1s ease-in-out 1.4s 1 forwards running ttbRemoveFullScreen;
+				}
+			}
+		}
+
+		// Close Icon
+		//___________
+
+		@include element('close') {
+			position: absolute;
+			right: 10px;
+			top: 20px;
+			width: 50px;
+			height: 50px;
+			z-index: 3;
+			opacity: 0;
+			/* @keyframes duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name */
+			animation: 1s ease-in-out 2s 1 forwards running fadeInDown;
+
+			@include modifier('deactive') {
+				opacity: 1;
+				animation: 1s ease-in-out 0.2s 1 forwards running fadeOutUp;
+			}
+			
+			@include element('pathGroup') {
+				fill: transparent;
+				stroke: rgba(255, 255, 255, 1);
+				stroke-width: 2px;
+			}
+		}
+	}
+
+	// Animation Left To Right
+	@keyframes ltrFullScreen {
+		from {
+			width: 0; 
+		}
+		to {
+			width: 100%; 
+		}
+	}
+
+	@keyframes ltrRemoveFullScreen {
+		from {
+			width: 100%; 
+		}
+		to {
+			width: 0; 
+		}
+	}
+
+	// Animation Top To Bottom
+	@keyframes ttbFullScreen {
+		from {
+			height: 0; 
+		}
+		to {
+			height: 100%; 
+		}
+	}
+
+	@keyframes ttbRemoveFullScreen {
+		from {
+			height: 100%; 
+		}
+		to {
+			height: 0; 
+		}
+	}
+
+	@keyframes fadeInDown {
+		from {
+			opacity: 0;
+			transform: translate3d(0, -100%, 0);
+		}
+	
+		to {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+		}
+	}
+
+	@keyframes fadeOutUp {
+		from {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+		}
+	
+		to {
+			opacity: 0;
+			transform: translate3d(0, -100%, 0);
+		}
+	}
+	
+
+	//______________________ Modal ______________________
+	//___________________________________________________
+
+	@include object('modal') {
+		position: absolute;
+		width: 0%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 4;
+		opacity: 0;
+		visibility: hidden;
+		scrollbar-width: none;
+		@screen md {
+			position: fixed;
+		}
+
+		@include modifier('active') {
+			animation: 1s ease-in-out 2.5s 1 forwards running modalDisplay;
+		}
+
+		@include modifier('deactive') {
+			scrollbar-width: auto;
+			opacity: 1;
+			visibility: visible;
+			animation: 1s ease-in-out 1.2s 1 forwards running modalHide, 0s ease-in-out 0s 1 forwards running scrollHide;
+		}
+
+		//________________________
+		//
+		//	Modal Show / Hide
+		//________________________
+
+		@keyframes modalDisplay {
+			from {
+				width: 0%;
+				visibility: hidden;
+				opacity: 0;
+			}
+			to {
+				width: 100%;
+				visibility: visible;
+				opacity: 1;
+			}
+		}
+
+		@keyframes modalHide {
+			from {
+				position: absolute;
+				visibility: visible;
+				opacity: 1;
+			}
+			to {
+				position: fixed;
+				visibility: hidden;
+				opacity: 0;
+			}
+		}
+
+		@keyframes scrollHide {
+			from {
+				scrollbar-width: auto;
+			}
+			to {
+				scrollbar-width: none;
+			}
+		}
+
+		//_________________
+		//
+		// Modal Container
+		//_________________
+
+		@include element('container') {
+			width: 100vw;
+		}
+		@screen md {
+			@include element('container') {
+				width: 100vw;
+				height: 100vh;
+				grid-template-columns: 1fr 2fr;
+			}
+		}
+		
+		//__________________________
+		//
+		// Modal Stars 
+		//__________________________
+
+		@include element('stars') {
+			background: linear-gradient(rgb(22, 22, 29), rgb(31, 31, 58), rgb(59, 47, 74)) no-repeat;
+			opacity: 0;
+			@include modifier('active') {
+				/* @keyframes duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name */
+				animation: 1s ease-in-out 2.2s 1 forwards running starDisplay;
+			}
+			
+			@include modifier('deactive') {
+				opacity: 1;
+				visibility: visible;
+				animation: 1s ease-in-out 0.25s 1 forwards running starHide;
+			}
+			
+			@include modifier('independent') {
+				opacity: 1;
+			}
+		}
+		
+		//__________________________
+		//
+		// Modal Multimedia 
+		//__________________________
+
+		@include element('multimedia') {
+			display: grid;
+			background-color: black;
+			box-shadow: 0 0 25px 30px black;
+			@include font(1rem, $Montserrat);
+			color: white;
+			opacity: 0;
+
+			@include modifier('active') {
+				/* @keyframes duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name */
+				animation: 1s ease-in-out 2.2s 1 forwards running starDisplay;
+			}
+			
+			@include modifier('deactive') {
+				opacity: 1;
+				visibility: visible;
+				animation: 1s ease-in-out 0.2s 1 forwards running starHide;
+			}
+
+			@include modifier('independent') {
+				opacity: 1;
+			}
+
+			// CONTENT
+			@include element('content') {
+				
+				// 1. Container
+				justify-self: start;
+				align-self: center;
+				padding: 0 3vw;
+				@screen md {
+					height: 100vh;
+				}
+
+				.smallContainer {			
+					width: 80vw !important;
+				}
+
+				// 2. Image
+				.responsiveImage {
+					margin-top: 20px;
+					margin-bottom: 20px;
+					width: 50%;
+					@screen md {
+						width: 100%;
+					}
+				}
+
+				// 3. Links
+				a {
+					cursor: none;
+					
+					&.zoom {
+						position: relative;
+						cursor: none;
+						padding: 0 0 3px;
+	
+						&:after {
+							position: absolute;
+							top: 100%;
+							left: 0;
+							width: 100%;
+							height: 2px;
+							background: #fff;
+							content: '';
+							opacity: 1;
+							transition: height 0.3s, opacity 0.3s, transform 0.3s;
+							transform: translateY(0px);
+						}
+	
+						&:hover::after, &:focus::after {
+							height: 2px;
+							opacity: 0;
+							transform: translateY(-10px);
+						}
+
+						@include modifier('imageLink') {
+							&:after, &:hover::after, &:focus::after {
+								position: absolute;
+								top: 100%;
+								left: 0;
+								width: 100%;
+								height: 2px;
+								opacity: 0;
+								transform: translateY(-10px);								
+							}
+						}
+
+						@include modifier('button') {
+							margin: 20px 0;
+							padding: 20px;
+							&:after, &:hover::after, &:focus::after {
+								position: absolute;
+								top: 100%;
+								left: 0;
+								width: 100%;
+								height: 2px;
+								opacity: 0;
+								transform: translateY(-10px);								
+							}
+						}
+					}
+				}
+
+				p {
+					@apply leading-10;
+				}
+			}
+		}
+
+		//___________________________________
+		//
+		// Modal Star & Multimedia Animation
+		//___________________________________
+
+		@keyframes starDisplay {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+
+		@keyframes starHide {
+			from {
+				opacity: 1;
+			}
+			to {
+				opacity: 0;
+			}
+		}
+	}
+
+	//______________________ Menu ______________________
+	//__________________________________________________
+
+	@include object('menu') {
+		@apply fixed w-14 h-screen;
+		border-color: rgba(255, 255, 255, .4);
+		z-index: 1;
+
+		@include modifier('left') {
+			@apply left-0 border-r;	
+		}
+		@include modifier('right') {
+			@apply right-0 border-l;
+		}
+
+		@include element('text') {
+			color: rgba(255, 255, 255, .7);
+			transform-origin: 10 0;
+			transform: rotate(90deg);
+			writing-mode: vertical-lr;
+			transform: scale(1, 1);
+			margin: 100px 0 0 10px;
+		}
+	}	
+
 
 /****************************************** COMPONENTS *************************************
 /*******************************************************************************************/
-	
+
 	//______________________ Sample ______________________
 	//____________________________________________________
-	
+
 	/*
 	 @include component('componentSample') {
 		@include element('elementSample') {
@@ -219,10 +869,282 @@
 		}
 	}
 	*/
+
+	//______________________ SVG Landcape ______________________
+	//__________________________________________________________
+
+	@include component('landscape') {
+		width: 99.9vw;
+		height: 99.82vh;
+
+		@include modifier('modal') { 
+			width: 100vw;
+			height: 50vh;
+		}
+		@screen md {
+			@include modifier('modal') { 
+				width: 32vw;
+				height: 100vh;
+			}
+		}
+
+		// Path Group
+		//___________
+
+		@include element('pathGroup') {
+			fill: transparent;
+			stroke: rgba(255, 255, 255, 0.5);
+			
+			@include modifier('fill') {
+				fill: rgba(255, 255, 255, 1);
+			}
+
+			@include modifier('cover') {
+				fill: transparent;
+				stroke-width: 0;
+			}
+
+			@include modifier('stable') {
+
+				@include modifier('mountain') { stroke-width: 2px; stroke-opacity: 0.6; }
+			}
+
+			@include modifier('change') {
+				fill: transparent;
+				stroke-width: 3%;
+				stroke-opacity: 0;
+				transition: all .4s ease-in-out;
+
+				@include modifier('fill') {
+					fill: rgba(255, 255, 255, 0.9);
+					stroke-width: 2px;
+					stroke-opacity: 1;
+				}
+			}
+
+			@include modifier('transparent') {
+				fill: transparent;
+
+				@include modifier('fill') {
+					fill: black;
+				}
+			}
+		}
+
+		// Wave
+		@include element('wave') {
+			fill: transparent;
+			stroke: white;
+			stroke-opacity: 0.5;
+			stroke-width: 0.5px;
+		}
+
+		@include element('standaloneLogo') {
+
+			@include element('fill') {
+				fill: white;
+				stroke: white;
+				stroke-opacity: 0.5;
+				stroke-width: 0.5px;
+
+				@include modifier('unfill') {
+					fill: transparent;
+					stroke: none;
+					stroke-opacity: 0;
+					stroke-width: 0;
+				}
+			}			
+		}
+
+		// Night Sky Stars
+		//________________
+
+		// 1. Stars Group
+		$twinkle-duration: 4s;	
+		$twinkleNumber: -0.33;
+
+		@include element('stars') {
+			
+			@include modifier('off') {
+				fill: none;
+				stroke: transparent;
+				stroke-opacity: 0;
+				stroke-width: 0;
+			}			
+
+			@include modifier('one') {
+				animation : animateStars 800s ease infinite;
+			}
+
+			@include modifier('two') {
+				animation : animateStars 1200s ease infinite;
+			}
+
+			@include modifier('three') {
+				animation : animateStars 1500s ease infinite;
+			}
+
+			animation: twinkle $twinkle-duration ease infinite;
+			
+			@for $i from 1 through 5 {
+				$result: $twinkleNumber * $i;
+				&:nth-child(#{$i+1}) {
+					animation-delay: calc(#{$twinkle-duration} * #{$result});
+				}
+			}
+		}
+
+		// 2. Single Star
+		@include element('star') {
+			fill: white;
+			&:nth-child(3n) { opacity: .8; }
+			&:nth-child(7n) { opacity: .6; }
+			&:nth-child(13n) { opacity: .4; }
+			&:nth-child(19n) { opacity: .2; }
+			
+			@include modifier('blur') { 
+				stroke-width: 9px;
+				stroke: #ffc2b8; 
+				filter: blur(5px); 
+				
+				@include modifier('off') { 
+					opacity: 0;
+					stroke: none; 
+				}					
+			}
+		}
+
+		// 3. Star Animations
+		@keyframes twinkle {
+			25% { opacity: 0 }
+		}
+
+		// 4. Night Sky 3D
+		@keyframes animateStars {
+			0%	 { transform: rotate3d(1, 1, 0, -30deg); }
+			25%	{ transform: rotate3d(1, 1, 0, 60deg); 	}
+			50%	{ transform: rotate3d(1, 1, 0, -30deg);	}
+			75%	{ transform: rotate3d(1, 1, 0, -120deg); }
+			100% { transform: rotate3d(1, 1, 0, -30deg); }
+		}
 	
+		// Night Comet
+		//____________
+
+		// 1. Comets
+		@include element('comet') {
+			transform-origin: center center;
+			animation: comet 9s linear infinite;
+
+			@for $i from 1 through 25 {
+				$randomNumber: #{randomNumber(-3, -10)};
+				font-size: $randomNumber;
+				@include modifier('type-#{$i}') {
+					animation-delay: #{decimalRound($randomNumber,2)}s; 
+				}
+			}
+		}
+
+		// 2. Comets Animation
+		@keyframes comet {
+			0%,
+			40% {
+				transform: translateX(0);
+				opacity: 0
+			}
+			50% {
+				opacity: 1
+			}
+			60%,
+			100% {
+				transform: translateX(-100vmax);
+				opacity: 0
+			}
+		}
+
+		// Text
+		//_____
+
+		@include element('texts'){
+
+			@include modifier('skill') {
+				@include font(1.5rem, $JetBrains);
+				fill: none;
+				// transform: translateX(-220px);
+				@screen md {
+					@include font(2rem, $JetBrains);
+					// transform: translateX(-170px);
+				}
+			}
+			
+			@include modifier('page') {
+				@include font(1rem, $JetBrains);
+				fill: white;
+			}
+		}
+
+		// circles
+		//________
+
+		@include element('circles'){
+			display: none;
+		}
+		
+		// Single circle
+		//______________
+
+		@include element('circle'){
+			fill: white;
+		}
+		
+		// Pulse
+		//______
+
+		// 1. Define pulse
+		@include element('pulse'){
+			fill: white;
+			fill-opacity: 0;
+			stroke: white;
+			transform-origin: 608.49px 234px;
+			animation-duration: 2s;
+			animation-name: pulse;
+			animation-iteration-count: infinite;
+		}
+
+		// 2. Pulse Animation
+		@keyframes pulse {
+			from {
+				stroke-width: 3px;
+				stroke-opacity: 1;
+				transform: scale(0.3);
+			}
+			to {
+				stroke-width: 0;
+				stroke-opacity: 0;
+				transform: scale(2);
+			}
+		}
+
+		//_____________________________________
+		//
+		// "GSAP" Zoom Library [Infinite zoom!]
+		//_____________________________________
+
+		@include modifier('gsap') {
+			position: fixed;
+			top: 0;
+			left: 0;
+
+			@include element('background') {
+				fill: none;
+				stroke: none;
+			}
+		}
+	}
+
+
 /****************************************** PLUGINS *************************************
 /****************************************************************************************/
-
 
 
 /****************************************** MISC ****************************************
