@@ -376,7 +376,6 @@ class Ajax {
 			this.removeURLHash();
 	};
 
-
 	//_______________________________
 	//
 	// Ajax 
@@ -430,30 +429,16 @@ class Ajax {
 	//_________________________________________________	
 		
 	_eventListeners(postID, postType, coverDirection, modalClass, activeClass, deactiveClass, data) {
-		let modalStars = this.modalStars;
-		let modalMultimedia = this.modalMultimedia;
 		const closeIcon = document.querySelector('.o-cover__close');
-		
+
 		// Click on Close Button
 		closeIcon.addEventListener('click', () => {
-			this.closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass); // Close Button
+			this.closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass);
 		});
 		
 		// Click on Browser "Back" Button
 		addEventListener("popstate", () => {
-			if(postID) {
-				console.log("BACK EVENT")
-				console.log(postID);
-				this.closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass); // Close Button	
-				postID = '';
-			} else {
-				console.log("FRORWARD EVENT")
-				console.log(postID)
-				this.modalContainer(postID, postType, coverDirection, modalClass, activeClass, deactiveClass);
-				document.getElementById(this.modalID).innerHTML = data; // Add Data to Modal Page (Remove Data with removeInnerHTML() Function)
-				this.contentAnimation(modalStars, modalMultimedia, activeClass, deactiveClass); // Active or Deactive Cover
-				window.history.pushState(data, postTitle, window.location.pathname+"#"+postSlug); // Manipulate URL
-			}	
+			this.closeButtonEvent(postID, postType, coverDirection, modalClass, activeClass, deactiveClass);
 		});
 	};
 };
