@@ -32,9 +32,9 @@
 
 	<?php //___________ Favicon ___________ ?>
 	<?php //_______________________________ ?>
-	
-	<link rel="shortcut icon" href="<?php bloginfo('template_directory'); ?>/assets/images/favicon.ico" />
 
+	<?php get_template_part( 'favicon' ); ?>
+	
 	<?php //___________ CSS ___________ ?>
 	<?php //___________________________ ?>
 

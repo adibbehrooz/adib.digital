@@ -160,7 +160,7 @@
 						options: {
 							sourceMap: true,
 							sassOptions: {
-								outputStyle: "expanded",  // "compressed" After Final Version, Default is "expanded" !IMPORTANT
+								outputStyle: "compressed",  // "compressed" After Final Version, Default is "expanded" !IMPORTANT
 							},
 						}
 					},
@@ -199,7 +199,7 @@
 		optimization: {
 			chunkIds: 'named',
 			emitOnErrors: true,
-			minimize: false, // "True" After Final Version, Default is "false" !IMPORTANT
+			minimize: true, // "True" After Final Version, Default is "false" !IMPORTANT
 			splitChunks: {
 				cacheGroups: {
 					build: {
