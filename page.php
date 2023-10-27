@@ -20,7 +20,7 @@
 	<?php $postID = $_POST['postID']; ?>
 
 		<?php // Container ?>
-		<div id="container" class="[ Display: grid md:grid-cols-2 sm:grid-cols-1 h-auto ][ Tailwind: content ][ Custom: o-modal__container ]">
+		<div id="container" class="[ Display: grid md:grid-cols-2 sm:grid-cols-1 ][ Tailwind: content ][ Custom: o-modal__container ]">
 
 			<?php 
 			//____________________________________________________________________________
