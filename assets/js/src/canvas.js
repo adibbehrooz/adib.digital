@@ -164,6 +164,7 @@
 		
 		texts() {
 			const labels = {
+				// Right
 				about: {
 					ajaxID: 68, // AjaxID (PostID)
 					id: 'about',// HTML id='about'
@@ -176,6 +177,7 @@
 					title: 'About', // Show In Home Page
 					URL: ''
 				},
+				// Right
 				contact: {
 					ajaxID: 71, // AjaxID (PostID)
 					id: 'contact',  // HTML id='contact'
@@ -183,11 +185,12 @@
 					postTitle: 'Contact', // Show Top of The 'Contact' Page
 					postSlug: 'contact', // Page Slug (Manipulate in Ajax)
 					coverDirection: '--ttb',
-					navbarPosition: 'left',
-					className: '--left --contact',
+					navbarPosition: 'right',
+					className: '--right --contact',
 					title: 'Contact', // Show In Home Page
 					URL: ''
 				},
+				// Left
 				projects: {
 					ajaxID: 74, // AjaxID (PostID)
 					id: 'projects',  // HTML id='projects'
@@ -200,15 +203,16 @@
 					title: 'Projects', // Show In Home Page
 					URL: ''
 				},
+				// Left
 				source: {
-					ajaxID: '',
+					ajaxID: '100',
 					id: 'source',
 					postType: 'link',
 					postTitle: '',
 					postSlug: '',		
 					coverDirection: '',
-					navbarPosition: 'right',
-					className: '--right --source',
+					navbarPosition: 'left',
+					className: '--left --source',
 					title: 'Source',
 					URL: 'https://github.com/adibbehrooz/adib.online'
 				},
