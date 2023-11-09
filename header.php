@@ -60,6 +60,15 @@
 	<?php //___________ Google Analytics ___________ ?>
 	<?php //________________________________________ ?>
 
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSN65Q3KW8"></script>
+	<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'G-QSN65Q3KW8');
+	</script>
+
 	</head>
 
 	<body <?php body_class(); ?> >

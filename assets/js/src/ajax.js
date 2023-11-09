@@ -198,7 +198,6 @@ class Ajax {
 		// Contorol Cursor Behaviour in Open Modal
 		const followCircle = document.getElementById('followCircle');
 		
-		/*
 		// Cursor "Default" Behaviour on Open Modal
 		const container = this.container;
 		const totalDocument = document.querySelector(container);
@@ -208,7 +207,6 @@ class Ajax {
 				scale: 1
 			});		
 		});
-		*/
 
 		// Big Cursor in Modal Page (Mouse Over Close Icon & Links)
 		const links = document.querySelectorAll('a');
