@@ -214,7 +214,7 @@
 					navbarPosition: 'left',
 					className: '--left --source',
 					title: 'Source',
-					URL: 'https://github.com/adibbehrooz/adib.online'
+					URL: 'https://github.com/adibbehrooz/adib.digital'
 				},
 			};
 			return labels;

@@ -127,7 +127,7 @@ In canvas.js one module has been imported: "Ajax Module". When user encourage to
 
 ## Pan Module:
 * pan.js:
-    This is main module and almost every other module imported in it. Night sky, constellations, cursor and ajax. 
+    This is main module and almost every other module imported in it. Night sky, constellations, cursor and ajax. </p>
 The main goal of this module is to create **infinite pan** and put every objects like constellations and stars in it. This module using multi event listener, like _mousedown_ and _mousemove_.
 
  ```
