@@ -77,7 +77,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Adib Digital Screenshot[product-screenshot]](https://adib.digital)
+[![Adib Digital Screenshot][product-screenshot]](https://adib.digital)
 
 This is my personal website code, based on JavaScript canvas in WordPress CMS. I share it on porpose.
 * How to define modules in VanillaJS and how this modules can interact with each other
@@ -91,15 +91,6 @@ This is my personal website code, based on JavaScript canvas in WordPress CMS. I
 ### Built With
 
 List of major frameworks and libraries used to bootstrap my project.
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
 
 * [![SCSS][sass-lang.com]][SCSS-url]
 * [![TailwindCSS][TailwindCSS.com]][TailwindCSS-url]
