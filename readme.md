@@ -25,11 +25,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">Adib Digital Source Code</h3>
+<h3 align="center">Adib Digital Source Code</h3>
 
   <p align="center">
     If you want to see how adib.digital works, This is right place for you.
@@ -212,7 +208,7 @@ Mohammad Bagher Adib Behrooz - info@adib.digital
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/adibbehrooz
-[product-screenshot]: https://adib.digital/media/adib.online/2023/11/screenshot.gif
+[product-screenshot]: https://adib.digital/media/adib.online/2023/11/screenshot.mp4
 [TailwindCSS]: https://img.shields.io/badge/TailwindCSS-blue?style=flat&logo=tailwindcss
 [TailwindCSS-url]: https://tailwindcss.com/
 [VanillaJS]: https://img.shields.io/badge/VanillaJS-CECE08?style=flat&logo=javascript
