@@ -92,13 +92,12 @@ This is my personal website code, based on JavaScript canvas in WordPress CMS. I
 
 List of major frameworks and libraries used to bootstrap my project.
 
-* [![Next][Next.js]][Next-url]
-* [![SCSS][sass-lang.com]][SCSS-url]
-* [![TailwindCSS][TailwindCSS.com]][TailwindCSS-url]
-* [![VanillaJS][developer.mozilla.org/en-US/docs/Web/JavaScript]][VanillaJS-url]
-* [![GSAP][GSAP.com]][GSAP-url]
-* [![webpack][webpack.js.org]][webpack-url]
-* [![WordPress][WordPress.org]][WordPress-url]
+* [![SCSS][SCSS]][SCSS-url]
+* [![TailwindCSS][TailwindCSS]][TailwindCSS-url]
+* [![VanillaJS][VanillaJS]][VanillaJS-url]
+* [![GSAP][GSAP]][GSAP-url]
+* [![webpack][Webpack]][Webpack-url]
+* [![WordPress][WordPress]][WordPress-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -213,7 +212,7 @@ Mohammad Bagher Adib Behrooz - info@adib.digital
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/adibbehrooz
-[product-screenshot]: https://adib.digital/media/adib.online/2023/11/screenshot.mp4
+[product-screenshot]: https://adib.digital/media/adib.online/2023/11/screenshot.gif
 [TailwindCSS]: https://img.shields.io/badge/TailwindCSS-blue?style=flat&logo=tailwindcss
 [TailwindCSS-url]: https://tailwindcss.com/
 [VanillaJS]: https://img.shields.io/badge/VanillaJS-CECE08?style=flat&logo=javascript
@@ -222,9 +221,7 @@ Mohammad Bagher Adib Behrooz - info@adib.digital
 [GSAP-url]: https://gsap.com
 [SCSS]: https://img.shields.io/badge/SCSS-C76494?style=flat&logo=cssmodules
 [SCSS-url]: https://sass-lang.com/
-[webpack]: https://img.shields.io/badge/Webpack-8ACEF2?style=flat&logo=webpack
-[webpack-url]: https://webpack.js.org/
+[Webpack]: https://img.shields.io/badge/Webpack-8ACEF2?style=flat&logo=webpack
+[Webpack-url]: https://webpack.js.org/
 [WordPress]: https://img.shields.io/badge/WordPress-gray?style=flat&logo=wordpress
 [WordPress-url]: https://WordPress.org/
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
