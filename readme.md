@@ -96,8 +96,8 @@ In canvas.js one module has been imported: "Ajax Module". When users are encoura
 
 ## Pan Module:
 * pan.js:
-    This is the main module and almost every other module is imported into it. The night sky, constellations, cursor, and Ajax. 
-The main goal of this module is to create **infinite pan** and put every object like constellations and stars in it. This module uses multi-event listeners, like _mousedown_ and _mousemove_.
+    This is the main module and almost every other module is imported into it. The night sky, constellations, cursor, and Ajax. <br>
+The main goal of this module is to create **infinite pan** and put every object like constellations and stars in it. This module uses multi-event listeners, like _mousedown_ and _mousemove_.<br>
 
  ```
   class Pan {
@@ -117,9 +117,9 @@ The main goal of this module is to create **infinite pan** and put every object 
 
 ## Ajax Module
 * ajax.js:
-    When clicking on constellations occurs, the Ajax Module has been activated and returns content for each constellation. 
-This module is integrated with WordPress; send _ID_ and _NAME_ of a constellation to WordPress. Therefore ID and name of the constellation are defined in _constellation folder_ (shapes.js collects data of each constellation). 
-Also, this module creates a new _div_ tag to cover the night sky and show contents. This cover is animated with SCSS (scss/main).
+    When clicking on constellations occurs, the Ajax Module has been activated and returns content for each constellation. <br>
+This module is integrated with WordPress; send _ID_ and _NAME_ of a constellation to WordPress. Therefore ID and name of the constellation are defined in _constellation folder_ (shapes.js collects data of each constellation). <br>
+Also, this module creates a new _div_ tag to cover the night sky and show contents. This cover is animated with SCSS (scss/main).<br>
 
  ```
   class Ajax {
