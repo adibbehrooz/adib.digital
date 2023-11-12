@@ -30,10 +30,11 @@
 							
 							<?php // Input Label ?>
 							<label for="inputCanvas" class="[ c-convert__label ] [ F: font-Cutive text-md text-slate-300 ]">
-								Input Canvas Code &nbsp; <b>OR</b>&nbsp; 
+								Input Canvas Code &nbsp; <?php /** <b>OR</b>&nbsp;  */ ?>
 							</label>
 
 							<?php // Input Button ?>
+							<?php /*
 							<button type="button" class="[ c-convert__button ][F: flex flex-row items-center w-auto text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-0 focus:outline-none focus:ring-lime-0 dark:focus:ring-teal-700 font-Cutive rounded-lg text-base px-5 text-center mr-2 mb-2 h-10 ]">
 								<span class="pr-3">
 									<svg width="16px" height="16px" viewBox="-2 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
@@ -46,6 +47,8 @@
 								</span>
 								<span>Upload File</span>
 							</button>
+							*/
+							?>
 						</div> <?php // [!Input Header] ?>
 
 						<textarea id="inputCanvas" name="inputCanvas" rows="24" cols="40" spellcheck="false" class="[ c-convert__textarea ] [ F: p-3 text-left resize-none border-0 border-slate-800 bg-neutral-900 active:border-0 active:border-slate-800 hover:border-slate-800 focus:border-slate-800 focus:outline-none text-slate-400 font-Cutive text-base rounded-lg shadow-md ]"></textarea>
@@ -57,9 +60,13 @@
 				<?php //__________________________________ ?>
 
 				<div class="[ F: flex flex-col items-center self-center content-center w-full lg:w-44 pl-5 pr-5 mb-14 ]">
+					<?php
+					/*
 					<div class="w-full bg-gray-200 rounded-full dark:bg-gray-700 mb-10">
 						<div class="[F: bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full ]" style="width: 45%"> 45%</div>
 					</div>
+					*/
+					?>
 					<button type="button" id="convertButton" class="[ F: text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-0 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ]">Convert</button>
 				</div>
 
@@ -76,10 +83,12 @@
 							
 							<?php // Input Label ?>
 							<label for="inputCanvas" class="[ c-convert__label ] [ F: font-Cutive text-md text-slate-300 ]">
-								Output JSON Code &nbsp; <b>OR</b>&nbsp; 
+								Output JSON Code &nbsp;<?php /** <b>OR</b>&nbsp;  */ ?>
 							</label>
 
-							<?php // Input Button ?>
+							<?php // Export Button ?>
+							<?php
+							/*
 							<button type="button" class="[ c-convert__button ][F: flex flex-row items-center w-auto text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-0 focus:outline-none focus:ring-lime-0 dark:focus:ring-teal-700 font-Cutive rounded-lg text-base px-5 text-center mr-2 mb-2 h-10 ]">
 								<span class="pr-3">
 									<svg width="16px" height="16px" viewBox="-2 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
@@ -92,6 +101,8 @@
 								</span>
 								<span>Download File</span>
 							</button>
+							*/
+							?>
 						</div> <?php // [!Input Header] ?>
 
 						<div class="[ F: flex justify-end bg-neutral-900 rounded-t-lg h-[28px] ]">
