@@ -129,7 +129,7 @@ Also, this module creates a new _div_ tag to cover the night sky and show conten
 
 ## Lines Module
 * lines.js: 
-    In the Lines Module, every canvas API in JavaScript is converted to JSON-like format. (It's not exactly JSON). Look at this <a href="https://adib.digital/converter">URL</a>. Send your canvas file and see the export. For every constellation (see wordpress.js as an example in the constellations folder), send this JSON-Like format to lines.js to create constellation lines and twinkling of stars.
+    In the Lines Module, every canvas API in JavaScript is converted to JSON-like format. (It's not exactly JSON). Look at this <a target="_blank" href="https://adib.digital/converter">URL</a>. Send your canvas file and see the export. For every constellation (see wordpress.js as an example in the constellations folder), send this JSON-Like format to lines.js to create constellation lines and twinkling of stars.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
