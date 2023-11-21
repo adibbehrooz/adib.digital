@@ -107,7 +107,8 @@ The main goal of this module is to create **infinite pan** and put every object 
 
 ## Cursor Module:
 * cursor.js:
-    when the cursor moves on every constellation (in canvas layer) or menu item (section & div layer), the cursor shows animation using _GSAP_ library, and shows the name of a constellation. This module is independent and doesn't need to import any other modules.
+    when the cursor moves on every constellation (in canvas layer) or menu item (section & div layer), the cursor shows animation using _GSAP_ library, and shows the name of a constellation. <br>
+    This module is independent and doesn't need to import any other modules.
 
  ```
   class Cursor {
@@ -129,7 +130,14 @@ Also, this module creates a new _div_ tag to cover the night sky and show conten
 
 ## Lines Module
 * lines.js: 
-    In the Lines Module, every canvas API in JavaScript is converted to JSON-like format. (It's not exactly JSON). Look at this <a target="_blank" href="https://adib.digital/converter">URL</a>. Send your canvas file and see the export. For every constellation (see wordpress.js as an example in the constellations folder), send this JSON-Like format to lines.js to create constellation lines and twinkling of stars.
+    In the Lines Module, every canvas API in JavaScript is converted to JSON-like format. (It's not exactly JSON). Look at this <a target="_blank" href="https://adib.digital/converter">URL</a>. Send your canvas file and see the export. <br>
+    For every constellation (see wordpress.js as an example in the constellations folder), send this JSON-Like format to lines.js to create constellation lines and twinkling of stars.
+
+ ```
+  class Lines {
+
+  };
+  ``` 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
